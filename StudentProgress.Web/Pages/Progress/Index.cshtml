@@ -1,0 +1,67 @@
+﻿@page
+@model StudentProgress.Web.Pages.Progress.IndexModel
+@using StudentProgress.Web.Models;
+@{
+    ViewData["Title"] = "Progress";
+
+    string ToFeelingBackgrounColor(Feeling feeling)
+    {
+        switch (feeling)
+        {
+            case Feeling.Bad:
+                return "bg-danger";
+            case Feeling.Neutral:
+                return "bg-warning";
+            case Feeling.Good:
+                return "bg-success";
+            default:
+                return "";
+        }
+    }
+}
+
+<a asp-page="/StudentGroups/Index">Groups</a> >
+<a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Student.GroupId">@Model.Student.GroupName</a> >
+<span>@Model.Student.Name</span>
+
+<h1>@Model.Student.Name</h1>
+
+<h2>@Model.Student.GroupName</h2>
+
+<a asp-page="./Create" asp-route-studentId="@Model.Student.StudentId" asp-route-groupId="@Model.Student.GroupId">Add Progress</a>
+
+<div class="progress-container position-relative">
+    <div id="status-overview" class="progress-timeline list-group">
+        @foreach (var progressUpdate in Model.Student.ProgressUpdates)
+        {
+            <a href="#feedback-@progressUpdate.Id" class="timeline-item list-group-item list-group-item-action @ToFeelingBackgrounColor(progressUpdate.Feeling) mx-4"></a>
+        }
+    </div>
+    
+    <section class="progress-feedback" data-spy="scroll" data-target="#status-overview" data-offset="10">
+        @foreach (var progressUpdate in Model.Student.ProgressUpdates)
+        {
+            <section id="feedback-@progressUpdate.Id" class="card mb-3">
+                <h4 class="card-header d-flex align-items-center">
+                    <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgrounColor(progressUpdate.Feeling) mr-3"></div>
+                    @progressUpdate.UpdatedAt
+                </h4>
+                <div class="card-body">
+                    <section>
+                        <h5>Feedback</h5>
+                        <p>@progressUpdate.Feedback</p>
+                    </section>
+                    <section>
+                        <h5>Feedup</h5>
+                        <p>@progressUpdate.Feedup</p>
+                    </section>
+                    <section>
+                        <h5>Feedback</h5>
+                        <p>@progressUpdate.Feedforward</p>
+                    </section>
+                </div>
+            </section>
+        }
+    </section>
+
+</div>

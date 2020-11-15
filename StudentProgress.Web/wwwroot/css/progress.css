@@ -1,0 +1,38 @@
+﻿.progress-container {
+    /* display: grid; */
+    /* grid-template-areas: "timeline feedback";
+    grid-template-columns: auto 1fr; */
+    display: flex;
+}
+
+.progress-feedback {
+    order: 1;
+    flex: 1;
+    grid-area: feedback;
+    height: calc(100vh - 300px);
+    overflow-y: scroll;
+    padding: 10px;
+    scroll-behavior: smooth;
+}
+
+.progress-timeline {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-area: timeline;
+}
+
+.timeline-item {
+    height: 30px;
+    width: 5px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    border: none;
+}
+
+.timeline-item.active,
+.timeline-item:hover{
+    width: 10px;
+}

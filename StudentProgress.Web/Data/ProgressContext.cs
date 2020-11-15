@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using StudentProgress.Web.Extensions;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Models;
 
 namespace StudentProgress.Web.Data
 {
@@ -15,5 +14,15 @@ namespace StudentProgress.Web.Data
         }
 
         public DbSet<StudentProgress.Web.Models.StudentGroup> StudentGroup { get; set; }
+
+        public DbSet<StudentProgress.Web.Models.Student> Student { get; set; }
+        public DbSet<StudentProgress.Web.Models.ProgressUpdate> ProgressUpdate { get; set; }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ChangeTracker.UpdateAuditableEntities();
+         
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }

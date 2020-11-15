@@ -1,0 +1,41 @@
+﻿@page
+@model StudentProgress.Web.Pages.Progress.CreateModel
+@using StudentProgress.Web.Models
+@{
+    ViewData["Title"] = "Add Progress";
+}
+
+<div>
+    <a asp-page="/StudentGroups/Index">Groups</a> >
+    <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Group.Id">@Model.Group.Name</a> >
+    <a asp-page="./Index" asp-route-studentId="@Model.Student.Id" asp-route-groupId="@Model.Group.Id">@Model.Student.Name</a> > 
+    <span>Add Progress</span>
+</div>
+
+<h1>@Model.Student.Name</h1>
+<h2>@DateTime.Now.Date.ToShortDateString() Progress</h2>
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id" />
+    <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id" />
+    <p class="form-group">
+        <label asp-for="Progress.Feeling"></label>
+        <select class="form-control" asp-for="Progress.Feeling" asp-items="@Html.GetEnumSelectList<Feeling>()"></select>
+    </p>
+    <p class="form-group">
+        <label asp-for="Progress.Feedup"></label>
+        <textarea class="form-control" asp-for="Progress.Feedup"></textarea>
+    </p>
+    <p class="form-group">
+        <label asp-for="Progress.Feedback"></label>
+        <textarea class="form-control" asp-for="Progress.Feedback"></textarea>
+    </p>
+    <p class="form-group">
+        <label asp-for="Progress.Feedforward"></label>
+        <textarea class="form-control" asp-for="Progress.Feedforward"></textarea>
+    </p>
+    <p>
+        <input class="btn btn-primary" type="submit" value="Add"/>
+    </p>
+</form>
