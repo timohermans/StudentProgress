@@ -28,7 +28,7 @@ namespace StudentProgress.Web
             services.AddRazorPages();
 
             services.AddDbContext<ProgressContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ProgressContext")));
+                    options.UseNpgsql(Configuration.GetConnectionString("ProgressContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
