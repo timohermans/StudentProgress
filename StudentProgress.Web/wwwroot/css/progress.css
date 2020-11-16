@@ -32,7 +32,11 @@
     border: none;
 }
 
-.timeline-item.active,
-.timeline-item:hover{
-    width: 10px;
+    .timeline-item.active,
+    .timeline-item:hover {
+        width: 10px;
+    }
+
+.feedback-text {
+    white-space: pre-line;
 }

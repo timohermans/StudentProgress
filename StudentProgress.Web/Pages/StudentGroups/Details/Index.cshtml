@@ -62,7 +62,7 @@
                         <tr>
                             <td><a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a></td>
                             <td>@Html.DisplayFor(_ => student.LastUpdateDate)</td>
-                            <td>@Html.DisplayFor(_ => student.LastFeedforward)</td>
+                            <td class="feedback-text">@Html.DisplayFor(_ => student.LastFeedforward)</td>
                             <td>@Html.DisplayFor(_ => student.FeelingOfLatestProgress)</td>
                             <td>@Html.DisplayFor(_ => student.AmountOfProgressItems)</td>
                         </tr>
