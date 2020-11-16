@@ -50,6 +50,7 @@
                 <thead>
                     <tr>
                         <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastUpdateDate)</th>
                         <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().FeelingOfLatestProgress)</th>
                         <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
                     </tr>
@@ -59,6 +60,7 @@
                     {
                         <tr>
                             <td><a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a></td>
+                            <td>@Html.DisplayFor(_ => student.LastUpdateDate)</td>
                             <td>@Html.DisplayFor(_ => student.FeelingOfLatestProgress)</td>
                             <td>@Html.DisplayFor(_ => student.AmountOfProgressItems)</td>
                         </tr>

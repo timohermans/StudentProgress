@@ -25,6 +25,9 @@ namespace StudentProgress.Web.UseCases.Progress
             public int GroupId { get; set; }
             [Required]
             public Feeling Feeling { get; set; }
+            [Required]
+            [DataType(DataType.Date)]
+            public DateTime Date { get; set; }
             public string Feedback { get; set; }
             public string Feedup { get; set; }
             public string Feedforward { get; set; }
@@ -47,7 +50,8 @@ namespace StudentProgress.Web.UseCases.Progress
                 progress.Feedback,
                 progress.Feedup,
                 progress.Feedforward,
-                progress.Feeling));
+                progress.Feeling,
+                progress.Date));
             await context.SaveChangesAsync();
         }
     }

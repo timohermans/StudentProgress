@@ -3,6 +3,7 @@ using StudentProgress.Web.Data;
 using StudentProgress.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,6 +28,8 @@ namespace StudentProgress.Web.UseCases.Progress
                 public string Feedforward { get; init; }
                 public DateTime UpdatedAt { get; init; }
                 public DateTime CreatedAt { get; init; }
+                [DataType(DataType.Date)]
+                public DateTime Date { get; init; }
                 public Feeling Feeling { get; init; }
             }
         }
@@ -61,6 +64,7 @@ namespace StudentProgress.Web.UseCases.Progress
                     Feedforward = p.Feedforward,
                     Feedup = p.Feedup,
                     Feeling = p.ProgressFeeling,
+                    Date = p.Date,
                     UpdatedAt = p.UpdatedDate,
                     CreatedAt = p.CreatedDate
                 })

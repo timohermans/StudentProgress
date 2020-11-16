@@ -44,7 +44,7 @@
             <section id="feedback-@progressUpdate.Id" class="card mb-3">
                 <h4 class="card-header d-flex align-items-center">
                     <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgrounColor(progressUpdate.Feeling) mr-3"></div>
-                    @progressUpdate.UpdatedAt
+                    @progressUpdate.Date.ToShortDateString()
                 </h4>
                 <div class="card-body">
                     <section>
@@ -56,7 +56,7 @@
                         <p>@progressUpdate.Feedup</p>
                     </section>
                     <section>
-                        <h5>Feedback</h5>
+                        <h5>Feedforward</h5>
                         <p>@progressUpdate.Feedforward</p>
                     </section>
                 </div>

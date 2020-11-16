@@ -32,17 +32,21 @@ namespace StudentProgress.Web.UseCases.StudentGroups
             {
                 public int Id { get; }
                 public string Name { get; }
-                [Display(Name = "Amount of feedback")]
+                [Display(Name = "Amount of Feedback")]
                 public int AmountOfProgressItems { get; }
                 [Display(Name = "Latest Feeling")]
                 public Feeling? FeelingOfLatestProgress { get; }
+                [Display(Name = "Last Time")]
+                [DataType(DataType.Date)]
+                public DateTime? LastUpdateDate { get; }
 
-                public StudentsResponse(int id, string name, int amountOfProgressItems, Feeling? feelingOfLatestProgress)
+                public StudentsResponse(int id, string name, int amountOfProgressItems, Feeling? feelingOfLatestProgress, DateTime? lastUpdateDate)
                 {
                     Id = id;
                     Name = name;
                     AmountOfProgressItems = amountOfProgressItems;
                     FeelingOfLatestProgress = feelingOfLatestProgress;
+                    LastUpdateDate = lastUpdateDate;
                 }
             }
         }
@@ -62,7 +66,8 @@ namespace StudentProgress.Web.UseCases.StudentGroups
                     student.Id,
                     student.Name,
                     student.ProgressUpdates.Count(p => p.Group.Id == request.Id),
-                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().ProgressFeeling
+                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().ProgressFeeling,
+                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().Date
                     ));
 
             return new Response

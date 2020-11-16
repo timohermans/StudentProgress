@@ -36,6 +36,12 @@ namespace StudentProgress.Web.Pages.Progress
                 return RedirectToPage("/StudentGroups/Index");
             }
 
+            Progress = new Create.Request
+            {
+                Date = DateTime.UtcNow,
+                Feeling = Feeling.Neutral
+            };
+
             return Page();
         }
 
