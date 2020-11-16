@@ -31,7 +31,6 @@ namespace StudentProgress.Web.UseCases.Progress
             public string Feedback { get; set; }
             public string Feedup { get; set; }
             public string Feedforward { get; set; }
-            // TODO: Date
         }
 
         public async Task HandleAsync(Request progress)
