@@ -10,7 +10,7 @@ namespace StudentProgress.Web.UseCases.Students
 {
     public class AddToGroup
     {
-        private ProgressContext context;
+        private readonly ProgressContext context;
 
         public AddToGroup(ProgressContext context)
         {

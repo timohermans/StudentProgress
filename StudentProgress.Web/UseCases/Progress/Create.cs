@@ -9,7 +9,7 @@ namespace StudentProgress.Web.UseCases.Progress
 {
     public class Create
     {
-        private ProgressContext context;
+        private readonly ProgressContext context;
 
         public Create(ProgressContext context)
         {
