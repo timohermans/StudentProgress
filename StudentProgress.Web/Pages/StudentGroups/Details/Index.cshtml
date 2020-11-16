@@ -47,24 +47,25 @@
         else
         {
             <table class="table">
+                <caption>Table showing the students for this group</caption>
                 <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
-                        <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastUpdateDate)</th>
-                        <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedforward)</th>
-                        <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().FeelingOfLatestProgress)</th>
-                        <th>@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
+                        <th id="student-name">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
+                        <th id="student-last-update">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastUpdateDate)</th>
+                        <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedforward)</th>
+                        <th id="student-last-feeling">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().FeelingOfLatestProgress)</th>
+                        <th id="student-amount-of-progress">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var student in Model.StudentGroup.Students)
                     {
                         <tr>
-                            <td><a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a></td>
-                            <td>@Html.DisplayFor(_ => student.LastUpdateDate)</td>
-                            <td class="feedback-text">@Html.DisplayFor(_ => student.LastFeedforward)</td>
-                            <td>@Html.DisplayFor(_ => student.FeelingOfLatestProgress)</td>
-                            <td>@Html.DisplayFor(_ => student.AmountOfProgressItems)</td>
+                            <td headers="student-name"><a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a></td>
+                            <td headers="student-last-update">@Html.DisplayFor(_ => student.LastUpdateDate)</td>
+                            <td headers="student-last-feedforward" class="feedback-text">@Html.DisplayFor(_ => student.LastFeedforward)</td>
+                            <td headers="student-last-feeling">@Html.DisplayFor(_ => student.FeelingOfLatestProgress)</td>
+                            <td headers="student-amount-of-progress">@Html.DisplayFor(_ => student.AmountOfProgressItems)</td>
                         </tr>
                     }
                 </tbody>

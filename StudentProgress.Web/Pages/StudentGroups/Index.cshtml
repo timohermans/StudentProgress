@@ -11,15 +11,16 @@
     <a asp-page="Create">Create New</a>
 </p>
 <table class="table">
+    <caption>Overview of groups available</caption>
     <thead>
         <tr>
-            <th>
+            <th id="name">
                 @Html.DisplayNameFor(model => model.StudentGroup[0].Name)
             </th>
-            <th>
+            <th id="created-date">
                 @Html.DisplayNameFor(model => model.StudentGroup[0].CreatedDate)
             </th>
-            <th>
+            <th id="updated-date">
                 @Html.DisplayNameFor(model => model.StudentGroup[0].UpdatedDate)
             </th>
             <th></th>
@@ -29,13 +30,13 @@
         @foreach (var item in Model.StudentGroup)
         {
             <tr>
-                <td>
+                <td headers="name">
                     <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                 </td>
-                <td>
+                <td headers="created-date">
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
-                <td>
+                <td headers="updated-date">
                     @Html.DisplayFor(modelItem => item.UpdatedDate)
                 </td>
                 <td>
