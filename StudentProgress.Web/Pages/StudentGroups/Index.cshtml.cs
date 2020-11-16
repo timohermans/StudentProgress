@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Data;
 using StudentProgress.Web.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {
@@ -19,7 +15,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
             _context = context;
         }
 
-        public IList<StudentGroup> StudentGroup { get;set; }
+        public IList<StudentGroup> StudentGroup { get; set; }
 
         public async Task OnGetAsync()
         {

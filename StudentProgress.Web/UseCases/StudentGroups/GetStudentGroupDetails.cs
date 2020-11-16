@@ -73,7 +73,7 @@ namespace StudentProgress.Web.UseCases.StudentGroups
                     student.ProgressUpdates.Count(p => p.Group.Id == request.Id),
                     student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().ProgressFeeling,
                     student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().Date,
-                    student.ProgressUpdates.Where(_ => !string.IsNullOrEmpty(_.Feedforward)).FirstOrDefault().Feedforward
+                    student.ProgressUpdates.Where(_ => _.Group.Id == request.Id && !string.IsNullOrEmpty(_.Feedforward)).FirstOrDefault().Feedforward
                     ));
 
             return new Response

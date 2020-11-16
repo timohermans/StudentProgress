@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Models
 {
@@ -15,7 +12,7 @@ namespace StudentProgress.Web.Models
         public string Feedforward { get; private set; }
         public Feeling ProgressFeeling { get; private set; }
         public int GroupId { get; private set; }
-        
+
         public DateTime Date { get; private set; }
 
         private ProgressUpdate() { }

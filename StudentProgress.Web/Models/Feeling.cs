@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StudentProgress.Web.Models
+﻿namespace StudentProgress.Web.Models
 {
     public enum Feeling
     {

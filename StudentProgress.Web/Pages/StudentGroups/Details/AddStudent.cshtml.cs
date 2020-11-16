@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using StudentProgress.Web.Data;
 using StudentProgress.Web.Models;
 using StudentProgress.Web.UseCases.Students;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.StudentGroups.Details
 {
@@ -50,7 +48,8 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             try
             {
                 await _useCase.HandleAsync(Student);
-            } catch (InvalidOperationException ex)
+            }
+            catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("Summary", ex.Message);
                 return OnGet(Student.GroupId);
