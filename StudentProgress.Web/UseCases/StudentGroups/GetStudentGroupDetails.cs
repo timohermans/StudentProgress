@@ -24,7 +24,9 @@ namespace StudentProgress.Web.UseCases.StudentGroups
         {
             public int Id { get; init; }
             public string Name { get; init; }
+            [Display(Name = "Created On")]
             public DateTime CreatedAt { get; init; }
+            [Display(Name = "Last name change")]
             public DateTime UpdatedAt { get; init; }
             public IEnumerable<StudentsResponse> Students { get; init; }
 
@@ -39,13 +41,16 @@ namespace StudentProgress.Web.UseCases.StudentGroups
                 [Display(Name = "Last Time")]
                 [DataType(DataType.Date)]
                 public DateTime? LastUpdateDate { get; }
+                [Display(Name = "Last Feedforward")]
+                public string LastFeedforward { get; }
 
-                public StudentsResponse(int id, string name, int amountOfProgressItems, Feeling? feelingOfLatestProgress, DateTime? lastUpdateDate)
+                public StudentsResponse(int id, string name, int amountOfProgressItems, Feeling? feelingOfLatestProgress, DateTime? lastUpdateDate, string lastFeedforward)
                 {
                     Id = id;
                     Name = name;
                     AmountOfProgressItems = amountOfProgressItems;
                     FeelingOfLatestProgress = feelingOfLatestProgress;
+                    LastFeedforward = lastFeedforward;
                     LastUpdateDate = lastUpdateDate;
                 }
             }
@@ -67,7 +72,8 @@ namespace StudentProgress.Web.UseCases.StudentGroups
                     student.Name,
                     student.ProgressUpdates.Count(p => p.Group.Id == request.Id),
                     student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().ProgressFeeling,
-                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().Date
+                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().Date,
+                    student.ProgressUpdates.Where(_ => !string.IsNullOrEmpty(_.Feedforward)).FirstOrDefault().Feedforward
                     ));
 
             return new Response

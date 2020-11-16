@@ -35,6 +35,7 @@ namespace StudentProgress.Web.UseCases.Progress
 
         public async Task HandleAsync(Request progress)
         {
+            // TODO: Save the newlines :o!
             var student = context.Student.FirstOrDefault(s => s.Id == progress.StudentId);
             var group = context.StudentGroup.FirstOrDefault(g => g.Id == progress.GroupId);
 
