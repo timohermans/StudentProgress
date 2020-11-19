@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,8 +44,6 @@ namespace StudentProgress.Web
                 .AddCookie("Cookies")
                 .AddOpenIdConnect(options =>
                 {
-                    // TODO: Grab from appsettings.json!
-
                     // URL of the Keycloak server
                     options.Authority = Configuration.GetValue<string>("Authentication:Authority");
                     // Client configured in the Keycloak
