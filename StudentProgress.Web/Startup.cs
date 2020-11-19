@@ -48,7 +48,7 @@ namespace StudentProgress.Web
                     // TODO: Grab from appsettings.json!
 
                     // URL of the Keycloak server
-                    options.Authority = "<url>";
+                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
                     // Client configured in the Keycloak
                     options.ClientId = "student-progress";
 
@@ -57,7 +57,7 @@ namespace StudentProgress.Web
                     options.SaveTokens = true;
 
                     // Client secret shared with Keycloak
-                    options.ClientSecret = "<client secret>";
+                    options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
                     options.GetClaimsFromUserInfoEndpoint = true;
 
                     // OpenID flow to use
