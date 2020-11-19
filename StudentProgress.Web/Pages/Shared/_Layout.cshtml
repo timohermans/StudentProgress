@@ -28,6 +28,11 @@
                     </ul>
                 </div>
             </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>Welcome, @User.FindFirst("name").Value! <a asp-page="/Logout">Log out</a></div>
+            }
         </nav>
     </header>
     <div class="container">
