@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Web.Models;
+using StudentProgress.Web.UseCases.StudentGroups;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,14 +11,16 @@ namespace StudentProgress.Web.Pages.StudentGroups
     public class EditModel : PageModel
     {
         private readonly StudentProgress.Web.Data.ProgressContext _context;
+        private readonly Update _useCase;
 
         public EditModel(StudentProgress.Web.Data.ProgressContext context)
         {
             _context = context;
+            _useCase = new Update(context);
         }
 
         [BindProperty]
-        public StudentGroup StudentGroup { get; set; }
+        public Update.Request StudentGroup { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -26,12 +29,20 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            StudentGroup = await _context.StudentGroup.FirstOrDefaultAsync(m => m.Id == id);
+            var group = await _context.StudentGroup.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (StudentGroup == null)
+
+            if (group == null)
             {
                 return NotFound();
             }
+
+            StudentGroup = new Update.Request
+            {
+                Id = group.Id,
+                Mnemonic = group.Mnemonic,
+                Name = group.Name
+            };
             return Page();
         }
 
@@ -44,23 +55,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return Page();
             }
 
-            _context.Attach(StudentGroup).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentGroupExists(StudentGroup.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _useCase.HandleAsync(StudentGroup);
 
             return RedirectToPage("./Index");
         }

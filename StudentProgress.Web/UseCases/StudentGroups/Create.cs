@@ -18,6 +18,8 @@ namespace StudentProgress.Web.UseCases.StudentGroups
         {
             [Required]
             public string Name { get; init; }
+
+            public string Mnemonic { get; init; }
         }
 
 

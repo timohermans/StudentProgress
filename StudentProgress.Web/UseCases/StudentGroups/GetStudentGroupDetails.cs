@@ -24,6 +24,7 @@ namespace StudentProgress.Web.UseCases.StudentGroups
         {
             public int Id { get; init; }
             public string Name { get; init; }
+            public string Mnemonic { get; init; }
             [Display(Name = "Created On")]
             public DateTime CreatedAt { get; init; }
             [Display(Name = "Last name change")]
@@ -67,6 +68,7 @@ namespace StudentProgress.Web.UseCases.StudentGroups
 
             var students = context.Student.Include(_ => _.ProgressUpdates)
                 .Where(s => s.StudentGroups.Any(g => g.Id == request.Id))
+                .OrderByDescending(s => s.ProgressUpdates.FirstOrDefault().Date)
                 .Select(student => new Response.StudentsResponse(
                     student.Id,
                     student.Name,
@@ -80,6 +82,7 @@ namespace StudentProgress.Web.UseCases.StudentGroups
             {
                 Id = studentGroup.Id,
                 Name = studentGroup.Name,
+                Mnemonic = studentGroup.Mnemonic,
                 CreatedAt = studentGroup.CreatedDate,
                 UpdatedAt = studentGroup.UpdatedDate,
                 Students = students

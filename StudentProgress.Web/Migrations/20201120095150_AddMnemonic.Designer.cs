@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StudentProgress.Web.Data;
@@ -9,9 +10,10 @@ using StudentProgress.Web.Data;
 namespace StudentProgress.Web.Migrations
 {
     [DbContext(typeof(ProgressContext))]
-    partial class ProgressContextModelSnapshot : ModelSnapshot
+    [Migration("20201120095150_AddMnemonic")]
+    partial class AddMnemonic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

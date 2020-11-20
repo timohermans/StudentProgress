@@ -24,6 +24,12 @@
                 <span asp-validation-for="StudentGroup.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="StudentGroup.Mnemonic" class="control-label"></label>
+                <textarea asp-for="StudentGroup.Mnemonic" class="form-control" />
+                <span asp-validation-for="StudentGroup.Mnemonic" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
