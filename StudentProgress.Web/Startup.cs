@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using StudentProgress.Web.Data;
 using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 
 namespace StudentProgress.Web
 {
@@ -46,41 +45,22 @@ namespace StudentProgress.Web
                 .AddCookie("Cookies")
                 .AddOpenIdConnect(options =>
                 {
-                    // URL of the Keycloak server
-                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
-                    // Client configured in the Keycloak
                     options.ClientId = Configuration.GetValue<string>("Authentication:ClientId");
-
-                    // For testing we disable https (should be true for production)
-                    options.RequireHttpsMetadata = false;
-                    options.SaveTokens = true;
-
-                    // Client secret shared with Keycloak
                     options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
+                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
+
+                    // because we don't expose to the outside, we can use this in production as well
+                    options.RequireHttpsMetadata = false;
+
+                    options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
-
-                    // OpenID flow to use
                     options.ResponseType = OpenIdConnectResponseType.IdToken;
-                    options.CallbackPath = "/signin-oidc";
-
-                    options.Events.OnRedirectToIdentityProvider = async n =>
-                    {
-                        n.ProtocolMessage.RedirectUri = n.ProtocolMessage.RedirectUri.Replace("http", "https");
-                        n.ProtocolMessage.BuildRedirectUrl();
-                    };
                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UsePathBase("/student");
-            app.Use((context, next) =>
-            {
-                context.Request.PathBase = "/student";
-                return next();
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -88,6 +68,21 @@ namespace StudentProgress.Web
             }
             else
             {
+                app.UseCookiePolicy(new CookiePolicyOptions()
+                {
+                    // is used for new chrome cookiepolicy
+                    // see https://stackoverflow.com/questions/50262561/correlation-failed-in-net-core-asp-net-identity-openid-connect/64874175#64874175
+                    MinimumSameSitePolicy = SameSiteMode.Lax
+                });
+
+                // this is used for the reverse proxy
+                app.UsePathBase("/student");
+                app.Use((context, next) =>
+                {
+                    context.Request.PathBase = "/student";
+                    return next();
+                });
+
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

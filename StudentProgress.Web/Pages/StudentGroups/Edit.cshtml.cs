@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Models;
 using StudentProgress.Web.UseCases.StudentGroups;
 using System.Linq;
 using System.Threading.Tasks;
