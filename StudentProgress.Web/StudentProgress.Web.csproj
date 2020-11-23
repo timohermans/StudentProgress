@@ -31,10 +31,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc2" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <DockerfileFile>Dockerfile</DockerfileFile>
-    <DockerfileRunArguments>--network="development_dev"</DockerfileRunArguments>
-  </PropertyGroup>
-  
-
 </Project>
