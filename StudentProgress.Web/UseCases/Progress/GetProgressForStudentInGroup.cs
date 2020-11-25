@@ -49,7 +49,7 @@ namespace StudentProgress.Web.UseCases.Progress
 
             var progressForGroup = student.ProgressUpdates
                 .Where(p => p.GroupId == request.GroupId)
-                .OrderByDescending(p => p.CreatedDate);
+                .OrderByDescending(p => p.Date);
 
             return new Response
             {

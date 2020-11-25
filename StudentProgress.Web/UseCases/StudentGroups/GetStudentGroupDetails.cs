@@ -68,14 +68,13 @@ namespace StudentProgress.Web.UseCases.StudentGroups
 
             var students = context.Student.Include(_ => _.ProgressUpdates)
                 .Where(s => s.StudentGroups.Any(g => g.Id == request.Id))
-                .OrderByDescending(s => s.ProgressUpdates.FirstOrDefault().Date)
                 .Select(student => new Response.StudentsResponse(
                     student.Id,
                     student.Name,
                     student.ProgressUpdates.Count(p => p.Group.Id == request.Id),
-                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().ProgressFeeling,
-                    student.ProgressUpdates.OrderByDescending(p => p.UpdatedDate).FirstOrDefault().Date,
-                    student.ProgressUpdates.FirstOrDefault(_ => _.Group.Id == request.Id && !string.IsNullOrEmpty(_.Feedforward)).Feedforward
+                    student.ProgressUpdates.OrderByDescending(p => p.Date).FirstOrDefault().ProgressFeeling,
+                    student.ProgressUpdates.OrderByDescending(p => p.Date).FirstOrDefault().Date,
+                    student.ProgressUpdates.OrderByDescending(p => p.Date).FirstOrDefault(_ => _.Group.Id == request.Id && !string.IsNullOrEmpty(_.Feedforward)).Feedforward
                     ));
 
             return new Response
