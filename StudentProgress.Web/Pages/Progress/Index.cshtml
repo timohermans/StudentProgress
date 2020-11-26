@@ -35,14 +35,17 @@
             <a href="#feedback-@progressUpdate.Id" class="timeline-item list-group-item list-group-item-action @ToFeelingBackgrounColor(progressUpdate.Feeling) mx-4"></a>
         }
     </div>
-    
+
     <section class="progress-feedback" data-spy="scroll" data-target="#status-overview" data-offset="10">
         @foreach (var progressUpdate in Model.Student.ProgressUpdates)
         {
             <section id="feedback-@progressUpdate.Id" class="card mb-3">
-                <h4 class="card-header d-flex align-items-center">
-                    <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgrounColor(progressUpdate.Feeling) mr-3"></div>
-                    @progressUpdate.Date.ToShortDateString()
+                <h4 class="card-header d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgrounColor(progressUpdate.Feeling) mr-3"></div>
+                        @progressUpdate.Date.ToShortDateString()
+                    </div>
+                    <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
                 <div class="card-body">
                     <section>

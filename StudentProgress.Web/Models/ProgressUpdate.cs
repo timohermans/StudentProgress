@@ -12,6 +12,7 @@ namespace StudentProgress.Web.Models
         public string Feedforward { get; private set; }
         public Feeling ProgressFeeling { get; private set; }
         public int GroupId { get; private set; }
+        public int StudentId { get; private set; }
 
         public DateTime Date { get; private set; }
 
@@ -29,15 +30,13 @@ namespace StudentProgress.Web.Models
             Date = date;
         }
 
-        public void UpdateProgress(Feeling feeling, string feedback, string feedforward, string feedup)
+        public void Update(Feeling feeling, DateTime date, string feedback, string feedup, string feedforward)
         {
-            // TODO: Create ProgressUpdateHistory item
-            // Add Reason
-            // return the history object
             ProgressFeeling = feeling;
             Feedback = feedback;
             Feedup = feedup;
             Feedforward = feedforward;
+            Date = date;
         }
     }
 }
