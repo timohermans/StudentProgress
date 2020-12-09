@@ -12,4 +12,5 @@ steps:
   image: plugins/docker
   settings:
     dockerfile: StudentProgress.Web/Dockerfile
+    repo: itsyou0o/student-progress
     dry_run: true
