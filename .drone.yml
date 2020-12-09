@@ -8,3 +8,8 @@ steps:
   commands:
   - echo hello
   - echo world
+- name: docker  
+  image: plugins/docker
+  settings:
+    dockerfile: StudentProgress.Web/Dockerfile
+    dry_run: true
