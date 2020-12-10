@@ -1,16 +1,37 @@
 kind: pipeline
 type: docker
-name: default
+name: build
 
 steps:
-- name: greeting
-  image: alpine
-  commands:
-  - echo hello
-  - echo world
-- name: docker  
+- name: build and test
   image: plugins/docker
   settings:
     dockerfile: StudentProgress.Web/Dockerfile
     repo: itsyou0o/student-progress
     dry_run: true
+- name: deploy
+
+---
+
+kind: pipeline
+type: ssh
+name: deployment
+
+server:
+  host:
+    from_secret: host
+  user:
+    from_secret: user
+  password:
+    from_secret: password
+
+steps:
+  - name: move
+    commands:
+    - cd ~/projects/server-utils
+    - git checkout main
+    - git pull
+    - docker-compose up -d --build
+
+depends_on:
+- build
