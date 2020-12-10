@@ -24,6 +24,9 @@ server:
   password:
     from_secret: password
 
+clone:
+  disable: true
+
 steps:
   - name: move
     commands:
@@ -31,6 +34,9 @@ steps:
     - git checkout main
     - git pull
     - docker-compose up -d --build
+    when:
+    branch:
+    - main
 
 depends_on:
 - build
