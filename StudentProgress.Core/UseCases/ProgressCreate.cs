@@ -1,17 +1,17 @@
-﻿using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using StudentProgress.Core.Entities;
 
-namespace StudentProgress.Web.UseCases.Progress
+namespace StudentProgress.Core.UseCases
 {
-    public class Create
+    public class ProgressCreate
     {
         private readonly ProgressContext context;
 
-        public Create(ProgressContext context)
+
+        public ProgressCreate(ProgressContext context)
         {
             this.context = context;
         }
@@ -42,7 +42,7 @@ namespace StudentProgress.Web.UseCases.Progress
                 throw new InvalidOperationException("Either student or group doesn't exist (anymore)");
             }
 
-            await context.ProgressUpdate.AddAsync(new ProgressUpdate(
+            await context.ProgressUpdate.AddAsync(new Entities.ProgressUpdate(
                 student,
                 group,
                 progress.Feedback,

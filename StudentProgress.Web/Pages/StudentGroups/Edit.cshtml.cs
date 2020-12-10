@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.UseCases.StudentGroups;
+using StudentProgress.Core.Entities;
+using StudentProgress.Core.UseCases;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,17 +10,17 @@ namespace StudentProgress.Web.Pages.StudentGroups
 {
     public class EditModel : PageModel
     {
-        private readonly StudentProgress.Web.Data.ProgressContext _context;
-        private readonly Update _useCase;
+        private readonly ProgressContext _context;
+        private readonly StudentGroupUpdate _useCase;
 
-        public EditModel(StudentProgress.Web.Data.ProgressContext context)
+        public EditModel(ProgressContext context)
         {
             _context = context;
-            _useCase = new Update(context);
+            _useCase = new StudentGroupUpdate(context);
         }
 
         [BindProperty]
-        public Update.Request StudentGroup { get; set; }
+        public StudentGroupUpdate.Request StudentGroup { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,7 +37,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            StudentGroup = new Update.Request
+            StudentGroup = new StudentGroupUpdate.Request
             {
                 Id = group.Id,
                 Mnemonic = group.Mnemonic,

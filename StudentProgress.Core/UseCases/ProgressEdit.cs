@@ -1,17 +1,15 @@
-﻿using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
+using StudentProgress.Core.Entities;
 
-namespace StudentProgress.Web.UseCases.Progress
+namespace StudentProgress.Core.UseCases
 {
-    public class Edit
+    public class ProgressEdit
     {
         private readonly ProgressContext context;
 
-        public Edit(ProgressContext context)
+        public ProgressEdit(ProgressContext context)
         {
             this.context = context;
         }

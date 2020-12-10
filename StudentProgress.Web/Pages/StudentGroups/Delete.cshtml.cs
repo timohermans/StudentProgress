@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Models;
+using StudentProgress.Core.Entities;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {
     public class DeleteModel : PageModel
     {
-        private readonly StudentProgress.Web.Data.ProgressContext _context;
+        private readonly ProgressContext _context;
 
-        public DeleteModel(StudentProgress.Web.Data.ProgressContext context)
+        public DeleteModel(ProgressContext context)
         {
             _context = context;
         }

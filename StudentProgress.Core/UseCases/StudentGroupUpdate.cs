@@ -1,12 +1,10 @@
-﻿using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using StudentProgress.Core.Entities;
 
-namespace StudentProgress.Web.UseCases.StudentGroups
+namespace StudentProgress.Core.UseCases
 {
-    public class Update
+    public class StudentGroupUpdate
     {
         public class Request
         {
@@ -18,14 +16,14 @@ namespace StudentProgress.Web.UseCases.StudentGroups
 
         private readonly ProgressContext _context;
 
-        public Update(ProgressContext context)
+        public StudentGroupUpdate(ProgressContext context)
         {
             _context = context;
         }
 
         public async Task HandleAsync(Request request)
         {
-            var studentGroup = (await _context.StudentGroup.FindAsync(request.Id)) ?? throw new NullReferenceException(nameof(StudentGroup));
+            var studentGroup = (await _context.StudentGroup.FindAsync(request.Id)) ?? throw new System.NullReferenceException(nameof(StudentGroup));
 
             studentGroup.UpdateGroup(request.Name, request.Mnemonic);
             await _context.SaveChangesAsync();

@@ -1,15 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
+using Microsoft.EntityFrameworkCore;
+using StudentProgress.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentProgress.Web.UseCases.Progress
+namespace StudentProgress.Core.UseCases
 {
-    public class GetProgressForStudentInGroup
+  public class ProgressGetForStudentInGroup
     {
         public record Request(int? GroupId, int? StudentId);
         public record Response
@@ -35,7 +34,7 @@ namespace StudentProgress.Web.UseCases.Progress
         }
 
         private readonly ProgressContext _context;
-        public GetProgressForStudentInGroup(ProgressContext context)
+        public ProgressGetForStudentInGroup(ProgressContext context)
         {
             _context = context;
         }

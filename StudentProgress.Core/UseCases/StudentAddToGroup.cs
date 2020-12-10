@@ -1,18 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
+using Microsoft.EntityFrameworkCore;
+using StudentProgress.Core.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentProgress.Web.UseCases.Students
+namespace StudentProgress.Core.UseCases
 {
-    public class AddToGroup
+    public class StudentAddToGroup
     {
         private readonly ProgressContext context;
 
-        public AddToGroup(ProgressContext context)
+        public StudentAddToGroup(ProgressContext context)
         {
             this.context = context;
         }

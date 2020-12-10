@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Web.UseCases.StudentGroups;
+using StudentProgress.Core.Entities;
+using StudentProgress.Core.UseCases;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.StudentGroups.Details
 {
     public class IndexModel : PageModel
     {
-        private readonly GetStudentGroupDetails _useCase;
+        private readonly StudentGroupGetDetails _useCase;
 
-        public IndexModel(StudentProgress.Web.Data.ProgressContext context)
+        public IndexModel(ProgressContext context)
         {
-            _useCase = new GetStudentGroupDetails(context);
+            _useCase = new StudentGroupGetDetails(context);
         }
 
-        public GetStudentGroupDetails.Response StudentGroup { get; set; }
+        public StudentGroupGetDetails.Response StudentGroup { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -23,7 +24,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 return NotFound();
             }
 
-            StudentGroup = await _useCase.HandleAsync(new GetStudentGroupDetails.Request((int)id));
+            StudentGroup = await _useCase.HandleAsync(new StudentGroupGetDetails.Request((int)id));
 
             if (StudentGroup == null)
             {
