@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
+using StudentProgress.Core.Entities;
 using Xunit;
 
 namespace StudentProgress.Tests

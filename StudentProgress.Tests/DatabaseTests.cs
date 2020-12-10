@@ -3,7 +3,7 @@ using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using StudentProgress.Web.Data;
+using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Tests
 {
@@ -15,8 +15,9 @@ namespace StudentProgress.Tests
         protected DatabaseTests()
         {
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
-                .UseSqlite(CreateInMemoryDatabase())
-                .Options;
+                                .UseSqlite(CreateInMemoryDatabase())
+                                .Options;
+
             _connection = RelationalOptionsExtension.Extract(ContextOptions).Connection;
             Seed();
         }

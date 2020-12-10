@@ -7,9 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -23,11 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="UseCases" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\StudentProgress.Web\StudentProgress.Web.csproj" />
+      <ProjectReference Include="..\StudentProgress.Core\StudentProgress.Core.csproj" />
     </ItemGroup>
 
 </Project>
