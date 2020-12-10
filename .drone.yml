@@ -27,7 +27,7 @@ server:
 steps:
   - name: move
     commands:
-    - cd ~/projects/server-utils
+    - cd /home/apper/projects/server-utils
     - git checkout main
     - git pull
     - docker-compose up -d --build
