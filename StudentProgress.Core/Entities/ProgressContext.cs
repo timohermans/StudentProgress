@@ -12,10 +12,9 @@ namespace StudentProgress.Core.Entities
         {
         }
 
-        public DbSet<StudentGroup> StudentGroup { get; set; }
-
-        public DbSet<Student> Student { get; set; }
-        public DbSet<ProgressUpdate> ProgressUpdate { get; set; }
+        public DbSet<StudentGroup> StudentGroup => Set<StudentGroup>();
+        public DbSet<Student> Student => Set<Student>();
+        public DbSet<ProgressUpdate> ProgressUpdate => Set<ProgressUpdate>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

@@ -23,9 +23,9 @@ namespace StudentProgress.Core.UseCases
             [Required]
             [DataType(DataType.Date)]
             public DateTime Date { get; init; }
-            public string Feedback { get; init; }
-            public string Feedup { get; init; }
-            public string Feedforward { get; init; }
+            public string? Feedback { get; init; }
+            public string? Feedup { get; init; }
+            public string? Feedforward { get; init; }
         }
 
         public async Task HandleAsync(Request request)

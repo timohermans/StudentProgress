@@ -10,8 +10,8 @@ namespace StudentProgress.Core.UseCases
         {
             public int Id { get; set; }
             [Required]
-            public string Name { get; set; }
-            public string Mnemonic { get; set; }
+            public string Name { get; set; } = null!;
+            public string? Mnemonic { get; set; }
         }
 
         private readonly ProgressContext _context;

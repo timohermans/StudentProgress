@@ -24,5 +24,22 @@ namespace StudentProgress.Tests.UseCases
             }, response);
             Assert.Empty(response.Students);
         }
+
+        [Fact]
+        public async Task Handle_GroupWith2Students1Progress_RetrievesOrderedOnLastProgress() {
+            await using var dbContext = new ProgressContext(ContextOptions);
+            var group = new StudentGroup("S3 Leon");
+
+            var student = new Student("Timo");
+            
+
+
+            var student2 = new Student("Leon");
+
+            await dbContext.StudentGroup.AddAsync(group);
+            await dbContext.SaveChangesAsync();
+            var useCase = new StudentGroupGetDetails(dbContext);
+
+        }
     }
 }

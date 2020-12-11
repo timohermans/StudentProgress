@@ -12,7 +12,9 @@ namespace StudentProgress.Core.Entities
         public IEnumerable<ProgressUpdate> ProgressUpdates { get; private set; }
         public IEnumerable<StudentGroup> StudentGroups { get; private set; }
 
+        #nullable disable
         private Student() { }
+        #nullable enable
 
         public Student(string name)
         {

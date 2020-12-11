@@ -15,16 +15,20 @@ namespace StudentProgress.Core.UseCases
         {
             public int StudentId { get; init; }
             public int GroupId { get; init; }
-            public string Name { get; init; }
-            public string GroupName { get; init; }
+            public string? Name { get; init; }
+            public string? GroupName { get; init; }
             public IEnumerable<ProgressUpdateResponse> ProgressUpdates { get; init; }
+
+            public Response() {
+                ProgressUpdates = new List<ProgressUpdateResponse>();
+            }
 
             public record ProgressUpdateResponse
             {
                 public int Id { get; init; }
-                public string Feedback { get; init; }
-                public string Feedup { get; init; }
-                public string Feedforward { get; init; }
+                public string? Feedback { get; init; }
+                public string? Feedup { get; init; }
+                public string? Feedforward { get; init; }
                 public DateTime UpdatedAt { get; init; }
                 public DateTime CreatedAt { get; init; }
                 [DataType(DataType.Date)]

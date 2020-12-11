@@ -16,9 +16,9 @@ namespace StudentProgress.Core.UseCases
     public record Request
     {
       [Required]
-      public string Name { get; init; }
+      public string Name { get; init; } = null!;
 
-      public string Mnemonic { get; init; }
+      public string? Mnemonic { get; init; }
     }
 
 

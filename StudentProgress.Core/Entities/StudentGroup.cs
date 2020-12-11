@@ -11,13 +11,15 @@ namespace StudentProgress.Core.Entities
         [Required]
         public string Name { get; private set; }
 
-        public string Mnemonic { get; private set; }
+        public string? Mnemonic { get; private set; }
         private IList<Student> students;
         public IEnumerable<Student> Students { get => students; set => students = value.ToList(); }
 
+        #nullable disable
         private StudentGroup() { }
+        #nullable enable
 
-        public StudentGroup(string name, string mnemonic = null)
+        public StudentGroup(string name, string? mnemonic = null)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
             Mnemonic = mnemonic;
@@ -30,7 +32,7 @@ namespace StudentProgress.Core.Entities
             students.Add(student ?? throw new NullReferenceException(nameof(student)));
         }
 
-        public void UpdateGroup(string name, string mnemonic)
+        public void UpdateGroup(string name, string? mnemonic)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
             Mnemonic = mnemonic;

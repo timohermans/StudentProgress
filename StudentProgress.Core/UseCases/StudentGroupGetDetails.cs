@@ -23,10 +23,20 @@ namespace StudentProgress.Core.UseCases
         {
             public int Id { get; init; }
             public string Name { get; init; }
-            public string Mnemonic { get; init; }
+            public string? Mnemonic { get; init; }
             [Display(Name = "Created On")] public DateTime CreatedAt { get; init; }
             [Display(Name = "Last name change")] public DateTime UpdatedAt { get; init; }
             public IEnumerable<StudentsResponse> Students { get; init; }
+
+            public Response(int id, string name, string? mnemonic, DateTime createdAt, DateTime updatedAt, IEnumerable<StudentsResponse> students)
+            {
+                Id = id;
+                Name = name;
+                Mnemonic = mnemonic;
+                CreatedAt = createdAt;
+                UpdatedAt = updatedAt;
+                Students = students;
+            }
 
             public record StudentsResponse
             {
@@ -54,7 +64,7 @@ namespace StudentProgress.Core.UseCases
             }
         }
 
-        public async Task<Response> HandleAsync(Request request)
+        public async Task<Response?> HandleAsync(Request request)
         {
             var studentGroup = await context.StudentGroup.FirstOrDefaultAsync(g => g.Id == request.Id);
 
@@ -76,15 +86,14 @@ namespace StudentProgress.Core.UseCases
                         .Feedforward
                 ));
 
-            return new Response
-            {
-                Id = studentGroup.Id,
-                Name = studentGroup.Name,
-                Mnemonic = studentGroup.Mnemonic,
-                CreatedAt = studentGroup.CreatedDate,
-                UpdatedAt = studentGroup.UpdatedDate,
-                Students = students
-            };
+            return new Response(
+                studentGroup.Id,
+                studentGroup.Name,
+                studentGroup.Mnemonic,
+                studentGroup.CreatedDate,
+                studentGroup.UpdatedDate,
+                students
+                );
         }
     }
 }

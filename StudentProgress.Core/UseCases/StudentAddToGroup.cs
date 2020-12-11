@@ -19,7 +19,7 @@ namespace StudentProgress.Core.UseCases
         public record Request
         {
             [Required]
-            public string Name { get; init; }
+            public string Name { get; init; } = null!;
             [Required]
             public int GroupId { get; init; }
         };
