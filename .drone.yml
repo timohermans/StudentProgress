@@ -36,8 +36,8 @@ steps:
     - cd /home/apper/projects/server-utils
     - docker-compose up -d --build
     when:
-    branch:
-    - main
+      branch:
+      - main
 
 depends_on:
 - build
