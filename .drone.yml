@@ -39,9 +39,5 @@ steps:
       branch:
       - main
 
-when:
-  branch:
-  - main
-
 depends_on:
 - build
