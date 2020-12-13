@@ -1,9 +1,8 @@
-﻿using NHibernate;
+﻿using CSharpFunctionalExtensions;
+using NHibernate;
 using StudentProgress.Application;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentProgress.ApplicationTests
@@ -41,10 +40,10 @@ namespace StudentProgress.ApplicationTests
             return Task.CompletedTask;
         }
 
-        public async Task<T> GetAsync<T>(long id)
+        public async Task<Maybe<T>> GetAsync<T>(int id)
            where T : class
         {
-            return await _session.GetAsync<T>(id);
+            return Maybe<T>.From(await _session.GetAsync<T>(id));
         }
 
         public async Task SaveOrUpdateAsync<T>(T entity)

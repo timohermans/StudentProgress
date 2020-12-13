@@ -1,11 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using NHibernate.Linq;
 using StudentProgress.Application.Groups;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Application.Students.UseCases
@@ -29,33 +25,13 @@ namespace StudentProgress.Application.Students.UseCases
 
         public async Task<Result> HandleAsync(Request request)
         {
-            var group = await _unitOfWork.Query<Group>().FirstOrDefaultAsync(g => g.Id == request.GroupId);
+            var group = await _unitOfWork.GetAsync<Group>(request.GroupId);
+            var student = Maybe<Student>.From(await _unitOfWork.Query<Student>().FirstOrDefaultAsync(s => s.Name == request.Name));
 
-            if (group == null)
-            {
-                return Result.Failure("Group doesn't exist");
-            }
-
-            var student = await _unitOfWork.Query<Student>().FirstOrDefaultAsync(s => s.Name == request.Name);
-
-            if (student == null)
-            {
-                student = new Student(request.Name);
-                await _unitOfWork.SaveOrUpdateAsync(student);
-            }
-
-            var result = group.AddStudent(student);
-
-            if (result.IsSuccess)
-            {
-                await _unitOfWork.CommitAsync();
-                return Result.Success();
-            }
-            else
-            {
-                return result;
-            }
-
+            return await group
+                .ToResult($"Group {request.GroupId} doesn't exist")
+                .Check(g => g.AddStudent(student.HasValue ? student.Value : new Student(request.Name)))
+                .Tap(async r => await _unitOfWork.CommitAsync());
         }
     }
 }

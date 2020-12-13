@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using CSharpFunctionalExtensions;
+using NHibernate;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace StudentProgress.Application
         Task CommitAsync();
         ISQLQuery CreateSQLQuery(string q);
         Task DeleteAsync<T>(T entity);
-        Task<T> GetAsync<T>(long id) where T : class;
+        Task<Maybe<T>> GetAsync<T>(int id) where T : class;
         IQueryable<T> Query<T>();
         Task SaveOrUpdateAsync<T>(T entity);
     }
