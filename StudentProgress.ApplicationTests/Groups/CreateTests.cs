@@ -1,4 +1,7 @@
-﻿using StudentProgress.Application.Groups;
+﻿using NHibernate.Exceptions;
+using StudentProgress.Application;
+using StudentProgress.Application.Groups;
+using StudentProgress.Application.Groups.UseCases;
 using StudentProgress.Application.Students;
 using System;
 using System.Collections.Generic;
@@ -12,29 +15,29 @@ namespace StudentProgress.ApplicationTests.Groups
     public class CreateTests : DatabaseTests
     {
         [Xunit.Fact]
-        public void Creates_a_new_group()
+        public async Task Creates_a_new_group()
         {
-            using var transaction = Session.BeginTransaction();
+            var useCase = new Create(new UnitOfWork(SessionFactory));
 
-            var group = new Group("S3 Leon", null);
+            var result = await useCase.HandleAsync(
+                new Create.Request { Mnemonic = null, Name = "S3 Leon" });
 
-            Session.SaveOrUpdate(group);
-
-            transaction.Commit();
+            Assert.True(result.IsSuccess);
+            Assert.Equal(1, result.Value);
         }
 
-        [Xunit.Fact]
-        public void Adds_a_new_student_to_a_group()
+
+        [Fact]
+        public async Task Cannot_add_two_group_with_the_same_name()
         {
-            using var transaction = Session.BeginTransaction();
-            var group = new Group("S3 Leon", null);
-            group.AddStudent(new Student("Timo Hermans"));
+            await new Create(new UnitOfWork(SessionFactory)).HandleAsync(new Create.Request { Name = "S3 Leon" });
+            var useCase = new Create(new UnitOfWork(SessionFactory));
 
-            Session.SaveOrUpdate(group);
-            transaction.Commit();
+            var result = await useCase.HandleAsync(
+                new Create.Request { Mnemonic = "Hallo :)", Name = "S3 Leon" });
 
-            Assert.Equal(1, group.Id);
-            Assert.Single(group.Students);
+            Assert.True(result.IsFailure);
+            Assert.Contains("already exists", result.Error);
         }
     }
 }

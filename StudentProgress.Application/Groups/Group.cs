@@ -1,4 +1,5 @@
-﻿using StudentProgress.Application.Students;
+﻿using CSharpFunctionalExtensions;
+using StudentProgress.Application.Students;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,15 @@ namespace StudentProgress.Application.Groups
             _students = new List<Student>();
         }
 
-        public virtual void AddStudent(Student student)
+        public virtual Result AddStudent(Student student)
         {
+            if (Students.Any(s => s.Name == student.Name))
+            {
+                return Result.Failure("Student is already added to group");
+            }
+
             _students.Add(student);
+            return Result.Success();
         }
     }
 }

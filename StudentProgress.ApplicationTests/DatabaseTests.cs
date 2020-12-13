@@ -1,47 +1,46 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using Microsoft.Data.Sqlite;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Impl;
 using NHibernate.Tool.hbm2ddl;
+using StudentProgress.Application;
 using StudentProgress.Application.Groups;
 using System;
-using System.IO;
 
 namespace StudentProgress.ApplicationTests
 {
     public abstract class DatabaseTests : IDisposable
     {
-        public ISessionFactory SessionFactory { get; private set; }
-        public ISession Session { get; private set; }
+        private readonly string _connectionSring = $"DataSource=file:{Guid.NewGuid()}?mode=memory&cache=shared";
+        private readonly SqliteConnection _connection;
+        protected ISessionFactory SessionFactory { get; private set; }
 
         public DatabaseTests()
         {
-            SessionFactory = Fluently.Configure()
-                           .Database(SQLiteConfiguration.Standard
-                               .UsingFile("db.sqlite"))
+            var configuration = Fluently.Configure()
                            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Group>())
+                           .Database(SQLiteConfiguration.Standard.ConnectionString(_connectionSring))
                            .ExposeConfiguration(BuildSchema)
-                            .BuildSessionFactory();
+                           .BuildConfiguration();
+            _connection = new SqliteConnection(_connectionSring);
+            _connection.Open();
 
-            Session = SessionFactory.OpenSession();
+            SessionFactory = configuration.BuildSessionFactory();
         }
 
         private void BuildSchema(Configuration config)
         {
-            // delete the existing db on each run
-            if (File.Exists("db.sqlite"))
-                File.Delete("db.sqlite");
-
             // this NHibernate tool takes a configuration (with mapping info in)
             // and exports a database schema from it
             new SchemaExport(config)
               .Create(false, true);
-
         }
 
         public void Dispose()
         {
-            Session.Dispose();
+            _connection.Dispose();
         }
     }
 }

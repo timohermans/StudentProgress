@@ -11,7 +11,7 @@ namespace StudentProgress.Application.Groups
         {
             Id(g => g.Id);
             Map(g => g.Mnemonic);
-            Map(g => g.Name);
+            Map(g => g.Name).Unique();
             HasManyToMany(g => g.Students)
                 .Cascade.All()
                 .Table("StudentStudentGroup")
