@@ -3,6 +3,7 @@ using StudentProgress.Application.Students;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StudentProgress.Application.Groups
 {
@@ -34,6 +35,14 @@ namespace StudentProgress.Application.Groups
             }
 
             _students.Add(student);
+            return Result.Success();
+        }
+
+        public virtual Result Update(string name, string? mnemonic)
+        {
+            Name = name;
+            Mnemonic = mnemonic;
+
             return Result.Success();
         }
     }

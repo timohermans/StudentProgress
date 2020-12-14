@@ -39,5 +39,15 @@ namespace StudentProgress.ApplicationTests.Groups
             Assert.True(result.IsFailure);
             Assert.Contains("already exists", result.Error);
         }
+
+        [Fact]
+        public async Task Cannot_create_group_with_an_empty_name()
+        {
+            var useCase = new Create(new UnitOfWork(SessionFactory));
+
+            var result = await useCase.HandleAsync(new Create.Request { Name = "" });
+
+            Assert.True(result.IsFailure);
+        }
     }
 }
