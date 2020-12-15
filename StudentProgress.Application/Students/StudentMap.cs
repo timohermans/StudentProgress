@@ -11,7 +11,6 @@ namespace StudentProgress.Application.Students
             HasManyToMany(s => s.Groups)
                 .Cascade.All()
                 .Inverse()
-                .Table("StudentStudentGroup")
                 .Access.CamelCaseField(Prefix.Underscore);
         }
     }

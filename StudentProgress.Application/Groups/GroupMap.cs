@@ -14,7 +14,6 @@ namespace StudentProgress.Application.Groups
             Map(g => g.Name).Unique();
             HasManyToMany(g => g.Students)
                 .Cascade.All()
-                .Table("StudentStudentGroup")
                 .Access.CamelCaseField(Prefix.Underscore);
         }
     }

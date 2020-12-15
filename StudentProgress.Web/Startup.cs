@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using StudentProgress.Web.Utils;
 
 namespace StudentProgress.Web
 {
@@ -25,6 +26,7 @@ namespace StudentProgress.Web
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.ConfigureMigrations(Configuration.GetConnectionString("ProgressContext"));
       services.AddRazorPages(options =>
       {
         options.Conventions.AuthorizeFolder("/");
@@ -100,6 +102,8 @@ namespace StudentProgress.Web
       {
         endpoints.MapRazorPages();
       });
+      
+      app.Migrate();
     }
   }
 }
