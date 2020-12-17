@@ -8,9 +8,9 @@ namespace StudentProgress.Application.Students.UseCases
 {
     public class AddToGroup
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UnitOfWork _unitOfWork;
 
-        public AddToGroup(IUnitOfWork unitOfWork)
+        public AddToGroup(UnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
         }

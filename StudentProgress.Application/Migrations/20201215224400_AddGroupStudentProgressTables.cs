@@ -8,38 +8,33 @@ namespace StudentProgress.Application.Migrations
         public override void Up()
         {
             Create.Sequence("hibernate_sequence");
-            
+
             Create.Table("Group")
-                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn("name").AsString().NotNullable().Unique()
-                .WithColumn("mnemonic").AsString().Nullable()
-                .WithColumn("created_date").AsDateTime().NotNullable() // TODO: fix dit
-                .WithColumn("updated_date").AsDateTime().NotNullable()
-                ;
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Name").AsString().NotNullable().Unique()
+                .WithColumn("Mnemonic").AsString().Nullable()
+                .WithTimeStamps();
 
             Create.Table("Student")
-                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn("name").AsString().NotNullable().Unique();
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Name").AsString().NotNullable().Unique();
 
             Create.Table("ProgressUpdate")
-                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn("date").AsDateTime()
-                .WithColumn("feedup").AsString()
-                .WithColumn("feedback").AsString()
-                .WithColumn("feedforward").AsString()
-                .WithColumn("progress_feeling").AsInt16()
-                .WithColumn("created_date").AsDate().NotNullable()
-                .WithColumn("updated_date").AsDate().NotNullable()
-                .WithColumn("student_id").AsInt32().NotNullable().ForeignKey("Student", "id")
-                .WithColumn("group_id").AsInt32().NotNullable().ForeignKey("Group", "id");
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Date").AsDateTime()
+                .WithColumn("Feedup").AsString().Nullable()
+                .WithColumn("Feedback").AsString().Nullable()
+                .WithColumn("Feedforward").AsString().Nullable()
+                .WithColumn("Progress_feeling").AsInt16()
+                .WithColumn("StudentId").AsInt32().NotNullable().ForeignKey("Student", "Id")
+                .WithColumn("GroupId").AsInt32().NotNullable().ForeignKey("Group", "Id")
+                .WithTimeStamps();
 
             Create.Table("StudentStudentGroup")
-                .WithColumn("group_id").AsInt32().NotNullable().ForeignKey("Group", "id")
-                .WithColumn("student_id").AsInt32().NotNullable().ForeignKey("Student", "id")
-                
-                ;
+                .WithColumn("GroupId").AsInt32().NotNullable().ForeignKey("Group", "Id")
+                .WithColumn("StudentId").AsInt32().NotNullable().ForeignKey("Student", "Id");
 
-            Create.PrimaryKey().OnTable("StudentStudentGroup").Columns("group_id", "student_id");
+            Create.PrimaryKey().OnTable("StudentStudentGroup").Columns("GroupId", "StudentId");
         }
 
         public override void Down()

@@ -11,7 +11,8 @@ namespace StudentProgress.Application.Groups
         {
             Id(g => g.Id);
             Map(g => g.Mnemonic);
-            Map(g => g.Name).Unique();
+            Map(g => g.Name).CustomType<string>().Access.CamelCaseField(Prefix.Underscore);
+            Map(g => g.CreatedAt);
             HasManyToMany(g => g.Students)
                 .Cascade.All()
                 .Access.CamelCaseField(Prefix.Underscore);

@@ -2,59 +2,47 @@
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Data.Sqlite;
 using NHibernate;
-using NHibernate.Cfg;
-using NHibernate.Impl;
-using NHibernate.Tool.hbm2ddl;
-using StudentProgress.Application;
 using StudentProgress.Application.Groups;
 using System;
 using Dapper;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using StudentProgress.Application;
 using StudentProgress.Web.Utils;
+using Xunit;
 
 namespace StudentProgress.ApplicationTests
 {
     public abstract class DatabaseTests : IDisposable
     {
-        private readonly string _database = "student-progress-new";
+        private readonly DatabaseFixture _fixture;
 
-        private readonly string _connectionString =
-            $"User ID=timodb;Password=DUKfxJCySEPS4;Host=localhost;Port=5432;Database=postgres;";
-
-        private readonly SqliteConnection _connection;
-        protected ISessionFactory SessionFactory { get; private set; }
-
-        public DatabaseTests()
+        public DatabaseTests(DatabaseFixture fixture)
         {
-            var connectionString = _connectionString.Replace("postgres", _database);
-            Database.EnsureDatabase(_connectionString, _database);
-            var serviceProvider = new ServiceCollection()
-                .ConfigureMigrations(connectionString)
-                .BuildServiceProvider(false);
+            _fixture = fixture;
+            CleanupData(fixture);
+        }
 
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp();
-
-            SessionFactory = Fluently.Configure()
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Group>())
-                .Database(PostgreSQLConfiguration.Standard.ConnectionString(connectionString))
-                .BuildSessionFactory();
-
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Execute(@"
+        private static void CleanupData(DatabaseFixture fixture)
+        {
+            using var connection = new NpgsqlConnection(fixture.ConnectionString);
+            connection.Execute(@"
 ALTER SEQUENCE hibernate_sequence RESTART WITH 1;
 DELETE FROM ""StudentStudentGroup"";
 DELETE FROM ""ProgressUpdate"";
 DELETE FROM ""Student"";
 DELETE FROM ""Group"";");
-            }
+        }
+
+        public UnitOfWork CreateUnitOfWork()
+        {
+            return new UnitOfWork(_fixture.SessionFactory);
         }
 
         public void Dispose()
         {
+            CleanupData(_fixture);
         }
     }
 }

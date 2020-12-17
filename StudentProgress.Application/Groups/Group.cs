@@ -4,25 +4,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StudentProgress.Application.Common;
 
 namespace StudentProgress.Application.Groups
 {
-    public class Group
+    public class Group : AuditableEntity
     {
         public virtual int Id { get; protected set; }
-        public virtual string Name { get; protected set; }
+
+        private string _name;
+        public virtual GroupName Name
+        {
+            get => GroupName.Create(_name).Value;
+            protected set => _name = value;
+        }
 
         public virtual string? Mnemonic { get; protected set; }
-        protected readonly ICollection<Student> _students;
+        private readonly ICollection<Student> _students;
         public virtual IReadOnlyList<Student> Students => _students.ToList();
 
 #nullable disable
         protected Group() { }
 #nullable enable
 
-        public Group(string name, string? mnemonic)
+        public Group(GroupName name, string? mnemonic)
         {
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Mnemonic = mnemonic;
             _students = new List<Student>();
         }
@@ -38,7 +45,7 @@ namespace StudentProgress.Application.Groups
             return Result.Success();
         }
 
-        public virtual Result Update(string name, string? mnemonic)
+        public virtual Result Update(GroupName name, string? mnemonic)
         {
             Name = name;
             Mnemonic = mnemonic;

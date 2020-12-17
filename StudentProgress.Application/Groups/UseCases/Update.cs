@@ -30,7 +30,7 @@ namespace StudentProgress.Application.Groups.UseCases
         {
             return await _unitOfWork.GetAsync<Group>(request.Id)
                 .ToResult($"Group {request.Id} doesn't exist")
-                .Check(g => g.Update(request.Name, request.Mnemonic))
+                .Check(g => g.Update(GroupName.Create(request.Name).Value, request.Mnemonic))
                 .Tap(_ => _unitOfWork.CommitAsync())
                 ;
         }

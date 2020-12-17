@@ -10,9 +10,9 @@ namespace StudentProgress.Application.Groups.UseCases
 {
     public class Create
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UnitOfWork _unitOfWork;
 
-        public Create(IUnitOfWork unitOfWork)
+        public Create(UnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -33,7 +33,7 @@ namespace StudentProgress.Application.Groups.UseCases
                 return Result.Failure<int>("Group already exists");
             }
 
-            var group = new Group(request.Name, request.Mnemonic);
+            var group = new Group(GroupName.Create(request.Name).Value, request.Mnemonic);
             await _unitOfWork.SaveOrUpdateAsync(group);
             await _unitOfWork.CommitAsync();
             return Result.Success(group.Id);

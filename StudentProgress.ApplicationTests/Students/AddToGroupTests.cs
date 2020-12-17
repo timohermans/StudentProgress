@@ -12,14 +12,19 @@ using Xunit;
 
 namespace StudentProgress.ApplicationTests.Students
 {
+    [Collection("Database collection")]
     public class AddToGroupTests : DatabaseTests
     {
+        public AddToGroupTests(DatabaseFixture fixture) : base(fixture)
+        {
+        }
+        
         [Xunit.Fact]
         public async Task Adds_a_new_student_to_a_group()
         {
-            var uow = new UnitOfWork(SessionFactory);
-            var groupId = await new Create(new UnitOfWork(SessionFactory)).HandleAsync(new Create.Request { Mnemonic = null, Name = "S3 Leon" });
-            var useCase = new AddToGroup(new UnitOfWork(SessionFactory));
+            var uow = CreateUnitOfWork();
+            var groupId = await new Create(CreateUnitOfWork()).HandleAsync(new Create.Request { Mnemonic = null, Name = "S3 Leon" });
+            var useCase = new AddToGroup(CreateUnitOfWork());
 
             var result = await useCase.HandleAsync(new AddToGroup.Request { GroupId = groupId.Value, Name = "Timo" });
 
@@ -33,9 +38,9 @@ namespace StudentProgress.ApplicationTests.Students
         [Fact]
         public async Task Cannot_add_the_same_student_to_a_group()
         {
-            var groupId = await new Create(new UnitOfWork(SessionFactory)).HandleAsync(new Create.Request { Mnemonic = null, Name = "S3 Leon" });
-            await new AddToGroup(new UnitOfWork(SessionFactory)).HandleAsync(new AddToGroup.Request { GroupId = groupId.Value, Name = "Timo" });
-            var useCase = new AddToGroup(new UnitOfWork(SessionFactory));
+            var groupId = await new Create(CreateUnitOfWork()).HandleAsync(new Create.Request { Mnemonic = null, Name = "S3 Leon" });
+            await new AddToGroup(CreateUnitOfWork()).HandleAsync(new AddToGroup.Request { GroupId = groupId.Value, Name = "Timo" });
+            var useCase = new AddToGroup(CreateUnitOfWork());
             
             var result = await useCase.HandleAsync(new AddToGroup.Request { GroupId = groupId.Value, Name = "Timo" });
 

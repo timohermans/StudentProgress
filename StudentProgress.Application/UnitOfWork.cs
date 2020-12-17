@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentProgress.Application
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork
     {
         private readonly ISession _session;
         private readonly ITransaction _transaction;
@@ -18,7 +18,7 @@ namespace StudentProgress.Application
             _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
-        public async virtual Task CommitAsync()
+        public async Task CommitAsync()
         {
             if (!_isAlive)
                 return;
@@ -56,7 +56,7 @@ namespace StudentProgress.Application
             return _session.Query<T>();
         }
 
-        public ISQLQuery CreateSQLQuery(string q)
+        public ISQLQuery CreateSqlQuery(string q)
         {
             return _session.CreateSQLQuery(q);
         }
