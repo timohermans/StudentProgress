@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using StudentProgress.CoreTests.UseCases;
-using StudentProgress.Web.Utils;
 using Xunit;
 
 namespace StudentProgress.CoreTests

@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentProgress.Web", "Stud
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentProgress.Core", "StudentProgress.Core\StudentProgress.Core.csproj", "{3AD2EACD-7AA3-4C52-A522-EB6F06BE55A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentProgress.Application", "StudentProgress.Application\StudentProgress.Application.csproj", "{38BAE8C3-AB92-451D-A1F7-2FE8070DDC04}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProgress.ApplicationTests", "StudentProgress.ApplicationTests\StudentProgress.ApplicationTests.csproj", "{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProgress.CoreTests", "StudentProgress.CoreTests\StudentProgress.CoreTests.csproj", "{4B728F25-A50C-46EB-A073-EF7688FB9F81}"
 EndProject
 Global
@@ -27,14 +23,6 @@ Global
 		{3AD2EACD-7AA3-4C52-A522-EB6F06BE55A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD2EACD-7AA3-4C52-A522-EB6F06BE55A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD2EACD-7AA3-4C52-A522-EB6F06BE55A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38BAE8C3-AB92-451D-A1F7-2FE8070DDC04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38BAE8C3-AB92-451D-A1F7-2FE8070DDC04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38BAE8C3-AB92-451D-A1F7-2FE8070DDC04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38BAE8C3-AB92-451D-A1F7-2FE8070DDC04}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
