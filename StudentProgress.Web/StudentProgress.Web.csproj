@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StudentProgress.Application\StudentProgress.Application.csproj" />
     <ProjectReference Include="..\StudentProgress.Core\StudentProgress.Core.csproj" />
   </ItemGroup>
 

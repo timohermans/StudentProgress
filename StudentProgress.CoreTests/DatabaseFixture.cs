@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using StudentProgress.Core.Entities;
 using StudentProgress.CoreTests.UseCases;
 using Xunit;
@@ -9,9 +11,9 @@ namespace StudentProgress.CoreTests
     {
         private readonly string _database = "student-progress-new";
         private readonly string _connectionString =
-            $"User ID=timodb;Password=DUKfxJCySEPS4;Host=localhost;Port=5432;Database=postgres;";
+            $"User ID=timodb;Password=DUKfxJCySEPS4;Host=localhost;Port=5432;Database=student-progress-test;";
 
-        public string ConnectionString => _connectionString.Replace("postgres", _database);
+        public string ConnectionString { get; private set; }
 
         public DataMother DataMother { get; }
 
@@ -19,7 +21,8 @@ namespace StudentProgress.CoreTests
         
         public DatabaseFixture()
         {
-            // Database.EnsureDatabase(_connectionString, _database);
+            SetConnectionString();
+            
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
                 .UseNpgsql(ConnectionString)
                 .Options;
@@ -28,8 +31,17 @@ namespace StudentProgress.CoreTests
 
             using var context = new ProgressContext(ContextOptions);
             context.Database.EnsureDeleted();
-            // context.Database.EnsureCreated();
             context.Database.Migrate();
+        }
+
+        private void SetConnectionString()
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, false)
+                .Build();
+            var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
+            var cString = configuration.GetConnectionString("Default");
+            ConnectionString = envCString ?? cString;
         }
 
         public ProgressContext CreateDbContext()

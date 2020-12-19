@@ -3,18 +3,23 @@ type: docker
 name: build
 
 steps:
-- name: build and test
+- name: test and build
   image: plugins/docker
   settings:
     dockerfile: StudentProgress.Web/Dockerfile
     repo: itsyou0o/student-progress
     dry_run: true
+  environment:
+    ConnectionStrings__Test:
+      from_secret: connectionstring-test
 
 ---
 
 kind: pipeline
 type: ssh
 name: deployment
+depends_on:
+  - build
 
 server:
   host:
@@ -38,6 +43,3 @@ steps:
     when:
       branch:
       - main
-
-depends_on:
-- build

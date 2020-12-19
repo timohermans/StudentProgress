@@ -5,7 +5,14 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS test
+WORKDIR /tst
+COPY ["../StudentProgress.CoreTests/StudentProgress.CoreTests.csproj", "./StudentProgress.CoreTests/"]
+RUN dotnet restore "StudentProgress.CoreTests/StudentProgress.CoreTests.csproj"
+COPY . .
+RUN dotnet test "StudentProgress.CoreTests"
+
+FROM test AS build
 WORKDIR /src
 COPY ["./StudentProgress.Web/StudentProgress.Web.csproj", "./StudentProgress.Web/"]
 RUN dotnet restore "StudentProgress.Web/StudentProgress.Web.csproj"

@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Dapper" Version="2.0.78" />
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
@@ -25,6 +26,14 @@
     <ItemGroup>
       <ProjectReference Include="..\StudentProgress.Core\StudentProgress.Core.csproj" />
       <ProjectReference Include="..\StudentProgress.Web\StudentProgress.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="appsettings.json" />
+      <Content Include="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="appsettings.Development.json" />
     </ItemGroup>
 
 </Project>
