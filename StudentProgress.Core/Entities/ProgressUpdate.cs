@@ -1,4 +1,5 @@
 ﻿using System;
+using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.Entities
 {
@@ -31,13 +32,15 @@ namespace StudentProgress.Core.Entities
             Date = date;
         }
 
-        public void Update(Feeling feeling, DateTime date, string? feedback, string? feedup, string? feedforward)
+        public Result Update(Feeling feeling, DateTime date, string? feedback, string? feedup, string? feedforward)
         {
             ProgressFeeling = feeling;
             Feedback = feedback;
             Feedup = feedup;
             Feedforward = feedforward;
             Date = date;
+
+            return Result.Success();
         }
     }
 }

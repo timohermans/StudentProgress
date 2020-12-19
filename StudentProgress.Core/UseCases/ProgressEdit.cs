@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
@@ -28,18 +29,17 @@ namespace StudentProgress.Core.UseCases
             public string? Feedforward { get; init; }
         }
 
-        public async Task HandleAsync(Request request)
+        public async Task<Result> HandleAsync(Request request)
         {
-            var progress = await context.ProgressUpdates.FindAsync(request.Id);
+            var progress = Maybe<ProgressUpdate>.From(
+                await context.ProgressUpdates.FindAsync(request.Id)
+                );
 
-            if (progress == null)
-            {
-                throw new InvalidOperationException("Either student or group doesn't exist (anymore)");
-            }
-
-            progress.Update(request.Feeling, request.Date, request.Feedback, request.Feedup, request.Feedforward);
-
-            await context.SaveChangesAsync();
+            return await progress
+                .ToResult("Progress doesn't exist")
+                .Check(p => p.Update(request.Feeling, request.Date, request.Feedback, request.Feedup,
+                    request.Feedforward))
+                .Tap(() => context.SaveChangesAsync());
         }
     }
 }
