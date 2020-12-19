@@ -11,7 +11,7 @@ steps:
     - dotnet test
   environment:
     ConnectionStrings__Test:
-      from_secret: connectionstring-test
+      from_secret: connectionstringtest
 
 ---
 

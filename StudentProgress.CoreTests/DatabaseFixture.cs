@@ -45,6 +45,7 @@ namespace StudentProgress.CoreTests
             
             Console.WriteLine("THIS IS THE CONNECTIONSTRING");
             Console.WriteLine(ConnectionString);
+            Console.WriteLine(cString);
         }
 
         public ProgressContext CreateDbContext()
