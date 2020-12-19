@@ -15,11 +15,11 @@ namespace StudentProgress.Web.Pages.StudentGroups
             _context = context;
         }
 
-        public IList<StudentGroup> StudentGroup { get; set; }
+        public IList<Group> StudentGroup { get; set; }
 
         public async Task OnGetAsync()
         {
-            StudentGroup = await _context.StudentGroup.ToListAsync();
+            StudentGroup = await _context.Groups.ToListAsync();
         }
     }
 }

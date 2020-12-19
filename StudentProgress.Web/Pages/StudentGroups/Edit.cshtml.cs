@@ -11,16 +11,16 @@ namespace StudentProgress.Web.Pages.StudentGroups
     public class EditModel : PageModel
     {
         private readonly ProgressContext _context;
-        private readonly StudentGroupUpdate _useCase;
+        private readonly GroupUpdate _useCase;
 
         public EditModel(ProgressContext context)
         {
             _context = context;
-            _useCase = new StudentGroupUpdate(context);
+            _useCase = new GroupUpdate(context);
         }
 
         [BindProperty]
-        public StudentGroupUpdate.Request StudentGroup { get; set; }
+        public GroupUpdate.Request StudentGroup { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,7 +29,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            var group = await _context.StudentGroup.FirstOrDefaultAsync(m => m.Id == id);
+            var group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
 
 
             if (group == null)
@@ -37,7 +37,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            StudentGroup = new StudentGroupUpdate.Request
+            StudentGroup = new GroupUpdate.Request
             {
                 Id = group.Id,
                 Mnemonic = group.Mnemonic,
@@ -62,7 +62,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
         private bool StudentGroupExists(int id)
         {
-            return _context.StudentGroup.Any(e => e.Id == id);
+            return _context.Groups.Any(e => e.Id == id);
         }
     }
 }

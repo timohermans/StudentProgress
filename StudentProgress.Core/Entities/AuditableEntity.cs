@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.Entities
 {
-    public abstract class AuditableEntity
+    public abstract class AuditableEntity<T> : Entity<T>
     {
-        [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }
-        [DataType(DataType.Date)]
         public DateTime UpdatedDate { get; set; }
     }
 }

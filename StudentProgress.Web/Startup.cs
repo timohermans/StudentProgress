@@ -33,7 +33,7 @@ namespace StudentProgress.Web
       });
 
       services.AddDbContext<ProgressContext>(options =>
-              options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"), b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName)));
+              options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"), b => b.MigrationsAssembly("StudentProgress.Core")));
 
       JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

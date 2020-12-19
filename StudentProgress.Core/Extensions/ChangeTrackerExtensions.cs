@@ -9,7 +9,7 @@ namespace StudentProgress.Core.Extensions
     {
         public static void UpdateAuditableEntities(this ChangeTracker changeTracker)
         {
-            var auditableEntities = changeTracker.Entries<AuditableEntity>();
+            var auditableEntities = changeTracker.Entries<AuditableEntity<int>>();
             foreach (var entity in auditableEntities)
             {
                 if (entity.State == EntityState.Added)

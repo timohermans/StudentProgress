@@ -13,7 +13,7 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressContext _context;
         private readonly ProgressCreate _useCase;
         public Student Student { get; set; }
-        public StudentGroup Group { get; set; }
+        public Group Group { get; set; }
         [BindProperty]
         public ProgressCreate.Request Progress { get; set; }
 
@@ -25,8 +25,8 @@ namespace StudentProgress.Web.Pages.Progress
 
         public async Task<IActionResult> OnGetAsync(int? groupId = 0, int? studentId = 0)
         {
-            Student = await _context.Student.FirstOrDefaultAsync(s => s.Id == studentId);
-            Group = await _context.StudentGroup.FirstOrDefaultAsync(g => g.Id == groupId);
+            Student = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);
+            Group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
 
             if (Student == null || Group == null)
             {

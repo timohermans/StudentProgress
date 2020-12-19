@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentProgress.Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProgress.ApplicationTests", "StudentProgress.ApplicationTests\StudentProgress.ApplicationTests.csproj", "{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProgress.CoreTests", "StudentProgress.CoreTests\StudentProgress.CoreTests.csproj", "{4B728F25-A50C-46EB-A073-EF7688FB9F81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4012B3F-AB2D-4F91-85ED-E23E1F7A464E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

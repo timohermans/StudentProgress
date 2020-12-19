@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.UseCases
 {
@@ -18,34 +19,37 @@ namespace StudentProgress.Core.UseCases
 
         public record Request
         {
-            [Required]
-            public string Name { get; init; } = null!;
-            [Required]
-            public int GroupId { get; init; }
+            [Required] public string Name { get; init; } = null!;
+            [Required] public int GroupId { get; init; }
         };
 
-        public async Task<bool> HandleAsync(Request request)
+        public async Task<Result> HandleAsync(Request request)
         {
-            var studentGroup = context.StudentGroup.Include(_ => _.Students).FirstOrDefault(group => group.Id == request.GroupId);
+            var studentGroup = Maybe<Group?>.From(
+                    await context.Groups.Include(_ => _.Students)
+                        .FirstOrDefaultAsync(group => group.Id == request.GroupId))
+                .ToResult("Group not found");
+            var student = await GetOrCreateUserFrom(request.Name);
+            var result = Result.Combine(studentGroup, student);
 
-            if (studentGroup == null)
-            {
-                throw new InvalidOperationException("Group not found");
-            }
+            if (result.IsFailure)
+                return Result.Failure(result.Error);
 
-            var student = context.Student.FirstOrDefault(s => s.Name == request.Name);
+            return await studentGroup.Value?.AddStudent(student.Value)
+                .Tap(async () => await context.SaveChangesAsync())!;
+        }
+
+        private async Task<Result<Student>> GetOrCreateUserFrom(string name)
+        {
+            var student = await context.Students.FirstOrDefaultAsync(s => s.Name == name);
 
             if (student == null)
             {
-                student = new Student(request.Name);
-                await context.Student.AddAsync(student);
+                student = new Student(name);
+                await context.Students.AddAsync(student);
             }
 
-            studentGroup.AddStudent(student);
-
-            await context.SaveChangesAsync();
-
-            return true;
+            return Result.Success(student);
         }
     }
 }

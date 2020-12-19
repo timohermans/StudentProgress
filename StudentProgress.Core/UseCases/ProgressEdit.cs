@@ -30,7 +30,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task HandleAsync(Request request)
         {
-            var progress = await context.ProgressUpdate.FindAsync(request.Id);
+            var progress = await context.ProgressUpdates.FindAsync(request.Id);
 
             if (progress == null)
             {

@@ -66,15 +66,15 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Response?> HandleAsync(Request request)
         {
-            var studentGroup = await context.StudentGroup.FirstOrDefaultAsync(g => g.Id == request.Id);
+            var studentGroup = await context.Groups.FirstOrDefaultAsync(g => g.Id == request.Id);
 
             if (studentGroup == null)
             {
                 return null;
             }
 
-            var students = context.Student.Include(_ => _.ProgressUpdates)
-                .Where(s => s.StudentGroups.Any(g => g.Id == request.Id))
+            var students = context.Students.Include(_ => _.ProgressUpdates)
+                .Where(s => s.Groups.Any(g => g.Id == request.Id))
                 .Select(student => new Response.StudentsResponse(
                     student.Id,
                     student.Name,

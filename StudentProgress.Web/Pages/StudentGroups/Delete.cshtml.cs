@@ -16,7 +16,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         }
 
         [BindProperty]
-        public StudentGroup StudentGroup { get; set; }
+        public Group Group { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,9 +25,9 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            StudentGroup = await _context.StudentGroup.FirstOrDefaultAsync(m => m.Id == id);
+            Group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (StudentGroup == null)
+            if (Group == null)
             {
                 return NotFound();
             }
@@ -41,11 +41,11 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            StudentGroup = await _context.StudentGroup.FindAsync(id);
+            Group = await _context.Groups.FindAsync(id);
 
-            if (StudentGroup != null)
+            if (Group != null)
             {
-                _context.StudentGroup.Remove(StudentGroup);
+                _context.Groups.Remove(Group);
                 await _context.SaveChangesAsync();
             }
 

@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
@@ -32,25 +34,28 @@ namespace StudentProgress.Core.UseCases
             public string? Feedforward { get; set; }
         }
 
-        public async Task HandleAsync(Request progress)
+        public async Task<Result> HandleAsync(Request progress)
         {
-            var student = context.Student.FirstOrDefault(s => s.Id == progress.StudentId);
-            var group = context.StudentGroup.FirstOrDefault(g => g.Id == progress.GroupId);
+            var student = Maybe<Student>.From(
+                await context.Students.FirstOrDefaultAsync(s => s.Id == progress.StudentId)
+                ).ToResult("Student does not exist");
+            var group = Maybe<Group>.From(
+                await context.Groups.FirstOrDefaultAsync(g => g.Id == progress.GroupId)
+                ).ToResult("Group does not exist");
+            var result = Result.Combine(student, group);
 
-            if (student == null || group == null)
-            {
-                throw new InvalidOperationException("Either student or group doesn't exist (anymore)");
-            }
+            if (result.IsFailure) return result;
 
-            await context.ProgressUpdate.AddAsync(new Entities.ProgressUpdate(
-                student,
-                group,
+            await context.ProgressUpdates.AddAsync(new ProgressUpdate(
+                student.Value,
+                group.Value,
                 progress.Feedback,
                 progress.Feedup,
                 progress.Feedforward,
                 progress.Feeling,
                 progress.Date));
             await context.SaveChangesAsync();
+            return Result.Success();
         }
     }
 }

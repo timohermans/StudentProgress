@@ -13,7 +13,7 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressContext _context;
         private readonly ProgressEdit _useCase;
         public Student Student { get; set; }
-        public StudentGroup Group { get; set; }
+        public Group Group { get; set; }
         [BindProperty]
         public ProgressEdit.Request Progress { get; set; }
 
@@ -25,7 +25,7 @@ namespace StudentProgress.Web.Pages.Progress
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var progress = await _context.ProgressUpdate.Include(p => p.Student).Include(p => p.Group).FirstOrDefaultAsync(p => p.Id == id);
+            var progress = await _context.ProgressUpdates.Include(p => p.Student).Include(p => p.Group).FirstOrDefaultAsync(p => p.Id == id);
 
             if (progress == null)
             {
@@ -59,7 +59,7 @@ namespace StudentProgress.Web.Pages.Progress
             {
                 await _useCase.HandleAsync(Progress);
 
-                var progress = await _context.ProgressUpdate.FindAsync(Progress.Id);
+                var progress = await _context.ProgressUpdates.FindAsync(Progress.Id);
                 return RedirectToPage("./Index", new { StudentId = progress.StudentId, GroupId = progress.GroupId });
             }
             catch (InvalidOperationException ex)

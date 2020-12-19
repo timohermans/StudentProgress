@@ -45,8 +45,8 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Response> HandleAsync(Request request)
         {
-            var student = await _context.Student.Include(_ => _.ProgressUpdates).FirstOrDefaultAsync(g => g.Id == (request.StudentId ?? 0));
-            var group = _context.StudentGroup.FirstOrDefault(g => g.Id == (request.GroupId ?? 0));
+            var student = await _context.Students.Include(_ => _.ProgressUpdates).FirstOrDefaultAsync(g => g.Id == (request.StudentId ?? 0));
+            var group = _context.Groups.FirstOrDefault(g => g.Id == (request.GroupId ?? 0));
 
             if (student == null || group == null) throw new InvalidOperationException("Must supply a valid student and group");
 

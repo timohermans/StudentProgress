@@ -8,11 +8,11 @@ namespace StudentProgress.Web.Pages.StudentGroups
 {
     public class CreateModel : PageModel
     {
-        private readonly StudentGroupCreate _useCase;
+        private readonly GroupCreate _useCase;
 
         public CreateModel(ProgressContext context)
         {
-            _useCase = new StudentGroupCreate(context);
+            _useCase = new GroupCreate(context);
         }
 
         public IActionResult OnGet()
@@ -21,7 +21,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         }
 
         [BindProperty]
-        public StudentGroupCreate.Request StudentGroup { get; set; }
+        public GroupCreate.Request StudentGroup { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
