@@ -17,13 +17,9 @@ namespace StudentProgress.Core.UseCases
 
         public record Request
         {
-            [Required]
-            public int Id { get; init; }
-            [Required]
-            public Feeling Feeling { get; init; }
-            [Required]
-            [DataType(DataType.Date)]
-            public DateTime Date { get; init; }
+            [Required] public int Id { get; init; }
+            [Required] public Feeling Feeling { get; init; }
+            [Required] [DataType(DataType.Date)] public DateTime Date { get; init; }
             public string? Feedback { get; init; }
             public string? Feedup { get; init; }
             public string? Feedforward { get; init; }
@@ -33,12 +29,12 @@ namespace StudentProgress.Core.UseCases
         {
             var progress = Maybe<ProgressUpdate>.From(
                 await context.ProgressUpdates.FindAsync(request.Id)
-                );
+            );
 
             return await progress
                 .ToResult("Progress doesn't exist")
-                .Check(p => p.Update(request.Feeling, request.Date, request.Feedback, request.Feedup,
-                    request.Feedforward))
+                .Check(p =>
+                    p.Update(request.Feeling, request.Date, request.Feedback, request.Feedup, request.Feedforward))
                 .Tap(() => context.SaveChangesAsync());
         }
     }

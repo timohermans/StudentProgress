@@ -39,9 +39,7 @@ namespace StudentProgress.CoreTests.UseCases
                 .HasFeedback("feedback 1")
                 .HasFeedforward("feedforward 1")
                 .HasFeedup("feedup 1")
-                .HasFeeling(Feeling.Bad)
-                ;
-                
+                .HasFeeling(Feeling.Bad);
         }
     }
 }
