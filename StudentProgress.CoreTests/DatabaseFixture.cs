@@ -42,10 +42,6 @@ namespace StudentProgress.CoreTests
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
             var cString = configuration.GetConnectionString("Default");
             ConnectionString = envCString ?? cString;
-            
-            Console.WriteLine("THIS IS THE CONNECTIONSTRING");
-            Console.WriteLine(ConnectionString);
-            Console.WriteLine(cString);
         }
 
         public ProgressContext CreateDbContext()
