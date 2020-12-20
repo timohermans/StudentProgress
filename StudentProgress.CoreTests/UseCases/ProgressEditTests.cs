@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
+using StudentProgress.CoreTests.Extensions;
 using Xunit;
 
 namespace StudentProgress.CoreTests.UseCases
@@ -33,6 +33,15 @@ namespace StudentProgress.CoreTests.UseCases
             var result = await useCase.HandleAsync(request);
 
             result.IsSuccess.Should().BeTrue();
+            var update = Fixture.DataMother.Query<ProgressUpdate>()
+                .ShouldExist()
+                .HasDate(new DateTime(1991, 1, 16))
+                .HasFeedback("feedback 1")
+                .HasFeedforward("feedforward 1")
+                .HasFeedup("feedup 1")
+                .HasFeeling(Feeling.Bad)
+                ;
+                
         }
     }
 }
