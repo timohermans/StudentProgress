@@ -22,13 +22,21 @@ dotnet ef migrations remove --startup-project "../StudentProgress.Web/StudentPro
 
 ## Integration tests
 
-Integration tests are done with a real database.
+Integration tests are done through a real database.
 Please be advised with using integration tests:
 
 - Only create 2 tests for a usecase:
   - One for the longest happy path
   - One failure test. Preferrably the longest, but any will do.
 - One exception to this rule is when there are a lot of database specific constraints, like db uniqueness
+
+Creating a new integration test file is easy:
+
+- Add a new class
+- Add the attribute `[Collection("db")]` above the class definition
+- Implement abstract class `DatabaseTests`
+ - You will have to add the constructor: `public <ClassName>(DatabaseFixture fixture) : base(fixture) {}` 
+- You now have access to the `Fixture` property
 
 ## Unit Tests
 
