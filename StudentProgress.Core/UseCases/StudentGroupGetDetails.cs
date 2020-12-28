@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
+using Dapper;
 
 namespace StudentProgress.Core.UseCases
 {
     public class StudentGroupGetDetails
     {
-        private readonly ProgressContext context;
+        private readonly IDbConnection _connection;
 
-        public StudentGroupGetDetails(ProgressContext context)
+        public StudentGroupGetDetails(IDbConnection connection)
         {
-            this.context = context;
+            _connection = connection;
         }
 
         public record Request(int Id);
@@ -26,17 +27,7 @@ namespace StudentProgress.Core.UseCases
             public string? Mnemonic { get; init; }
             [Display(Name = "Created On")] public DateTime CreatedAt { get; init; }
             [Display(Name = "Last name change")] public DateTime UpdatedAt { get; init; }
-            public IEnumerable<StudentsResponse> Students { get; init; }
-
-            public Response(int id, string name, string? mnemonic, DateTime createdAt, DateTime updatedAt, IEnumerable<StudentsResponse> students)
-            {
-                Id = id;
-                Name = name;
-                Mnemonic = mnemonic;
-                CreatedAt = createdAt;
-                UpdatedAt = updatedAt;
-                Students = students;
-            }
+            public IList<StudentsResponse> Students { get; set; }
 
             public record StudentsResponse
             {
@@ -50,50 +41,71 @@ namespace StudentProgress.Core.UseCases
                 public DateTime? LastUpdateDate { get; }
 
                 [Display(Name = "Last Feedforward")] public string LastFeedforward { get; }
-
-                public StudentsResponse(int id, string name, int amountOfProgressItems,
-                    Feeling? feelingOfLatestProgress, DateTime? lastUpdateDate, string lastFeedforward)
-                {
-                    Id = id;
-                    Name = name;
-                    AmountOfProgressItems = amountOfProgressItems;
-                    FeelingOfLatestProgress = feelingOfLatestProgress;
-                    LastFeedforward = lastFeedforward;
-                    LastUpdateDate = lastUpdateDate;
-                }
             }
         }
 
         public async Task<Response?> HandleAsync(Request request)
         {
-            var studentGroup = await context.Groups.FirstOrDefaultAsync(g => g.Id == request.Id);
-
-            if (studentGroup == null)
+            if (!await DoesGroupExist(request.Id))
             {
                 return null;
             }
 
-            var students = context.Students.Include(_ => _.ProgressUpdates)
-                .Where(s => s.Groups.Any(g => g.Id == request.Id))
-                .Select(student => new Response.StudentsResponse(
-                    student.Id,
-                    student.Name,
-                    student.ProgressUpdates.Count(p => p.Group.Id == request.Id),
-                    student.ProgressUpdates.OrderByDescending(p => p.Date).FirstOrDefault().ProgressFeeling,
-                    student.ProgressUpdates.OrderByDescending(p => p.Date).FirstOrDefault().Date,
-                    student.ProgressUpdates.OrderByDescending(p => p.Date)
-                        .FirstOrDefault(_ => _.Group.Id == request.Id && !string.IsNullOrEmpty(_.Feedforward))
-                        .Feedforward
-                ));
+            return await GetGroupWithStudentDataOfLatestFeedback(request.Id);
+        }
 
-            return new Response(
-                studentGroup.Id,
-                studentGroup.Name,
-                studentGroup.Mnemonic,
-                studentGroup.CreatedDate,
-                studentGroup.UpdatedDate,
-                students
-                );
+        private async Task<bool> DoesGroupExist(int groupId)
+        {
+            return await _connection.QueryFirstAsync<bool>(
+                "select exists(select 1 from \"Group\" where \"Id\" = @Id)",
+                new {Id = groupId});
+        }
+
+        private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId)
+        {
+            // TODO: Change query
+            var groupDictionary = new Dictionary<int, Response>();
+            var result = await _connection.QueryAsync<Response, Response.StudentsResponse, Response>(@"
+SELECT 
+    g.""Id"", 
+    g.""Name"",
+    g.""Mnemonic"",
+    g.""CreatedDate"" as ""CreatedAt"",
+    g.""UpdatedDate"" as ""UpdatedAt"",
+    s.""Id"",
+    s.""Name"",
+    p2.""Date"" as ""LastUpdateDate"",
+    p2.""ProgressFeeling"" as ""FeelingOfLatestProgress"",
+    p2.""Feedforward"" as ""LastFeedforward""
+FROM ""Group"" g
+LEFT JOIN ""GroupStudent"" gs
+	ON gs.""GroupsId"" = g.""Id""
+LEFT JOIN ""Student"" s
+	ON s.""Id"" = gs.""StudentsId""
+LEFT JOIN ""ProgressUpdate"" p
+	ON p.""StudentId"" = s.""Id""
+LEFT JOIN ""ProgressUpdate"" p2
+	ON p2.""StudentId"" = s.""Id""
+	AND p2.""GroupId"" = g.""Id""
+	AND p2.""Date"" > p.""Date""
+WHERE g.""Id"" = @Id AND p2.""Date"" is not null
+ORDER BY p2.""Date"" DESC;
+", (group, studentProgress) =>
+                {
+                    if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))
+                    {
+                        groupEntry = group;
+                        groupEntry.Students = new List<Response.StudentsResponse>();
+                        groupDictionary.Add(groupEntry.Id, groupEntry);
+                    }
+
+                    groupEntry.Students.Add(studentProgress);
+                    return groupEntry;
+                },
+                splitOn: "Id",
+                param: new {Id = groupId});
+
+            return result.FirstOrDefault()!; // "!" because we did the exists check beforehand
         }
     }
 }

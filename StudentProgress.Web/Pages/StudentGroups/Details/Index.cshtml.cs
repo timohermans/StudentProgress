@@ -12,7 +12,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
         public IndexModel(ProgressContext context)
         {
-            _useCase = new StudentGroupGetDetails(context);
+            _useCase = new StudentGroupGetDetails(null); // TODO: Add IDbConnection to IoC
         }
 
         public StudentGroupGetDetails.Response StudentGroup { get; set; }
