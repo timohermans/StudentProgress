@@ -25,9 +25,9 @@ namespace StudentProgress.CoreTests.UseCases
                 date: new DateTime(2020, 1, 1));
             Fixture.DataMother.CreateProgressUpdate(group, student,
                 date: new DateTime(2020, 3, 3));
-            var usecase = new ProgressGetForStudentInGroup(Fixture.CreateDbContext());
+            var useCase = new ProgressGetForStudentInGroup(Fixture.CreateDbContext());
 
-            var result = await usecase.HandleAsync(new ProgressGetForStudentInGroup.Request(group.Id, student?.Id));
+            var result = await useCase.HandleAsync(new ProgressGetForStudentInGroup.Request(group.Id, student?.Id));
 
             result.StudentId.Should().Be(student?.Id);
             result.Name.Should().Be("Timo");
