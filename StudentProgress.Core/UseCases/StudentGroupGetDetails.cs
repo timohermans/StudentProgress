@@ -63,33 +63,32 @@ namespace StudentProgress.Core.UseCases
 
         private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId)
         {
-            // TODO: Change query
             var groupDictionary = new Dictionary<int, Response>();
-            var result = await _connection.QueryAsync<Response, Response.StudentsResponse, Response>(@"
+            var result = await _connection.QueryAsync<Response, Response.StudentsResponse, Response>($@"
 SELECT 
-    g.""Id"", 
+    g.""Id"",
     g.""Name"",
     g.""Mnemonic"",
-    g.""CreatedDate"" as ""CreatedAt"",
-    g.""UpdatedDate"" as ""UpdatedAt"",
+    g.""CreatedDate"" as ""{nameof(Response.CreatedAt)}"",
+    g.""UpdatedDate"" as ""{nameof(Response.UpdatedAt)}"",
     s.""Id"",
     s.""Name"",
-    p2.""Date"" as ""LastUpdateDate"",
-    p2.""ProgressFeeling"" as ""FeelingOfLatestProgress"",
-    p2.""Feedforward"" as ""LastFeedforward""
-FROM ""Group"" g
-LEFT JOIN ""GroupStudent"" gs
-	ON gs.""GroupsId"" = g.""Id""
-LEFT JOIN ""Student"" s
-	ON s.""Id"" = gs.""StudentsId""
-LEFT JOIN ""ProgressUpdate"" p
-	ON p.""StudentId"" = s.""Id""
-LEFT JOIN ""ProgressUpdate"" p2
-	ON p2.""StudentId"" = s.""Id""
-	AND p2.""GroupId"" = g.""Id""
-	AND p2.""Date"" > p.""Date""
-WHERE g.""Id"" = @Id AND p2.""Date"" is not null
-ORDER BY p2.""Date"" DESC;
+    p.""Date"" as ""{nameof(Response.StudentsResponse.LastUpdateDate)}"",
+    p.""ProgressFeeling"" as ""{nameof(Response.StudentsResponse.FeelingOfLatestProgress)}"",
+    p.""Feedforward"" as ""{nameof(Response.StudentsResponse.LastFeedforward)}"",
+	p2.""AmountOfProgressItems"" as ""{nameof(Response.StudentsResponse.AmountOfProgressItems)}""
+FROM ""ProgressUpdate"" p
+INNER JOIN 
+	(select ""StudentId"", MAX(""Date"") as ""Date"", COUNT(*) as ""AmountOfProgressItems""
+	 FROM ""ProgressUpdate"" 
+	 group by ""StudentId"") p2
+	ON p.""StudentId"" = p2.""StudentId""
+INNER JOIN ""Group"" g
+	ON g.""Id"" = p.""GroupId""
+INNER JOIN ""Student"" s
+	ON s.""Id"" = p.""StudentId""
+WHERE p.""Date"" = p2.""Date""
+ORDER BY p.""Date"" DESC
 ", (group, studentProgress) =>
                 {
                     if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))
