@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
-namespace StudentProgress.CoreTests.UseCases
+namespace StudentProgress.CoreTests
 {
     public class DataMother
     {
@@ -28,7 +27,7 @@ namespace StudentProgress.CoreTests.UseCases
         }
 
         public Group CreateGroup(string name = "Student Group 1", string mnemonic = null,
-            string[] studentNames = null)
+            params string[] studentNames)
         {
             using var context = new ProgressContext(ContextOptions);
             var group = new Group(Name.Create(name).Value, mnemonic);
@@ -46,7 +45,7 @@ namespace StudentProgress.CoreTests.UseCases
         }
 
         public ProgressUpdate CreateProgressUpdate(
-            string groupName = "group 1", string studentName = "student 1",
+            Group group = null, Student student = null,
             string feedback = "This is not so good",
             string feedup = "This is looking good",
             string feedforward = "Work on this",
@@ -55,13 +54,13 @@ namespace StudentProgress.CoreTests.UseCases
         )
         {
             using var context = new ProgressContext(ContextOptions);
-            var student = context.Students.FirstOrDefault(s => s.Name == studentName) ?? new Student(studentName);
-            var group = context.Groups.FirstOrDefault(g => g.Name == groupName) ??
-                        new Group(Name.Create(groupName).Value, null);
+
+            if (student != null) context.Attach(student).State = EntityState.Unchanged;
+            if (group != null) context.Attach(group).State = EntityState.Unchanged;
 
             var update = new ProgressUpdate(
-                student,
-                group,
+                student ?? new Student("student 1"),
+                group ?? new Group(Name.Create("group 1").Value, "mnemonic 1"),
                 feedback,
                 feedup,
                 feedforward,

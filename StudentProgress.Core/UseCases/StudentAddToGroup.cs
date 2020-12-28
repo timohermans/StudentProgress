@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 
@@ -38,7 +36,7 @@ namespace StudentProgress.Core.UseCases
             return await studentGroup.Value?.AddStudent(student.Value)
                 .Tap(async () => await context.SaveChangesAsync())!;
         }
-
+        
         private async Task<Result<Student>> GetOrCreateUserFrom(string name)
         {
             var student = await context.Students.FirstOrDefaultAsync(s => s.Name == name);
