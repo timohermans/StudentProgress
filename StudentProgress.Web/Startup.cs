@@ -13,93 +13,88 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace StudentProgress.Web
 {
-  public class Startup
-  {
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-      Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddRazorPages(options =>
-      {
-        options.Conventions.AuthorizeFolder("/");
-      });
-
-      services.AddDbContext<ProgressContext>(options =>
-              options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"), b => b.MigrationsAssembly("StudentProgress.Core")));
-
-      JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-      services.AddAuthentication(options =>
-      {
-              // Store the session to cookies
-              options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-              // OpenId authentication
-              options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-      })
-          .AddCookie("Cookies")
-          .AddOpenIdConnect(options =>
-          {
-            options.ClientId = Configuration.GetValue<string>("Authentication:ClientId");
-            options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
-            options.Authority = Configuration.GetValue<string>("Authentication:Authority");
-
-                  // because we don't expose to the outside, we can use this in production as well
-                  options.RequireHttpsMetadata = false;
-
-            options.SaveTokens = true;
-            options.GetClaimsFromUserInfoEndpoint = true;
-            options.ResponseType = OpenIdConnectResponseType.IdToken;
-          });
-    }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseBrowserLink();
-        app.UseDeveloperExceptionPage();
-      }
-      else
-      {
-        app.UseCookiePolicy(new CookiePolicyOptions()
+        public Startup(IConfiguration configuration)
         {
-          // is used for new chrome cookiepolicy
-          // see https://stackoverflow.com/questions/50262561/correlation-failed-in-net-core-asp-net-identity-openid-connect/64874175#64874175
-          MinimumSameSitePolicy = SameSiteMode.Lax
-        });
+            Configuration = configuration;
+        }
 
-        // this is used for the reverse proxy
-        app.UsePathBase("/student");
-        app.Use((context, next) =>
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
         {
-          context.Request.PathBase = "/student";
-          return next();
-        });
+            services.AddRazorPages(options => { options.Conventions.AuthorizeFolder("/"); });
 
-        app.UseExceptionHandler("/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
-      }
+            services.AddDbContext<ProgressContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"),
+                    b => b.MigrationsAssembly("StudentProgress.Core")));
 
-      app.UseHttpsRedirection();
-      app.UseStaticFiles();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-      app.UseRouting();
+            services.AddAuthentication(options =>
+                {
+                    // Store the session to cookies
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    // OpenId authentication
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect(options =>
+                {
+                    options.ClientId = Configuration.GetValue<string>("Authentication:ClientId");
+                    options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
+                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
 
-      app.UseAuthentication();
-      app.UseAuthorization();
+                    // because we don't expose to the outside, we can use this in production as well
+                    options.RequireHttpsMetadata = false;
 
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapRazorPages();
-      });
+                    options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.ResponseType = OpenIdConnectResponseType.IdToken;
+                });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseCookiePolicy(new CookiePolicyOptions()
+                {
+                    // is used for new chrome cookiepolicy
+                    // see https://stackoverflow.com/questions/50262561/correlation-failed-in-net-core-asp-net-identity-openid-connect/64874175#64874175
+                    MinimumSameSitePolicy = SameSiteMode.Lax
+                });
+
+                // this is used for the reverse proxy
+                app.UsePathBase("/student");
+                app.Use((context, next) =>
+                {
+                    context.Request.PathBase = "/student";
+                    return next();
+                });
+
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+        }
     }
-  }
 }
