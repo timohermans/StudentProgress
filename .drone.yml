@@ -20,6 +20,8 @@ type: ssh
 name: deployment
 depends_on:
   - build
+    
+
 
 server:
   host:
@@ -40,9 +42,9 @@ steps:
     - git pull
     - cd /home/apper/projects/server-utils
     - docker-compose up -d --build
-    when:
-      branch:
-      - main
-      event:
-        exclude:
-        - pull_request
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
