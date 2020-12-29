@@ -11,13 +11,13 @@ dotnet ef database update --startup-project "./StudentProgress.Web/StudentProgre
 To add migrations:
 
 ```bash
-dotnet ef migrations add InitialCreate --startup-project "../StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
+dotnet ef migrations add InitialCreate --startup-project "./StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
 ```
 
 To remove migrations:
 
 ```bash
-dotnet ef migrations remove --startup-project "../StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
+dotnet ef migrations remove --startup-project "./StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
 ```
 
 ## Integration tests
