@@ -23,16 +23,16 @@ namespace StudentProgress.Core.UseCases
         public record Response
         {
             public int Id { get; init; }
-            public string Name { get; init; }
+            public string Name { get; init; } = null!;
             public string? Mnemonic { get; init; }
             [Display(Name = "Created On")] public DateTime CreatedAt { get; init; }
             [Display(Name = "Last name change")] public DateTime UpdatedAt { get; init; }
-            public IList<StudentsResponse> Students { get; set; }
+            public IList<StudentsResponse> Students { get; set; } = new List<StudentsResponse>();
 
             public record StudentsResponse
             {
                 public int Id { get; }
-                public string Name { get; }
+                public string Name { get; } = null!;
                 [Display(Name = "Amount of Feedback")] public int AmountOfProgressItems { get; }
                 [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; }
 
@@ -40,7 +40,7 @@ namespace StudentProgress.Core.UseCases
                 [DataType(DataType.Date)]
                 public DateTime? LastUpdateDate { get; }
 
-                [Display(Name = "Last Feedforward")] public string LastFeedforward { get; }
+                [Display(Name = "Last Feedforward")] public string? LastFeedforward { get; }
             }
         }
 
@@ -80,20 +80,19 @@ SELECT
 	p.""Date"",
 	p2.""Date""
 FROM ""Group"" g
-LEFT JOIN ""GroupStudent"" gs
-	ON g.""Id"" = gs.""GroupsId""
-LEFT JOIN ""Student"" s
-    ON s.""Id"" = gs.""StudentsId""
-LEFT JOIN ""ProgressUpdate"" p
-	ON p.""GroupId"" = g.""Id""
+LEFT JOIN ""GroupStudent"" gs ON g.""Id"" = gs.""GroupsId""
+LEFT JOIN ""Student"" s ON s.""Id"" = gs.""StudentsId""
+LEFT JOIN ""ProgressUpdate"" p ON p.""GroupId"" = g.""Id"" AND p.""StudentId"" = s.""Id""
 LEFT JOIN
 		(select 
-			""StudentId"", 
+			""StudentId"",
+            ""GroupId"",
 			MAX(""Date"") as ""Date"", 
 			COUNT(*) as ""AmountOfProgressItems""
 		FROM ""ProgressUpdate""
-		group by ""StudentId"") p2
+		group by ""GroupId"", ""StudentId"") p2
     ON p.""StudentId"" = p2.""StudentId""
+    AND p.""GroupId"" = p2.""GroupId""
     AND p.""Date"" = p2.""Date""
 WHERE g.""Id"" = @Id AND 
 	((p.""Date"" is null and p2.""Date"" is null) -- no progress updates
