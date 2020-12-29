@@ -13,8 +13,6 @@ namespace StudentProgress.CoreTests
 {
     public class DatabaseFixture
     {
-        private readonly string _database = "student-progress-new";
-
         public string ConnectionString { get; private set; }
 
         public DataMother DataMother { get; }
