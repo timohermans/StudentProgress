@@ -44,4 +44,5 @@ steps:
       branch:
       - main
       event:
-      - push
+        exclude:
+        - pull_request
