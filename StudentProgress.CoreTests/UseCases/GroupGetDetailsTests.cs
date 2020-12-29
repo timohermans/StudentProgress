@@ -16,6 +16,21 @@ namespace StudentProgress.CoreTests.UseCases
         }
 
         [Fact]
+        public async Task Gets_group_info_without_students()
+        {
+            var group = Fixture.DataMother.CreateGroup();
+            using var ucConnection = Fixture.CreateDbConnection();
+            var useCase = new StudentGroupGetDetails(ucConnection);
+
+            var result = await useCase.HandleAsync(new StudentGroupGetDetails.Request(group.Id));
+
+            result.Should().NotBeNull();
+            result!.Name.Should().Be(group.Name);
+            result!.Mnemonic.Should().Be(group.Mnemonic);
+            result!.Students.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
         public async Task Gets_the_most_important_details_per_student_of_a_group()
         {
             // arrange

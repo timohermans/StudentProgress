@@ -2,22 +2,22 @@
 
 ## Migrations
 
-Make sure that the command are run in the Core project
+To apply migrations:
 
 ```bash
-cd StudentProgress.Core
+dotnet ef database update --startup-project "./StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
 ```
 
 To add migrations:
 
 ```bash
-dotnet ef migrations add InitialCreate --startup-project "../StudentProgress.Web/StudentProgress.Web.csproj"
+dotnet ef migrations add InitialCreate --startup-project "../StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
 ```
 
 To remove migrations:
 
 ```bash
-dotnet ef migrations remove --startup-project "../StudentProgress.Web/StudentProgress.Web.csproj"
+dotnet ef migrations remove --startup-project "../StudentProgress.Web/StudentProgress.Web.csproj" --project="./StudentProgress.Core/StudentProgress.Core.csproj"
 ```
 
 ## Integration tests

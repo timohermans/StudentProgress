@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using Npgsql;
 
 namespace StudentProgress.Web
 {
@@ -30,6 +32,8 @@ namespace StudentProgress.Web
             services.AddDbContext<ProgressContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"),
                     b => b.MigrationsAssembly("StudentProgress.Core")));
+            services.AddScoped<IDbConnection>(_ =>
+                new NpgsqlConnection(Configuration.GetConnectionString("ProgressContext")));
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

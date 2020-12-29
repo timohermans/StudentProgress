@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
 using System.Threading.Tasks;
 
@@ -10,9 +10,9 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     {
         private readonly StudentGroupGetDetails _useCase;
 
-        public IndexModel(ProgressContext context)
+        public IndexModel(IDbConnection connection)
         {
-            _useCase = new StudentGroupGetDetails(null); // TODO: Add IDbConnection to IoC
+            _useCase = new StudentGroupGetDetails(connection);
         }
 
         public StudentGroupGetDetails.Response StudentGroup { get; set; }
