@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
-using StudentProgress.Web.UseCases.Progress;
+using StudentProgress.Core.Entities;
+using StudentProgress.Core.UseCases;
 using System;
 using System.Threading.Tasks;
 
@@ -12,29 +11,29 @@ namespace StudentProgress.Web.Pages.Progress
     public class CreateModel : PageModel
     {
         private readonly ProgressContext _context;
-        private readonly Create _useCase;
+        private readonly ProgressCreate _useCase;
         public Student Student { get; set; }
         public StudentGroup Group { get; set; }
         [BindProperty]
-        public Create.Request Progress { get; set; }
+        public ProgressCreate.Request Progress { get; set; }
 
         public CreateModel(ProgressContext context)
         {
             _context = context;
-            _useCase = new Create(context);
+            _useCase = new ProgressCreate(context);
         }
 
         public async Task<IActionResult> OnGetAsync(int? groupId = 0, int? studentId = 0)
         {
-            Student = await _context.Student.FirstOrDefaultAsync(s => s.Id == studentId);
-            Group = await _context.StudentGroup.FirstOrDefaultAsync(g => g.Id == groupId);
+            Student = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);
+            Group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
 
             if (Student == null || Group == null)
             {
                 return RedirectToPage("/StudentGroups/Index");
             }
 
-            Progress = new Create.Request
+            Progress = new ProgressCreate.Request
             {
                 Date = DateTime.UtcNow,
                 Feeling = Feeling.Neutral

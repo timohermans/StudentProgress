@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,8 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using StudentProgress.Web.Data;
+using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using Npgsql;
 
 namespace StudentProgress.Web
 {
@@ -25,23 +27,23 @@ namespace StudentProgress.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages(options =>
-            {
-                options.Conventions.AuthorizeFolder("/");
-            });
+            services.AddRazorPages(options => { options.Conventions.AuthorizeFolder("/"); });
 
             services.AddDbContext<ProgressContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("ProgressContext")));
+                options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"),
+                    b => b.MigrationsAssembly("StudentProgress.Core")));
+            services.AddScoped<IDbConnection>(_ =>
+                new NpgsqlConnection(Configuration.GetConnectionString("ProgressContext")));
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services.AddAuthentication(options =>
-            {
-                // Store the session to cookies
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                // OpenId authentication
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
+                {
+                    // Store the session to cookies
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    // OpenId authentication
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
                 .AddCookie("Cookies")
                 .AddOpenIdConnect(options =>
                 {
@@ -96,10 +98,7 @@ namespace StudentProgress.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
         }
     }
 }

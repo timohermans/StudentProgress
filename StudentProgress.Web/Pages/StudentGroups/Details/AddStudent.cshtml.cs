@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Web.Data;
-using StudentProgress.Web.Models;
-using StudentProgress.Web.UseCases.Students;
+using StudentProgress.Core.Entities;
+using StudentProgress.Core.UseCases;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,19 +11,19 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     public class AddStudentModel : PageModel
     {
         private readonly ProgressContext _context;
-        private readonly AddToGroup _useCase;
+        private readonly StudentAddToGroup _useCase;
 
         public StudentGroup Group { get; set; }
 
-        public AddStudentModel(StudentProgress.Web.Data.ProgressContext context)
+        public AddStudentModel(ProgressContext context)
         {
             _context = context;
-            _useCase = new AddToGroup(_context);
+            _useCase = new StudentAddToGroup(_context);
         }
 
         public IActionResult OnGet(int? groupId)
         {
-            Group = _context.StudentGroup.FirstOrDefault(g => g.Id == (groupId ?? 0));
+            Group = _context.Groups.FirstOrDefault(g => g.Id == (groupId ?? 0));
             if (Group == null)
             {
                 RedirectToPage("/StudentGroups/Index");
@@ -36,7 +35,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
         public int? GroupId { get; set; }
 
         [BindProperty]
-        public AddToGroup.Request Student { get; set; }
+        public StudentAddToGroup.Request Student { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {

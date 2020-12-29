@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Web.UseCases.StudentGroups;
+using StudentProgress.Core.Entities;
+using StudentProgress.Core.UseCases;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {
     public class CreateModel : PageModel
     {
-        private readonly Create _useCase;
+        private readonly GroupCreate _useCase;
 
-        public CreateModel(StudentProgress.Web.Data.ProgressContext context)
+        public CreateModel(ProgressContext context)
         {
-            _useCase = new Create(context);
+            _useCase = new GroupCreate(context);
         }
 
         public IActionResult OnGet()
@@ -20,7 +21,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         }
 
         [BindProperty]
-        public Create.Request StudentGroup { get; set; }
+        public GroupCreate.Request StudentGroup { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()

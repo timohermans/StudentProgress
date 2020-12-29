@@ -30,7 +30,7 @@
         {
             <tr>
                 <td headers="name">
-                    <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                    <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
                 </td>
                 <td headers="created-date">
                     @Html.DisplayFor(modelItem => item.CreatedDate)

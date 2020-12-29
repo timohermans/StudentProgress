@@ -2,19 +2,27 @@ kind: pipeline
 type: docker
 name: build
 
-steps:
-- name: build and test
-  image: plugins/docker
-  settings:
-    dockerfile: StudentProgress.Web/Dockerfile
-    repo: itsyou0o/student-progress
-    dry_run: true
+concurrency:
+  limit: 1
 
+steps:
+- name: test and build
+  image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+  commands:
+    - dotnet restore
+    - dotnet build
+    - dotnet test
+  environment:
+    ConnectionStrings__Test:
+      from_secret: connectionstringtest
+      
 ---
 
 kind: pipeline
 type: ssh
 name: deployment
+depends_on:
+  - build
 
 server:
   host:
@@ -35,9 +43,9 @@ steps:
     - git pull
     - cd /home/apper/projects/server-utils
     - docker-compose up -d --build
-    when:
-    branch:
-    - main
 
-depends_on:
-- build
+trigger:
+  branch:
+    - main
+  event:
+    - push
