@@ -10,7 +10,7 @@ namespace StudentProgress.Core.Entities
         [Required]
         public string Name { get; private set; }
         public IEnumerable<ProgressUpdate> ProgressUpdates { get; private set; }
-        public IEnumerable<StudentGroup> Groups { get; private set; }
+        public IEnumerable<StudentGroup> StudentGroups { get; private set; }
 
         #nullable disable
         private Student() { }
@@ -20,7 +20,7 @@ namespace StudentProgress.Core.Entities
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
             ProgressUpdates = new List<ProgressUpdate>();
-            Groups = new List<StudentGroup>();
+            StudentGroups = new List<StudentGroup>();
         }
 
     }

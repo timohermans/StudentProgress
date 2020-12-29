@@ -57,7 +57,7 @@ namespace StudentProgress.Core.UseCases
         private async Task<bool> DoesGroupExist(int groupId)
         {
             return await _connection.QueryFirstAsync<bool>(
-                "select exists(select 1 from \"Group\" where \"Id\" = @Id)",
+                "select exists(select 1 from \"StudentGroup\" where \"Id\" = @Id)",
                 new {Id = groupId});
         }
 
@@ -79,8 +79,8 @@ SELECT
     p2.""AmountOfProgressItems"" as ""{nameof(Response.StudentsResponse.AmountOfProgressItems)}"",
 	p.""Date"",
 	p2.""Date""
-FROM ""Group"" g
-LEFT JOIN ""GroupStudent"" gs ON g.""Id"" = gs.""GroupsId""
+FROM ""StudentGroup"" g
+LEFT JOIN ""StudentStudentGroup"" gs ON g.""Id"" = gs.""StudentGroupsId""
 LEFT JOIN ""Student"" s ON s.""Id"" = gs.""StudentsId""
 LEFT JOIN ""ProgressUpdate"" p ON p.""GroupId"" = g.""Id"" AND p.""StudentId"" = s.""Id""
 LEFT JOIN
