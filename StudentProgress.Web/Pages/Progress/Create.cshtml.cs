@@ -13,7 +13,7 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressContext _context;
         private readonly ProgressCreate _useCase;
         public Student Student { get; set; }
-        public Group Group { get; set; }
+        public StudentGroup Group { get; set; }
         [BindProperty]
         public ProgressCreate.Request Progress { get; set; }
 

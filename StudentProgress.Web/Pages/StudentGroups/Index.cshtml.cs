@@ -15,7 +15,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
             _context = context;
         }
 
-        public IList<Group> StudentGroup { get; set; }
+        public IList<StudentGroup> StudentGroup { get; set; }
 
         public async Task OnGetAsync()
         {

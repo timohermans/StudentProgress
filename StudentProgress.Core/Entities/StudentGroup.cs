@@ -6,7 +6,7 @@ using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.Entities
 {
-    public class Group : AuditableEntity<int>
+    public class StudentGroup : AuditableEntity<int>
     {
         public Name Name { get; private set; }
 
@@ -18,12 +18,12 @@ namespace StudentProgress.Core.Entities
 
 
 #nullable disable
-        private Group()
+        private StudentGroup()
         {
         }
 #nullable enable
 
-        public Group(Name name, string? mnemonic = null)
+        public StudentGroup(Name name, string? mnemonic = null)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
             Mnemonic = mnemonic;

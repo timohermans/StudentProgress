@@ -29,7 +29,7 @@ namespace StudentProgress.CoreTests.UseCases
             var result = await useCase.HandleAsync(request);
 
             result.IsSuccess.Should().BeTrue();
-            var groupUpdated = Fixture.DataMother.Query<Group>();
+            var groupUpdated = Fixture.DataMother.Query<StudentGroup>();
             groupUpdated
                 .ShouldExist()
                 .HasName("S3 - Timo")

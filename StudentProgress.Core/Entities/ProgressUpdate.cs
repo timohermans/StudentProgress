@@ -6,7 +6,7 @@ namespace StudentProgress.Core.Entities
     public class ProgressUpdate : AuditableEntity<int>
     {
         public Student Student { get; private set; }
-        public Group Group { get; private set; }
+        public StudentGroup Group { get; private set; }
         public string? Feedback { get; private set; }
         public string? Feedup { get; private set; }
         public string? Feedforward { get; private set; }
@@ -20,7 +20,7 @@ namespace StudentProgress.Core.Entities
         private ProgressUpdate() { }
         #nullable enable
 
-        public ProgressUpdate(Student student, Group group, string? feedback, string? feedup, string? feedforward, Feeling progressFeeling, DateTime date)
+        public ProgressUpdate(Student student, StudentGroup group, string? feedback, string? feedup, string? feedforward, Feeling progressFeeling, DateTime date)
         {
             Student = student ?? throw new NullReferenceException(nameof(student));
             Group = group ?? throw new NullReferenceException(nameof(group));

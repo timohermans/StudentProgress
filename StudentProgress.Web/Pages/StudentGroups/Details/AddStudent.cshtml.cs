@@ -13,7 +13,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
         private readonly ProgressContext _context;
         private readonly StudentAddToGroup _useCase;
 
-        public Group Group { get; set; }
+        public StudentGroup Group { get; set; }
 
         public AddStudentModel(ProgressContext context)
         {

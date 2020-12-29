@@ -12,7 +12,7 @@ namespace StudentProgress.Core.Entities
         {
         }
 
-        public DbSet<Group> Groups => Set<Group>();
+        public DbSet<StudentGroup> Groups => Set<StudentGroup>();
         public DbSet<Student> Students => Set<Student>();
         public DbSet<ProgressUpdate> ProgressUpdates => Set<ProgressUpdate>();
 
@@ -26,9 +26,9 @@ namespace StudentProgress.Core.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Group>(g =>
+            modelBuilder.Entity<StudentGroup>(g =>
             {
-                g.ToTable("Group");
+                g.ToTable("StudentGroup");
                 g.HasKey(p => p.Id);
                 g.Property(p => p.Name)
                     .HasConversion(p => p.Value, p => Name.Create(p).Value);

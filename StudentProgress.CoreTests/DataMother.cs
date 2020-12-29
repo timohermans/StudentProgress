@@ -20,17 +20,17 @@ namespace StudentProgress.CoreTests
             return context.Set<T>().FirstOrDefault();
         }
 
-        public Group GroupWithStudents()
+        public StudentGroup GroupWithStudents()
         {
             using var context = new ProgressContext(ContextOptions);
             return context.Groups.Include(g => g.Students).FirstOrDefault();
         }
 
-        public Group CreateGroup(string name = "Student Group 1", string mnemonic = null,
+        public StudentGroup CreateGroup(string name = "Student Group 1", string mnemonic = null,
             params string[] studentNames)
         {
             using var context = new ProgressContext(ContextOptions);
-            var group = new Group(Name.Create(name).Value, mnemonic);
+            var group = new StudentGroup(Name.Create(name).Value, mnemonic);
             if (studentNames != null)
             {
                 foreach (var studentName in studentNames)
@@ -45,7 +45,7 @@ namespace StudentProgress.CoreTests
         }
 
         public ProgressUpdate CreateProgressUpdate(
-            Group group = null, Student student = null,
+            StudentGroup group = null, Student student = null,
             string feedback = "This is not so good",
             string feedup = "This is looking good",
             string feedforward = "Work on this",
@@ -60,7 +60,7 @@ namespace StudentProgress.CoreTests
 
             var update = new ProgressUpdate(
                 student ?? new Student("student 1"),
-                group ?? new Group(Name.Create("group 1").Value, "mnemonic 1"),
+                group ?? new StudentGroup(Name.Create("group 1").Value, "mnemonic 1"),
                 feedback,
                 feedup,
                 feedforward,

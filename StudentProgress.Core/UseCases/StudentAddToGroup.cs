@@ -23,7 +23,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> HandleAsync(Request request)
         {
-            var studentGroup = Maybe<Group?>.From(
+            var studentGroup = Maybe<StudentGroup?>.From(
                     await context.Groups.Include(_ => _.Students)
                         .FirstOrDefaultAsync(group => group.Id == request.GroupId))
                 .ToResult("Group not found");

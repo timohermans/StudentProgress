@@ -16,7 +16,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         }
 
         [BindProperty]
-        public Group Group { get; set; }
+        public StudentGroup Group { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

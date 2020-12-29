@@ -39,7 +39,7 @@ namespace StudentProgress.Core.UseCases
             var student = Maybe<Student>.From(
                 await context.Students.FirstOrDefaultAsync(s => s.Id == progress.StudentId)
                 ).ToResult("Student does not exist");
-            var group = Maybe<Group>.From(
+            var group = Maybe<StudentGroup>.From(
                 await context.Groups.FirstOrDefaultAsync(g => g.Id == progress.GroupId)
                 ).ToResult("Group does not exist");
             var result = Result.Combine(student, group);

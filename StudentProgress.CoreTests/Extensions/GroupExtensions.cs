@@ -6,19 +6,19 @@ namespace StudentProgress.CoreTests.Extensions
 {
     public static class GroupExtensions
     {
-        public static Group HasName(this Group group, string name)
+        public static StudentGroup HasName(this StudentGroup group, string name)
         {
             group.Name.Value.Should().Be(name);
             return group;
         }
 
-        public static Group HasMnemonic(this Group group, string mnemonic)
+        public static StudentGroup HasMnemonic(this StudentGroup group, string mnemonic)
         {
             group.Mnemonic.Should().Be(mnemonic);
             return group;
         }
 
-        public static Group HasStudent(this Group group, string studentName)
+        public static StudentGroup HasStudent(this StudentGroup group, string studentName)
         {
             group.Students.Any(g => g.Name == studentName).Should().BeTrue();
             return group;
