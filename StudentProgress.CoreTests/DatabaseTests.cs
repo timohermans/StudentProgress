@@ -17,10 +17,10 @@ namespace StudentProgress.CoreTests
         {
             using var connection = new NpgsqlConnection(Fixture.ConnectionString);
             connection.Execute(@"
-DELETE FROM ""GroupStudent"";
+DELETE FROM ""StudentStudentGroup"";
 DELETE FROM ""ProgressUpdate"";
 DELETE FROM ""Student"";
-DELETE FROM ""Group"";");
+DELETE FROM ""StudentGroup"";");
         }
     }
 }

@@ -32,7 +32,7 @@ namespace StudentProgress.Core.Entities
                 g.HasKey(p => p.Id);
                 g.Property(p => p.Name)
                     .HasConversion(p => p.Value, p => Name.Create(p).Value);
-                g.HasMany(p => p.Students).WithMany(s => s.Groups);
+                g.HasMany(p => p.Students).WithMany(s => s.StudentGroups);
                 g.HasIndex(p => p.Name).IsUnique();
             });
 
