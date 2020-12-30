@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Progress";
 
-    string ToFeelingBackgrounColor(Feeling feeling)
+    string ToFeelingBackgroundColor(Feeling feeling)
     {
         switch (feeling)
         {
@@ -20,6 +20,11 @@
     }
 }
 
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/progress.css"/>
+}
+
 <a asp-page="/StudentGroups/Index">Groups</a> >
 <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Student.GroupId">@Model.Student.GroupName</a> >
 <span>@Model.Student.Name</span>
@@ -32,7 +37,7 @@
     <div id="status-overview" class="progress-timeline list-group">
         @foreach (var progressUpdate in Model.Student.ProgressUpdates)
         {
-            <a href="#feedback-@progressUpdate.Id" class="timeline-item list-group-item list-group-item-action @ToFeelingBackgrounColor(progressUpdate.Feeling) mx-4"></a>
+            <a href="#feedback-@progressUpdate.Id" class="timeline-item list-group-item list-group-item-action @ToFeelingBackgroundColor(progressUpdate.Feeling) mx-4"></a>
         }
     </div>
 
@@ -42,7 +47,7 @@
             <section id="feedback-@progressUpdate.Id" class="card mb-3">
                 <h4 class="card-header d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgrounColor(progressUpdate.Feeling) mr-3"></div>
+                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgroundColor(progressUpdate.Feeling) mr-3"></div>
                         @progressUpdate.Date.ToShortDateString()
                     </div>
                     <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
