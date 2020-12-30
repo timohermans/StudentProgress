@@ -5,6 +5,11 @@
     ViewData["Title"] = "Create";
 }
 
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/group.css">
+}
+
 <div>
     <a asp-page="Index">Groups</a> >
     <span>New</span>
@@ -13,29 +18,57 @@
 <h1>Create</h1>
 
 <h4>Group / Semester / Class</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StudentGroup.Name" class="control-label"></label>
-                <input asp-for="StudentGroup.Name" class="form-control" />
-                <span asp-validation-for="StudentGroup.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StudentGroup.Mnemonic" class="control-label"></label>
-                <textarea asp-for="StudentGroup.Mnemonic" class="form-control"></textarea>
-                <span asp-validation-for="StudentGroup.Mnemonic" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<hr/>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="StudentGroup.Name" class="control-label"></label>
+        <input asp-for="StudentGroup.Name" class="form-control"/>
+        <span asp-validation-for="StudentGroup.Name" class="text-danger"></span>
     </div>
-</div>
+    <div class="form-group">
+        <label asp-for="StudentGroup.Mnemonic" class="control-label"></label>
+        <textarea asp-for="StudentGroup.Mnemonic" class="form-control"></textarea>
+        <span asp-validation-for="StudentGroup.Mnemonic" class="text-danger"></span>
+    </div>
+
+    <div id="milestones-container" class="form-group">
+        <label asp-for="StudentGroup.Milestones" class="control-label"></label>
+        <ul id="milestones-list">
+            <li id="milestones-item" class="d-flex align-items-center">
+                <input type="text" asp-for="StudentGroup.Milestones" class="form-control mb-2"/>
+                <button type="button" class="btn btn-link" onclick="deleteMilestone(this)">remove</button>
+            </li>
+        </ul>
+        <button id="milestones-add" type="button" class="btn btn-secondary" onclick="addMilestone()">Add milestone</button>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary"/>
+    </div>
+</form>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+        function deleteMilestone(event) {
+            const milestoneItem = event.parentNode;
+            const milestoneList = milestoneItem.parentNode;
+            
+            if (milestoneList.children.length === 1) return;
+            
+            milestoneList.removeChild(milestoneItem);
+        }
+        
+        function addMilestone() {
+            const milestonesList = document.getElementById("milestones-list");
+            const milestoneElement = milestonesList.children[0];
+            const newMilestoneElement = milestoneElement.cloneNode(true);
+            milestonesList.appendChild(newMilestoneElement);
+            newMilestoneElement.focus(); 
+        }
+    </script>
+
 }
