@@ -16,6 +16,9 @@ namespace StudentProgress.Core.Entities
 
         public IReadOnlyList<Student> Students => students;
 
+        private readonly List<Milestone> _milestones = new List<Milestone>();
+        public IReadOnlyList<Milestone> Milestones => _milestones;
+
 
 #nullable disable
         private StudentGroup()

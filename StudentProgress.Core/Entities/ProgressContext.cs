@@ -33,6 +33,7 @@ namespace StudentProgress.Core.Entities
                 g.Property(p => p.Name)
                     .HasConversion(p => p.Value, p => Name.Create(p).Value);
                 g.HasMany(p => p.Students).WithMany(s => s.StudentGroups);
+                g.HasMany(p => p.Milestones).WithOne();
                 g.HasIndex(p => p.Name).IsUnique();
             });
 
@@ -44,12 +45,18 @@ namespace StudentProgress.Core.Entities
                 e.HasOne(p => p.Student).WithMany(s => s.ProgressUpdates);
                 e.HasOne(p => p.Group).WithMany();
             });
-            
-            
+
+
             modelBuilder.Entity<Student>(e =>
             {
                 e.ToTable("Student");
                 e.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<Milestone>(e =>
+            {
+                e.HasKey(p => p.Id);
+                e.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
             });
         }
     }
