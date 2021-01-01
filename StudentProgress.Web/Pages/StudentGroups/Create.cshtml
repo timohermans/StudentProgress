@@ -32,16 +32,16 @@
         <span asp-validation-for="StudentGroup.Mnemonic" class="text-danger"></span>
     </div>
 
-    <div id="milestones-container" class="form-group">
-        <label asp-for="StudentGroup.Milestones" class="control-label"></label>
-        <ul id="milestones-list">
-            <li id="milestones-item" class="d-flex align-items-center">
-                <input type="text" asp-for="StudentGroup.Milestones" class="form-control mb-2"/>
-                <button type="button" class="btn btn-link" onclick="deleteMilestone(this)">remove</button>
-            </li>
-        </ul>
-        <button id="milestones-add" type="button" class="btn btn-secondary" onclick="addMilestone()">Add milestone</button>
-    </div>
+    @* <div id="milestones-container" class="form-group"> *@
+    @*     <label asp-for="StudentGroup.Milestones" class="control-label"></label> *@
+    @*     <ul id="milestones-list"> *@
+    @*         <li id="milestones-item" class="d-flex align-items-center"> *@
+    @*             <input type="text" asp-for="StudentGroup.Milestones" class="form-control mb-2"/> *@
+    @*             <button type="button" class="btn btn-link" onclick="deleteMilestone(this)">remove</button> *@
+    @*         </li> *@
+    @*     </ul> *@
+    @*     <button id="milestones-add" type="button" class="btn btn-secondary" onclick="addMilestone()">Add milestone</button> *@
+    @* </div> *@
 
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary"/>

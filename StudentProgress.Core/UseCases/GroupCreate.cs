@@ -21,8 +21,6 @@ namespace StudentProgress.Core.UseCases
             [Required] public string Name { get; init; } = null!;
 
             public string? Mnemonic { get; init; }
-            
-            public IList<string> Milestones { get; init; }
         }
 
         public async Task<Result> HandleAsync(Request request)

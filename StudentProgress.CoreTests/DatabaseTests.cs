@@ -1,5 +1,7 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using Npgsql;
+using StudentProgress.Core.Entities;
 
 namespace StudentProgress.CoreTests
 {
