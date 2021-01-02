@@ -51,5 +51,14 @@ namespace StudentProgress.Core.Entities
             Mnemonic = mnemonic;
             return Result.Success();
         }
+
+        public Result AddMilestone(Milestone milestone)
+        {
+            if (_milestones == null)
+                throw new InvalidOperationException("Milestones is null. Did you forget to include it in your query?");
+            
+            _milestones.Add(milestone ?? throw new NullReferenceException(nameof(milestone)));
+            return Result.Success();
+        }
     }
 }

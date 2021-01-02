@@ -28,6 +28,13 @@ namespace StudentProgress.Core.UseCases
             [Display(Name = "Created On")] public DateTime CreatedAt { get; init; }
             [Display(Name = "Last name change")] public DateTime UpdatedAt { get; init; }
             public IList<StudentsResponse> Students { get; set; } = new List<StudentsResponse>();
+            public IList<MilestoneResponse> Milestones { get; set; } = new List<MilestoneResponse>();
+
+            public record MilestoneResponse
+            {
+                public int Id { get; }
+                public string Name { get; } = null!;
+            }
 
             public record StudentsResponse
             {
@@ -64,7 +71,11 @@ namespace StudentProgress.Core.UseCases
         private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId)
         {
             var groupDictionary = new Dictionary<int, Response>();
-            var result = await _connection.QueryAsync<Response, Response.StudentsResponse, Response>($@"
+            var studentProgressDictionary = new Dictionary<int, Response.StudentsResponse>();
+            var milestoneDictionary = new Dictionary<int, Response.MilestoneResponse>();
+            var result =
+                await _connection.QueryAsync<Response, Response.StudentsResponse, Response.MilestoneResponse, Response>(
+                    $@"
 SELECT
     g.""Id"",
     g.""Name"",
@@ -78,7 +89,9 @@ SELECT
     p.""Feedforward"" as ""{nameof(Response.StudentsResponse.LastFeedforward)}"",
     p2.""AmountOfProgressItems"" as ""{nameof(Response.StudentsResponse.AmountOfProgressItems)}"",
 	p.""Date"",
-	p2.""Date""
+	p2.""Date"",
+    m.""Id"",
+    m.""Name""
 FROM ""StudentGroup"" g
 LEFT JOIN ""StudentStudentGroup"" gs ON g.""Id"" = gs.""StudentGroupsId""
 LEFT JOIN ""Student"" s ON s.""Id"" = gs.""StudentsId""
@@ -94,25 +107,38 @@ LEFT JOIN
     ON p.""StudentId"" = p2.""StudentId""
     AND p.""GroupId"" = p2.""GroupId""
     AND p.""Date"" = p2.""Date""
+LEFT JOIN ""Milestone"" m ON g.""Id"" = m.""StudentGroupId""
 WHERE g.""Id"" = @Id AND 
 	((p.""Date"" is null and p2.""Date"" is null) -- no progress updates
 	OR 
 	(p.""Date"" is not null and p2.""Date"" is not null)) -- with (aggregated) progress updates
 ORDER BY p.""Date"" DESC;
-", (group, studentProgress) =>
-                {
-                    if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))
+", (group, studentProgress, milestone) =>
                     {
-                        groupEntry = group;
-                        groupEntry.Students = new List<Response.StudentsResponse>();
-                        groupDictionary.Add(groupEntry.Id, groupEntry);
-                    }
+                        if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))
+                        {
+                            groupEntry = group;
+                            groupEntry.Students = new List<Response.StudentsResponse>();
+                            groupEntry.Milestones = new List<Response.MilestoneResponse>();
+                            groupDictionary.Add(groupEntry.Id, groupEntry);
+                        }
 
-                    if (studentProgress != null) groupEntry.Students.Add(studentProgress);
-                    return groupEntry;
-                },
-                splitOn: "Id",
-                param: new {Id = groupId});
+                        if (studentProgress != null && !studentProgressDictionary.ContainsKey(studentProgress.Id))
+                        {
+                            groupEntry.Students.Add(studentProgress);
+                            studentProgressDictionary.Add(studentProgress.Id, studentProgress);
+                        }
+
+                        if (milestone != null && !milestoneDictionary.ContainsKey(milestone.Id))
+                        {
+                            groupEntry.Milestones.Add(milestone);
+                            milestoneDictionary.Add(milestone.Id, milestone);
+                        }
+
+                        return groupEntry;
+                    },
+                    splitOn: "Id",
+                    param: new {Id = groupId});
 
             return result.FirstOrDefault()!; // "!" because we did the exists check beforehand
         }

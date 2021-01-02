@@ -26,7 +26,14 @@ namespace StudentProgress.CoreTests
             return context.Groups.Include(g => g.Students).FirstOrDefault();
         }
 
+        public StudentGroup GroupWithMilestones()
+        {
+            using var context = new ProgressContext(ContextOptions);
+            return context.Groups.Include(g => g.Milestones).FirstOrDefault();
+        }
+
         public StudentGroup CreateGroup(string name = "Student Group 1", string mnemonic = null,
+            string[] milestoneNames = null,
             params string[] studentNames)
         {
             using var context = new ProgressContext(ContextOptions);
@@ -36,6 +43,14 @@ namespace StudentProgress.CoreTests
                 foreach (var studentName in studentNames)
                 {
                     group.AddStudent(new Student(studentName));
+                }
+            }
+
+            if (milestoneNames != null)
+            {
+                foreach (var milestoneName in milestoneNames)
+                {
+                    group.AddMilestone(new Milestone(Name.Create(milestoneName).Value));
                 }
             }
 

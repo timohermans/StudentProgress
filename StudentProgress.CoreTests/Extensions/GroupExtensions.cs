@@ -23,5 +23,11 @@ namespace StudentProgress.CoreTests.Extensions
             group.Students.Any(g => g.Name == studentName).Should().BeTrue();
             return group;
         }
+
+        public static StudentGroup HasMilestone(this StudentGroup group, Milestone milestone)
+        {
+            group.Milestones.Should().Contain(milestone);
+            return group;
+        }
     }
 }
