@@ -21,16 +21,11 @@
 <hr/>
 <form method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-floating mb-3">
-        <input asp-for="StudentGroup.Name" class="form-control"/>
-        <label asp-for="StudentGroup.Name"></label>
-        <span asp-validation-for="StudentGroup.Name" class="text-danger"></span>
-    </div>
-    <div class="form-floating mb-3">
-        <textarea asp-for="StudentGroup.Mnemonic" class="form-control"></textarea>
-        <label asp-for="StudentGroup.Mnemonic"></label>
-        <span asp-validation-for="StudentGroup.Mnemonic" class="text-danger"></span>
-    </div>
+
+    <input-form-control asp-for="StudentGroup.Name"></input-form-control>
+    
+    @Html.FormBlock(m => m.StudentGroup.Name)
+    @Html.FormBlock(m => m.StudentGroup.Mnemonic)
 
     @* <div id="milestones-container" class="form-group"> *@
     @*     <label asp-for="StudentGroup.Milestones" class="control-label"></label> *@

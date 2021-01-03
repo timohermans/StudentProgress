@@ -20,10 +20,8 @@ namespace StudentProgress.Web.Pages.StudentGroups
             return Page();
         }
 
-        [BindProperty]
-        public GroupCreate.Request StudentGroup { get; set; }
+        [BindProperty] public GroupCreate.Request StudentGroup { get; set; } = new GroupCreate.Request();
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

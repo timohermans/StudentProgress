@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using HtmlTags;
 using Npgsql;
+using StudentProgress.Web.Infrastructure;
 
 namespace StudentProgress.Web
 {
@@ -29,7 +32,7 @@ namespace StudentProgress.Web
         {
             services.AddMiniProfiler().AddEntityFramework();
             services.AddRazorPages(options => { options.Conventions.AuthorizeFolder("/"); });
-
+            services.AddHtmlTags(new TagConventions());
             services.AddDbContext<ProgressContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"),
                     b => b.MigrationsAssembly("StudentProgress.Core")));
