@@ -14,7 +14,7 @@ namespace StudentProgress.CoreTests
             Fixture = fixture;
             CleanupData();
         }
-        
+
         private void CleanupData()
         {
             using var connection = new NpgsqlConnection(Fixture.ConnectionString);
