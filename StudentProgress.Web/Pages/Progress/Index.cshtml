@@ -4,19 +4,34 @@
 @{
     ViewData["Title"] = "Progress";
 
+    string MilestoneRatingColor(Rating rating, int currentIndex)
+    {
+        if (currentIndex != (int)rating)
+        {
+            return "light";
+        }
+
+        return rating switch
+        {
+            Rating.Undefined => "dark",
+            Rating.Orienting => "danger",
+            Rating.Beginning => "warning",
+            Rating.Proficient => "success",
+            Rating.Advanced => "primary",
+            _ => "light"
+        };
+
+    }
+
     string ToFeelingBackgroundColor(Feeling feeling)
     {
-        switch (feeling)
+        return feeling switch
         {
-            case Feeling.Bad:
-                return "bg-danger";
-            case Feeling.Neutral:
-                return "bg-warning";
-            case Feeling.Good:
-                return "bg-success";
-            default:
-                return "";
-        }
+            Feeling.Bad => "bg-danger",
+            Feeling.Neutral => "bg-warning",
+            Feeling.Good => "bg-success",
+            _ => ""
+        };
     }
 }
 
@@ -53,6 +68,25 @@
                     <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
                 <div class="card-body">
+                    <h5>Milestone progress</h5>
+
+                    <div class="row">
+                        @foreach (var milestone in Model.ProgressMilestones)
+                        {
+                            <div class="col-4 mb-3">
+                                <small class="text-muted">@milestone.LearningOutcome</small>
+                                <h6>@milestone.Artifact</h6>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
+                                    @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
+                                    {
+                                        <button type="button" class="btn btn-@MilestoneRatingColor(milestone.CurrentRating, i)" disabled>@i</button>
+                                    }
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+
                     @if (!string.IsNullOrEmpty(progressUpdate.Feedback))
                     {
                         <section>
