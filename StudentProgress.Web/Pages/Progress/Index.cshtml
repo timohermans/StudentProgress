@@ -22,7 +22,7 @@
 
 @section Styles
 {
-    <link rel="stylesheet" href="~/css/progress.css"/>
+    <link rel="stylesheet" href="~/css/progress.css" />
 }
 
 <a asp-page="/StudentGroups/Index">Groups</a> >
@@ -53,18 +53,27 @@
                     <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
                 <div class="card-body">
-                    <section>
-                        <h5>Feedback</h5>
-                        <p class="feedback-text">@progressUpdate.Feedback</p>
-                    </section>
-                    <section>
-                        <h5>Feedup</h5>
-                        <p class="feedback-text">@progressUpdate.Feedup</p>
-                    </section>
-                    <section>
-                        <h5>Feedforward</h5>
-                        <p class="feedback-text">@progressUpdate.Feedforward</p>
-                    </section>
+                    @if (!string.IsNullOrEmpty(progressUpdate.Feedback))
+                    {
+                        <section>
+                            <h5>Feedback</h5>
+                            <p class="feedback-text">@progressUpdate.Feedback</p>
+                        </section>
+                    }
+                    @if (!string.IsNullOrEmpty(progressUpdate.Feedup))
+                    {
+                        <section>
+                            <h5>Feedup</h5>
+                            <p class="feedback-text">@progressUpdate.Feedup</p>
+                        </section>
+                    }
+                    @if (!string.IsNullOrEmpty(progressUpdate.Feedforward))
+                    {
+                        <section>
+                            <h5>Feedforward</h5>
+                            <p class="feedback-text">@progressUpdate.Feedforward</p>
+                        </section>
+                    }
                 </div>
             </section>
         }
