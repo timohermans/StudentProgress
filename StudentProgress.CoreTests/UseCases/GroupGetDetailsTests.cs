@@ -36,7 +36,8 @@ namespace StudentProgress.CoreTests.UseCases
             // arrange
             Fixture.DataMother.CreateGroup("diversion group", null, null, "Arnold");
             var group = Fixture.DataMother.CreateGroup("S3 - Leon", "tips",
-                new[] {"Ontwerp document", "Analyse document"}, "Timo", "Ryanne");
+                new[] {("1. Specifications and design", "Ontwerp document"), ("5. Algorithms", "Analyse document")},
+                "Timo", "Ryanne");
 
             var timo = group.Students.FirstOrDefault(g => g.Name == "Timo");
             Fixture.DataMother.CreateProgressUpdate(group, timo,
@@ -91,8 +92,10 @@ namespace StudentProgress.CoreTests.UseCases
             response!.Students.ElementAt(1).FeelingOfLatestProgress.Should().Be(Feeling.Bad);
 
             response!.Milestones.Should().HaveCount(2);
-            response!.Milestones.ElementAt(0).Name.Should().Be("Ontwerp document");
-            response!.Milestones.ElementAt(1).Name.Should().Be("Analyse document");
+            response!.Milestones.ElementAt(0).Artefact.Should().Be("Ontwerp document");
+            response!.Milestones.ElementAt(0).LearningOutcome.Should().Be("1. Specifications and design");
+            response!.Milestones.ElementAt(1).Artefact.Should().Be("Analyse document");
+            response!.Milestones.ElementAt(1).LearningOutcome.Should().Be("5. Algorithms");
         }
     }
 }

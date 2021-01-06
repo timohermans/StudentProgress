@@ -52,12 +52,27 @@
     }
     else
     {
-        <ul>
-        @foreach (var milestone in Model.StudentGroup.Milestones)
-        {
-            <li>@milestone.Name</li>
-        }
-        </ul>
+        <table class="table">
+            <thead>
+            <tr>
+                <th id="milestone-learning-outcome">@Html.DisplayNameFor(m => m.StudentGroup.Milestones.FirstOrDefault().LearningOutcome)</th>
+                <th id="milestone-artefact">@Html.DisplayNameFor(m => m.StudentGroup.Milestones.FirstOrDefault().Artefact)</th>
+                <th id="milestone-actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var milestone in Model.StudentGroup.Milestones)
+            {
+                <tr>
+                    <td headers="milestone-learning-outcome">@milestone.LearningOutcome</td>
+                    <td headers="milestone-artefact">@milestone.Artefact</td>
+                    <td headers="milestone-actions">
+                        <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
     }
 
     <section>

@@ -14,7 +14,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     {
         private readonly ProgressContext _context;
         public StudentGroup Group { get; set; }
-        [BindProperty] public MilestoneCreate.Request Milestone { get; set; }
+        [BindProperty] public MilestoneCreate.Command Milestone { get; set; }
 
         public AddMilestone(ProgressContext context)
         {

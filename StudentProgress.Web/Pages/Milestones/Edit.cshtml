@@ -1,0 +1,18 @@
+﻿@page
+@model StudentProgress.Web.Pages.Milestones.Edit
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update @Model.Command.LearningOutcome - @Model.Command.Artefact</h1>
+
+<section class="row">
+    <form class="col-4" method="post">
+        <div class="text-danger" asp-validation-summary="All"></div>
+        @Html.HiddenFor(m => m.Command.Id)
+        @Html.FormBlock(m => m.Command.LearningOutcome)
+        @Html.FormBlock(m => m.Command.Artefact)
+        @Html.SubmitBlock("Save")
+    </form>
+</section>

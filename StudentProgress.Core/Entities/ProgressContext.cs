@@ -15,6 +15,7 @@ namespace StudentProgress.Core.Entities
         public DbSet<StudentGroup> Groups => Set<StudentGroup>();
         public DbSet<Student> Students => Set<Student>();
         public DbSet<ProgressUpdate> ProgressUpdates => Set<ProgressUpdate>();
+        public DbSet<Milestone> Milestones => Set<Milestone>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -55,8 +56,10 @@ namespace StudentProgress.Core.Entities
 
             modelBuilder.Entity<Milestone>(e =>
             {
+                e.ToTable("Milestone");
                 e.HasKey(p => p.Id);
-                e.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
+                e.Property(p => p.LearningOutcome).HasConversion(p => p.Value, p => Name.Create(p).Value);
+                e.Property(p => p.Artefact).HasConversion(p => p.Value, p => Name.Create(p).Value);
             });
         }
     }

@@ -22,9 +22,10 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new MilestoneCreate(ucContext);
 
-            var result = await uc.HandleAsync(new MilestoneCreate.Request
+            var result = await uc.HandleAsync(new MilestoneCreate.Command
             {
-                Name = "Design document",
+                LearningOutcome = "2. Specifications and design",
+                Artefact = "Design document",
                 GroupId = group.Id
             });
 
@@ -32,7 +33,8 @@ namespace StudentProgress.CoreTests.UseCases
             Fixture.DataMother.GroupWithMilestones()
                 .Milestones
                 .FirstOrDefault()
-                .HasName("Design document");
+                .HasArtefact("Design document")
+                .HasLearningOutcome("2. Specifications and design");
         }
     }
 }

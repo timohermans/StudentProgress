@@ -5,10 +5,17 @@ namespace StudentProgress.CoreTests.Extensions
 {
     public static class MilestoneExtensions
     {
-        public static Milestone HasName(this Milestone milestone, string expected)
+        public static Milestone HasArtefact(this Milestone milestone, string expected)
         {
-            milestone.Name.Should().Be(Name.Create(expected).Value);
+            milestone.Artefact.Should().Be(Name.Create(expected).Value);
             return milestone;
         }
+
+        public static Milestone HasLearningOutcome(this Milestone milestone, string expected)
+        {
+            milestone.LearningOutcome.Should().Be(Name.Create(expected).Value);
+            return milestone;
+        }
+
     }
 }

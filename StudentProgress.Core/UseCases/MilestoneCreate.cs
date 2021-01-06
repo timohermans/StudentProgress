@@ -16,19 +16,22 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public record Request
+        public record Command
         {
+            public int? Id { get; init; }
             [Required] public int GroupId { get; init; }
-            [Required] public string Name { get; init; } = null!;
+            [Required] public string LearningOutcome { get; init; } = null!;
+            [Required] public string Artefact { get; init; } = null!;
         }
 
-        public async Task<Result> HandleAsync(Request request)
+        public async Task<Result> HandleAsync(Command command)
         {
             var groupResult = Maybe<StudentGroup>.From(
-                await _context.Groups.FirstOrDefaultAsync(g => g.Id == request.GroupId)
-            ).ToResult($"Group with ID {request.GroupId} does not exist");
-            var nameResult = Name.Create(request.Name);
-            var validationResult = Result.Combine(groupResult, nameResult);
+                await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId)
+            ).ToResult($"Group with ID {command.GroupId} does not exist");
+            var learningOutcomeResult = Name.Create(command.LearningOutcome);
+            var artefactResult = Name.Create(command.Artefact);
+            var validationResult = Result.Combine(groupResult, artefactResult, learningOutcomeResult);
 
             if (validationResult.IsFailure)
             {
@@ -36,7 +39,7 @@ namespace StudentProgress.Core.UseCases
             }
 
             return await groupResult
-                .Check(group => group.AddMilestone(new Milestone(nameResult.Value)))
+                .Check(group => group.AddMilestone(new Milestone(learningOutcomeResult.Value, artefactResult.Value)))
                 .Tap(async _ => await _context.SaveChangesAsync());
         }
     }

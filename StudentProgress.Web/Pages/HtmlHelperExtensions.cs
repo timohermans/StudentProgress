@@ -7,6 +7,21 @@ namespace StudentProgress.Web.Pages
 {
     public static class HtmlHelperExtensions
     {
+        public static HtmlTag SubmitBlock(this IHtmlHelper helper, string buttonText = "Submit")
+        {
+             var divTag = new HtmlTag("div");
+             divTag.AddClass("form-group");
+
+             var submitTag = new HtmlTag("input");
+             submitTag.Attr("type", "submit");
+             submitTag.AddClass("btn btn-primary");
+             submitTag.Value(buttonText);
+             
+             divTag.Append(submitTag);
+             
+             return divTag;
+        }
+        
         public static HtmlTag FormBlock<T, TMember>(this IHtmlHelper<T> helper,
             Expression<Func<T, TMember>> expression,
             Action<HtmlTag> labelModifier = null,

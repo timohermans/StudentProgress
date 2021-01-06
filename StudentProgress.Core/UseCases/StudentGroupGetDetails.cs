@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
@@ -33,7 +34,9 @@ namespace StudentProgress.Core.UseCases
             public record MilestoneResponse
             {
                 public int Id { get; }
-                public string Name { get; } = null!;
+                public string Artefact { get; } = null!;
+                [DisplayName("Learning Outcome")]
+                public string LearningOutcome { get; } = null!;
             }
 
             public record StudentsResponse
@@ -91,7 +94,8 @@ SELECT
 	p.""Date"",
 	p2.""Date"",
     m.""Id"",
-    m.""Name""
+    m.""Artefact"",
+    m.""LearningOutcome""
 FROM ""StudentGroup"" g
 LEFT JOIN ""StudentStudentGroup"" gs ON g.""Id"" = gs.""StudentGroupsId""
 LEFT JOIN ""Student"" s ON s.""Id"" = gs.""StudentsId""
@@ -112,7 +116,7 @@ WHERE g.""Id"" = @Id AND
 	((p.""Date"" is null and p2.""Date"" is null) -- no progress updates
 	OR 
 	(p.""Date"" is not null and p2.""Date"" is not null)) -- with (aggregated) progress updates
-ORDER BY p.""Date"" DESC;
+ORDER BY p.""Date"" DESC, m.""LearningOutcome"", m.""Artefact"";
 ", (group, studentProgress, milestone) =>
                     {
                         if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))

@@ -15,7 +15,7 @@
             @foreach (var milestone in Model.Group.Milestones)
             {
                 <li>
-                    @milestone.Name
+                    @milestone.Artefact
                 </li>
             }
         </ul>
@@ -27,9 +27,9 @@
     <form method="post">
         <input type="hidden" asp-for="Milestone.GroupId" value="@Model.Group.Id" />
         <div class="form-floating mb-3">
-            <input class="form-control" asp-for="Milestone.Name"/>
-            <label asp-for="Milestone.Name"></label>
-            <span class="text-danger" asp-validation-for="Milestone.Name"></span>
+            <input class="form-control" asp-for="Milestone.Artefact"/>
+            <label asp-for="Milestone.Artefact"></label>
+            <span class="text-danger" asp-validation-for="Milestone.Artefact"></span>
         </div>
         <div>
             <button type="submit" class="btn btn-primary">Create</button>

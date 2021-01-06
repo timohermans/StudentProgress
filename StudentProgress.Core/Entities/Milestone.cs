@@ -1,20 +1,30 @@
 ﻿using CSharpFunctionalExtensions;
+using StudentProgress.Core.UseCases;
 
 namespace StudentProgress.Core.Entities
 {
     public class Milestone : Entity<int>
     {
-        public Name Name { get; private set; }
-        
-        #nullable disable
+        public Name LearningOutcome { get; private set; }
+        public Name Artefact { get; private set; }
+
+        public Milestone(Name learningOutcome, Name artefact)
+        {
+            LearningOutcome = learningOutcome;
+            Artefact = artefact;
+        }
+
+#nullable disable
         private Milestone()
         {
         }
-        #nullable enable
+#nullable enable
 
-        public Milestone(Name name)
+        public Result UpdateDetails(Name learningOutcome, Name artefact)
         {
-            Name = name;
+            LearningOutcome = learningOutcome;
+            Artefact = artefact;
+            return Result.Success();
         }
     }
 }

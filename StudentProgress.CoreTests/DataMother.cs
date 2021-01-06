@@ -33,7 +33,7 @@ namespace StudentProgress.CoreTests
         }
 
         public StudentGroup CreateGroup(string name = "Student Group 1", string mnemonic = null,
-            string[] milestoneNames = null,
+            (string LearningOutcome, string Artefact)[] milestones = null,
             params string[] studentNames)
         {
             using var context = new ProgressContext(ContextOptions);
@@ -46,11 +46,12 @@ namespace StudentProgress.CoreTests
                 }
             }
 
-            if (milestoneNames != null)
+            if (milestones != null)
             {
-                foreach (var milestoneName in milestoneNames)
+                foreach (var milestone in milestones)
                 {
-                    group.AddMilestone(new Milestone(Name.Create(milestoneName).Value));
+                    group.AddMilestone(new Milestone(Name.Create(milestone.LearningOutcome).Value,
+                        Name.Create(milestone.Artefact).Value));
                 }
             }
 
