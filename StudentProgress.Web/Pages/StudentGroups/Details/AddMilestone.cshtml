@@ -7,6 +7,20 @@
 
 <h1>Add milestone to @Model.Group.Name</h1>
 
+<section>
+    <h2>New milestone</h2>
+    <form method="post">
+        <input type="hidden" asp-for="Milestone.GroupId" value="@Model.Group.Id" />
+        <div asp-validation-summary="All"></div>
+        @Html.FormBlock(m => m.Milestone.LearningOutcome)
+        @Html.FormBlock(m => m.Milestone.Artefact)
+        <div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-outline-primary" asp-page-handler="AndAddAnother">Create and add another</button>
+        </div>
+    </form>
+</section>
+
 @if (Model.Group.Milestones.Any())
 {
     <section>
@@ -22,18 +36,3 @@
     </section>
 }
 
-<section>
-    <h2>New milestone</h2>
-    <form method="post">
-        <input type="hidden" asp-for="Milestone.GroupId" value="@Model.Group.Id" />
-        <div class="form-floating mb-3">
-            <input class="form-control" asp-for="Milestone.Artefact"/>
-            <label asp-for="Milestone.Artefact"></label>
-            <span class="text-danger" asp-validation-for="Milestone.Artefact"></span>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Create</button>
-            <button type="submit" class="btn btn-outline-primary" asp-page-handler="AndAddAnother">Create and add another</button>
-        </div>
-    </form>
-</section>
