@@ -7,16 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.Progress
-{
-    public enum Rating
-    {
-        Undefined = 1,
-        Orienting = 2,
-        Beginning = 3,
-        Proficient = 4,
-        Advanced = 5
-    }
-
+{ 
     public class ProgressMilestone
     {
         public string LearningOutcome { get; }

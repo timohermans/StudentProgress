@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,30 +19,32 @@ namespace StudentProgress.Core.UseCases
             this.context = context;
         }
 
+        public record MilestoneProgress
+        {
+            public int MilestoneId { get; set; }
+            public Rating? Rating { get; set; }
+        }
+
         public record Request
         {
-            [Required]
-            public int StudentId { get; set; }
-            [Required]
-            public int GroupId { get; set; }
-            [Required]
-            public Feeling Feeling { get; set; }
-            [Required]
-            [DataType(DataType.Date)]
-            public DateTime Date { get; set; }
+            [Required] public int StudentId { get; set; }
+            [Required] public int GroupId { get; set; }
+            [Required] public Feeling Feeling { get; set; }
+            [Required] [DataType(DataType.Date)] public DateTime Date { get; set; }
             public string? Feedback { get; set; }
             public string? Feedup { get; set; }
             public string? Feedforward { get; set; }
+            public List<MilestoneProgress> Milestones { get; set; } = new List<MilestoneProgress>();
         }
 
         public async Task<Result> HandleAsync(Request progress)
         {
             var student = Maybe<Student>.From(
                 await context.Students.FirstOrDefaultAsync(s => s.Id == progress.StudentId)
-                ).ToResult("Student does not exist");
+            ).ToResult("Student does not exist");
             var group = Maybe<StudentGroup>.From(
                 await context.Groups.FirstOrDefaultAsync(g => g.Id == progress.GroupId)
-                ).ToResult("Group does not exist");
+            ).ToResult("Group does not exist");
             var result = Result.Combine(student, group);
 
             if (result.IsFailure) return result;

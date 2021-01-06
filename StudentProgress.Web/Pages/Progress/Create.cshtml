@@ -1,47 +1,71 @@
 ﻿@page
 @model StudentProgress.Web.Pages.Progress.CreateModel
 @using StudentProgress.Core.Entities
+@using System.Linq
 @{
     ViewData["Title"] = "Add Progress";
+
+    string MilestoneRatingColor(Rating rating, int currentIndex)
+    {
+        if (currentIndex != (int) rating)
+        {
+            return "light";
+        }
+
+        return rating switch
+        {
+            Rating.Undefined => "dark",
+            Rating.Orienting => "danger",
+            Rating.Beginning => "warning",
+            Rating.Proficient => "success",
+            Rating.Advanced => "primary",
+            _ => "light"
+            };
+    }
 }
 
 <div>
     <a asp-page="/StudentGroups/Index">Groups</a> >
     <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Group.Id">@Model.Group.Name</a> >
-    <a asp-page="./Index" asp-route-studentId="@Model.Student.Id" asp-route-groupId="@Model.Group.Id">@Model.Student.Name</a> >
+    <a asp-page="./Index" asp-route-studentId="@Model.Student.Id"
+       asp-route-groupId="@Model.Group.Id">
+        @Model.Student.Name
+    </a> >
     <span>Add Progress</span>
 </div>
 
 <h1>@Model.Student.Name</h1>
+<div asp-validation-summary="All"></div>
 <h2>Progress</h2>
 
-<div class="row">
-    @if (!string.IsNullOrWhiteSpace(Model.Group.Mnemonic))
-    {
-        <div class="col-sm-12 col-xl-6">
-            <dl class="row">
-                <dt class="col-sm-2 col-xl-12">
-                    @Html.DisplayNameFor(model => model.Group.Mnemonic)
-                </dt>
-                <dd class="col-sm-10 col-xl-12 feedback-text">
-                    @Html.DisplayFor(model => model.Group.Mnemonic)
-                </dd>
-            </dl>
-        </div>
-    }
+<form method="post">
+    <div class="row">
+        @if (!string.IsNullOrWhiteSpace(Model.Group.Mnemonic))
+        {
+            <div class="col-sm-12 col-xl-6">
+                <dl class="row">
+                    <dt class="col-sm-2 col-xl-12">
+                        @Html.DisplayNameFor(model => model.Group.Mnemonic)
+                    </dt>
+                    <dd class="col-sm-10 col-xl-12 feedback-text">
+                        @Html.DisplayFor(model => model.Group.Mnemonic)
+                    </dd>
+                </dl>
+            </div>
+        }
 
-    <div class="col-sm-12 col-xl-6">
-        <form method="post">
-            <div asp-validation-summary="All"></div>
-            <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id" />
-            <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id" />
+        <div class="col-sm-12 col-xl-6">
+            <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
+            <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
             <p class="form-group">
                 <label asp-for="Progress.Date"></label>
-                <input class="form-control" asp-for="Progress.Date" />
+                <input class="form-control" asp-for="Progress.Date"/>
             </p>
             <p class="form-group">
                 <label asp-for="Progress.Feeling"></label>
-                <select class="form-control" asp-for="Progress.Feeling" asp-items="@Html.GetEnumSelectList<Feeling>()"></select>
+                <select class="form-control" asp-for="Progress.Feeling"
+                        asp-items="@Html.GetEnumSelectList<Feeling>()">
+                </select>
             </p>
             <p class="form-group">
                 <label asp-for="Progress.Feedup"></label>
@@ -55,9 +79,40 @@
                 <label asp-for="Progress.Feedforward"></label>
                 <textarea class="form-control" asp-for="Progress.Feedforward"></textarea>
             </p>
-            <p>
-                <input class="btn btn-primary" type="submit" value="Add" />
-            </p>
-        </form>
+
+        </div>
     </div>
-</div>
+
+    <div class="row">
+        @foreach (var learningOutcome in Model.MilestonesPerLearningOutcome)
+        {
+            <button type="button" class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#@learningOutcome.Key"
+                    aria-expanded="false" aria-controls="@learningOutcome.Key">
+                @learningOutcome.Value.FirstOrDefault().LearningOutcome
+            </button>
+            <div class="collapse" id="@learningOutcome.Key">
+                <div class="row">
+                    @foreach (var milestone in learningOutcome.Value)
+                    {
+                        <div class="col-4 mb-3">
+                            <small class="text-muted">@milestone.LearningOutcome</small>
+                            <h6>@milestone.Artefact</h6>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
+                                @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
+                                {
+                                    <input type="radio" class="btn-check" 
+                                           asp-for="Progress.Milestones[Model.Progress.Milestones.FindIndex(m => m.MilestoneId == milestone.Id)].Rating"
+                                           value="@Rating.Undefined"/>
+                                    <label class="btn btn-outline-primary" asp-for="Progress.Milestones[i].Rating">@(i+1)</label>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <p>
+        <input class="btn btn-primary" type="submit" value="Add"/>
+    </p>
+</form>
