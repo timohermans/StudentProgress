@@ -39,7 +39,7 @@ namespace StudentProgress.Web.Pages
 
             var inputTag = helper.Input(expression)
                 .AddClass("form-control");
-            inputTag.Attr("placeholder", "");
+            inputTag.Attr("placeholder", "placeholder");
             inputModifier(inputTag);
 
             var validationTag = helper.ValidationMessage(expression)
