@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -19,7 +20,14 @@ namespace StudentProgress.CoreTests.UseCases
         [Fact]
         public async Task Creates_progress_for_a_student_of_a_group()
         {
-            var group = Fixture.DataMother.CreateGroup(studentNames: new[] {"Timo"});
+            var group = Fixture.DataMother.CreateGroup(
+                studentNames: new[] { "Timo" },
+                milestones: new[] {
+                      ("1. OO application", "DAL met SQLCommand"),
+                      ("1. OO application", "SOLID principles"),
+                      ("1. OO application", "Authentication")
+                    }
+                );
             var student = group.Students.FirstOrDefault();
             var request = new ProgressCreate.Request
             {
@@ -29,9 +37,15 @@ namespace StudentProgress.CoreTests.UseCases
                 Feedback = "Come on!",
                 Feedforward = "Work on this!",
                 Feedup = "Good job!",
-                Feeling = Feeling.Neutral
+                Feeling = Feeling.Neutral,
+                Milestones = new List<ProgressCreate.MilestoneProgress>
+                {
+                    new ProgressCreate.MilestoneProgress { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "DAL met SQLCommand")!.Id, Rating = null },
+                    new ProgressCreate.MilestoneProgress { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID principles")!.Id, Rating = Rating.Orienting }
+                }
             };
-            var useCase = new ProgressCreate(Fixture.CreateDbContext());
+            using var ucContext = Fixture.CreateDbContext();
+            var useCase = new ProgressCreate(ucContext);
 
             var result = await useCase.HandleAsync(request);
 
@@ -43,7 +57,9 @@ namespace StudentProgress.CoreTests.UseCases
                 .HasFeedback("Come on!")
                 .HasFeedforward("Work on this!")
                 .HasFeedup("Good job!")
-                .HasFeeling(Feeling.Neutral);
+                .HasFeeling(Feeling.Neutral)
+                .HasMilestonesProgressCount(1)
+                .HasMilestoneProgressRatingAt(0, Rating.Orienting);
         }
 
         [Fact]

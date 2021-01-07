@@ -19,6 +19,7 @@ namespace StudentProgress.CoreTests
         {
             using var connection = new NpgsqlConnection(Fixture.ConnectionString);
             connection.Execute(@"
+DELETE FROM ""MilestoneProgress"";
 DELETE FROM ""Milestone"";
 DELETE FROM ""StudentStudentGroup"";
 DELETE FROM ""ProgressUpdate"";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
 
@@ -33,6 +34,18 @@ namespace StudentProgress.CoreTests.Extensions
         public static ProgressUpdate HasFeeling(this ProgressUpdate update, Feeling feeling)
         {
             update.ProgressFeeling.Should().Be(feeling);
+            return update;
+        }
+
+        public static ProgressUpdate HasMilestonesProgressCount(this ProgressUpdate update, int count)
+        {
+            update.MilestonesProgress.Should().HaveCount(count);
+            return update;
+        }
+
+        public static ProgressUpdate HasMilestoneProgressRatingAt(this ProgressUpdate update, int index, Rating rating)
+        {
+            update.MilestonesProgress.ElementAt(index).Rating.Should().Be(rating);
             return update;
         }
     }
