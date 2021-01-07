@@ -342,7 +342,6 @@ healthchecksdb
 .sonarqube
 
 **/appsettings.Development.json
-**/appsettings.*.json
 
 .vs/
 /.vscode
