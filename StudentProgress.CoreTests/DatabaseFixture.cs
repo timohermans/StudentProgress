@@ -25,7 +25,6 @@ namespace StudentProgress.CoreTests
 
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
                 .UseNpgsql(ConnectionString)
-                .UseLoggerFactory(new LoggerFactory(new[] {new DebugLoggerProvider()}))
                 .Options;
 
             DataMother = new DataMother(ContextOptions);
@@ -43,10 +42,6 @@ namespace StudentProgress.CoreTests
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
             var cString = configuration.GetConnectionString("Default");
 
-            if (string.IsNullOrWhiteSpace(envCString))
-            {
-                throw new Exception("Nope");
-            }
             ConnectionString = envCString ?? cString;
         }
 
