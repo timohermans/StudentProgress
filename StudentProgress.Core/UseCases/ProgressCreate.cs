@@ -11,21 +11,22 @@ namespace StudentProgress.Core.UseCases
 {
     public class ProgressCreate
     {
-        private readonly ProgressContext context;
+        private readonly ProgressContext _context;
 
 
         public ProgressCreate(ProgressContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
-        public record MilestoneProgress
+        public record MilestoneProgressCommand
         {
             public int Id { get; set; }
             public Rating? Rating { get; set; }
+            public string? Comment { get; set; }
         }
 
-        public record Request
+        public record Command
         {
             [Required] public int StudentId { get; set; }
             [Required] public int GroupId { get; set; }
@@ -34,31 +35,51 @@ namespace StudentProgress.Core.UseCases
             public string? Feedback { get; set; }
             public string? Feedup { get; set; }
             public string? Feedforward { get; set; }
-            public List<MilestoneProgress> Milestones { get; set; } = new List<MilestoneProgress>();
+            public List<MilestoneProgressCommand> Milestones { get; set; } = new List<MilestoneProgressCommand>();
         }
 
-        public async Task<Result> HandleAsync(Request progress)
+        public async Task<Result> HandleAsync(Command command)
         {
             var student = Maybe<Student>.From(
-                await context.Students.FirstOrDefaultAsync(s => s.Id == progress.StudentId)
+                await _context.Students.FirstOrDefaultAsync(s => s.Id == command.StudentId)
             ).ToResult("Student does not exist");
             var group = Maybe<StudentGroup>.From(
-                await context.Groups.FirstOrDefaultAsync(g => g.Id == progress.GroupId)
+                await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId)
             ).ToResult("Group does not exist");
-            var result = Result.Combine(student, group);
+            var milestonesProgress = await GetMilestonesFrom(command.Milestones);
+            var result = Result.Combine(student, group, milestonesProgress);
 
             if (result.IsFailure) return result;
 
-            await context.ProgressUpdates.AddAsync(new ProgressUpdate(
+            var progressUpdate = new ProgressUpdate(
                 student.Value,
                 group.Value,
-                progress.Feedback,
-                progress.Feedup,
-                progress.Feedforward,
-                progress.Feeling,
-                progress.Date));
-            await context.SaveChangesAsync();
+                command.Feedback,
+                command.Feedup,
+                command.Feedforward,
+                command.Feeling,
+                command.Date);
+            progressUpdate.AddMilestones(milestonesProgress.Value);
+
+            await _context.ProgressUpdates.AddAsync(progressUpdate);
+            await _context.SaveChangesAsync();
             return Result.Success();
+        }
+
+        private async Task<Result<List<MilestoneProgress>>> GetMilestonesFrom(List<MilestoneProgressCommand> milestonesProgress)
+        {
+            var milestonesToAdd = milestonesProgress.Where(m => m.Rating != null).ToList();
+            var milestoneIds = milestonesToAdd.Select(m => m.Id);
+            var milestones = await _context.Milestones.Where(m => milestoneIds.Contains(m.Id)).ToListAsync();
+            var milestoneProgressWithRating = milestones
+                .Select(m =>
+                {
+                    var milestone = milestonesToAdd.FirstOrDefault(mp => mp.Id == m.Id);
+                    return new MilestoneProgress(milestone?.Rating ?? Rating.Undefined, m, milestone?.Comment);
+                })
+                .ToList();
+
+            return Result.Success(milestoneProgressWithRating);
         }
     }
 }

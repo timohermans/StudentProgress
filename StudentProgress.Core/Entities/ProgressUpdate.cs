@@ -44,5 +44,12 @@ namespace StudentProgress.Core.Entities
 
             return Result.Success();
         }
+
+        public Result AddMilestones(List<MilestoneProgress> milestones)
+        {
+            _milestonesProgress.Clear();
+            _milestonesProgress.AddRange(milestones);
+            return Result.Success();
+        }
     }
 }

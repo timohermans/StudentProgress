@@ -60,6 +60,16 @@ namespace StudentProgress.CoreTests
             return group;
         }
 
+        public ProgressUpdate QueryProgressUpdateWithMilestonesProgress()
+        {
+            using var context = new ProgressContext(ContextOptions);
+
+            return context.ProgressUpdates
+                .Include(p => p.MilestonesProgress)
+                .ThenInclude(p => p.Milestone)
+                .FirstOrDefault();
+        }
+
         public ProgressUpdate CreateProgressUpdate(
             StudentGroup group = null, Student student = null,
             string feedback = "This is not so good",

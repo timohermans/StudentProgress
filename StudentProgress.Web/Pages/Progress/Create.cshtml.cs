@@ -18,7 +18,7 @@ namespace StudentProgress.Web.Pages.Progress
         public Student Student { get; set; }
         public StudentGroup Group { get; set; }
         public List<Milestone> Milestones { get; set; }
-        [BindProperty] public ProgressCreate.Request Progress { get; set; }
+        [BindProperty] public ProgressCreate.Command Progress { get; set; }
 
         public CreateModel(ProgressContext context)
         {
@@ -40,11 +40,11 @@ namespace StudentProgress.Web.Pages.Progress
                 return RedirectToPage("/StudentGroups/Index");
             }
 
-            Progress = new ProgressCreate.Request
+            Progress = new ProgressCreate.Command
             {
                 Date = DateTime.UtcNow,
                 Feeling = Feeling.Neutral,
-                Milestones = Milestones.Select(m => new ProgressCreate.MilestoneProgress
+                Milestones = Milestones.Select(m => new ProgressCreate.MilestoneProgressCommand
                 {
                     Rating = null,
                     Id = m.Id

@@ -29,7 +29,7 @@ namespace StudentProgress.CoreTests.UseCases
                     }
                 );
             var student = group.Students.FirstOrDefault();
-            var request = new ProgressCreate.Request
+            var request = new ProgressCreate.Command
             {
                 GroupId = group.Id,
                 StudentId = student?.Id ?? 0,
@@ -38,10 +38,10 @@ namespace StudentProgress.CoreTests.UseCases
                 Feedforward = "Work on this!",
                 Feedup = "Good job!",
                 Feeling = Feeling.Neutral,
-                Milestones = new List<ProgressCreate.MilestoneProgress>
+                Milestones = new List<ProgressCreate.MilestoneProgressCommand>
                 {
-                    new ProgressCreate.MilestoneProgress { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "DAL met SQLCommand")!.Id, Rating = null },
-                    new ProgressCreate.MilestoneProgress { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID principles")!.Id, Rating = Rating.Orienting }
+                    new ProgressCreate.MilestoneProgressCommand { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "DAL met SQLCommand")!.Id, Rating = null, Comment = null },
+                    new ProgressCreate.MilestoneProgressCommand { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID principles")!.Id, Rating = Rating.Orienting, Comment = "Still not what it should be" }
                 }
             };
             using var ucContext = Fixture.CreateDbContext();
@@ -50,7 +50,7 @@ namespace StudentProgress.CoreTests.UseCases
             var result = await useCase.HandleAsync(request);
 
             result.IsSuccess.Should().BeTrue();
-            var progress = Fixture.DataMother.Query<ProgressUpdate>();
+            var progress = Fixture.DataMother.QueryProgressUpdateWithMilestonesProgress();
             progress
                 .ShouldExist()
                 .HasDate(new DateTime(2020, 12, 18))
@@ -59,14 +59,15 @@ namespace StudentProgress.CoreTests.UseCases
                 .HasFeedup("Good job!")
                 .HasFeeling(Feeling.Neutral)
                 .HasMilestonesProgressCount(1)
-                .HasMilestoneProgressRatingAt(0, Rating.Orienting);
+                .HasMilestoneProgressRatingAt(0, Rating.Orienting)
+                .HasMilestoneProgressCommentAt(0, "Still not what it should be");
         }
 
         [Fact]
         public async Task Cannot_create_for_non_existing_group()
         {
             var group = Fixture.DataMother.CreateGroup();
-            var request = new ProgressCreate.Request
+            var request = new ProgressCreate.Command
             {
                 GroupId = group.Id,
                 StudentId = 55,

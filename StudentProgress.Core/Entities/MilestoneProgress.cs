@@ -10,9 +10,17 @@ namespace StudentProgress.Core.Entities
     {
         public Milestone Milestone { get; set; }
         public Rating Rating { get; set; }
+        public string? Comment { get; set; }
 
 #nullable disable
         private MilestoneProgress() { }
 #nullable enable
+
+        public MilestoneProgress(Rating rating, Milestone milestone, string? comment)
+        {
+            Rating = rating;
+            Milestone = milestone;
+            Comment = comment;
+        }
     }
 }
