@@ -1,17 +1,13 @@
 ﻿@page
 @model StudentProgress.Web.Pages.Progress.CreateModel
 @using StudentProgress.Core.Entities
+@using StudentProgress.Core.Extensions
 @using System.Linq
 @{
     ViewData["Title"] = "Add Progress";
 
-    string MilestoneRatingColor(Rating rating, int currentIndex)
+    string MilestoneRatingColor(Rating rating)
     {
-        if (currentIndex != (int) rating)
-        {
-            return "light";
-        }
-
         return rating switch
         {
             Rating.Undefined => "dark",
@@ -20,7 +16,7 @@
             Rating.Proficient => "success",
             Rating.Advanced => "primary",
             _ => "light"
-            };
+        };
     }
 }
 
@@ -55,11 +51,11 @@
         }
 
         <div class="col-sm-12 col-xl-6">
-            <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
-            <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
+            <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id" />
+            <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id" />
             <p class="form-group">
                 <label asp-for="Progress.Date"></label>
-                <input class="form-control" asp-for="Progress.Date"/>
+                <input class="form-control" asp-for="Progress.Date" />
             </p>
             <p class="form-group">
                 <label asp-for="Progress.Feeling"></label>
@@ -83,36 +79,27 @@
         </div>
     </div>
 
-    <div class="row">
-        @foreach (var learningOutcome in Model.MilestonesPerLearningOutcome)
+    <div class="row col-xl-6">
+        @foreach (var (milestone, index) in Model.Milestones.WithIndex())
         {
-            <button type="button" class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#@learningOutcome.Key"
-                    aria-expanded="false" aria-controls="@learningOutcome.Key">
-                @learningOutcome.Value.FirstOrDefault().LearningOutcome
-            </button>
-            <div class="collapse" id="@learningOutcome.Key">
-                <div class="row">
-                    @foreach (var milestone in learningOutcome.Value)
+            <div class="col-12 mb-3">
+                <small class="text-muted">@milestone.LearningOutcome</small>
+                <h6>@milestone.Artefact</h6>
+                <input type="hidden" name="Progress.Milestones[@index].Id" value="@milestone.Id" />
+                <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
+                    @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
                     {
-                        <div class="col-4 mb-3">
-                            <small class="text-muted">@milestone.LearningOutcome</small>
-                            <h6>@milestone.Artefact</h6>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
-                                @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
-                                {
-                                    <input type="radio" class="btn-check" 
-                                           asp-for="Progress.Milestones[Model.Progress.Milestones.FindIndex(m => m.MilestoneId == milestone.Id)].Rating"
-                                           value="@Rating.Undefined"/>
-                                    <label class="btn btn-outline-primary" asp-for="Progress.Milestones[i].Rating">@(i+1)</label>
-                                }
-                            </div>
-                        </div>
+                        <input type="radio" class="btn-check"
+                               asp-for="Progress.Milestones[index].Rating"
+                               id="milestone-@milestone.Id-@i"
+                               value="@((Rating)(i + 1))" />
+                        <label class="btn btn-outline-@MilestoneRatingColor((Rating)(i + 1))" for="milestone-@milestone.Id-@i">@(i+1)</label>
                     }
                 </div>
             </div>
         }
     </div>
     <p>
-        <input class="btn btn-primary" type="submit" value="Add"/>
+        <input class="btn btn-primary" type="submit" value="Add" />
     </p>
 </form>

@@ -17,7 +17,7 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressCreate _useCase;
         public Student Student { get; set; }
         public StudentGroup Group { get; set; }
-        public Dictionary<string, List<Milestone>> MilestonesPerLearningOutcome { get; set; }
+        public List<Milestone> Milestones { get; set; }
         [BindProperty] public ProgressCreate.Request Progress { get; set; }
 
         public CreateModel(ProgressContext context)
@@ -30,27 +30,24 @@ namespace StudentProgress.Web.Pages.Progress
         {
             Student = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);
             Group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
+            Milestones = _context.Milestones
+                .Where(m => m.StudentGroup.Id == groupId)
+                .OrderBy(m => m.LearningOutcome)
+                .ToList();
 
             if (Student == null || Group == null)
             {
                 return RedirectToPage("/StudentGroups/Index");
             }
 
-            var milestones = _context.Milestones
-                .Where(m => m.StudentGroup.Id == groupId)
-                .OrderBy(m => m.LearningOutcome)
-                .ToList();
-            MilestonesPerLearningOutcome = milestones
-                .GroupBy(g => Regex.Replace(g.LearningOutcome.Value, @"[^a-zA-Z]", String.Empty))
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
             Progress = new ProgressCreate.Request
             {
                 Date = DateTime.UtcNow,
                 Feeling = Feeling.Neutral,
-                Milestones = milestones.Select(m => new ProgressCreate.MilestoneProgress
+                Milestones = Milestones.Select(m => new ProgressCreate.MilestoneProgress
                 {
                     Rating = null,
-                    MilestoneId = m.Id
+                    Id = m.Id
                 }).ToList()
             };
 

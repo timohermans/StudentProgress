@@ -21,7 +21,7 @@ namespace StudentProgress.Core.UseCases
 
         public record MilestoneProgress
         {
-            public int MilestoneId { get; set; }
+            public int Id { get; set; }
             public Rating? Rating { get; set; }
         }
 
