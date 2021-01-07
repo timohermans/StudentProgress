@@ -2,11 +2,8 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using Npgsql;
 using StudentProgress.Core.Entities;
-using StudentProgress.CoreTests.UseCases;
 using Xunit;
 
 namespace StudentProgress.CoreTests
