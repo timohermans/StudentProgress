@@ -86,7 +86,7 @@
                 <small class="text-muted">@milestone.LearningOutcome</small>
                 <h6>@milestone.Artefact</h6>
                 <input type="hidden" name="Progress.Milestones[@index].Id" value="@milestone.Id" />
-                <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
+                <div class="btn-group btn-group-sm mb-3" role="group" aria-label="@milestone.Artefact">
                     @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
                     {
                         <input type="radio" class="btn-check"
@@ -96,6 +96,7 @@
                         <label class="btn btn-outline-@MilestoneRatingColor((Rating)(i + 1))" for="milestone-@milestone.Id-@i">@(i+1)</label>
                     }
                 </div>
+                @Html.FormBlock(m => m.Progress.Milestones[index].Comment)
             </div>
         }
     </div>
