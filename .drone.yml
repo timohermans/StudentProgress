@@ -9,6 +9,7 @@ steps:
 - name: test and build
   image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
   commands:
+    - ping 192.168.178.101
     - dotnet restore
     - dotnet build
     - dotnet test
