@@ -6,10 +6,6 @@ concurrency:
   limit: 1
 
 steps:
-- name: ping
-  image: alpine
-  command:
-    - ping 192.168.178.101
 - name: test and build
   image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
   commands:
