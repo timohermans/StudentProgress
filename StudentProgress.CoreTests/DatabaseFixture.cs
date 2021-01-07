@@ -42,6 +42,12 @@ namespace StudentProgress.CoreTests
                 .Build();
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
             var cString = configuration.GetConnectionString("Default");
+
+            if (!string.IsNullOrEmpty(envCString))
+            {
+                ConnectionString = envCString;
+                return;
+            }
             ConnectionString = envCString ?? cString;
         }
 
