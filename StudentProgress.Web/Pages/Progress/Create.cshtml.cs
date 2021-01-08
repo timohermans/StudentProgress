@@ -18,6 +18,7 @@ namespace StudentProgress.Web.Pages.Progress
         public Student Student { get; set; }
         public StudentGroup Group { get; set; }
         public List<Milestone> Milestones { get; set; }
+        public Dictionary<string, string> MilestoneNavIds { get; set; }
         [BindProperty] public ProgressCreate.Command Progress { get; set; }
 
         public CreateModel(ProgressContext context)
@@ -34,6 +35,10 @@ namespace StudentProgress.Web.Pages.Progress
                 .Where(m => m.StudentGroup.Id == groupId)
                 .OrderBy(m => m.LearningOutcome)
                 .ToList();
+            MilestoneNavIds = Milestones
+                .Select(m => m.LearningOutcome)
+                .Distinct()
+                .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
 
             if (Student == null || Group == null)
             {
