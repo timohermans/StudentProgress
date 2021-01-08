@@ -39,8 +39,8 @@ namespace StudentProgress.CoreTests.UseCases
             Assert.True(result.IsSuccess);
             await using var assertDb = new ProgressContext(Fixture.ContextOptions);
             var group = assertDb.Groups.FirstOrDefault();
+            assertDb.Groups.Should().HaveCount(1);
             group.Should().NotBe(null);
-            group.Id.Should().Be(1);
             group.Name.Value.Should().Be("S3 - Leon");
             group.Mnemonic.Should().Be(null);
         }
