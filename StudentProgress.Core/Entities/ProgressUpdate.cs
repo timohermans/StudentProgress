@@ -45,7 +45,7 @@ namespace StudentProgress.Core.Entities
             return Result.Success();
         }
 
-        public Result AddMilestones(List<MilestoneProgress> milestones)
+        public Result AddMilestones(IEnumerable<MilestoneProgress> milestones)
         {
             _milestonesProgress.Clear();
             _milestonesProgress.AddRange(milestones);

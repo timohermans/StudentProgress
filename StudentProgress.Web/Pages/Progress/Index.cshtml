@@ -68,46 +68,52 @@
                     <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
                 <div class="card-body">
-                    <h5>Milestone progress</h5>
 
+                    <div class="row mb-3">
+                        @if (!string.IsNullOrEmpty(progressUpdate.Feedback))
+                        {
+                            <section>
+                                <h5>Feedback</h5>
+                                <p class="feedback-text">@progressUpdate.Feedback</p>
+                            </section>
+                        }
+                        @if (!string.IsNullOrEmpty(progressUpdate.Feedup))
+                        {
+                            <section>
+                                <h5>Feedup</h5>
+                                <p class="feedback-text">@progressUpdate.Feedup</p>
+                            </section>
+                        }
+                        @if (!string.IsNullOrEmpty(progressUpdate.Feedforward))
+                        {
+                            <section>
+                                <h5>Feedforward</h5>
+                                <p class="feedback-text">@progressUpdate.Feedforward</p>
+                            </section>
+                        }
+                    </div>
+
+                    <h5>Milestone progress</h5>
                     <div class="row">
-                        @foreach (var milestone in Model.ProgressMilestones)
+                        @if (progressUpdate.MilestoneProgresses.Count() == 0)
+                        {
+                            <p>No milestones for this update</p>
+                        }
+                        @foreach (var milestone in progressUpdate.MilestoneProgresses)
                         {
                             <div class="col-4 mb-3">
                                 <small class="text-muted">@milestone.LearningOutcome</small>
-                                <h6>@milestone.Artifact</h6>
+                                <h6>@milestone.Artefact</h6>
                                 <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
                                     @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
                                     {
-                                        <button type="button" class="btn btn-@MilestoneRatingColor(milestone.CurrentRating, i)" disabled>@i</button>
+                                        <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
                                     }
                                 </div>
                             </div>
 
                         }
                     </div>
-
-                    @if (!string.IsNullOrEmpty(progressUpdate.Feedback))
-                    {
-                        <section>
-                            <h5>Feedback</h5>
-                            <p class="feedback-text">@progressUpdate.Feedback</p>
-                        </section>
-                    }
-                    @if (!string.IsNullOrEmpty(progressUpdate.Feedup))
-                    {
-                        <section>
-                            <h5>Feedup</h5>
-                            <p class="feedback-text">@progressUpdate.Feedup</p>
-                        </section>
-                    }
-                    @if (!string.IsNullOrEmpty(progressUpdate.Feedforward))
-                    {
-                        <section>
-                            <h5>Feedforward</h5>
-                            <p class="feedback-text">@progressUpdate.Feedforward</p>
-                        </section>
-                    }
                 </div>
             </section>
         }
