@@ -99,19 +99,19 @@
                         {
                             <p>No milestones for this update</p>
                         }
-                        @foreach (var milestone in progressUpdate.MilestoneProgresses)
+                        @foreach (var milestone in progressUpdate.MilestoneProgresses.OrderBy(m => m.LearningOutcome).ThenBy(m => m.Artefact))
                         {
-                            <div class="col-4 mb-3">
-                                <small class="text-muted">@milestone.LearningOutcome</small>
-                                <h6>@milestone.Artefact</h6>
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
-                                    @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
-                                    {
-                                        <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
-                                    }
-                                </div>
-                                <p class="text-muted"><small>@milestone.Comment</small></p>
+                        <div class="col-4 mb-3">
+                            <small class="text-muted">@milestone.LearningOutcome</small>
+                            <h6>@milestone.Artefact</h6>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
+                                @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
+                                {
+                                    <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
+                                }
                             </div>
+                            <p class="text-muted"><small>@milestone.Comment</small></p>
+                        </div>
 
                         }
                     </div>
