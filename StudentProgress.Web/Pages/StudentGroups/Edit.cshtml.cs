@@ -31,7 +31,6 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
             var group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
 
-
             if (group == null)
             {
                 return NotFound();
@@ -58,11 +57,6 @@ namespace StudentProgress.Web.Pages.StudentGroups
             await _useCase.HandleAsync(StudentGroup);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool StudentGroupExists(int id)
-        {
-            return _context.Groups.Any(e => e.Id == id);
         }
     }
 }

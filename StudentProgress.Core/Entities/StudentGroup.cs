@@ -16,6 +16,9 @@ namespace StudentProgress.Core.Entities
 
         public IReadOnlyList<Student> Students => students;
 
+        private readonly List<Milestone> _milestones = new List<Milestone>();
+        public IReadOnlyList<Milestone> Milestones => _milestones;
+
 
 #nullable disable
         private StudentGroup()
@@ -46,6 +49,15 @@ namespace StudentProgress.Core.Entities
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
             Mnemonic = mnemonic;
+            return Result.Success();
+        }
+
+        public Result AddMilestone(Milestone milestone)
+        {
+            if (_milestones == null)
+                throw new InvalidOperationException("Milestones is null. Did you forget to include it in your query?");
+            
+            _milestones.Add(milestone ?? throw new NullReferenceException(nameof(milestone)));
             return Result.Success();
         }
     }

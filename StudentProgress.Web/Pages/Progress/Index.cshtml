@@ -4,20 +4,40 @@
 @{
     ViewData["Title"] = "Progress";
 
-    string ToFeelingBackgrounColor(Feeling feeling)
+    string MilestoneRatingColor(Rating rating, int currentIndex)
     {
-        switch (feeling)
+        if (currentIndex != (int)rating)
         {
-            case Feeling.Bad:
-                return "bg-danger";
-            case Feeling.Neutral:
-                return "bg-warning";
-            case Feeling.Good:
-                return "bg-success";
-            default:
-                return "";
+            return "light";
         }
+
+        return rating switch
+        {
+            Rating.Undefined => "dark",
+            Rating.Orienting => "danger",
+            Rating.Beginning => "warning",
+            Rating.Proficient => "success",
+            Rating.Advanced => "primary",
+            _ => "light"
+        };
+
     }
+
+    string ToFeelingBackgroundColor(Feeling feeling)
+    {
+        return feeling switch
+        {
+            Feeling.Bad => "bg-danger",
+            Feeling.Neutral => "bg-warning",
+            Feeling.Good => "bg-success",
+            _ => ""
+        };
+    }
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/progress.css" />
 }
 
 <a asp-page="/StudentGroups/Index">Groups</a> >
@@ -32,34 +52,68 @@
     <div id="status-overview" class="progress-timeline list-group">
         @foreach (var progressUpdate in Model.Student.ProgressUpdates)
         {
-            <a href="#feedback-@progressUpdate.Id" class="timeline-item list-group-item list-group-item-action @ToFeelingBackgrounColor(progressUpdate.Feeling) mx-4"></a>
+            <a href="#feedback-@progressUpdate.Id" class="timeline-item list-group-item list-group-item-action @ToFeelingBackgroundColor(progressUpdate.Feeling) mx-4"></a>
         }
     </div>
 
-    <section class="progress-feedback" data-spy="scroll" data-target="#status-overview" data-offset="10">
+    <section class="progress-feedback" data-bs-spy="scroll" data-bs-target="#status-overview" data-bs-offset="10">
         @foreach (var progressUpdate in Model.Student.ProgressUpdates)
         {
             <section id="feedback-@progressUpdate.Id" class="card mb-3">
                 <h4 class="card-header d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgrounColor(progressUpdate.Feeling) mr-3"></div>
+                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgroundColor(progressUpdate.Feeling) me-3"></div>
                         @progressUpdate.Date.ToShortDateString()
                     </div>
                     <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
                 <div class="card-body">
-                    <section>
-                        <h5>Feedback</h5>
-                        <p class="feedback-text">@progressUpdate.Feedback</p>
-                    </section>
-                    <section>
-                        <h5>Feedup</h5>
-                        <p class="feedback-text">@progressUpdate.Feedup</p>
-                    </section>
-                    <section>
-                        <h5>Feedforward</h5>
-                        <p class="feedback-text">@progressUpdate.Feedforward</p>
-                    </section>
+
+                    <div class="row mb-3">
+                        @if (!string.IsNullOrEmpty(progressUpdate.Feedback))
+                        {
+                            <section>
+                                <h5>Feedback</h5>
+                                <p class="feedback-text">@progressUpdate.Feedback</p>
+                            </section>
+                        }
+                        @if (!string.IsNullOrEmpty(progressUpdate.Feedup))
+                        {
+                            <section>
+                                <h5>Feedup</h5>
+                                <p class="feedback-text">@progressUpdate.Feedup</p>
+                            </section>
+                        }
+                        @if (!string.IsNullOrEmpty(progressUpdate.Feedforward))
+                        {
+                            <section>
+                                <h5>Feedforward</h5>
+                                <p class="feedback-text">@progressUpdate.Feedforward</p>
+                            </section>
+                        }
+                    </div>
+
+                    <h5>Milestone progress</h5>
+                    <div class="row">
+                        @if (progressUpdate.MilestoneProgresses.Count() == 0)
+                        {
+                            <p>No milestones for this update</p>
+                        }
+                        @foreach (var milestone in progressUpdate.MilestoneProgresses)
+                        {
+                            <div class="col-4 mb-3">
+                                <small class="text-muted">@milestone.LearningOutcome</small>
+                                <h6>@milestone.Artefact</h6>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
+                                    @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
+                                    {
+                                        <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
+                                    }
+                                </div>
+                            </div>
+
+                        }
+                    </div>
                 </div>
             </section>
         }

@@ -2,6 +2,14 @@ kind: pipeline
 type: docker
 name: build
 
+services:
+- name: postgres
+  image: postgres
+  environment:
+    POSTGRES_USER: timodb
+    POSTGRES_PASSWORD: secret
+    POSTGRES_DB: student-progress-test
+
 concurrency:
   limit: 1
 

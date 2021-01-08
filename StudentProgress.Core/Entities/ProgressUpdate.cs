@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.Entities
@@ -13,8 +14,9 @@ namespace StudentProgress.Core.Entities
         public Feeling ProgressFeeling { get; private set; }
         public int GroupId { get; private set; }
         public int StudentId { get; private set; }
-
         public DateTime Date { get; private set; }
+        private readonly List<MilestoneProgress> _milestonesProgress = new List<MilestoneProgress>();
+        public IReadOnlyList<MilestoneProgress> MilestonesProgress => _milestonesProgress;
 
         #nullable disable
         private ProgressUpdate() { }
@@ -40,6 +42,13 @@ namespace StudentProgress.Core.Entities
             Feedforward = feedforward;
             Date = date;
 
+            return Result.Success();
+        }
+
+        public Result AddMilestones(IEnumerable<MilestoneProgress> milestones)
+        {
+            _milestonesProgress.Clear();
+            _milestonesProgress.AddRange(milestones);
             return Result.Success();
         }
     }

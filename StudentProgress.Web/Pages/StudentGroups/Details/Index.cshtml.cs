@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.UseCases;
 using System.Threading.Tasks;
+using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Web.Pages.StudentGroups.Details
 {

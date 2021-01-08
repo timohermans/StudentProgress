@@ -2,11 +2,8 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using Npgsql;
 using StudentProgress.Core.Entities;
-using StudentProgress.CoreTests.UseCases;
 using Xunit;
 
 namespace StudentProgress.CoreTests
@@ -25,7 +22,6 @@ namespace StudentProgress.CoreTests
 
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
                 .UseNpgsql(ConnectionString)
-                .UseLoggerFactory(new LoggerFactory(new[] {new DebugLoggerProvider()}))
                 .Options;
 
             DataMother = new DataMother(ContextOptions);
@@ -42,6 +38,7 @@ namespace StudentProgress.CoreTests
                 .Build();
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
             var cString = configuration.GetConnectionString("Default");
+
             ConnectionString = envCString ?? cString;
         }
 

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace StudentProgress.CoreTests.Models
 {
-    public class Group
+    public class GroupTests
     {
         [Fact]
         public void Name_is_not_empty()

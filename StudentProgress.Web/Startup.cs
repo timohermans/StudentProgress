@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using HtmlTags;
 using Npgsql;
+using StudentProgress.Web.Infrastructure;
 
 namespace StudentProgress.Web
 {
@@ -27,8 +30,9 @@ namespace StudentProgress.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMiniProfiler().AddEntityFramework();
             services.AddRazorPages(options => { options.Conventions.AuthorizeFolder("/"); });
-
+            services.AddHtmlTags(new TagConventions());
             services.AddDbContext<ProgressContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"),
                     b => b.MigrationsAssembly("StudentProgress.Core")));
@@ -65,6 +69,7 @@ namespace StudentProgress.Web
         {
             if (env.IsDevelopment())
             {
+                app.UseMiniProfiler();
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }

@@ -5,57 +5,102 @@
     ViewData["Title"] = "Details";
 }
 
-<section>
-    <div>
-        <a asp-page="../Index">Groups</a> >
-        @Model.StudentGroup.Name (<a asp-page="../Edit" asp-route-id="@Model.StudentGroup.Id">Edit</a>)
-    </div>
+<div class="row">
+    <aside class="col-sm-12 col-md-2">
+    <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
+        <nav class="nav nav-pills flex-column">
+            <a class="nav-link" href="#group">Group</a>
+            <a class="nav-link" href="#milestones">Milestones</a>
+            <a class="nav-link" href="#students">Students</a>
+        </nav>
+    </nav>
+    </aside>
 
-    <h1>@Html.DisplayFor(model => model.StudentGroup.Name)</h1>
-    <hr />
+    <section class="col-sm-12 col-md-10">
+        <div>
+            <a asp-page="../Index">Groups</a> >
+            @Model.StudentGroup.Name (<a asp-page="../Edit" asp-route-id="@Model.StudentGroup.Id">Edit</a>)
+        </div>
 
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentGroup.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StudentGroup.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentGroup.Mnemonic)
-        </dt>
-        <dd class="col-sm-10 feedback-text">
-            @Html.DisplayFor(model => model.StudentGroup.Mnemonic)
-        </dd>
+        <h1 id="group">@Html.DisplayFor(model => model.StudentGroup.Name)</h1>
+        <hr/>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentGroup.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StudentGroup.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentGroup.UpdatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StudentGroup.UpdatedAt)
-        </dd>
-    </dl>
-    <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudentGroup.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudentGroup.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudentGroup.Mnemonic)
+            </dt>
+            <dd class="col-sm-10 feedback-text">
+                @Html.DisplayFor(model => model.StudentGroup.Mnemonic)
+            </dd>
 
-    <section>
-        <h2>Students</h2>
-        <a asp-page="./AddStudent" asp-route-groupId="@Model.StudentGroup.Id">Add student</a>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudentGroup.CreatedAt)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudentGroup.CreatedAt)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudentGroup.UpdatedAt)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudentGroup.UpdatedAt)
+            </dd>
+        </dl>
 
-        @if (!Model.StudentGroup.Students.Any())
+        <div id="milestones" class="d-flex">
+            <h2>Milestones</h2>
+            <a class="btn btn-link btn-sm" asp-page="./AddMilestone" asp-route-id="@Model.StudentGroup.Id">Add new</a>
+        </div>
+        @if (!Model.StudentGroup.Milestones.Any())
         {
-            <p>There are no students yet</p>
+            <p>There are no milestones yet</p>
         }
         else
         {
             <table class="table">
-                <caption>Table showing the students for this group</caption>
                 <thead>
+                <tr>
+                    <th id="milestone-learning-outcome">@Html.DisplayNameFor(m => m.StudentGroup.Milestones.FirstOrDefault().LearningOutcome)</th>
+                    <th id="milestone-artefact">@Html.DisplayNameFor(m => m.StudentGroup.Milestones.FirstOrDefault().Artefact)</th>
+                    <th id="milestone-actions"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var milestone in Model.StudentGroup.Milestones)
+                {
+                    <tr>
+                        <td headers="milestone-learning-outcome">@milestone.LearningOutcome</td>
+                        <td headers="milestone-artefact">@milestone.Artefact</td>
+                        <td headers="milestone-actions">
+                            <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+        <section id="students">
+            <div class="d-flex">
+                <h2>Students</h2>
+                <a class="btn btn-link btn-sm" asp-page="./AddStudent" asp-route-groupId="@Model.StudentGroup.Id">Add new</a>
+            </div>
+
+            @if (!Model.StudentGroup.Students.Any())
+            {
+                <p>There are no students yet</p>
+            }
+            else
+            {
+                <table class="table">
+                    <caption>Table showing the students for this group</caption>
+                    <thead>
                     <tr>
                         <th id="student-name">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
                         <th id="student-amount-of-progress">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
@@ -63,22 +108,24 @@
                         <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedforward)</th>
                         <th id="student-last-feeling">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().FeelingOfLatestProgress)</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @foreach (var student in Model.StudentGroup.Students)
                     {
                         <tr>
-                            <td headers="student-name"><a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a></td>
+                            <td headers="student-name">
+                                <a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a>
+                            </td>
                             <td headers="student-amount-of-progress">@Html.DisplayFor(_ => student.AmountOfProgressItems)</td>
                             <td headers="student-last-update">@Html.DisplayFor(_ => student.LastUpdateDate)</td>
                             <td headers="student-last-feedforward" class="feedback-text">@Html.DisplayFor(_ => student.LastFeedforward)</td>
                             <td headers="student-last-feeling">@Html.DisplayFor(_ => student.FeelingOfLatestProgress)</td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            }
+        </section>
 
-        }
     </section>
-
-</section>
+</div>

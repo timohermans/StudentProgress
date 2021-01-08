@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
@@ -26,7 +27,14 @@ namespace StudentProgress.CoreTests
             return context.Groups.Include(g => g.Students).FirstOrDefault();
         }
 
+        public StudentGroup GroupWithMilestones()
+        {
+            using var context = new ProgressContext(ContextOptions);
+            return context.Groups.Include(g => g.Milestones).FirstOrDefault();
+        }
+
         public StudentGroup CreateGroup(string name = "Student Group 1", string mnemonic = null,
+            (string LearningOutcome, string Artefact)[] milestones = null,
             params string[] studentNames)
         {
             using var context = new ProgressContext(ContextOptions);
@@ -39,9 +47,28 @@ namespace StudentProgress.CoreTests
                 }
             }
 
+            if (milestones != null)
+            {
+                foreach (var milestone in milestones)
+                {
+                    group.AddMilestone(new Milestone(Name.Create(milestone.LearningOutcome).Value,
+                        Name.Create(milestone.Artefact).Value));
+                }
+            }
+
             context.Groups.Add(group);
             context.SaveChanges();
             return group;
+        }
+
+        public ProgressUpdate QueryProgressUpdateWithMilestonesProgress()
+        {
+            using var context = new ProgressContext(ContextOptions);
+
+            return context.ProgressUpdates
+                .Include(p => p.MilestonesProgress)
+                .ThenInclude(p => p.Milestone)
+                .FirstOrDefault();
         }
 
         public ProgressUpdate CreateProgressUpdate(
@@ -50,7 +77,8 @@ namespace StudentProgress.CoreTests
             string feedup = "This is looking good",
             string feedforward = "Work on this",
             Feeling feeling = Feeling.Neutral,
-            DateTime? date = null
+            DateTime? date = null,
+            IEnumerable<MilestoneProgress> milestoneProgresses = null
         )
         {
             using var context = new ProgressContext(ContextOptions);
@@ -66,6 +94,7 @@ namespace StudentProgress.CoreTests
                 feedforward,
                 feeling,
                 date ?? new DateTime(2020, 12, 19));
+            if (milestoneProgresses != null) update.AddMilestones(milestoneProgresses);
             context.ProgressUpdates.Add(update);
             context.SaveChanges();
             return update;

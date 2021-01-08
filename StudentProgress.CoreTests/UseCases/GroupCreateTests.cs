@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
 using Xunit;
@@ -14,6 +18,13 @@ namespace StudentProgress.CoreTests.UseCases
         {
         }
 
+        private async Task<Result> ActUseCase(Func<GroupCreate, Task<Result>> action)
+        {
+            await using var dbContext = Fixture.CreateDbContext();
+            var useCase = new GroupCreate(dbContext);
+            return await action(useCase);
+        }
+
         [Fact]
         public async Task Can_create_a_group()
         {
@@ -22,15 +33,14 @@ namespace StudentProgress.CoreTests.UseCases
                 Name = "S3 - Leon",
                 Mnemonic = null
             };
-            var useCase = new GroupCreate(new ProgressContext(Fixture.ContextOptions));
 
-            var result = await useCase.HandleAsync(request);
+            var result = await ActUseCase(useCase => useCase.HandleAsync(request));
 
             Assert.True(result.IsSuccess);
-            using var assertDb = new ProgressContext(Fixture.ContextOptions);
+            await using var assertDb = new ProgressContext(Fixture.ContextOptions);
             var group = assertDb.Groups.FirstOrDefault();
+            assertDb.Groups.Should().HaveCount(1);
             group.Should().NotBe(null);
-            group.Id.Should().Be(1);
             group.Name.Value.Should().Be("S3 - Leon");
             group.Mnemonic.Should().Be(null);
         }
@@ -44,13 +54,11 @@ namespace StudentProgress.CoreTests.UseCases
                 Name = "S3-Leon",
                 Mnemonic = "Dit is een test"
             };
-            var useCase = new GroupCreate(new ProgressContext(Fixture.ContextOptions));
 
-            var result = await useCase.HandleAsync(request);
+            var result = await ActUseCase(useCase => useCase.HandleAsync(request));
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Contain("already exists");
         }
-
     }
 }

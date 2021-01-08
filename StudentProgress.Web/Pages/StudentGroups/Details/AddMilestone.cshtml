@@ -1,0 +1,38 @@
+﻿@page
+@model StudentProgress.Web.Pages.StudentGroups.Details.AddMilestone
+
+@{
+    ViewData["Title"] = "Add Milestone";
+}
+
+<h1>Add milestone to @Model.Group.Name</h1>
+
+<section>
+    <h2>New milestone</h2>
+    <form method="post">
+        <input type="hidden" asp-for="Milestone.GroupId" value="@Model.Group.Id" />
+        <div asp-validation-summary="All"></div>
+        @Html.FormBlock(m => m.Milestone.LearningOutcome)
+        @Html.FormBlock(m => m.Milestone.Artefact)
+        <div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-outline-primary" asp-page-handler="AndAddAnother">Create and add another</button>
+        </div>
+    </form>
+</section>
+
+@if (Model.Group.Milestones.Any())
+{
+    <section>
+        <h2>Previously added milestones</h2>
+        <ul>
+            @foreach (var milestone in Model.Group.Milestones)
+            {
+                <li>
+                    @milestone.Artefact
+                </li>
+            }
+        </ul>
+    </section>
+}
+

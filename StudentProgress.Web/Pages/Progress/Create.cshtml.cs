@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.Progress
@@ -14,8 +17,9 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressCreate _useCase;
         public Student Student { get; set; }
         public StudentGroup Group { get; set; }
-        [BindProperty]
-        public ProgressCreate.Request Progress { get; set; }
+        public List<Milestone> Milestones { get; set; }
+        public Dictionary<string, string> MilestoneNavIds { get; set; }
+        [BindProperty] public ProgressCreate.Command Progress { get; set; }
 
         public CreateModel(ProgressContext context)
         {
@@ -27,16 +31,29 @@ namespace StudentProgress.Web.Pages.Progress
         {
             Student = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);
             Group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
+            Milestones = _context.Milestones
+                .Where(m => m.StudentGroup.Id == groupId)
+                .OrderBy(m => m.LearningOutcome)
+                .ToList();
+            MilestoneNavIds = Milestones
+                .Select(m => m.LearningOutcome)
+                .Distinct()
+                .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
 
             if (Student == null || Group == null)
             {
                 return RedirectToPage("/StudentGroups/Index");
             }
 
-            Progress = new ProgressCreate.Request
+            Progress = new ProgressCreate.Command
             {
                 Date = DateTime.UtcNow,
-                Feeling = Feeling.Neutral
+                Feeling = Feeling.Neutral,
+                Milestones = Milestones.Select(m => new ProgressCreate.MilestoneProgressCommand
+                {
+                    Rating = null,
+                    Id = m.Id
+                }).ToList()
             };
 
             return Page();
@@ -59,7 +76,7 @@ namespace StudentProgress.Web.Pages.Progress
                 return await OnGetAsync(Progress.GroupId, Progress.StudentId);
             }
 
-            return RedirectToPage("./Index", new { StudentId = Progress.StudentId, GroupId = Progress.GroupId });
+            return RedirectToPage("./Index", new {StudentId = Progress.StudentId, GroupId = Progress.GroupId});
         }
     }
 }
