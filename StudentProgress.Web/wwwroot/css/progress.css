@@ -2,40 +2,55 @@
     /* display: grid; */
     /* grid-template-areas: "timeline feedback";
     grid-template-columns: auto 1fr; */
-    display: flex;
+    /*display: flex;*/
 }
 
 .progress-feedback {
-    order: 1;
-    flex: 1;
-    grid-area: feedback;
-    height: calc(100vh - 300px);
-    overflow-y: auto;
     padding: 10px;
     scroll-behavior: smooth;
 }
 
 .progress-timeline {
+    position: relative;
     padding: 10px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     grid-area: timeline;
+    width: 250px;
+    border-radius: 0.25rem;
 }
 
 .timeline-item {
-    height: 30px;
+    height: 10px;
     width: 5px;
     margin: 0;
     padding: 0;
     display: block;
     border: none;
+    flex: 1;
+    margin: 0 0.05rem;
 }
 
-    .timeline-item.active,
-    .timeline-item:hover {
-        width: 10px;
-    }
+.timeline-item:first-of-type {
+    border-bottom-left-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+}
+
+.timeline-item:last-of-type {
+    border-bottom-right-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.timeline-date {
+    position: absolute;
+    font-size: 60%;
+    top: -5px;
+}
+
+.timeline-date.start-date {
+    right: 0;
+}
+
 
 .feedback-text {
     white-space: pre-line;
