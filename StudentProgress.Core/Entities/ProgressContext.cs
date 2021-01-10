@@ -16,6 +16,7 @@ namespace StudentProgress.Core.Entities
         public DbSet<Student> Students => Set<Student>();
         public DbSet<ProgressUpdate> ProgressUpdates => Set<ProgressUpdate>();
         public DbSet<Milestone> Milestones => Set<Milestone>();
+        public DbSet<MilestoneProgress> MilestoneProgresses => Set<MilestoneProgress>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

@@ -1,5 +1,5 @@
-﻿@page
-@model StudentProgress.Web.Pages.Progress.CreateModel
+﻿@page "{id:int?}"
+@model StudentProgress.Web.Pages.Progress.CreateEditModel
 @using StudentProgress.Core.Entities
 @using StudentProgress.Core.Extensions
 @{
@@ -26,14 +26,15 @@
        asp-route-groupId="@Model.Group.Id">
         @Model.Student.Name
     </a> >
-    <span>Add progress</span>
+    <span>@(Model.Progress.Id == null ? "Add" : "Edit") progress</span>
 </div>
 
 <h1>@Model.Student.Name</h1>
 <div asp-validation-summary="All"></div>
-<h2>New Progress</h2>
+<h2>@(Model.Progress.Id == null ? "New" : "Update") Progress</h2>
 
 <form class="row" method="post">
+    <input type="hidden" asp-for="Progress.Id" />
     <aside class="col-sm-12 col-md-2 order-lg-1">
         <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
             <nav class="nav nav-pills flex-column">
@@ -110,7 +111,8 @@
                 }
                 <div class="col-12 mb-3">
                     <h6>@milestone.Artefact</h6>
-                    <input type="hidden" name="Progress.Milestones[@index].Id" value="@milestone.Id" />
+                    <input type="hidden" name="Progress.Milestones[@index].MilestoneId" value="@milestone.Id" />
+                    <input type="hidden" name="Progress.Milestones[@index].Id" value="@Model.Progress.Milestones[index].Id" />
                     <div class="btn-group btn-group-sm mb-3" role="group" aria-label="@milestone.Artefact">
                         @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
                         {
@@ -126,7 +128,7 @@
             }
         </section>
         <p id="save">
-            <input class="btn btn-primary" type="submit" value="Add" />
+            <input class="btn btn-primary" type="submit" value="@(Model.Progress.Id == null ? "Add" : "Update")" />
         </p>
     </div>
 </form>

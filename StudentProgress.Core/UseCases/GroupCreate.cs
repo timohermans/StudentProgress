@@ -29,7 +29,7 @@ namespace StudentProgress.Core.UseCases
 
             return await name
                 .Check(IsGroupNew)
-                .Tap(() => context.Groups.AddAsync(new StudentGroup(name.Value, request.Mnemonic)))
+                .Tap(async () => await context.Groups.AddAsync(new StudentGroup(name.Value, request.Mnemonic)))
                 .Tap(() => context.SaveChangesAsync());
         }
 

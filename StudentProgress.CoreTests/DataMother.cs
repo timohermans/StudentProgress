@@ -49,10 +49,10 @@ namespace StudentProgress.CoreTests
 
             if (milestones != null)
             {
-                foreach (var milestone in milestones)
+                foreach (var (LearningOutcome, Artefact) in milestones)
                 {
-                    group.AddMilestone(new Milestone(Name.Create(milestone.LearningOutcome).Value,
-                        Name.Create(milestone.Artefact).Value));
+                    group.AddMilestone(new Milestone(Name.Create(LearningOutcome).Value,
+                        Name.Create(Artefact).Value));
                 }
             }
 

@@ -1,11 +1,4 @@
-﻿.progress-container {
-    /* display: grid; */
-    /* grid-template-areas: "timeline feedback";
-    grid-template-columns: auto 1fr; */
-    /*display: flex;*/
-}
-
-.progress-feedback {
+﻿.progress-feedback {
     padding: 10px;
     scroll-behavior: smooth;
 }
@@ -50,7 +43,6 @@
 .timeline-date.start-date {
     right: 0;
 }
-
 
 .feedback-text {
     white-space: pre-line;
