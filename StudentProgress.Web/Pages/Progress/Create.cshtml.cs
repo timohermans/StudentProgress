@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -14,47 +15,36 @@ namespace StudentProgress.Web.Pages.Progress
     public class CreateModel : PageModel
     {
         private readonly ProgressContext _context;
-        private readonly ProgressCreate _useCase;
-        public Student Student { get; set; }
-        public StudentGroup Group { get; set; }
-        public List<Milestone> Milestones { get; set; }
-        public Dictionary<string, string> MilestoneNavIds { get; set; }
-        [BindProperty] public ProgressCreate.Command Progress { get; set; }
+        private readonly ProgressGetForCreateOrUpdate _getUseCase;
+        private readonly ProgressCreateOrUpdate _useCase;
+        public ProgressGetForCreateOrUpdate.Response GetResponse { get; set; }
+        public Student Student => GetResponse.Student;
+        public StudentGroup Group => GetResponse.Group;
+        public List<Milestone> Milestones => GetResponse.Milestones;
+        public Dictionary<string, string> MilestoneNavIds => Milestones
+                .Select(m => m.LearningOutcome)
+                .Distinct()
+                .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
+        [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; }
 
         public CreateModel(ProgressContext context)
         {
             _context = context;
-            _useCase = new ProgressCreate(context);
+            _useCase = new ProgressCreateOrUpdate(context);
+            _getUseCase = new ProgressGetForCreateOrUpdate(context);
         }
 
-        public async Task<IActionResult> OnGetAsync(int? groupId = 0, int? studentId = 0)
+        public async Task<IActionResult> OnGetAsync(ProgressGetForCreateOrUpdate.Query query)
         {
-            Student = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);
-            Group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
-            Milestones = _context.Milestones
-                .Where(m => m.StudentGroup.Id == groupId)
-                .OrderBy(m => m.LearningOutcome)
-                .ToList();
-            MilestoneNavIds = Milestones
-                .Select(m => m.LearningOutcome)
-                .Distinct()
-                .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
+            var getResult = await _getUseCase.HandleAsync(query);
 
-            if (Student == null || Group == null)
+            if (getResult.IsFailure)
             {
                 return RedirectToPage("/StudentGroups/Index");
             }
 
-            Progress = new ProgressCreate.Command
-            {
-                Date = DateTime.UtcNow,
-                Feeling = Feeling.Neutral,
-                Milestones = Milestones.Select(m => new ProgressCreate.MilestoneProgressCommand
-                {
-                    Rating = null,
-                    Id = m.Id
-                }).ToList()
-            };
+            GetResponse = getResult.Value;
+            Progress = getResult.Value.Command;
 
             return Page();
         }
@@ -73,10 +63,10 @@ namespace StudentProgress.Web.Pages.Progress
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("UseCase", ex.Message);
-                return await OnGetAsync(Progress.GroupId, Progress.StudentId);
+                return await OnGetAsync(new ProgressGetForCreateOrUpdate.Query { GroupId = Progress.GroupId, StudentId = Progress.StudentId, Id = Progress.Id });
             }
 
-            return RedirectToPage("./Index", new {StudentId = Progress.StudentId, GroupId = Progress.GroupId});
+            return RedirectToPage("./Index", new { StudentId = Progress.StudentId, GroupId = Progress.GroupId });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model StudentProgress.Web.Pages.Progress.CreateModel
 @using StudentProgress.Core.Entities
 @using StudentProgress.Core.Extensions
@@ -110,7 +110,8 @@
                 }
                 <div class="col-12 mb-3">
                     <h6>@milestone.Artefact</h6>
-                    <input type="hidden" name="Progress.Milestones[@index].Id" value="@milestone.Id" />
+                    <input type="hidden" name="Progress.Milestones[@index].MilestoneId" value="@milestone.Id" />
+                    <input type="hidden" name="Progress.Milestones[@index].Id" value="@Model.Progress.Milestones[index].Id" />
                     <div class="btn-group btn-group-sm mb-3" role="group" aria-label="@milestone.Artefact">
                         @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
                         {

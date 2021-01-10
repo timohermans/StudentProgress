@@ -9,25 +9,27 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressCreate
+    public class ProgressCreateOrUpdate
     {
         private readonly ProgressContext _context;
 
 
-        public ProgressCreate(ProgressContext context)
+        public ProgressCreateOrUpdate(ProgressContext context)
         {
             this._context = context;
         }
 
         public record MilestoneProgressCommand
         {
-            public int Id { get; set; }
+            public int? Id { get; set; }
+            public int MilestoneId { get; set; }
             public Rating? Rating { get; set; }
             public string? Comment { get; set; }
         }
 
         public record Command
         {
+            public int? Id { get; set; }
             [Required] public int StudentId { get; set; }
             [Required] public int GroupId { get; set; }
             [Required] public Feeling Feeling { get; set; }
@@ -69,12 +71,12 @@ namespace StudentProgress.Core.UseCases
         private async Task<Result<List<MilestoneProgress>>> GetMilestonesFrom(List<MilestoneProgressCommand> milestonesProgress)
         {
             var milestonesToAdd = milestonesProgress.Where(m => m.Rating != null).ToList();
-            var milestoneIds = milestonesToAdd.Select(m => m.Id);
+            var milestoneIds = milestonesToAdd.Select(m => m.MilestoneId);
             var milestones = await _context.Milestones.Where(m => milestoneIds.Contains(m.Id)).ToListAsync();
             var milestoneProgressWithRating = milestones
                 .Select(m =>
                 {
-                    var milestone = milestonesToAdd.FirstOrDefault(mp => mp.Id == m.Id);
+                    var milestone = milestonesToAdd.FirstOrDefault(mp => mp.MilestoneId == m.Id);
                     return new MilestoneProgress(milestone?.Rating ?? Rating.Undefined, m, milestone?.Comment);
                 })
                 .ToList();

@@ -29,7 +29,7 @@ namespace StudentProgress.CoreTests.UseCases
                     }
                 );
             var student = group.Students.FirstOrDefault();
-            var request = new ProgressCreate.Command
+            var request = new ProgressCreateOrUpdate.Command
             {
                 GroupId = group.Id,
                 StudentId = student?.Id ?? 0,
@@ -38,14 +38,14 @@ namespace StudentProgress.CoreTests.UseCases
                 Feedforward = "Work on this!",
                 Feedup = "Good job!",
                 Feeling = Feeling.Neutral,
-                Milestones = new List<ProgressCreate.MilestoneProgressCommand>
+                Milestones = new List<ProgressCreateOrUpdate.MilestoneProgressCommand>
                 {
-                    new ProgressCreate.MilestoneProgressCommand { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "DAL met SQLCommand")!.Id, Rating = null, Comment = null },
-                    new ProgressCreate.MilestoneProgressCommand { Id = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID principles")!.Id, Rating = Rating.Orienting, Comment = "Still not what it should be" }
+                    new ProgressCreateOrUpdate.MilestoneProgressCommand { MilestoneId = group.Milestones.FirstOrDefault(m => m.Artefact == "DAL met SQLCommand")!.Id, Rating = null, Comment = null },
+                    new ProgressCreateOrUpdate.MilestoneProgressCommand { MilestoneId = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID principles")!.Id, Rating = Rating.Orienting, Comment = "Still not what it should be" }
                 }
             };
             using var ucContext = Fixture.CreateDbContext();
-            var useCase = new ProgressCreate(ucContext);
+            var useCase = new ProgressCreateOrUpdate(ucContext);
 
             var result = await useCase.HandleAsync(request);
 
@@ -67,7 +67,7 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Cannot_create_for_non_existing_group()
         {
             var group = Fixture.DataMother.CreateGroup();
-            var request = new ProgressCreate.Command
+            var request = new ProgressCreateOrUpdate.Command
             {
                 GroupId = group.Id,
                 StudentId = 55,
@@ -77,7 +77,7 @@ namespace StudentProgress.CoreTests.UseCases
                 Feedup = "Good job!",
                 Feeling = Feeling.Neutral
             };
-            var useCase = new ProgressCreate(Fixture.CreateDbContext());
+            var useCase = new ProgressCreateOrUpdate(Fixture.CreateDbContext());
 
             var result = await useCase.HandleAsync(request);
 
