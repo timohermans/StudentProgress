@@ -12,11 +12,11 @@ namespace StudentProgress.Core.Entities
 
         public string? Mnemonic { get; private set; }
 
-        private readonly List<Student> students = new List<Student>();
+        private readonly List<Student> students = new();
 
         public IReadOnlyList<Student> Students => students;
 
-        private readonly List<Milestone> _milestones = new List<Milestone>();
+        private readonly List<Milestone> _milestones = new();
         public IReadOnlyList<Milestone> Milestones => _milestones;
 
 

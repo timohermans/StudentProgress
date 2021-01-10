@@ -33,7 +33,7 @@ namespace StudentProgress.CoreTests.UseCases
             var result = await useCase.HandleAsync(request);
 
             result.IsSuccess.Should().BeTrue();
-            var update = Fixture.DataMother.Query<ProgressUpdate>()
+            Fixture.DataMother.Query<ProgressUpdate>()
                 .ShouldExist()
                 .HasDate(new DateTime(1991, 1, 16))
                 .HasFeedback("feedback 1")

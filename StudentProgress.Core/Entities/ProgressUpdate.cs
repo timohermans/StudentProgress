@@ -15,7 +15,7 @@ namespace StudentProgress.Core.Entities
         public int GroupId { get; private set; }
         public int StudentId { get; private set; }
         public DateTime Date { get; private set; }
-        private readonly List<MilestoneProgress> _milestonesProgress = new List<MilestoneProgress>();
+        private readonly List<MilestoneProgress> _milestonesProgress = new();
         public IReadOnlyList<MilestoneProgress> MilestonesProgress => _milestonesProgress;
 
         #nullable disable
