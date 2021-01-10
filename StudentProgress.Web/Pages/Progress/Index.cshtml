@@ -70,7 +70,7 @@
                         <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgroundColor(progressUpdate.Feeling) me-3"></div>
                         @progressUpdate.Date.ToShortDateString()
                     </div>
-                    <a class="btn btn-link" asp-page="./Edit" asp-route-id="@progressUpdate.Id">Edit</a>
+                    <a class="btn btn-link" asp-page="./Create" asp-route-groupId="@Model.Student.GroupId" asp-route-studentId="@Model.Student.StudentId" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
                 <div class="card-body">
 
