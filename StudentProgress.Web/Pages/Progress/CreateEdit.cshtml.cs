@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.Progress
 {
-    public class CreateModel : PageModel
+    public class CreateEditModel : PageModel
     {
         private readonly ProgressContext _context;
         private readonly ProgressGetForCreateOrUpdate _getUseCase;
@@ -27,7 +27,7 @@ namespace StudentProgress.Web.Pages.Progress
                 .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
         [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; }
 
-        public CreateModel(ProgressContext context)
+        public CreateEditModel(ProgressContext context)
         {
             _context = context;
             _useCase = new ProgressCreateOrUpdate(context);

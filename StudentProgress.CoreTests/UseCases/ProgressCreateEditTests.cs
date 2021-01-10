@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -11,9 +12,9 @@ using Xunit;
 namespace StudentProgress.CoreTests.UseCases
 {
   [Collection("db")]
-  public class ProgressCreateTests : DatabaseTests
+  public class ProgressCreateEditTests : DatabaseTests
   {
-    public ProgressCreateTests(DatabaseFixture fixture) : base(fixture)
+    public ProgressCreateEditTests(DatabaseFixture fixture) : base(fixture)
     {
     }
 
@@ -147,10 +148,10 @@ namespace StudentProgress.CoreTests.UseCases
         .HasFeedforward("forward")
         .HasFeeling(Feeling.Good)
         .HasMilestonesProgressCount(2)
-        .HasMilestoneProgressIdAt(0, milestoneCompleteness.Id)
+        .HasMilestoneProgressIdAt(0, progress.MilestonesProgress.FirstOrDefault(mp => mp.Milestone == milestoneCompleteness)!.Id)
         .HasMilestoneProgressRatingAt(0, Rating.Advanced)
         .HasMilestoneProgressCommentAt(0, "completeness")
-        .HasMilestoneProgressIdAt(1, milestoneArgumentation.Id)
+        .HasMilestoneProgressIdAt(1, progress.MilestonesProgress.FirstOrDefault(mp => mp.Milestone == milestoneArgumentation)!.Id)
         .HasMilestoneProgressRatingAt(1, Rating.Undefined)
         .HasMilestoneProgressCommentAt(1, "argumentation");
     }
