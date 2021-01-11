@@ -60,6 +60,7 @@ namespace StudentProgress.Core.Entities
                 e.HasKey(p => p.Id);
                 e.Property(p => p.LearningOutcome).HasConversion(p => p.Value, p => Name.Create(p).Value);
                 e.Property(p => p.Artefact).HasConversion(p => p.Value, p => Name.Create(p).Value);
+                e.HasIndex(p => new { p.Artefact, p.LearningOutcome }).IsUnique();
             });
 
             modelBuilder.Entity<MilestoneProgress>(e =>
