@@ -73,9 +73,9 @@ namespace StudentProgress.CoreTests
 
         public ProgressUpdate CreateProgressUpdate(
             StudentGroup group = null, Student student = null,
-            string feedback = "This is not so good",
-            string feedup = "This is looking good",
-            string feedforward = "Work on this",
+            string feedback = "bad",
+            string feedup = "good",
+            string feedforward = "next",
             Feeling feeling = Feeling.Neutral,
             DateTime? date = null,
             IEnumerable<MilestoneProgress> milestoneProgresses = null
