@@ -48,7 +48,8 @@
 <h1>@Model.Student.Name</h1>
 
 <section class="d-flex">
-<a class="me-3" asp-page="./CreateEdit" asp-route-studentId="@Model.Student.StudentId" asp-route-groupId="@Model.Student.GroupId">Add Progress</a>
+<a class="me-3" asp-page="./CreateEdit" asp-route-studentId="@Model.Student.StudentId" asp-route-groupId="@Model.Student.GroupId">Add progress</a>
+<a class="me-3" asp-page="./Summary" asp-route-studentId="@Model.Student.StudentId" asp-route-groupId="@Model.Student.GroupId">View summary</a>
 <div id="status-overview" class="progress-timeline">
     @foreach (var (progressUpdate, index) in Model.Student.ProgressUpdates.Reverse().WithIndex())
     {
@@ -100,7 +101,7 @@
 
                     <h5>Milestone progress</h5>
                     <div class="row">
-                        @if (progressUpdate.MilestoneProgresses.Count() == 0)
+                        @if (!progressUpdate.MilestoneProgresses.Any())
                         {
                             <p>No milestones for this update</p>
                         }

@@ -45,7 +45,7 @@ namespace StudentProgress.Core.Entities
                 e.HasKey(p => p.Id);
                 e.HasOne(p => p.Student).WithMany(s => s.ProgressUpdates);
                 e.HasOne(p => p.Group).WithMany();
-                e.HasMany(p => p.MilestonesProgress).WithOne();
+                e.HasMany(p => p.MilestonesProgress).WithOne(p => p.ProgressUpdate);
             });
 
             modelBuilder.Entity<Student>(e =>
