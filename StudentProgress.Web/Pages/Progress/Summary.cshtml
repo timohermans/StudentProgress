@@ -1,8 +1,55 @@
 @page
 @model StudentProgress.Web.Pages.Progress.SummaryModel
+@using Core.Entities
 
 @{
   ViewData["Title"] = "Summary";
+
+  string MilestoneRatingColor(Rating? rating, int currentIndex)
+  {
+    if (!rating.HasValue || currentIndex != (int)rating.Value)
+    {
+      return "light";
+    }
+
+    return rating switch
+    {
+      Rating.Undefined => "dark",
+      Rating.Orienting => "danger",
+      Rating.Beginning => "warning",
+      Rating.Proficient => "success",
+      Rating.Advanced => "primary",
+      _ => "light"
+    };
+  }
 }
 
-<h1>Hello from summary!</h1>
+<a asp-page="/StudentGroups/Index">Groups</a> >
+<a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Summary.GroupId">@Model.Summary.GroupName</a> >
+<a asp-page="/Progress/Index" asp-route-groupId="@Model.Summary.GroupId"
+  asp-route-studentId="@Model.Summary.StudentId">@Model.Summary.StudentName</a> >
+<span>Summary</span>
+
+<h1>@Model.Summary.StudentName</h1>
+
+<h2>Current milestone progress</h2>
+<div class="row">
+  @if (!Model.Summary.Milestones.Any())
+  {
+    <p>No milestones in this group yet</p>
+  }
+  @foreach (var milestone in Model.Summary.Milestones)
+  {
+    <div class="col-sm-12 col-md-4 mb-3">
+      <small class="text-muted">@milestone.LearningOutcome</small>
+      <h6>@milestone.Artefact</h6>
+      <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
+        @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
+        {
+          <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
+        }
+      </div>
+      <p class="text-muted"><small>@milestone.Comment</small></p>
+    </div>
+  }
+</div>

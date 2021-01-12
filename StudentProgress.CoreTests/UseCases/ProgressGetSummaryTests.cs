@@ -55,7 +55,9 @@ namespace StudentProgress.CoreTests.UseCases
       // assert
       result.IsSuccess.Should().BeTrue();
       var summary = result.Value;
+      summary.GroupId.Should().Be(group.Id)
       summary.GroupName.Should().Be(group.Name);
+      summary.StudentId.Should().Be(student.Id);
       summary.StudentName.Should().Be(student.Name);
       summary.Milestones.Should().HaveCount(3);
       summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse(artefact: "a. 1", learningOutcome: "first", rating: Rating.Advanced, comment: null, timesWorkedOn: 2));

@@ -37,12 +37,16 @@ namespace StudentProgress.Core.UseCases
 
     public record Response
     {
+      public int GroupId { get; set; }
+      public int StudentId { get; set; }
       public string GroupName { get; set; }
       public string StudentName { get; set; }
       public IEnumerable<MilestoneResponse> Milestones { get; set; }
 
-      public Response(string groupName, string studentName, IEnumerable<MilestoneResponse> milestones)
+      public Response(int groupId, int studentId, string groupName, string studentName, IEnumerable<MilestoneResponse> milestones)
       {
+        GroupId = groupId;
+        StudentId = studentId;
         GroupName = groupName;
         StudentName = studentName;
         Milestones = milestones;
@@ -62,7 +66,8 @@ namespace StudentProgress.Core.UseCases
       var student = Maybe<Student>.From(await _context.Students.FindAsync(query.StudentId)).ToResult("Student does not exist");
       var doGroupStudentExist = Result.Combine(group, student);
 
-      if (doGroupStudentExist.IsFailure) {
+      if (doGroupStudentExist.IsFailure)
+      {
         return Result.Failure<Response>(doGroupStudentExist.Error);
       }
 
@@ -85,10 +90,15 @@ namespace StudentProgress.Core.UseCases
           comment: latestProgress?.Comment,
           timesWorkedOn: milestoneProgresses.Count
         );
-      });
+      })
+      .OrderBy(m => m.LearningOutcome)
+      .ThenBy(m => m.Artefact)
+      .ToList();
 
       return Result.Success(new Response(
+        groupId: group.Value.Id,
         groupName: group.Value.Name,
+        studentId: student.Value.Id,
         studentName: student.Value.Name,
         milestones: milestonesSummary
       ));

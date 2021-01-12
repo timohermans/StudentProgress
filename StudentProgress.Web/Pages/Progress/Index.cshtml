@@ -101,7 +101,7 @@
 
                     <h5>Milestone progress</h5>
                     <div class="row">
-                        @if (progressUpdate.MilestoneProgresses.Count() == 0)
+                        @if (!progressUpdate.MilestoneProgresses.Any())
                         {
                             <p>No milestones for this update</p>
                         }
