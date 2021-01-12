@@ -55,7 +55,7 @@ namespace StudentProgress.CoreTests.UseCases
       // assert
       result.IsSuccess.Should().BeTrue();
       var summary = result.Value;
-      summary.GroupId.Should().Be(group.Id)
+      summary.GroupId.Should().Be(group.Id);
       summary.GroupName.Should().Be(group.Name);
       summary.StudentId.Should().Be(student.Id);
       summary.StudentName.Should().Be(student.Name);
