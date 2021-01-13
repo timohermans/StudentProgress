@@ -35,7 +35,7 @@ namespace StudentProgress.Web.Pages
             divTag.AddClass("form-floating mb-3");
 
             var labelTag = helper.Label(expression);
-            inputModifier(labelTag);
+            labelModifier(labelTag);
 
             var inputTag = helper.Input(expression)
                 .AddClass("form-control");
