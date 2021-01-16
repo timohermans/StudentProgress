@@ -10,9 +10,9 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<form method="get">
+<form id="filter" method="get">
     <div class="form-floating">
-        <select id="period" asp-items="Model.Periods" class="form-control" name="period"></select>
+        <select id="period" asp-items="Model.Periods" class="form-control" name="date" onchange="document.querySelector('#filter').dispatchEvent(new Event('submit'))"></select>
         <label for="period">Period</label>
     </div>
 </form>
