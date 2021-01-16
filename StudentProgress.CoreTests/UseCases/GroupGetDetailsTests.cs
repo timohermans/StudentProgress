@@ -34,8 +34,8 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Gets_the_most_important_details_per_student_of_a_group()
         {
             // arrange
-            Fixture.DataMother.CreateGroup("diversion group", null, null, "Arnold");
-            var group = Fixture.DataMother.CreateGroup("S3 - Leon", "tips",
+            Fixture.DataMother.CreateGroup("diversion group", new DateTime(2020, 9, 1), null, null, "Arnold");
+            var group = Fixture.DataMother.CreateGroup("S3 - Leon", new DateTime(2020, 9, 1), "tips",
                 new[] {("1. Specifications and design", "Ontwerp document"), ("5. Algorithms", "Analyse document")},
                 "Timo", "Ryanne");
 

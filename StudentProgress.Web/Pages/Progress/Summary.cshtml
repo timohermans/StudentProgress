@@ -46,8 +46,8 @@
     <tr>
       <th>Learning outcome</th>
       <th>Artefact</th>
-      <th># Updated</th>
       <th>Rating</th>
+      <th># Updated</th>
       <th>Last comment</th>
     </tr>
     </thead>
@@ -57,7 +57,6 @@
       <tr>
         <td>@milestone.LearningOutcome</td>
         <td>@milestone.Artefact</td>
-        <td>@milestone.TimesWorkedOn</td>
         <td>
           <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
             @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
@@ -66,6 +65,7 @@
             }
           </div>
         </td>
+        <td>@milestone.TimesWorkedOn</td>
         <td>@milestone.Comment</td>
       </tr>
     }

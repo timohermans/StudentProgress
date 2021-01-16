@@ -33,12 +33,13 @@ namespace StudentProgress.CoreTests
             return context.Groups.Include(g => g.Milestones).FirstOrDefault();
         }
 
-        public StudentGroup CreateGroup(string name = "Student Group 1", string mnemonic = null,
+        public StudentGroup CreateGroup(string name = "Student Group 1", DateTime? period = null,
+            string mnemonic = null,
             (string LearningOutcome, string Artefact)[] milestones = null,
             params string[] studentNames)
         {
             using var context = new ProgressContext(ContextOptions);
-            var group = new StudentGroup(Name.Create(name).Value, mnemonic);
+            var group = new StudentGroup((Name) name, (Period) (period ?? new DateTime(2020, 9, 1)), mnemonic);
             if (studentNames != null)
             {
                 foreach (var studentName in studentNames)
@@ -88,7 +89,7 @@ namespace StudentProgress.CoreTests
 
             var update = new ProgressUpdate(
                 student ?? new Student("student 1"),
-                group ?? new StudentGroup(Name.Create("group 1").Value, "mnemonic 1"),
+                group ?? new StudentGroup((Name) "group 1", (Period) new DateTime(2020, 9, 1), "mnemonic 1"),
                 feedback,
                 feedup,
                 feedforward,

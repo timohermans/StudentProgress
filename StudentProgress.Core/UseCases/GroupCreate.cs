@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -21,15 +23,25 @@ namespace StudentProgress.Core.UseCases
             [Required] public string Name { get; init; } = null!;
 
             public string? Mnemonic { get; init; }
+            public DateTime StartPeriod { get; init; }
+            [DisplayName("Starting date")]
+            public DateTime StartDate { get; init; }
         }
 
         public async Task<Result> HandleAsync(Request request)
         {
             var name = Name.Create(request.Name);
+            var periodResult = Period.Create(request.StartDate);
+            var validationResult = Result.Combine(name, periodResult);
+
+            if (validationResult.IsFailure)
+            {
+                return validationResult;
+            }
 
             return await name
                 .Check(IsGroupNew)
-                .Tap(async () => await context.Groups.AddAsync(new StudentGroup(name.Value, request.Mnemonic)))
+                .Tap(async () => await context.Groups.AddAsync(new StudentGroup(name.Value, periodResult.Value, request.Mnemonic)))
                 .Tap(() => context.SaveChangesAsync());
         }
 

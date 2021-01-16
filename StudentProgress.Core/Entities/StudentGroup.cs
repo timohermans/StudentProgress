@@ -11,6 +11,8 @@ namespace StudentProgress.Core.Entities
         public Name Name { get; private set; }
 
         public string? Mnemonic { get; private set; }
+        
+        public Period Period { get; private set; }
 
         private readonly List<Student> students = new();
 
@@ -26,9 +28,10 @@ namespace StudentProgress.Core.Entities
         }
 #nullable enable
 
-        public StudentGroup(Name name, string? mnemonic = null)
+        public StudentGroup(Name name, Period period, string? mnemonic = null)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
+            Period = period;
             Mnemonic = mnemonic;
             students = new List<Student>();
         }
@@ -45,9 +48,10 @@ namespace StudentProgress.Core.Entities
             return Result.Success();
         }
 
-        public Result UpdateGroup(Name name, string? mnemonic)
+        public Result UpdateGroup(Name name, Period period, string? mnemonic)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
+            Period = period;
             Mnemonic = mnemonic;
             return Result.Success();
         }

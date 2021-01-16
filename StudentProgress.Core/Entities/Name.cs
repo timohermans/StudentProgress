@@ -17,10 +17,8 @@ namespace StudentProgress.Core.Entities
             yield return Value;
         }
 
-        public static implicit operator string(Name name)
-        {
-            return name.Value;
-        }
+        public static implicit operator string(Name name) => name.Value;
+        public static explicit operator Name(string name) => Name.Create(name).Value;
 
         public static Result<Name> Create(string value)
         {
