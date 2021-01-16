@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
@@ -22,6 +23,7 @@ namespace StudentProgress.CoreTests.UseCases
             {
                 Id = group.Id,
                 Name = "S3 - Timo",
+                StartDate = new DateTime(2021, 9, 1),
                 Mnemonic = "Denk hier aan!"
             };
             var useCase = new GroupUpdate(new ProgressContext(Fixture.ContextOptions));
@@ -33,6 +35,7 @@ namespace StudentProgress.CoreTests.UseCases
             groupUpdated
                 .ShouldExist()
                 .HasName("S3 - Timo")
+                .HasPeriod((Period)new DateTime(2021, 9, 1))
                 .HasMnemonic("Denk hier aan!");
         }
 

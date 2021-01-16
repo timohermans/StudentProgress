@@ -73,6 +73,19 @@ namespace StudentProgress.Core.Entities
             return Result.Success(activePeriod);
         }
 
+        private static List<Period> GetPossibleActivePeriods(DateTime date)
+        {
+            var possiblePeriods = new List<Period>();
+            var yearOfDate = date.Year == 1 ? 2 : date.Year;
+            for (int year = yearOfDate - 1; year <= yearOfDate + 1; year++)
+            {
+                possiblePeriods.Add((Period) new DateTime(year, 2, 1));
+                possiblePeriods.Add((Period) new DateTime(year, 9, 1));
+            }
+
+            return possiblePeriods;
+        }
+        
         private static Period? DetermineActivePeriodOutOfPossiblePeriods(DateTime date, List<Period> possiblePeriods)
         {
             for (int i = 1; i < possiblePeriods.Count; i++)
@@ -87,19 +100,6 @@ namespace StudentProgress.Core.Entities
             }
 
             return null;
-        }
-
-        private static List<Period> GetPossibleActivePeriods(DateTime date)
-        {
-            var possiblePeriods = new List<Period>();
-            var yearOfDate = date.Year == 1 ? 2 : date.AddYears(-1).Year;
-            for (int year = yearOfDate - 1; year <= yearOfDate + 1; year++)
-            {
-                possiblePeriods.Add((Period) new DateTime(year, 2, 1));
-                possiblePeriods.Add((Period) new DateTime(year, 9, 1));
-            }
-
-            return possiblePeriods;
         }
 
         public override string ToString() => !IsVeryOldDate

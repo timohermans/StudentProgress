@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -10,8 +11,8 @@ namespace StudentProgress.Core.UseCases
         public class Request
         {
             public int Id { get; set; }
-            [Required]
-            public string Name { get; set; } = null!;
+            [Required] public string Name { get; set; } = null!;
+            public DateTime StartDate { get; set; }
             public string? Mnemonic { get; set; }
         }
 
@@ -25,9 +26,18 @@ namespace StudentProgress.Core.UseCases
         public async Task<Result> HandleAsync(Request request)
         {
             var studentGroup = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(request.Id));
+            var nameResult = Name.Create(request.Name);
+            var periodResult = Period.Create(request.StartDate);
+            var validationResult = Result.Combine(nameResult, periodResult);
+
+            if (validationResult.IsFailure)
+            {
+                return validationResult;
+            }
+            
 
             return await studentGroup.ToResult("Group does not exist")
-                .Check(group => group.UpdateGroup(Name.Create(request.Name).Value, request.Mnemonic))
+                .Check(group => group.UpdateGroup(nameResult.Value, periodResult.Value, request.Mnemonic))
                 .Tap(() => _context.SaveChangesAsync());
             ;
         }

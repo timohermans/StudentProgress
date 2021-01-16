@@ -29,5 +29,11 @@ namespace StudentProgress.CoreTests.Extensions
             group.Milestones.Should().Contain(milestone);
             return group;
         }
+
+        public static StudentGroup HasPeriod(this StudentGroup group, Period period)
+        {
+            group.Period.Should().Be(period);
+            return group;
+        }
     }
 }

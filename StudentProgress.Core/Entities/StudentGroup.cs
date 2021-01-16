@@ -48,9 +48,10 @@ namespace StudentProgress.Core.Entities
             return Result.Success();
         }
 
-        public Result UpdateGroup(Name name, string? mnemonic)
+        public Result UpdateGroup(Name name, Period period, string? mnemonic)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
+            Period = period;
             Mnemonic = mnemonic;
             return Result.Success();
         }

@@ -50,6 +50,7 @@ namespace StudentProgress.CoreTests.Models
         [Theory]
         [InlineData(2021, 1, 16, 2020, 8, 31)]
         [InlineData(2021, 2, 8, 2021, 2, 8)]
+        [InlineData(2021, 8, 30, 2021, 8, 30)]
         public void Creates_the_active_period_of_a_given_date(int year, int month, int day, int expectedYear,
             int expectedMonth, int expectedDay)
         {
