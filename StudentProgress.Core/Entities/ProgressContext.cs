@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Extensions;
@@ -34,6 +35,9 @@ namespace StudentProgress.Core.Entities
                 g.HasKey(p => p.Id);
                 g.Property(p => p.Name)
                     .HasConversion(p => p.Value, p => Name.Create(p).Value);
+                g.Property(p => p.Period)
+                    .HasConversion(p => p.StartDate, y => (Period) y)
+                    .HasDefaultValue((Period)DateTime.MinValue);
                 g.HasMany(p => p.Students).WithMany(s => s.StudentGroups);
                 g.HasMany(p => p.Milestones).WithOne(m => m.StudentGroup);
                 g.HasIndex(p => p.Name).IsUnique();

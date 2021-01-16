@@ -31,7 +31,8 @@ namespace StudentProgress.CoreTests.UseCases
             var request = new GroupCreate.Request
             {
                 Name = "S3 - Leon",
-                Mnemonic = null
+                Mnemonic = null,
+                StartPeriod = new DateTime(2020, 9, 1)
             };
 
             var result = await ActUseCase(useCase => useCase.HandleAsync(request));
@@ -40,9 +41,9 @@ namespace StudentProgress.CoreTests.UseCases
             await using var assertDb = new ProgressContext(Fixture.ContextOptions);
             var group = assertDb.Groups.FirstOrDefault();
             assertDb.Groups.Should().HaveCount(1);
-            group.Should().NotBe(null);
-            group.Name.Value.Should().Be("S3 - Leon");
-            group.Mnemonic.Should().Be(null);
+            group.Should().NotBeNull();
+            group!.Name.Value.Should().Be("S3 - Leon");
+            group!.Mnemonic.Should().Be(null);
         }
 
         [Fact]
@@ -52,7 +53,8 @@ namespace StudentProgress.CoreTests.UseCases
             var request = new GroupCreate.Request
             {
                 Name = "S3-Leon",
-                Mnemonic = "Dit is een test"
+                Mnemonic = "Dit is een test",
+                StartDate = new DateTime(2020, 9, 1)
             };
 
             var result = await ActUseCase(useCase => useCase.HandleAsync(request));
