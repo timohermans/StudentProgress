@@ -8,8 +8,10 @@ namespace StudentProgress.Core.Entities
     public class Period : ValueObject
     {
         public DateTime StartDate { get; }
+        public string StartDateFormattedValue => StartDate.ToString("yyyy-M-d");
 
         private bool IsFirstSemester => StartDate.Month.IsInRange(8, 9);
+        private bool IsVeryOldDate => StartDate.Year < 1994;
 
         private Period(DateTime date) => StartDate = date;
 
@@ -59,12 +61,52 @@ namespace StudentProgress.Core.Entities
             return Result.Success(new Period(startDate));
         }
 
-        public override string ToString() => StartDate > new DateTime(1990, 1, 1)
+        public static Result<Period> CreateCurrentlyActivePeriodBy(DateTime date)
+        {
+            var possiblePeriods = GetPossibleActivePeriods(date);
+            var activePeriod = DetermineActivePeriodOutOfPossiblePeriods(date, possiblePeriods);
+            if (activePeriod == null)
+            {
+                throw new InvalidOperationException("Unable to determine active period");
+            }
+
+            return Result.Success(activePeriod);
+        }
+
+        private static Period? DetermineActivePeriodOutOfPossiblePeriods(DateTime date, List<Period> possiblePeriods)
+        {
+            for (int i = 1; i < possiblePeriods.Count; i++)
+            {
+                var minBoundary = possiblePeriods[i - 1];
+                var maxBoundary = possiblePeriods[i];
+
+                if (date >= minBoundary && date < maxBoundary)
+                {
+                    return minBoundary;
+                }
+            }
+
+            return null;
+        }
+
+        private static List<Period> GetPossibleActivePeriods(DateTime date)
+        {
+            var possiblePeriods = new List<Period>();
+            var yearOfDate = date.Year == 1 ? 2 : date.AddYears(-1).Year;
+            for (int year = yearOfDate - 1; year <= yearOfDate + 1; year++)
+            {
+                possiblePeriods.Add((Period) new DateTime(year, 2, 1));
+                possiblePeriods.Add((Period) new DateTime(year, 9, 1));
+            }
+
+            return possiblePeriods;
+        }
+
+        public override string ToString() => !IsVeryOldDate
             ? IsFirstSemester
                 ? $"{StartDate.Year}/{StartDate.AddYears(1).Year} - S1"
                 : $"{StartDate.AddYears(-1).Year}/{StartDate.Year} - S2"
             : "No period";
-
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

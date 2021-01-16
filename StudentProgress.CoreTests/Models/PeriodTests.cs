@@ -46,5 +46,16 @@ namespace StudentProgress.CoreTests.Models
 
             periodString.Should().Be(expectedPeriod);
         }
+
+        [Theory]
+        [InlineData(2021, 1, 16, 2020, 8, 31)]
+        [InlineData(2021, 2, 8, 2021, 2, 8)]
+        public void Creates_the_active_period_of_a_given_date(int year, int month, int day, int expectedYear,
+            int expectedMonth, int expectedDay)
+        {
+            var period = Period.CreateCurrentlyActivePeriodBy(new DateTime(year, month, day));
+
+            period.Value.StartDate.Should().Be(new DateTime(expectedYear, expectedMonth, expectedDay));
+        }
     }
 }
