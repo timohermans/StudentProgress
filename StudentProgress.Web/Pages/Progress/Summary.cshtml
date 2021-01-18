@@ -63,7 +63,7 @@
       <tr>
         <td>@milestone.Artefact</td>
         <td>
-          <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
+          <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
             @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
             {
               <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
@@ -71,7 +71,7 @@
           </div>
         </td>
         <td>@milestone.TimesWorkedOn</td>
-        <td>@milestone.Comment</td>
+        <td class="feedback-text">@milestone.Comment</td>
       </tr>
     }
   }
