@@ -35,27 +35,32 @@
 <h1>@Model.Summary.StudentName</h1>
 
 <h2>Current milestone progress</h2>
-<div class="row">
-  @if (!Model.Summary.Milestones.Any())
-  {
-    <p>No milestones in this group yet</p>
-  }
+@if (!Model.Summary.Milestones.Any())
+{
+  <p>No milestones in this group yet</p>
+}
 
-  <table class="table">
-    <thead>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Artefact</th>
+    <th>Rating</th>
+    <th># Updated</th>
+    <th>Last comment</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  @foreach (var learningOutcomeGrouping in Model.Summary.Milestones.ToLookup(m => m.LearningOutcome))
+  {
     <tr>
-      <th>Learning outcome</th>
-      <th>Artefact</th>
-      <th>Rating</th>
-      <th># Updated</th>
-      <th>Last comment</th>
+      <td colspan="4">
+        <h3>@learningOutcomeGrouping.Key</h3>
+      </td>
     </tr>
-    </thead>
-    <tbody>
-    @foreach (var milestone in Model.Summary.Milestones)
+    @foreach (var milestone in learningOutcomeGrouping.ToList())
     {
       <tr>
-        <td>@milestone.LearningOutcome</td>
         <td>@milestone.Artefact</td>
         <td>
           <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
@@ -69,6 +74,6 @@
         <td>@milestone.Comment</td>
       </tr>
     }
-    </tbody>
-  </table>
-</div>
+  }
+  </tbody>
+</table>
