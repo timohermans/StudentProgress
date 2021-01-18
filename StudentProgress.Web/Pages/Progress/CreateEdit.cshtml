@@ -128,7 +128,7 @@
               <img src="~/lib/bootstrap-icons/trash.svg" width="16" height="16" alt="remove rating"/>
             </button>
           </div>
-          @Html.FormBlock(m => m.Progress.Milestones[index].Comment)
+          @Html.FormBlock(m => m.Progress.Milestones[index].Comment, inputModifier: _ => _.TagName("textarea"))
         </div>
       }
     </section>

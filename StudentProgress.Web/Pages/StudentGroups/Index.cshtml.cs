@@ -14,7 +14,6 @@ namespace StudentProgress.Web.Pages.StudentGroups
     {
         private readonly ProgressContext _context;
 
-
         public IList<StudentGroup> StudentGroup { get; set; }
 
         public IEnumerable<SelectListItem> Periods { get; set; }

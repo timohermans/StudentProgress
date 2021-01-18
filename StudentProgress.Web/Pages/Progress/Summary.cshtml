@@ -35,30 +35,48 @@
 <h1>@Model.Summary.StudentName</h1>
 
 <h2>Current milestone progress</h2>
-<div class="row">
-  @if (!Model.Summary.Milestones.Any())
-  {
-    <p>No milestones in this group yet</p>
-  }
+@if (!Model.Summary.Milestones.Any())
+{
+  <p>No milestones in this group yet</p>
+}
 
-  <table class="table">
-    <thead>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Artefact</th>
+    <th>Rating</th>
+    <th># Updated</th>
+    <th>Last comment</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  @foreach (var learningOutcomeGrouping in Model.Summary.Milestones.ToLookup(m => m.LearningOutcome))
+  {
     <tr>
-      <th>Learning outcome</th>
-      <th>Artefact</th>
-      <th>Rating</th>
-      <th># Updated</th>
-      <th>Last comment</th>
+      <td>
+        <h3>@learningOutcomeGrouping.Key</h3>
+      </td>
+      <td class="align-middle">
+        <div class="progress">
+          @if (learningOutcomeGrouping.Any(l => l.Rating != null))
+          {
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Advanced) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Proficient) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Beginning) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Orienting) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Undefined) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+          }
+        </div>
+      </td>
+      <td colspan="2"></td>
     </tr>
-    </thead>
-    <tbody>
-    @foreach (var milestone in Model.Summary.Milestones)
+    @foreach (var milestone in learningOutcomeGrouping.ToList())
     {
       <tr>
-        <td>@milestone.LearningOutcome</td>
         <td>@milestone.Artefact</td>
         <td>
-          <div class="btn-group btn-group-sm" role="group" aria-label="Circustrein">
+          <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
             @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
             {
               <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
@@ -66,9 +84,9 @@
           </div>
         </td>
         <td>@milestone.TimesWorkedOn</td>
-        <td>@milestone.Comment</td>
+        <td class="feedback-text">@milestone.Comment</td>
       </tr>
     }
-    </tbody>
-  </table>
-</div>
+  }
+  </tbody>
+</table>
