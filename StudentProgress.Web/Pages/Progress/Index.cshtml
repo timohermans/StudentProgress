@@ -3,7 +3,7 @@
 @using StudentProgress.Core.Entities;
 @using StudentProgress.Core.Extensions
 @{
-    ViewData["Title"] = "Progress";
+    ViewData["Title"] = $"{Model.Student.Name} - {Model.Student.GroupName} - Progress";
 
     string MilestoneRatingColor(Rating rating, int currentIndex)
     {

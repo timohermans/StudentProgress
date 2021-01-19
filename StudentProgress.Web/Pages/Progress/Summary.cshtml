@@ -3,7 +3,7 @@
 @using Core.Entities
 
 @{
-  ViewData["Title"] = "Summary";
+  ViewData["Title"] = $"{Model.Summary.StudentName} - {Model.Summary.GroupName} - Summary";
 
   string MilestoneRatingColor(Rating? rating, int currentIndex)
   {
