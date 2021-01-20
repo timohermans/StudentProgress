@@ -47,6 +47,7 @@
         {
           <a class="nav-link" href="#@navId.Value">@navId.Key</a>
         }
+        <a class="nav-link" href="#feeling">Feeling</a>
         <a class="nav-link" href="#save">Done</a>
       </nav>
     </nav>
@@ -75,12 +76,6 @@
         <p class="form-group">
           <label asp-for="Progress.Date"></label>
           <input class="form-control" asp-for="Progress.Date"/>
-        </p>
-        <p class="form-group">
-          <label asp-for="Progress.Feeling"></label>
-          <select class="form-control" asp-for="Progress.Feeling"
-                  asp-items="@Html.GetEnumSelectList<Feeling>()">
-          </select>
         </p>
         <p class="form-group">
           <label asp-for="Progress.Feedup"></label>
@@ -131,6 +126,14 @@
           @Html.FormBlock(m => m.Progress.Milestones[index].Comment, inputModifier: _ => _.TagName("textarea"))
         </div>
       }
+    </section>
+    <section id="feeling" class="row col-xl-6">
+      <p class="form-group">
+        <label asp-for="Progress.Feeling"></label>
+        <select class="form-control" asp-for="Progress.Feeling"
+                asp-items="@Html.GetEnumSelectList<Feeling>()">
+        </select>
+      </p>
     </section>
     <p id="save">
       <input class="btn btn-primary" type="submit" value="@(Model.Progress.Id == null ? "Add" : "Update")"/>
