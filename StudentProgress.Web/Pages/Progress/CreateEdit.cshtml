@@ -119,8 +119,8 @@
                 <label class="btn btn-outline-@MilestoneRatingColor((Rating) (i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
               }
             </div>
-            <button type="button" class="btn btn-link btn-sm" onclick="removeRatingFrom(this)">
-              <img src="~/lib/bootstrap-icons/trash.svg" width="16" height="16" alt="remove rating"/>
+            <button type="button" class="btn btn-link btn-sm text-dark" onclick="removeRatingFrom(this)">
+              <svg-inject src="lib/bootstrap-icons/trash.svg"></svg-inject>
             </button>
           </div>
           @Html.FormBlock(m => m.Progress.Milestones[index].Comment, inputModifier: _ => _.TagName("textarea"))
