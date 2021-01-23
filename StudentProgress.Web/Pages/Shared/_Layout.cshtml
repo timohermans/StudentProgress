@@ -35,7 +35,7 @@
               <div class="list-group-item list-group-item-action">
                 <p x-text="student.name"></p>
                 <template x-for="group in student.groups" :key="group">
-                  <a class="btn btn-link" x-text="group.name" x-bind:href="`/Progress?groupId=${group.id}&studentId=${student.id}`"></a>
+                  <a class="btn btn-link" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress?groupId=${group.id}&studentId=${student.id}`"></a>
                 </template>
               </div>
             </template>
@@ -57,7 +57,7 @@
 
 <footer class="border-top footer text-muted">
   <div class="container">
-    &copy; 2020 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
   </div>
 </footer>
 
