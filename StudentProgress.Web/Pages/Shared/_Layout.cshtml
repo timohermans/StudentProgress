@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
@@ -63,6 +64,7 @@
 <script src="~/lib/alpinejs/alpine.min.js"></script>
 <script src="~/lib/popper/popper.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));</script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/js/search.js" asp-append-version="true"></script>
 

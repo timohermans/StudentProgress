@@ -28,7 +28,7 @@ function determineWhetherToSearch(searchInput) {
 }
 
 function doASearch(searchInput) {
-    return fetch(`api/search/${searchInput}`)
+    return fetch(`${window.applicationBaseUrl}api/search/${searchInput}`)
         .then(res => res.json());
 }
 
