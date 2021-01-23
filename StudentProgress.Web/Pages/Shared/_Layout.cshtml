@@ -1,55 +1,70 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Student Progress</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
-    @await RenderSectionAsync("Styles", required: false)
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>@ViewData["Title"] - Student Progress</title>
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="~/css/site.css"/>
+  @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
 <mini-profiler/>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand home-link" asp-area="" asp-page="/Index">Progress</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
-                </ul>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <span class="navbar-text">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
-                }
-            </div>
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container">
+      <a class="navbar-brand home-link" asp-area="" asp-page="/Index">Progress</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+          <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+          </li>
+        </ul>
+        <div x-data="initSearch()" class="d-flex flex-grow-1" autocomplete="off">
+          <input id="search" type="text" class="form-control-sm" placeholder="search.." x-on:keyup.debounce="search" autocomplete="off">
+          <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
+            <template x-for="student in searchResults" :key="student">
+              <div class="list-group-item list-group-item-action">
+                <p x-text="student.name"></p>
+                <template x-for="group in student.groups" :key="group">
+                  <a class="btn btn-link" x-text="group.name" x-bind:href="`/Progress?groupId=${group.id}&studentId=${student.id}`"></a>
+                </template>
+              </div>
+            </template>
+          </div>
         </div>
-    </nav>
+        @if (User.Identity.IsAuthenticated)
+        {
+          <span class="navbar-text">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
+        }
+      </div>
+    </div>
+  </nav>
 </header>
 <div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+  <main role="main" class="pb-3">
+    @RenderBody()
+  </main>
 </div>
 
 <footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2020 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
-    </div>
+  <div class="container">
+    &copy; 2020 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
+  </div>
 </footer>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/alpinejs/alpine.min.js"></script>
+<script src="~/lib/popper/popper.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/search.js" asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>
