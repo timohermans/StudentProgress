@@ -4,54 +4,24 @@ using StudentProgress.Core.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using StudentProgress.Core.UseCases;
 
 namespace StudentProgress.Web.Controllers
 {
     [Route("api/search")]
     public class Search : Controller
     {
-        public class GroupResponse
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
-
-        public class Response
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public List<GroupResponse> Groups { get; set; }
-        }
-
-        private readonly ProgressContext _context;
+        private readonly SearchStudents _useCase;
 
         public Search(ProgressContext context)
         {
-            _context = context;
+            _useCase = new SearchStudents(context);
         }
 
-        [HttpGet("{input}")]
-        public async Task<IActionResult> Get(string input)
+        [HttpGet("{searchTerm}")]
+        public async Task<IActionResult> Get(SearchStudents.Query query)
         {
-            var students = await _context.Students
-                .Include(s => s.StudentGroups)
-                .Where(s => s.Name.ToLower().Contains(input))
-                .OrderByDescending(s => s.ProgressUpdates.FirstOrDefault().Date)
-                .Take(10)
-                .Select(s => new Response
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Groups = s.StudentGroups.Select(g => new GroupResponse
-                        {
-                            Id = g.Id,
-                            Name = g.Name
-                        })
-                        .ToList()
-                })
-                .ToListAsync();
-
-            return Ok(students);
+            return Ok(await _useCase.HandleAsync(query));
         }
     }
 }
