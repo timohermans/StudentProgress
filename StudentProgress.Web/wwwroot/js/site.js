@@ -11,4 +11,8 @@ function autoSizeTextAreas() {
     });
 }
 
+function manuallyResizeTextArea(textArea) {
+    textArea.dispatchEvent(new Event('input'));
+}
+
 autoSizeTextAreas();
