@@ -29,7 +29,10 @@
           </li>
         </ul>
         <div x-data="initSearch()" class="d-flex flex-grow-1" autocomplete="off">
-          <input id="search" type="text" class="form-control-sm" placeholder="search students.." x-on:keyup.debounce="search" autocomplete="off">
+          <input
+            id="search" type="text" class="form-control-sm" placeholder="search student.."
+            x-on:keypress.debounce="search" 
+            autocomplete="off">
           <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
             <template x-for="student in searchResults" :key="student">
               <div class="list-group-item list-group-item-action">
