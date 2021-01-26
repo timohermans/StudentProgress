@@ -16,6 +16,7 @@ To run the project, execute the following command in this folder:
 ```bash
 docker-compose up -d
 ```
+The app will be available on `http://localhost:80`. The app and database will keep running **until you stop with `docker-compose down` or using the GUI**
 
 ## Config
 
