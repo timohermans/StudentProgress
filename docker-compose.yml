@@ -1,0 +1,26 @@
+﻿version: "3.8"
+services:
+  student-progress:
+    container_name: student-progress
+    restart: unless-stopped
+    build:
+      context: ../StudentProgress
+      dockerfile: StudentProgress.Web/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - DB_USERNAME=teacher
+      - DB_PASSWORD=T34cH3R!1
+      - DB_HOST=db
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    container_name: db
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=teacher
+      - POSTGRES_PASSWORD=T34cH3R!1
+      - POSTGRES_DB=student-progress
+volumes:
+  postgresdata:

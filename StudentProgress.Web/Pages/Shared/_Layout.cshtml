@@ -30,7 +30,7 @@
         </ul>
         <div x-data="initSearch()" class="d-flex flex-grow-1" autocomplete="off">
           <input
-            id="search" type="text" class="form-control-sm" placeholder="search.."
+            id="search" type="text" class="form-control-sm" placeholder="search student.."
             x-on:keypress.debounce="search" 
             autocomplete="off">
           <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">

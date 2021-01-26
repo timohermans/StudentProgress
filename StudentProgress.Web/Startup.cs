@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using HtmlTags;
 using Npgsql;
 using StudentProgress.Web.Infrastructure;
@@ -30,38 +32,63 @@ namespace StudentProgress.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var isAuthenticationEnabled = Configuration.GetValue<bool>("Authentication:IsEnabled");
             services.AddMiniProfiler().AddEntityFramework();
-            services.AddRazorPages(options => { options.Conventions.AuthorizeFolder("/"); });
+            services.AddRazorPages(options =>
+            {
+                if (isAuthenticationEnabled) options.Conventions.AuthorizeFolder("/");
+            });
             services.AddHtmlTags(new TagConventions());
             services.AddDbContext<ProgressContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("ProgressContext"),
+                options.UseNpgsql(BuildConnectionString(),
                     b => b.MigrationsAssembly("StudentProgress.Core")));
             services.AddScoped<IDbConnection>(_ =>
-                new NpgsqlConnection(Configuration.GetConnectionString("ProgressContext")));
+                new NpgsqlConnection(BuildConnectionString()));
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            if (isAuthenticationEnabled)
+            {
+                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+                services.AddAuthentication(options =>
+                    {
+                        // Store the session to cookies
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        // OpenId authentication
+                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    })
+                    .AddCookie("Cookies")
+                    .AddOpenIdConnect(options =>
+                    {
+                        options.ClientId = Configuration.GetValue<string>("Authentication:ClientId");
+                        options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
+                        options.Authority = Configuration.GetValue<string>("Authentication:Authority");
 
-            services.AddAuthentication(options =>
+                        // because we don't expose to the outside, we can use this in production as well
+                        options.RequireHttpsMetadata = false;
+
+                        options.SaveTokens = true;
+                        options.GetClaimsFromUserInfoEndpoint = true;
+                        options.ResponseType = OpenIdConnectResponseType.IdToken;
+                    });
+            }
+        }
+
+        private string BuildConnectionString()
+        {
+            var connectionString = Configuration.GetConnectionString("ProgressContext");
+            if (!string.IsNullOrWhiteSpace(connectionString)) return connectionString;
+
+            var dbMap = new Dictionary<string, string>
                 {
-                    // Store the session to cookies
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    // OpenId authentication
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                })
-                .AddCookie("Cookies")
-                .AddOpenIdConnect(options =>
-                {
-                    options.ClientId = Configuration.GetValue<string>("Authentication:ClientId");
-                    options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
-                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
+                    {"User ID", Configuration.GetValue<string>("DB_USERNAME")},
+                    {"Password", Configuration.GetValue<string>("DB_PASSWORD")},
+                    {"Host", Configuration.GetValue<string>("DB_HOST") ?? "localhost"},
+                    {"Port", Configuration.GetValue<string>("DB_PORT") ?? "5432"},
+                    {"Database", Configuration.GetValue<string>("DB_DATABASE") ?? "student-progress"}
+                }.Where(m => m.Value != null)
+                .Select(m => $"{m.Key}={m.Value}")
+                .ToList();
 
-                    // because we don't expose to the outside, we can use this in production as well
-                    options.RequireHttpsMetadata = false;
-
-                    options.SaveTokens = true;
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                    options.ResponseType = OpenIdConnectResponseType.IdToken;
-                });
+            return string.Join(';', dbMap);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,14 +127,21 @@ namespace StudentProgress.Web
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            if (Configuration.GetValue<bool>("Authentication:IsEnabled"))
+            {
+                app.UseAuthentication();
+                app.UseAuthorization();
+            }
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<ProgressContext>();
+            context?.Database.Migrate();
         }
     }
 }

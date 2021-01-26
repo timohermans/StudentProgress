@@ -42,9 +42,12 @@ namespace StudentProgress.CoreTests
             var group = new StudentGroup((Name) name, (Period) (period ?? new DateTime(2020, 9, 1)), mnemonic);
             if (studentNames != null)
             {
-                foreach (var studentName in studentNames)
+                var existingStudent = context.Students.Where(s => studentNames.Contains(s.Name)).ToList();
+                var studentsToAdd = studentNames.Select(sName =>
+                    existingStudent.FirstOrDefault(e => e.Name == sName) ?? new Student(sName));
+                foreach (var student in studentsToAdd)
                 {
-                    group.AddStudent(new Student(studentName));
+                    group.AddStudent(student);
                 }
             }
 

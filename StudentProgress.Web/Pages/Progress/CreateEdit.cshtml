@@ -35,7 +35,7 @@
 
 <form class="row" method="post">
   <input type="hidden" asp-for="Progress.Id"/>
-  <aside class="col-sm-12 col-md-2 order-lg-1">
+  <aside class="col-sm-12 col-md-2 order-md-1">
     <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
       <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="#general">General</a>
@@ -53,24 +53,10 @@
     </nav>
   </aside>
 
-  <div class="col-sm-12 col-md-10">
+  <div class="col-md-10">
     <section id="general" class="row">
       <h3>General</h3>
-      @if (!string.IsNullOrWhiteSpace(Model.Group.Mnemonic))
-      {
-        <div class="col-sm-12 col-xl-6">
-          <dl class="row">
-            <dt class="col-sm-2 col-xl-12">
-              @Html.DisplayNameFor(model => model.Group.Mnemonic)
-            </dt>
-            <dd class="col-sm-10 col-xl-12 feedback-text">
-              @Html.DisplayFor(model => model.Group.Mnemonic)
-            </dd>
-          </dl>
-        </div>
-      }
-
-      <div class="col-sm-12 col-xl-6">
+      <div class="col-sm-12">
         <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
         <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
         <p class="form-group">
@@ -93,38 +79,55 @@
       </div>
     </section>
 
-    <section id="milestones" class="row col-xl-6">
+    <section id="milestones" class="row">
       @if (Model.Milestones.Any())
       {
         <h3>Milestones</h3>
-      }
-      @foreach (var (milestone, index) in Model.Milestones.WithIndex())
-      {
-        if (index == 0 || Model.Milestones[index - 1].LearningOutcome != milestone.LearningOutcome)
-        {
-          <h4 id="@Model.MilestoneNavIds.GetValueOrDefault(milestone.LearningOutcome)" class="text-muted">@milestone.LearningOutcome</h4>
-        }
-        <div class="col-12 mb-3">
-          <h6>@milestone.Artefact</h6>
-          <input type="hidden" name="Progress.Milestones[@index].MilestoneId" value="@milestone.Id"/>
-          <input type="hidden" name="Progress.Milestones[@index].Id" value="@Model.Progress.Milestones[index].Id"/>
-          <div class="d-flex align-items-center mb-3">
-            <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
-              @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
-              {
-                <input type="radio" class="btn-check"
-                       asp-for="Progress.Milestones[index].Rating"
-                       id="milestone-@milestone.Id-@i"
-                       value="@((Rating) (i + 1))"/>
-                <label class="btn btn-outline-@MilestoneRatingColor((Rating) (i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
-              }
-            </div>
-            <button type="button" class="btn btn-link btn-sm text-dark" onclick="removeRatingFrom(this)">
-              <svg-inject src="lib/bootstrap-icons/trash.svg"></svg-inject>
-            </button>
-          </div>
-          @Html.FormBlock(m => m.Progress.Milestones[index].Comment, inputModifier: _ => _.TagName("textarea"))
-        </div>
+
+
+        <table class="table">
+
+          <tbody>
+          @foreach (var (milestone, index) in Model.Milestones.WithIndex())
+          {
+            if (index == 0 || Model.Milestones[index - 1].LearningOutcome != milestone.LearningOutcome)
+            {
+              <tr>
+                <td colspan="4">
+                  <h4 id="@Model.MilestoneNavIds.GetValueOrDefault(milestone.LearningOutcome)" class="text-muted">@milestone.LearningOutcome</h4>
+                </td>
+              </tr>
+            }
+            <tr>
+              <td class="align-middle">
+                @milestone.Artefact
+                <input type="hidden" name="Progress.Milestones[@index].MilestoneId" value="@milestone.Id"/>
+                <input type="hidden" name="Progress.Milestones[@index].Id" value="@Model.Progress.Milestones[index].Id"/>
+              </td>
+              <td class="align-middle">
+                <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
+                  @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
+                  {
+                    <input type="radio" class="btn-check"
+                           asp-for="Progress.Milestones[index].Rating"
+                           id="milestone-@milestone.Id-@i"
+                           value="@((Rating) (i + 1))"/>
+                    <label class="btn btn-outline-@MilestoneRatingColor((Rating) (i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
+                  }
+                </div>
+              </td>
+              <td class="align-middle">
+                <textarea class="form-control" placeholder="Comments" rows="1" asp-for="Progress.Milestones[index].Comment"></textarea>
+              </td>
+              <td class="align-middle">
+                <button type="button" class="btn btn-link btn-sm text-dark" onclick="removeRatingFrom(this)">
+                  <svg-inject src="lib/bootstrap-icons/trash.svg"></svg-inject>
+                </button>
+              </td>
+            </tr>
+          }
+          </tbody>
+        </table>
       }
     </section>
     <section id="feeling" class="row col-xl-6">
@@ -145,9 +148,12 @@
 {
   <script>
     function removeRatingFrom(event) {
-      const container = event.parentNode;
-      const ratings = container.querySelectorAll('input[type="radio"]');
+      const tableRow = event.parentNode.parentNode;
+      const ratings = tableRow.querySelectorAll('input[type="radio"]');
       ratings.forEach(radio => radio.checked = false);
+      const commentArea = tableRow.querySelector('textarea');
+      commentArea.value = '';
+      manuallyResizeTextArea(commentArea);
     }
   </script>
 }
