@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentProgress.Core.Entities;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.UseCases;
 
 namespace StudentProgress.Web.Controllers
