@@ -27,10 +27,11 @@ namespace StudentProgress.CoreTests
             return context.Groups.Include(g => g.Students).FirstOrDefault();
         }
 
-        public StudentGroup GroupWithMilestones()
+        public StudentGroup GroupWithMilestones(int? id = null)
         {
             using var context = new ProgressContext(ContextOptions);
-            return context.Groups.Include(g => g.Milestones).FirstOrDefault();
+            var groupsWithMilestones = context.Groups.Include(g => g.Milestones);
+            return id.HasValue ? groupsWithMilestones.FirstOrDefault(g => g.Id == id) : groupsWithMilestones.FirstOrDefault();
         }
 
         public StudentGroup CreateGroup(string name = "Student Group 1", DateTime? period = null,
