@@ -15,7 +15,7 @@ concurrency:
 
 steps:
 - name: test and build
-  image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+  image: mcr.microsoft.com/dotnet/sdk:5.0-alpine
   commands:
     - dotnet restore
     - dotnet build
