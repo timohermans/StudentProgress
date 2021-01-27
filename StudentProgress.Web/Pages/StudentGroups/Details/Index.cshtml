@@ -78,7 +78,8 @@
                         <td headers="milestone-learning-outcome">@milestone.LearningOutcome</td>
                         <td headers="milestone-artefact">@milestone.Artefact</td>
                         <td headers="milestone-actions">
-                            <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a>
+                            <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a> | 
+                            <a asp-page="/milestones/delete" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Delete</a>
                         </td>
                     </tr>
                 }
