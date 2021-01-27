@@ -71,7 +71,8 @@ namespace StudentProgress.Core.Entities
             {
                 e.ToTable("MilestoneProgress");
                 e.HasKey(p => p.Id);
-                e.HasOne(p => p.Milestone).WithMany();
+                e.HasOne(p => p.Milestone)
+                    .WithMany();
             });
         }
     }
