@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -14,7 +15,9 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     {
         private readonly ProgressContext _context;
         public StudentGroup Group { get; set; }
+        public List<StudentGroup> OtherGroups { get; set; }
         [BindProperty] public MilestoneCreate.Command Milestone { get; set; }
+        [BindProperty] public MilestonesCopyFromGroup.Command CopyCommand { get; set; }
 
         public AddMilestone(ProgressContext context)
         {
@@ -34,6 +37,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             }
 
             Group = group.Value;
+            OtherGroups = _context.Groups.Where(g => g.Id != group.Value.Id).ToList();
 
             return Page();
         }
@@ -59,11 +63,28 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
             if (result.IsFailure)
             {
-                ModelState.AddModelError("Summary", result.Error);
-                return await OnGet(Milestone.GroupId);
+                return await HandleError(result);
             }
 
             return onSuccessFunc.Invoke();
+        }
+
+        private async Task<IActionResult> HandleError(Result result)
+        {
+            ModelState.AddModelError("Summary", result.Error);
+            return await OnGet(Milestone.GroupId);
+        }
+
+        public async Task<IActionResult> OnPostCopyFromGroup()
+        {
+            var result = await new MilestonesCopyFromGroup(_context).HandleAsync(CopyCommand);
+
+            if (result.IsFailure)
+            {
+                return await HandleError(result);
+            }
+
+            return RedirectToPage("./Index", new {Id = CopyCommand.ToGroupId});
         }
     }
 }

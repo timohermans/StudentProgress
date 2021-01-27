@@ -7,8 +7,9 @@ namespace StudentProgress.Core.Entities
     {
         public Name LearningOutcome { get; private set; }
         public Name Artefact { get; private set; }
+        public int StudentGroupId { get; }
         public StudentGroup StudentGroup { get; private set; }
-        
+
         public Milestone(Name learningOutcome, Name artefact)
         {
             LearningOutcome = learningOutcome;
