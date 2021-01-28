@@ -25,7 +25,10 @@
         <input type="date" placeholder="placeholder" class="form-control" asp-for="StudentGroup.StartDate">
         <label asp-for="StudentGroup.StartDate"></label>
       </div>
-      @Html.FormBlock(m => m.StudentGroup.Mnemonic, inputModifier: _ => _.TagName("textarea"))
+      <p class="form-floating">
+        <textarea class="form-control" asp-for="StudentGroup.Mnemonic"></textarea>
+        <label asp-for="StudentGroup.Mnemonic"></label>
+      </p>
       <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary"/>
       </div>
