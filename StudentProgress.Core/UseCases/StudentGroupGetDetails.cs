@@ -35,8 +35,7 @@ namespace StudentProgress.Core.UseCases
             {
                 public int Id { get; }
                 public string Artefact { get; } = null!;
-                [DisplayName("Learning Outcome")]
-                public string LearningOutcome { get; } = null!;
+                [DisplayName("Learning Outcome")] public string LearningOutcome { get; } = null!;
             }
 
             public record StudentsResponse
@@ -47,7 +46,7 @@ namespace StudentProgress.Core.UseCases
                 [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; }
 
                 [Display(Name = "Last Time")]
-                [DataType(DataType.Date)]
+                [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
                 public DateTime? LastUpdateDate { get; }
 
                 [Display(Name = "Last Feedforward")] public string? LastFeedforward { get; }

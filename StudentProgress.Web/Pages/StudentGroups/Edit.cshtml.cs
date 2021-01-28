@@ -40,7 +40,8 @@ namespace StudentProgress.Web.Pages.StudentGroups
             {
                 Id = group.Id,
                 Mnemonic = group.Mnemonic,
-                Name = group.Name
+                Name = group.Name,
+                StartDate = group.Period
             };
             return Page();
         }

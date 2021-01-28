@@ -33,7 +33,23 @@ namespace StudentProgress.Core.UseCases
       [Required] public int StudentId { get; set; }
       [Required] public int GroupId { get; set; }
       [Required] public Feeling Feeling { get; set; }
-      [Required] [DataType(DataType.Date)] public DateTime Date { get; set; }
+      public DateTime Date { get; set; }
+
+      [Required]
+      [DataType(DataType.Date)]
+      public DateTime DateDate
+      {
+        get => Date.Date;
+        set => Date = value.Date + DateTime.TimeOfDay;
+      }
+
+      [Required]
+      [DataType(DataType.Time)]
+      public DateTime DateTime
+      {
+        get => Date;
+        set => Date = Date.Date + value.TimeOfDay;
+      }
       public string? Feedback { get; set; }
       public string? Feedup { get; set; }
       public string? Feedforward { get; set; }

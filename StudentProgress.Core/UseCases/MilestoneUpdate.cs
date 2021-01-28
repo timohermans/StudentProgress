@@ -37,7 +37,7 @@ namespace StudentProgress.Core.UseCases
         return validationResult;
       }
 
-      var doesArtefactAlreadyExist = _context.Milestones.Any(m => m.Artefact == artefactResult.Value && m.LearningOutcome == learningOutcomeResult.Value);
+      var doesArtefactAlreadyExist = _context.Milestones.Any(m => m.Id != command.Id && m.Artefact == artefactResult.Value && m.LearningOutcome == learningOutcomeResult.Value);
       if (doesArtefactAlreadyExist)
       {
         return Result.Failure("Artefact already exists for that learning outcome");

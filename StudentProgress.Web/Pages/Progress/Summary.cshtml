@@ -33,6 +33,9 @@
 <span>Summary</span>
 
 <h1>@Model.Summary.StudentName</h1>
+<a class="me-3" asp-page="./CreateEdit" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">Add progress</a>
+<a class="me-3" asp-page="./Index" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">View conversations</a>
+
 
 <h2>Current milestone progress</h2>
 @if (!Model.Summary.Milestones.Any())

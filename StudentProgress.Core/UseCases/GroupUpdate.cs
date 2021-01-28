@@ -38,7 +38,7 @@ namespace StudentProgress.Core.UseCases
 
             return await studentGroup.ToResult("Group does not exist")
                 .Check(group => group.UpdateGroup(nameResult.Value, periodResult.Value, request.Mnemonic))
-                .Tap(() => _context.SaveChangesAsync());
+                .Tap(async () => await _context.SaveChangesAsync());
             ;
         }
     }
