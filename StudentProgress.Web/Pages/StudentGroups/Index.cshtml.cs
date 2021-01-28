@@ -14,7 +14,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
     {
         private readonly ProgressContext _context;
 
-        public IList<StudentGroup> StudentGroup { get; set; }
+        public IList<StudentGroup> StudentGroups { get; set; }
 
         public IEnumerable<SelectListItem> Periods { get; set; }
 
@@ -30,28 +30,10 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return RedirectToPage("./Index", new {date = DateTime.Now.ToString("yyyy-M-d")});
             }
 
-            var periodSelected = Period.CreateCurrentlyActivePeriodBy(date.Value).Value;
-            Periods = await GetAllAvailablePeriods(periodSelected);
-            StudentGroup = await _context.Groups.Where(g => g.Period == periodSelected).ToListAsync();
-            return Page();
-        }
-
-        private async Task<List<SelectListItem>> GetAllAvailablePeriods(Period periodSelected)
-        {
-            var dbPeriods = await _context.Groups
-                .Select(g => g.Period)
-                .Distinct()
+            StudentGroups = await _context.Groups
+                .OrderByDescending(g => g.Period)
                 .ToListAsync();
-
-            if (!dbPeriods.Contains(periodSelected))
-            {
-                dbPeriods.Add(periodSelected);
-            }
-
-            return dbPeriods
-                .OrderBy(p => p.StartDate)
-                .Select(p => new SelectListItem(p.ToString(), p.StartDateFormattedValue, p == periodSelected))
-                .ToList();
+            return Page();
         }
     }
 }

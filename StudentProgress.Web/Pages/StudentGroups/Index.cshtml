@@ -2,55 +2,56 @@
 @model StudentProgress.Web.Pages.StudentGroups.IndexModel
 
 @{
-    ViewData["Title"] = "Groups";
+  ViewData["Title"] = "Groups";
 }
 
 <h1>Groups Overview</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+  <a asp-page="Create">Create New</a>
 </p>
-<form id="filter" method="get" autocomplete="off">
-    <div class="form-floating">
-        <select id="period" asp-items="Model.Periods" class="form-control" name="date" onchange="this.form.submit()"></select>
-        <label for="period">Period</label>
-    </div>
-</form>
+
 <table class="table">
-    <caption>Overview of groups available</caption>
-    <thead>
-        <tr>
-            <th id="name">
-                @Html.DisplayNameFor(model => model.StudentGroup[0].Name)
-            </th>
-            <th id="created-date">
-                @Html.DisplayNameFor(model => model.StudentGroup[0].CreatedDate)
-            </th>
-            <th id="updated-date">
-                @Html.DisplayNameFor(model => model.StudentGroup[0].UpdatedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.StudentGroup)
-        {
-            <tr>
-                <td headers="name">
-                    <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
-                </td>
-                <td headers="created-date">
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td headers="updated-date">
-                    @Html.DisplayFor(modelItem => item.UpdatedDate)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+  <caption>Overview of groups available</caption>
+  <thead>
+  <tr>
+    <th id="name">
+      @Html.DisplayNameFor(model => model.StudentGroups[0].Name)
+    </th>
+    <th id="created-date">
+      @Html.DisplayNameFor(model => model.StudentGroups[0].CreatedDate)
+    </th>
+    <th id="updated-date">
+      @Html.DisplayNameFor(model => model.StudentGroups[0].UpdatedDate)
+    </th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  @foreach (var groupGrouping in Model.StudentGroups.GroupBy(g => g.Period))
+  {
+    <tr>
+      <td class="text-muted" colspan="4">@groupGrouping.Key</td>
+    </tr>
+    @foreach (var item in groupGrouping.ToList())
+    {
+      <tr>
+        <td headers="name">
+          <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
+        </td>
+        <td headers="created-date">
+          @Html.DisplayFor(modelItem => item.CreatedDate)
+        </td>
+        <td headers="updated-date">
+          @Html.DisplayFor(modelItem => item.UpdatedDate)
+        </td>
+        <td>
+          <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+          <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
+          <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+        </td>
+      </tr>
+    }
+  }
+  </tbody>
 </table>
