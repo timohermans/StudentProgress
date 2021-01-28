@@ -35,8 +35,7 @@ namespace StudentProgress.Core.UseCases
             {
                 public int Id { get; }
                 public string Artefact { get; } = null!;
-                [DisplayName("Learning Outcome")]
-                public string LearningOutcome { get; } = null!;
+                [DisplayName("Learning Outcome")] public string LearningOutcome { get; } = null!;
             }
 
             public record StudentsResponse
