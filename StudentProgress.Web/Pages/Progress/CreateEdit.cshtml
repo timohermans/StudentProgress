@@ -61,7 +61,10 @@
         <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
         <p class="form-group">
           <label asp-for="Progress.Date"></label>
-          <input class="form-control" asp-for="Progress.Date"/>
+          <div class="d-flex">
+            <input class="form-control me-3" asp-for="Progress.DateDate"/>
+            <input class="form-control" asp-for="Progress.DateTime" asp-format="{0:HH:mm}"/>
+          </div>
         </p>
         <p class="form-group">
           <label asp-for="Progress.Feedup"></label>

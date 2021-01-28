@@ -47,7 +47,7 @@ namespace StudentProgress.Core.UseCases
                 [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; }
 
                 [Display(Name = "Last Time")]
-                [DataType(DataType.Date)]
+                [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
                 public DateTime? LastUpdateDate { get; }
 
                 [Display(Name = "Last Feedforward")] public string? LastFeedforward { get; }

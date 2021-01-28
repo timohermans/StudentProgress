@@ -69,7 +69,7 @@
                 <h4 class="card-header d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ToFeelingBackgroundColor(progressUpdate.Feeling) me-3"></div>
-                        @progressUpdate.Date.ToShortDateString()
+                        @progressUpdate.Date.ToString("yyyy-MM-dd HH:mm")
                     </div>
                     <a class="btn btn-link" asp-page="./CreateEdit" asp-route-groupId="@Model.Student.GroupId" asp-route-studentId="@Model.Student.StudentId" asp-route-id="@progressUpdate.Id">Edit</a>
                 </h4>
