@@ -1,4 +1,4 @@
-﻿function initSearch() {
+﻿function initSearchController() {
     return {
         searchResults: [],
         search(event) {

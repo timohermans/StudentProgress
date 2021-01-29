@@ -17,6 +17,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         public IList<StudentGroup> StudentGroups { get; set; }
 
         public IEnumerable<SelectListItem> Periods { get; set; }
+        public Period CurrentPeriod { get; set; }
 
         public IndexModel(ProgressContext context)
         {
@@ -30,6 +31,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return RedirectToPage("./Index", new {date = DateTime.Now.ToString("yyyy-M-d")});
             }
 
+            CurrentPeriod = Period.CreateCurrentlyActivePeriodBy(DateTime.Today).Value;
             StudentGroups = await _context.Groups
                 .OrderByDescending(g => g.Period)
                 .ToListAsync();

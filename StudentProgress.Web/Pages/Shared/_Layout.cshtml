@@ -28,10 +28,10 @@
             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
           </li>
         </ul>
-        <div x-data="initSearch()" class="d-flex flex-grow-1" autocomplete="off">
+        <div x-data="initSearchController()" class="d-flex flex-grow-1" autocomplete="off">
           <input
             id="search" type="text" class="form-control-sm" placeholder="search student.."
-            x-on:keypress.debounce="search" 
+            x-on:keyup.debounce="search"
             autocomplete="off">
           <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
             <template x-for="student in searchResults" :key="student">

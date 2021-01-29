@@ -31,7 +31,7 @@
   @foreach (var groupGrouping in Model.StudentGroups.GroupBy(g => g.Period))
   {
     <tr>
-      <td class="text-muted" colspan="4">@groupGrouping.Key</td>
+      <td class="@(Model.CurrentPeriod == groupGrouping.Key ? "fw-bold" : "text-muted")" colspan="4">@groupGrouping.Key</td>
     </tr>
     @foreach (var item in groupGrouping.ToList())
     {
