@@ -42,7 +42,7 @@ namespace StudentProgress.Core.UseCases
             {
                 public int Id { get; }
                 public string Name { get; } = null!;
-                [Display(Name = "Amount of Feedback")] public int AmountOfProgressItems { get; }
+                [Display(Name = "#")] public int AmountOfProgressItems { get; }
                 [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; }
 
                 [Display(Name = "Last Time")]

@@ -25,7 +25,8 @@ namespace StudentProgress.Core.UseCases
             public List<Milestone> Milestones { get; set; }
             public ProgressCreateOrUpdate.Command Command { get; set; }
 
-            public Response(Student student, StudentGroup group, List<Milestone> milestones, ProgressCreateOrUpdate.Command command)
+            public Response(Student student, StudentGroup group, List<Milestone> milestones,
+                ProgressCreateOrUpdate.Command command)
             {
                 Student = student;
                 Group = group;
@@ -48,6 +49,7 @@ namespace StudentProgress.Core.UseCases
             var milestones = _context.Milestones
                 .Where(m => m.StudentGroup.Id == query.GroupId)
                 .OrderBy(m => m.LearningOutcome)
+                .ThenBy(m => m.Artefact)
                 .ToList();
             var progressUpdate = await _context.ProgressUpdates
                 .Include(p => p.MilestonesProgress)
@@ -56,7 +58,8 @@ namespace StudentProgress.Core.UseCases
 
             if (student == null || group == null || (query.Id != null && progressUpdate == null))
             {
-                return Result.Failure<Response>("Either group and/or student doesn't exist, or you're trying to access a non-existing progress update");
+                return Result.Failure<Response>(
+                    "Either group and/or student doesn't exist, or you're trying to access a non-existing progress update");
             }
 
             var command = new ProgressCreateOrUpdate.Command
@@ -70,16 +73,18 @@ namespace StudentProgress.Core.UseCases
                 Id = progressUpdate?.Id,
                 Feeling = progressUpdate?.ProgressFeeling ?? Feeling.Neutral,
                 Milestones = milestones.Select(milestone =>
-                {
-                    var milestoneProgress = progressUpdate?.MilestonesProgress.FirstOrDefault(pu => milestone.Id == pu.Milestone.Id);
-                    return new ProgressCreateOrUpdate.MilestoneProgressCommand
                     {
-                        Rating = milestoneProgress?.Rating,
-                        Comment = milestoneProgress?.Comment,
-                        MilestoneId = milestone.Id,
-                        Id = milestoneProgress?.Id
-                    };
-                }).ToList()
+                        var milestoneProgress =
+                            progressUpdate?.MilestonesProgress.FirstOrDefault(pu => milestone.Id == pu.Milestone.Id);
+                        return new ProgressCreateOrUpdate.MilestoneProgressCommand
+                        {
+                            Rating = milestoneProgress?.Rating,
+                            Comment = milestoneProgress?.Comment,
+                            MilestoneId = milestone.Id,
+                            Id = milestoneProgress?.Id
+                        };
+                    })
+                    .ToList()
             };
 
             return Result.Success(new Response(student!, group!, milestones, command));
