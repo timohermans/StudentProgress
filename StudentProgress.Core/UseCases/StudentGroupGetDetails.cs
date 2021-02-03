@@ -34,7 +34,7 @@ namespace StudentProgress.Core.UseCases
             public record MilestoneResponse
             {
                 public int Id { get; }
-                public string Artefact { get; } = null!;
+                [DisplayName("Learning Outcome Artefact")]public string Artefact { get; } = null!;
                 [DisplayName("Learning Outcome")] public string LearningOutcome { get; } = null!;
             }
 
