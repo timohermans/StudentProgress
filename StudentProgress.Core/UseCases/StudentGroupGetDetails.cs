@@ -115,7 +115,7 @@ WHERE g.""Id"" = @Id AND
 	((p.""Date"" is null and p2.""Date"" is null) -- no progress updates
 	OR 
 	(p.""Date"" is not null and p2.""Date"" is not null)) -- with (aggregated) progress updates
-ORDER BY p.""Date"" DESC, m.""LearningOutcome"", m.""Artefact"";
+ORDER BY s.""Name"", p.""Date"" DESC, m.""LearningOutcome"", m.""Artefact"";
 ", (group, studentProgress, milestone) =>
                     {
                         if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))

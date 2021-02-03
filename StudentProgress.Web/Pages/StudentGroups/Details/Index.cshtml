@@ -72,16 +72,21 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var milestone in Model.StudentGroup.Milestones)
+        @foreach (var milestoneGrouping in Model.StudentGroup.Milestones.ToLookup(m => m.LearningOutcome))
         {
           <tr>
-            <td headers="milestone-learning-outcome">@milestone.LearningOutcome</td>
-            <td headers="milestone-artefact">@milestone.Artefact</td>
-            <td headers="milestone-actions">
-              <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a> |
-              <a asp-page="/milestones/delete" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Delete</a>
-            </td>
+            <td class="text-muted fw-light" headers="milestone-learning-outcome" colspan="2">@milestoneGrouping.Key</td>
           </tr>
+          @foreach (var milestone in milestoneGrouping.ToList())
+          {
+            <tr>
+              <td headers="milestone-artefact">@milestone.Artefact</td>
+              <td headers="milestone-actions">
+                <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a> |
+                <a asp-page="/milestones/delete" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Delete</a>
+              </td>
+            </tr>
+          }
         }
         </tbody>
       </table>

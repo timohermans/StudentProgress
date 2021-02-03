@@ -15,8 +15,13 @@
     <form method="post">
       <div asp-validation-summary="All" class="text-danger"></div>
       <input type="hidden" asp-for="Student.GroupId" value="@Model.Group.Id"/>
-      @Html.FormBlock(m => m.Student.Name)
+      <div class="form-floating mb-3">
+        <input asp-for="Student.Name" class="form-control" autofocus />
+        <label asp-for="Student.Name"></label>
+        <span asp-validation-for="Student.Name"></span>
+      </div>
       <div class="form-group">
+        <input type="submit" value="Add and add another" class="btn btn-outline-primary" asp-page-handler="AndAddAnother"/>
         <input type="submit" value="Add" class="btn btn-primary"/>
       </div>
     </form>

@@ -34,10 +34,27 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
         public int? GroupId { get; set; }
 
-        [BindProperty]
-        public StudentAddToGroup.Request Student { get; set; }
+        [BindProperty] public StudentAddToGroup.Request Student { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
+        {
+            await AddStudentToGroup();
+
+            if (!ModelState.IsValid) return Page();
+
+            return RedirectToPage("./Index", new {Id = Student.GroupId});
+        }
+
+        public async Task<IActionResult> OnPostAndAddAnotherAsync()
+        {
+            await AddStudentToGroup();
+
+            if (!ModelState.IsValid) return Page();
+
+            return RedirectToPage("./AddStudent", new {GroupId = Student.GroupId});
+        }
+
+        private async Task<IActionResult> AddStudentToGroup()
         {
             if (!ModelState.IsValid)
             {
@@ -51,10 +68,10 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("Summary", ex.Message);
-                return OnGet(Student.GroupId);
+                return Page();
             }
 
-            return RedirectToPage("./Index", new { Id = Student.GroupId });
+            return Page();
         }
     }
 }
