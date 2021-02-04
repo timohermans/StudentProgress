@@ -23,8 +23,6 @@
 }
 
 .timeline-item-hoverable {
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
     flex: 5;
 }
 
