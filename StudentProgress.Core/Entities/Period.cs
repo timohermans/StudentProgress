@@ -15,6 +15,11 @@ namespace StudentProgress.Core.Entities
 
         private Period(DateTime date) => StartDate = date;
 
+        private DateTime EndOfSemester => (StartDate.Month == 2
+                ? Period.Create(new DateTime(StartDate.Year, 9, 1)).Value
+                : Period.Create(new DateTime(StartDate.Year + 1, 2, 1)).Value)
+            .StartDate.AddDays(-1);
+
         public static implicit operator DateTime(Period period) => period.StartDate;
         public static explicit operator Period(DateTime date) => Create(date).Value;
 
@@ -85,7 +90,7 @@ namespace StudentProgress.Core.Entities
 
             return possiblePeriods;
         }
-        
+
         private static Period? DetermineActivePeriodOutOfPossiblePeriods(DateTime date, List<Period> possiblePeriods)
         {
             for (int i = 1; i < possiblePeriods.Count; i++)
@@ -111,6 +116,18 @@ namespace StudentProgress.Core.Entities
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return StartDate;
+        }
+
+        /// <summary>
+        /// Gets the days that passed since the semester started.
+        ///
+        /// Days that are outside the semester will not be counted!
+        /// </summary>
+        public TimeSpan TimePassedInsideSemesterSince(DateTime sinceDate)
+        {
+            return sinceDate > EndOfSemester
+                ? (EndOfSemester - StartDate)
+                : (sinceDate - StartDate);
         }
     }
 }

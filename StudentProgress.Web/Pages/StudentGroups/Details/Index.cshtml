@@ -1,9 +1,51 @@
 ﻿@page
+@using StudentProgress.Core.Entities
+@using StudentProgress.Core.UseCases
 @model StudentProgress.Web.Pages.StudentGroups.Details.IndexModel
 
 @{
   ViewData["Title"] = $"{Model.StudentGroup.Name} - Details";
 }
+
+@section Styles
+{
+  <link rel="stylesheet" href="~/css/group.css">
+}
+
+@{
+  int? GetTimelineProgressId(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
+  {
+    var date = period.StartDate.AddDays(dayFromStart);
+    var update = updates.FirstOrDefault(u => u.Date == date);
+    if (update == null)
+    {
+      return null;
+    }
+
+    return update.Id;
+  }
+
+  string GetTimelineBgColor(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
+  {
+    var date = period.StartDate.AddDays(dayFromStart);
+    var update = updates.FirstOrDefault(u => u.Date == date);
+    if (update == null)
+    {
+      return "bg-light";
+    }
+
+    var colorClass = update.Feeling switch
+    {
+      Feeling.Bad => "bg-danger",
+      Feeling.Neutral => "bg-warning",
+      Feeling.Good => "bg-success",
+      _ => ""
+      };
+
+    return $"{colorClass} timeline-item-hoverable";
+  }
+}
+
 
 <div class="row">
   <aside class="col-sm-12 col-md-2">
@@ -109,9 +151,8 @@
           <tr>
             <th id="student-name">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
             <th id="student-amount-of-progress">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
-            <th id="student-last-update">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastUpdateDate)</th>
+            <th id="student-timeline">Timeline</th>
             <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedforward)</th>
-            <th id="student-last-feeling">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().FeelingOfLatestProgress)</th>
           </tr>
           </thead>
           <tbody>
@@ -121,14 +162,30 @@
               <td headers="student-name">
                 <a asp-page="/Progress/Summary" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a>
               </td>
+              <td headers="student-amount-of-progress" class="student-timeline align-middle">
+                @if (Model.StudentGroup.Period < DateTime.Now)
+                {
+                  <div class="d-flex">
+                    @foreach (var day in Enumerable.Range(0, Model.StudentGroup.Period.TimePassedInsideSemesterSince(DateTime.Now).Days))
+                    {
+                      <div class="@GetTimelineBgColor(Model.StudentGroup.Period, day, student.ProgressUpdates) timeline-item">
+                        <a class="w-100 h-100 d-block"
+                           asp-page="/Progress/CreateEdit"
+                           asp-route-studentId="@student.Id"
+                           asp-route-groupId="@Model.StudentGroup.Id"
+                           asp-route-id="@GetTimelineProgressId(Model.StudentGroup.Period, day, student.ProgressUpdates)">
+                        </a>
+                      </div>
+                    }
+                  </div>
+                }
+              </td>
               <td headers="student-amount-of-progress">
                 <a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">
                   @Html.DisplayFor(_ => student.AmountOfProgressItems)
                 </a>
               </td>
-              <td headers="student-last-update">@Html.DisplayFor(_ => student.LastUpdateDate)</td>
               <td headers="student-last-feedforward" class="feedback-text">@Html.DisplayFor(_ => student.LastFeedforward)</td>
-              <td headers="student-last-feeling">@Html.DisplayFor(_ => student.FeelingOfLatestProgress)</td>
             </tr>
           }
           </tbody>

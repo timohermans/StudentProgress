@@ -2,3 +2,25 @@
     list-style-type: none;
     padding-left: 0;
 }
+
+.student-timeline {
+    width: 250px;
+}
+
+.timeline-item {
+    flex: 1;
+    height: 10px;
+    opacity: 0.5;
+    transition: flex 100ms ease-in;
+}
+
+.timeline-item-hoverable {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    flex: 5;
+}
+
+.timeline-item-hoverable:hover {
+    flex: 10;
+    cursor: pointer;
+}

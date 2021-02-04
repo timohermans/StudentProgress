@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using FluentAssertions.Extensions;
 using StudentProgress.Core.Entities;
 using Xunit;
 
@@ -57,6 +58,19 @@ namespace StudentProgress.CoreTests.Models
             var period = Period.CreateCurrentlyActivePeriodBy(new DateTime(year, month, day));
 
             period.Value.StartDate.Should().Be(new DateTime(expectedYear, expectedMonth, expectedDay));
+        }
+
+        [Theory]
+        [InlineData(2021, 2, 1, 2021, 2, 9, 1)]
+        [InlineData(2021, 2, 1, 2021, 2, 10, 2)]
+        [InlineData(2021, 2, 1, 2023, 2, 1, 202)]
+        public void Gives_the_amount_of_days_passed_in_the_semester(int year, int month, int day, int sinceYear, int sinceMonth, int sinceDay, int actualDaysPassed)
+        {
+            var period = Period.Create(new DateTime(year, month, day)).Value;
+
+            var daysPassed = period.TimePassedInsideSemesterSince(new DateTime(sinceYear, sinceMonth, sinceDay));
+
+            daysPassed.Should().Be(actualDaysPassed.Days());
         }
     }
 }

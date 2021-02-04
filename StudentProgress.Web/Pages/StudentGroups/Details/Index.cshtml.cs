@@ -11,9 +11,9 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     {
         private readonly StudentGroupGetDetails _useCase;
 
-        public IndexModel(IDbConnection connection)
+        public IndexModel(IDbConnection connection, ProgressContext context)
         {
-            _useCase = new StudentGroupGetDetails(connection);
+            _useCase = new StudentGroupGetDetails(connection, context);
         }
 
         public StudentGroupGetDetails.Response StudentGroup { get; set; }
