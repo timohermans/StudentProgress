@@ -8,10 +8,18 @@
 }
 
 .timeline-item {
+    position: relative;
     flex: 1;
     height: 10px;
     opacity: 0.5;
     transition: flex 100ms ease-in;
+}
+
+.timeline-item-date {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    transition: top 100ms, opacity 100ms;
 }
 
 .timeline-item-hoverable {
@@ -27,4 +35,9 @@
 .timeline-item-hoverable:hover {
     flex: 10;
     cursor: pointer;
+}
+
+.timeline-item-hoverable:hover .timeline-item-date {
+    top: -20px;
+    opacity: 1;
 }

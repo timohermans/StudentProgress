@@ -13,7 +13,7 @@
 }
 
 @{
-  int? GetTimelineProgressId(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
+  StudentGroupGetDetails.ProgressUpdateResponse GetTimelineProgress(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
   {
     var date = period.StartDate.AddDays(dayFromStart);
     var update = updates.FirstOrDefault(u => u.Date == date);
@@ -22,7 +22,7 @@
       return null;
     }
 
-    return update.Id;
+    return update;
   }
 
   string GetTimelineBgColor(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
@@ -175,11 +175,12 @@
                     @foreach (var day in Enumerable.Range(0, Model.StudentGroup.Period.TimePassedInsideSemesterSince(DateTime.Now).Days))
                     {
                       <div class="@GetTimelineBgColor(Model.StudentGroup.Period, day, student.ProgressUpdates) timeline-item">
+                        <small class="timeline-item-date">@GetTimelineProgress(Model.StudentGroup.Period, day, student.ProgressUpdates)?.Date.ToShortDateString()</small>
                         <a class="w-100 h-100 d-block"
                            asp-page="/Progress/CreateEdit"
                            asp-route-studentId="@student.Id"
                            asp-route-groupId="@Model.StudentGroup.Id"
-                           asp-route-id="@GetTimelineProgressId(Model.StudentGroup.Period, day, student.ProgressUpdates)">
+                           asp-route-id="@GetTimelineProgress(Model.StudentGroup.Period, day, student.ProgressUpdates)?.Id">
                         </a>
                       </div>
                     }
