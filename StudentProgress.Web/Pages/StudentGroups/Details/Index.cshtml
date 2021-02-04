@@ -29,9 +29,15 @@
   {
     var date = period.StartDate.AddDays(dayFromStart);
     var update = updates.FirstOrDefault(u => u.Date == date);
+
+    var borderClass = date.DayOfWeek switch {
+      DayOfWeek.Monday => "timeline-week-border",
+      _ => ""
+    };
+
     if (update == null)
     {
-      return "bg-light";
+      return $"{borderClass} bg-light";
     }
 
     var colorClass = update.Feeling switch
@@ -42,7 +48,7 @@
       _ => ""
       };
 
-    return $"{colorClass} timeline-item-hoverable";
+    return $"{colorClass} {borderClass} timeline-item-hoverable";
   }
 }
 

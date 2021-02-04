@@ -20,6 +20,10 @@
     flex: 5;
 }
 
+.timeline-week-border {
+    border-left: 1px solid #d4d4d4;
+}
+
 .timeline-item-hoverable:hover {
     flex: 10;
     cursor: pointer;
