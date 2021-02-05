@@ -4,24 +4,6 @@
 
 @{
   ViewData["Title"] = $"{Model.Summary.StudentName} - {Model.Summary.GroupName} - Summary";
-
-  string MilestoneRatingColor(Rating? rating, int currentIndex)
-  {
-    if (!rating.HasValue || currentIndex != (int) rating.Value)
-    {
-      return "light";
-    }
-
-    return rating switch
-    {
-      Rating.Undefined => "dark",
-      Rating.Orienting => "danger",
-      Rating.Beginning => "warning",
-      Rating.Proficient => "success",
-      Rating.Advanced => "primary",
-      _ => "light"
-      };
-  }
 }
 
 <a asp-page="/StudentGroups/Index">Groups</a> >
@@ -82,7 +64,7 @@
           <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
             @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
             {
-              <button type="button" class="btn btn-@MilestoneRatingColor(milestone.Rating, i)" disabled>@i</button>
+              <button type="button" class="btn btn-@MilestoneUiHelper.RatingColor(milestone.Rating, i)" disabled>@i</button>
             }
           </div>
         </td>

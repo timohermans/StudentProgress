@@ -12,47 +12,6 @@
   <link rel="stylesheet" href="~/css/group.css">
 }
 
-@{
-  StudentGroupGetDetails.ProgressUpdateResponse GetTimelineProgress(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
-  {
-    var date = period.StartDate.AddDays(dayFromStart);
-    var update = updates.FirstOrDefault(u => u.Date == date);
-    if (update == null)
-    {
-      return null;
-    }
-
-    return update;
-  }
-
-  string GetTimelineBgColor(Period period, int dayFromStart, IEnumerable<StudentGroupGetDetails.ProgressUpdateResponse> updates)
-  {
-    var date = period.StartDate.AddDays(dayFromStart);
-    var update = updates.FirstOrDefault(u => u.Date == date);
-
-    var borderClass = date.DayOfWeek switch {
-      DayOfWeek.Monday => "timeline-week-border",
-      _ => ""
-    };
-
-    if (update == null)
-    {
-      return $"{borderClass} bg-light";
-    }
-
-    var colorClass = update.Feeling switch
-    {
-      Feeling.Bad => "bg-danger",
-      Feeling.Neutral => "bg-warning",
-      Feeling.Good => "bg-success",
-      _ => ""
-      };
-
-    return $"{colorClass} {borderClass} timeline-item-hoverable";
-  }
-}
-
-
 <div class="row">
   <aside class="col-sm-12 col-md-2">
     <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
@@ -172,16 +131,19 @@
                 @if (Model.StudentGroup.Period < DateTime.Now)
                 {
                   <div class="d-flex">
-                    @foreach (var day in Enumerable.Range(0, Model.StudentGroup.Period.TimePassedInsideSemesterSince(DateTime.Now).Days))
+                    @foreach (var update in ProgressUpdateUIHelper.GetTimelineWithUpdatesFrom(Model.StudentGroup.Period, student.ProgressUpdates.Select(s => new ProgressUpdateUI(s.Id, s.Date, s.Feeling))))
                     {
-                      <div class="@GetTimelineBgColor(Model.StudentGroup.Period, day, student.ProgressUpdates) timeline-item">
-                        <small class="timeline-item-date">@GetTimelineProgress(Model.StudentGroup.Period, day, student.ProgressUpdates)?.Date.ToShortDateString()</small>
-                        <a class="w-100 h-100 d-block"
-                           asp-page="/Progress/CreateEdit"
-                           asp-route-studentId="@student.Id"
-                           asp-route-groupId="@Model.StudentGroup.Id"
-                           asp-route-id="@GetTimelineProgress(Model.StudentGroup.Period, day, student.ProgressUpdates)?.Id">
-                        </a>
+                      <div class="@ProgressUpdateUIHelper.GetTimelineBgColor(Model.StudentGroup.Period, update.Key, update.Value) timeline-item">
+                        @if (update.Value != null)
+                        {
+                          <small class="timeline-item-date">@update.Value.Date.ToShortDateString()</small>
+                          <a class="w-100 h-100 d-block"
+                             asp-page="/Progress/CreateEdit"
+                             asp-route-studentId="@student.Id"
+                             asp-route-groupId="@Model.StudentGroup.Id"
+                             asp-route-id="@update.Value.Id">
+                          </a>
+                        }
                       </div>
                     }
                   </div>

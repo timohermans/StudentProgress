@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CSharpFunctionalExtensions;
 using StudentProgress.Core.Extensions;
 
@@ -9,6 +10,9 @@ namespace StudentProgress.Core.Entities
     {
         public DateTime StartDate { get; }
         public string StartDateFormattedValue => StartDate.ToString("yyyy-M-d");
+
+        public IEnumerable<int> DaysPassedInsideSemester =>
+            Enumerable.Range(0, TimePassedInsideSemesterSince(DateTime.Now).Days);
 
         private bool IsFirstSemester => StartDate.Month.IsInRange(8, 9);
         private bool IsVeryOldDate => StartDate.Year < 1994;

@@ -4,19 +4,6 @@
 @using StudentProgress.Core.Extensions
 @{
   ViewData["Title"] = "Add Progress";
-
-  string MilestoneRatingColor(Rating rating)
-  {
-    return rating switch
-    {
-      Rating.Undefined => "dark",
-      Rating.Orienting => "danger",
-      Rating.Beginning => "warning",
-      Rating.Proficient => "success",
-      Rating.Advanced => "primary",
-      _ => "light"
-      };
-  }
 }
 
 <div>
@@ -102,7 +89,7 @@
                            asp-for="Progress.Milestones[index].Rating"
                            id="milestone-@milestone.Id-@i"
                            value="@((Rating) (i + 1))"/>
-                    <label class="btn btn-outline-@MilestoneRatingColor((Rating) (i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
+                    <label class="btn btn-outline-@MilestoneUiHelper.RatingColor((Rating) (i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
                   }
                 </div>
               </td>
