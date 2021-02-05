@@ -62,7 +62,7 @@ namespace StudentProgress.Core.UseCases
             }
         }
 
-        public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId);
+        public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
 
         public async Task<Response?> HandleAsync(Request request)
         {
@@ -166,7 +166,7 @@ ORDER BY s.""Name"", p.""Date"" DESC, m.""LearningOutcome"", m.""Artefact"";
             var studentIds = group.Students.Select(s => s.Id).ToList();
             var progressUpdates = await _context.ProgressUpdates
                     .Where(p => studentIds.Contains(p.StudentId) && p.GroupId == group.Id)
-                    .Select(p => new ProgressUpdateResponse(p.Id, p.Date, p.ProgressFeeling, p.StudentId))
+                    .Select(p => new ProgressUpdateResponse(p.Id, p.Date, p.ProgressFeeling, p.StudentId, p.GroupId))
                     .ToListAsync();
             return group.Students.Select(s => s with
             {

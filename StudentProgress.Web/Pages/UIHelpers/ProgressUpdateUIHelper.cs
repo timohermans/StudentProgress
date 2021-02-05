@@ -5,7 +5,8 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Web.Pages.UIHelpers
 {
-    public record ProgressUpdateUI(int Id, DateTime Date, Feeling Feeling);
+    public record ProgressTimeline(Period Period, IEnumerable<ProgressUpdateUI> Updates);
+    public record ProgressUpdateUI(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
 
     public class ProgressUpdateUIHelper
     {

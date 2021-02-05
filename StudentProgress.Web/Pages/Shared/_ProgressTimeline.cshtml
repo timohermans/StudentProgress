@@ -1,0 +1,22 @@
+﻿@model ProgressTimeline
+
+@if (Model.Period < DateTime.Now)
+{
+  <div class="d-flex">
+    @foreach (var update in ProgressUpdateUIHelper.GetTimelineWithUpdatesFrom(Model.Period, Model.Updates))
+    {
+      <div class="@ProgressUpdateUIHelper.GetTimelineBgColor(Model.Period, update.Key, update.Value) timeline-item">
+        @if (update.Value != null)
+        {
+          <small class="timeline-item-date">@update.Value.Date.ToShortDateString()</small>
+          <a class="w-100 h-100 d-block"
+             asp-page="/Progress/CreateEdit"
+             asp-route-studentId="@update.Value.StudentId"
+             asp-route-groupId="@update.Value.GroupId"
+             asp-route-id="@update.Value.Id">
+          </a>
+        }
+      </div>
+    }
+  </div>
+}

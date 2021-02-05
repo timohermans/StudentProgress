@@ -128,26 +128,7 @@
                 <a asp-page="/Progress/Summary" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a>
               </td>
               <td headers="student-amount-of-progress" class="student-timeline align-middle">
-                @if (Model.StudentGroup.Period < DateTime.Now)
-                {
-                  <div class="d-flex">
-                    @foreach (var update in ProgressUpdateUIHelper.GetTimelineWithUpdatesFrom(Model.StudentGroup.Period, student.ProgressUpdates.Select(s => new ProgressUpdateUI(s.Id, s.Date, s.Feeling))))
-                    {
-                      <div class="@ProgressUpdateUIHelper.GetTimelineBgColor(Model.StudentGroup.Period, update.Key, update.Value) timeline-item">
-                        @if (update.Value != null)
-                        {
-                          <small class="timeline-item-date">@update.Value.Date.ToShortDateString()</small>
-                          <a class="w-100 h-100 d-block"
-                             asp-page="/Progress/CreateEdit"
-                             asp-route-studentId="@student.Id"
-                             asp-route-groupId="@Model.StudentGroup.Id"
-                             asp-route-id="@update.Value.Id">
-                          </a>
-                        }
-                      </div>
-                    }
-                  </div>
-                }
+                <partial name="Shared/_ProgressTimeline" model="new ProgressTimeline(Model.StudentGroup.Period, student.ProgressUpdates.Select(u => new ProgressUpdateUI(u.Id, u.Date, u.Feeling, u.StudentId, u.GroupId)))"/>
               </td>
               <td headers="student-amount-of-progress">
                 <a asp-page="/Progress/Index" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">
