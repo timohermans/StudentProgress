@@ -18,6 +18,8 @@
 <a class="me-3" asp-page="./CreateEdit" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">Add progress</a>
 <a class="me-3" asp-page="./Index" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">View conversations</a>
 
+<h2>Progress update timeline</h2>
+<partial name="Shared/_ProgressTimeline" model="new ProgressTimeline(Model.Summary.Period, Model.Summary.ProgressUpdates.Select(u => new ProgressUpdateUI(u.Id, u.Date, u.Feeling, u.StudentId, u.GroupId)))" />
 
 <h2>Current milestone progress</h2>
 @if (!Model.Summary.Milestones.Any())
