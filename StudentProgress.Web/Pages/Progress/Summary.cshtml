@@ -34,7 +34,7 @@
   </h2>
   <p x-show="!isEditing" x-on:click="startEditing" class="student-note">
     <input type="hidden" x-ref="originalNote" value="@Model.Summary.StudentNote" />
-    <span class="feedback-text" x-ref="displayNote">@Model.Summary.StudentNote</span>
+    <span class="feedback-text" x-ref="displayNote">@(Model.Summary.StudentNote ?? $"Add a note for {Model.Summary.StudentName} here")</span>
   </p>
   <form x-ref="form" x-show="isEditing" x-on:submit="save" autocomplete="off">
     <input type="hidden" name="id" value="@Model.Summary.StudentId"/>
