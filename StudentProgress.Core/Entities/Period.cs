@@ -15,7 +15,7 @@ namespace StudentProgress.Core.Entities
             Enumerable.Range(0, TimePassedInsideSemesterSince(DateTime.Now).Days);
 
         private bool IsFirstSemester => StartDate.Month.IsInRange(8, 9);
-        private bool IsVeryOldDate => StartDate.Year < 1994;
+        public bool IsVeryOldDate => StartDate.Year < 1994;
 
         private Period(DateTime date) => StartDate = date;
 

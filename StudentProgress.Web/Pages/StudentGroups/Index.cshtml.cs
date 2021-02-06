@@ -14,7 +14,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
     {
         private readonly ProgressContext _context;
 
-        public IList<StudentGroup> StudentGroups { get; set; }
+        public List<StudentGroup> StudentGroups { get; set; }
 
         public IEnumerable<SelectListItem> Periods { get; set; }
         public Period CurrentPeriod { get; set; }
@@ -32,9 +32,12 @@ namespace StudentProgress.Web.Pages.StudentGroups
             }
 
             CurrentPeriod = Period.CreateCurrentlyActivePeriodBy(DateTime.Today).Value;
-            StudentGroups = await _context.Groups
-                .OrderByDescending(g => g.Period)
-                .ToListAsync();
+            var groups = await _context.Groups
+                                         .OrderByDescending(g => g.Period)
+                                         .ToListAsync();
+
+            StudentGroups = groups.Where(g => g.Period.IsVeryOldDate).ToList();
+            StudentGroups.AddRange(groups.Where(g => !g.Period.IsVeryOldDate).ToList());
             return Page();
         }
     }
