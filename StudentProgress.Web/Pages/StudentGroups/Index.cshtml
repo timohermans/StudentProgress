@@ -18,11 +18,8 @@
     <th id="name">
       @Html.DisplayNameFor(model => model.StudentGroups[0].Name)
     </th>
-    <th id="created-date">
-      @Html.DisplayNameFor(model => model.StudentGroups[0].CreatedDate)
-    </th>
-    <th id="updated-date">
-      @Html.DisplayNameFor(model => model.StudentGroups[0].UpdatedDate)
+    <th id="mnemonic">
+      @Html.DisplayNameFor(model => model.StudentGroups[0].Mnemonic)
     </th>
     <th></th>
   </tr>
@@ -39,12 +36,7 @@
         <td headers="name">
           <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
         </td>
-        <td headers="created-date">
-          @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td headers="updated-date">
-          @Html.DisplayFor(modelItem => item.UpdatedDate)
-        </td>
+        <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
         <td>
           <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
           <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
