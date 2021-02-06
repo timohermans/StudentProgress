@@ -45,7 +45,7 @@ namespace StudentProgress.Core.UseCases
       }
 
       return await groupResult
-          .Check(group => group.AddMilestone(new Milestone(learningOutcomeResult.Value, artefactResult.Value)))
+          .Check(group => group.AddMilestone(new Milestone(learningOutcomeResult.Value, artefactResult.Value, group)))
           .Tap(async _ => await _context.SaveChangesAsync());
     }
   }

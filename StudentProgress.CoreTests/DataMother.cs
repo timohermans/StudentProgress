@@ -57,7 +57,7 @@ namespace StudentProgress.CoreTests
                 foreach (var (LearningOutcome, Artefact) in milestones)
                 {
                     group.AddMilestone(new Milestone(Name.Create(LearningOutcome).Value,
-                        Name.Create(Artefact).Value));
+                        Name.Create(Artefact).Value, group));
                 }
             }
 

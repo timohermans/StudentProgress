@@ -33,7 +33,7 @@ namespace StudentProgress.Core.UseCases
             [Display(Name = "Last name change")] public DateTime UpdatedAt { get; init; }
             public IList<StudentsResponse> Students { get; set; } = new List<StudentsResponse>();
             public IList<MilestoneResponse> Milestones { get; set; } = new List<MilestoneResponse>();
-            public Period Period { get; set; }
+            public Period Period { get; init; } = null!;
 
             public record MilestoneResponse
             {

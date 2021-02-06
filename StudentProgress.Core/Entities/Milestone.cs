@@ -10,10 +10,11 @@ namespace StudentProgress.Core.Entities
         public int StudentGroupId { get; }
         public StudentGroup StudentGroup { get; private set; }
 
-        public Milestone(Name learningOutcome, Name artefact)
+        public Milestone(Name learningOutcome, Name artefact, StudentGroup studentGroup)
         {
             LearningOutcome = learningOutcome;
             Artefact = artefact;
+            StudentGroup = studentGroup;
         }
 
 #nullable disable

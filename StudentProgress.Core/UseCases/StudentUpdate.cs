@@ -32,7 +32,7 @@ namespace StudentProgress.Core.UseCases
         public record Command
         {
             public int Id { get; set; }
-            public string Note { get; set; }
+            public string Note { get; set; } = null!;
         }
     }
 }

@@ -10,20 +10,26 @@ namespace StudentProgress.Core.UseCases
     {
         public record Query
         {
-            public string SearchTerm { get; set; }
+            public string SearchTerm { get; set; } = null!;
         }
 
         public record GroupResponse
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
+            public int Id { get; }
+            public string Name { get; }
+
+            public GroupResponse(int id, string name)
+            {
+                Id = id;
+                Name = name;
+            }
         }
 
         public record Response
         {
             public int Id { get; set; }
-            public string Name { get; set; }
-            public List<GroupResponse> Groups { get; set; }
+            public string Name { get; set; } = null!;
+            public List<GroupResponse> Groups { get; set; } = new();
         }
 
         private readonly ProgressContext _context;
@@ -44,11 +50,8 @@ namespace StudentProgress.Core.UseCases
                     {
                         Id = s.Id,
                         Name = s.Name,
-                        Groups = s.StudentGroups.Select(g => new GroupResponse
-                            {
-                                Id = g.Id,
-                                Name = g.Name
-                            })
+                        Groups = s.StudentGroups
+                            .Select(g => new GroupResponse(g.Id, g.Name))
                             .ToList()
                     })
                     .ToListAsync();
