@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
@@ -18,20 +19,24 @@ namespace StudentProgress.Core.UseCases
         {
             var student = Maybe<Student>.From(await _context.Students.FindAsync(command.Id))
                 .ToResult("Student does not exist");
+            var existingStudent = await _context.Students.FirstOrDefaultAsync(s => s.Name == command.Name);
+            var doesNewStudentExist = Result.SuccessIf(existingStudent == null, "Student already exists");
+            var isCommandValid = Result.Combine(student, doesNewStudentExist);
 
-            if (student.IsFailure)
+            if (isCommandValid.IsFailure)
             {
-                return student;
+                return isCommandValid;
             }
 
             return await student.Value
-                .Update(command.Note)
+                .Update(command.Name, command.Note)
                 .Tap(async () => await _context.SaveChangesAsync());
         }
 
         public record Command
         {
             public int Id { get; set; }
+            public string Name { get; set; } = null!;
             public string Note { get; set; } = null!;
         }
     }

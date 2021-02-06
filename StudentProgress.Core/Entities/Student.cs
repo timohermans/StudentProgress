@@ -24,8 +24,9 @@ namespace StudentProgress.Core.Entities
             StudentGroups = new List<StudentGroup>();
         }
 
-        public Result Update(string note)
+        public Result Update(string? name, string? note)
         {
+            Name = name ?? Name;
             Note = note;
             return Result.Success();
         }

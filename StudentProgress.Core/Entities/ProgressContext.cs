@@ -56,6 +56,7 @@ namespace StudentProgress.Core.Entities
             {
                 e.ToTable("Student");
                 e.HasKey(p => p.Id);
+                e.HasIndex(p => p.Name).IsUnique();
             });
 
             modelBuilder.Entity<Milestone>(e =>
