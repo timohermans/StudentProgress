@@ -45,17 +45,19 @@ namespace StudentProgress.Core.UseCases
             public int StudentId { get; set; }
             public string GroupName { get; set; }
             public string StudentName { get; set; }
+            public string? StudentNote { get; set; }
             public Period Period { get; set; }
             public IEnumerable<MilestoneResponse> Milestones { get; set; }
             public IEnumerable<ProgressUpdateResponse> ProgressUpdates { get; set; }
 
-            public Response(int groupId, int studentId, string groupName, string studentName, Period period,
+            public Response(int groupId, int studentId, string groupName, string studentName, string? studentNote, Period period,
                 IEnumerable<MilestoneResponse> milestones, IEnumerable<ProgressUpdateResponse> progressUpdates)
             {
                 GroupId = groupId;
                 StudentId = studentId;
                 GroupName = groupName;
                 StudentName = studentName;
+                StudentNote = studentNote;
                 Period = period;
                 Milestones = milestones;
                 ProgressUpdates = progressUpdates;
@@ -117,6 +119,7 @@ namespace StudentProgress.Core.UseCases
                 groupName: group.Value.Name,
                 studentId: student.Value.Id,
                 studentName: student.Value.Name,
+                studentNote: student.Value.Note,
                 milestones: milestonesSummary,
                 progressUpdates: progressUpdates,
                 period: group.Value.Period

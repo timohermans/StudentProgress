@@ -11,8 +11,9 @@ namespace StudentProgress.Core.Entities
         public string Name { get; private set; }
         public IEnumerable<ProgressUpdate> ProgressUpdates { get; private set; }
         public IEnumerable<StudentGroup> StudentGroups { get; private set; }
+        public string? Note { get; private set; }
 
-        #nullable disable
+#nullable disable
         private Student() { }
         #nullable enable
 
@@ -23,5 +24,10 @@ namespace StudentProgress.Core.Entities
             StudentGroups = new List<StudentGroup>();
         }
 
+        public Result Update(string note)
+        {
+            Note = note;
+            return Result.Success();
+        }
     }
 }

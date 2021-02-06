@@ -6,6 +6,16 @@
   ViewData["Title"] = $"{Model.Summary.StudentName} - {Model.Summary.GroupName} - Summary";
 }
 
+@section Styles
+{
+  <link rel="stylesheet" href="~/css/summary.css">
+}
+
+@section Scripts
+{
+  <script src="~/js/summaryStudentInfo.js"></script>
+}
+
 <a asp-page="/StudentGroups/Index">Groups</a> >
 <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Summary.GroupId">@Model.Summary.GroupName</a> >
 <a asp-page="/Progress/Index" asp-route-groupId="@Model.Summary.GroupId"
@@ -18,8 +28,30 @@
 <a class="me-3" asp-page="./CreateEdit" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">Add progress</a>
 <a class="me-3" asp-page="./Index" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">View conversations</a>
 
-<h2>Progress update timeline</h2>
-<partial name="Shared/_ProgressTimeline" model="new ProgressTimeline(Model.Summary.Period, Model.Summary.ProgressUpdates.Select(u => new ProgressUpdateUI(u.Id, u.Date, u.Feeling, u.StudentId, u.GroupId)))" />
+<section x-data="studentInfoController()" class="mt-4">
+  <h2>
+    Notes
+  </h2>
+  <p x-show="!isEditing" x-on:click="startEditing" class="student-note">
+    <input type="hidden" x-ref="originalNote" value="@Model.Summary.StudentNote" />
+    <span class="feedback-text" x-ref="displayNote">@Model.Summary.StudentNote</span>
+  </p>
+  <form x-ref="form" x-show="isEditing" x-on:submit="save" autocomplete="off">
+    <input type="hidden" name="id" value="@Model.Summary.StudentId"/>
+    <div class="form-floating mb-3">
+      <textarea x-ref="noteInput" id="note" name="note" type="text" class="form-control" x-on:keydown.escape="cancelEditing">@Model.Summary.StudentNote</textarea>
+      <label for="note">Student Note</label>
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Save</button>
+  </form>
+</section>
+
+<section class="my-4">
+  <h2>Progress update timeline</h2>
+  <div class="mt-4">
+    <partial name="Shared/_ProgressTimeline" model="new ProgressTimeline(Model.Summary.Period, Model.Summary.ProgressUpdates.Select(u => new ProgressUpdateUI(u.Id, u.Date, u.Feeling, u.StudentId, u.GroupId)))"/>
+  </div>
+</section>
 
 <h2>Current milestone progress</h2>
 @if (!Model.Summary.Milestones.Any())

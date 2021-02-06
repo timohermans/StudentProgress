@@ -1,0 +1,8 @@
+﻿.student-note {
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.student-note:hover {
+    background-color: #eee;
+}
