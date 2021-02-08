@@ -37,7 +37,7 @@ namespace StudentProgress.Core.UseCases
         {
             public int Id { get; set; }
             public string Name { get; set; } = null!;
-            public string Note { get; set; } = null!;
+            public string? Note { get; set; } = null!;
         }
     }
 }

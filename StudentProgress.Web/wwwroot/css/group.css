@@ -7,3 +7,12 @@
     width: 250px;
 }
 
+.name-edit {
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.student-name:hover .name-edit {
+    visibility: visible;
+}
+

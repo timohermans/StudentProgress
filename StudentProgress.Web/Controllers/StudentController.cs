@@ -8,10 +8,12 @@ namespace StudentProgress.Web.Controllers
     [Route("api/student")]
     public class StudentController : Controller
     {
+        private readonly ProgressContext _context;
         private readonly StudentUpdate _useCase;
 
         public StudentController(ProgressContext context)
         {
+            _context = context;
             _useCase = new StudentUpdate(context);
         }
         
@@ -19,6 +21,21 @@ namespace StudentProgress.Web.Controllers
         public async Task<IActionResult> Update(StudentUpdate.Command command)
         {
             await _useCase.HandleAsync(command);
+            return Ok();
+        }
+
+        [HttpPut("{id:int}/name")]
+        public async Task<IActionResult> UpdateName(StudentUpdate.Command command)
+        {
+            var student = await _context.Students.FindAsync(command.Id);
+            command.Note = student?.Note;
+            var result = await _useCase.HandleAsync(command);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+
             return Ok();
         }
     }
