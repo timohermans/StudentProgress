@@ -18,6 +18,12 @@ docker-compose up -d
 ```
 The app will be available on `http://localhost:80`. The app and database will keep running **until you stop with `docker-compose down` or using the GUI**
 
+
+To build new changes into the running docker image, execute the following command:
+```bash
+docker-compose up -d --build
+```
+
 ## Config
 
 Project works out of the box. You can, however, change a couple of variables
