@@ -7,8 +7,6 @@ Project to track people, whether that's students, team members or yourself.
 ## Quirks (😇)
 
 - When adding a group, the start date will automatically points towards the next semester date.
-  - When the system navigates you back, it will show the current semester, so you might not see your new group immediately
-  - Not sure what the way to go is here 🤔
 
 ## Installation
 To run the project, execute the following command in this folder:
