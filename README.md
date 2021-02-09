@@ -4,10 +4,6 @@
 
 Project to track people, whether that's students, team members or yourself.
 
-## Quirks (😇)
-
-- When adding a group, the start date will automatically points towards the next semester date.
-
 ## Installation
 To run the project, execute the following command in this folder:
 
