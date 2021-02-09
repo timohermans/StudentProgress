@@ -47,7 +47,7 @@ namespace StudentProgress.CoreTests.UseCases
         }
 
         [Fact]
-        public async Task Cannot_create_a_duplicate_group()
+        public async Task Cannot_create_a_duplicate_group_on_the_same_period()
         {
             Fixture.DataMother.CreateGroup("S3-Leon");
             var request = new GroupCreate.Request

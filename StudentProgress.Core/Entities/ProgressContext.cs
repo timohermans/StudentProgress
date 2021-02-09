@@ -40,7 +40,7 @@ namespace StudentProgress.Core.Entities
                     .HasDefaultValue((Period)DateTime.MinValue);
                 g.HasMany(p => p.Students).WithMany(s => s.StudentGroups);
                 g.HasMany(p => p.Milestones).WithOne(m => m.StudentGroup);
-                g.HasIndex(p => p.Name).IsUnique();
+                g.HasIndex(p => new { p.Name, p.Period }).IsUnique();
             });
 
             modelBuilder.Entity<ProgressUpdate>(e =>

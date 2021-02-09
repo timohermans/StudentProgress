@@ -40,15 +40,15 @@ namespace StudentProgress.Core.UseCases
             }
 
             return await name
-                .Check(IsGroupNew)
+                .Check(nameValue => IsGroupNew(nameValue, periodResult.Value))
                 .Tap(async () => await context.Groups.AddAsync(new StudentGroup(name.Value, periodResult.Value, request.Mnemonic)))
                 .Tap(() => context.SaveChangesAsync());
         }
 
-        private async Task<Result> IsGroupNew(Name name)
+        private async Task<Result> IsGroupNew(Name name, Period period)
         {
             return Result.SuccessIf(
-                (await context.Groups.FirstOrDefaultAsync(g => g.Name == name)) == null,
+                await context.Groups.FirstOrDefaultAsync(g => g.Name == name && g.Period == period) == null,
                 "Group already exists");
         }
     }
