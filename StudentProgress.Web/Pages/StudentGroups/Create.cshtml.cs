@@ -24,7 +24,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
             StudentGroup = new()
             {
                 StartDate = Period
-                    .Create(new DateTime(DateTime.Now.Year, DateTime.Now.Month.IsInRange(2, 9) ? 9 : 2, 1)).Value
+                    .Create(DateTime.UtcNow).Value
                     .StartDate
             };
             return Page();
