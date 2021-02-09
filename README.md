@@ -4,6 +4,10 @@
 
 Project to track people, whether that's students, team members or yourself.
 
+## Feature showcase
+
+![showcase](./features.gif)
+
 ## Installation
 To run the project, execute the following command in this folder:
 
