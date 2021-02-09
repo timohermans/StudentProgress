@@ -19,6 +19,9 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Creates_a_milestone()
         {
             var group = Fixture.DataMother.CreateGroup();
+            Fixture.DataMother.CreateGroup(
+                name: "Conflicting Group that should be no problem",
+                milestones: new[] {("2. Specifications and design", "Design document")});
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new MilestoneCreate(ucContext);
 
@@ -38,9 +41,11 @@ namespace StudentProgress.CoreTests.UseCases
         }
 
         [Fact]
-        public async Task Cannot_create_artefact_per_learning_outcome_twice() {
-            var group = Fixture.DataMother.CreateGroup(milestones: new[] {
-               ("2. Specifications and design", "Design document") 
+        public async Task Cannot_create_artefact_per_learning_outcome_twice()
+        {
+            var group = Fixture.DataMother.CreateGroup(milestones: new[]
+            {
+                ("2. Specifications and design", "Design document")
             });
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new MilestoneCreate(ucContext);

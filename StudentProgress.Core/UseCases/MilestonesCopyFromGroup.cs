@@ -35,7 +35,9 @@ namespace StudentProgress.Core.UseCases
             groupFrom.Value.Milestones
                 .Where(m => groupTo.Value.Milestones.All(existingMilestone =>
                     existingMilestone.Artefact != m.Artefact &&
-                    existingMilestone.LearningOutcome != m.LearningOutcome))
+                    existingMilestone.LearningOutcome != m.LearningOutcome ||
+                    existingMilestone.LearningOutcome == m.LearningOutcome && 
+                    existingMilestone.Artefact != m.Artefact))
                 .Select(m => new Milestone(m.LearningOutcome, m.Artefact, groupTo.Value))
                 .ToList()
                 .ForEach(m => groupTo.Value.AddMilestone(m));
