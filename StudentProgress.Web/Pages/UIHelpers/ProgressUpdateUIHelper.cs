@@ -14,7 +14,7 @@ namespace StudentProgress.Web.Pages.UIHelpers
             IEnumerable<ProgressUpdateUI> updates)
         {
             return period.DaysPassedInsideSemester
-                        .ToDictionary(day => day, day => updates.FirstOrDefault(u => u.Date == period.StartDate.AddDays(day).Date));
+                        .ToDictionary(day => day, day => updates.FirstOrDefault(u => u.Date.Date == period.StartDate.AddDays(day).Date));
         }
         
         public static string GetTimelineBgColor(Period period, int dayFromStart, ProgressUpdateUI update)
