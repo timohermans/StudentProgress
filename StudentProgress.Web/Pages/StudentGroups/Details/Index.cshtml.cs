@@ -10,10 +10,12 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     public class IndexModel : PageModel
     {
         private readonly StudentGroupGetDetails _useCase;
+        private readonly MilestonesUpdateLearningOutcome _milestonesUpdateUseCase;
 
         public IndexModel(IDbConnection connection, ProgressContext context)
         {
             _useCase = new StudentGroupGetDetails(connection, context);
+            _milestonesUpdateUseCase = new MilestonesUpdateLearningOutcome(context);
         }
 
         public StudentGroupGetDetails.Response StudentGroup { get; set; }
@@ -34,9 +36,16 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             return Page();
         }
 
-        public async Task<IActionResult> OnPostUpdateMultipleMilestonesAsync(int groupId, string learningOutcome, int[] ids)
+        public async Task<IActionResult> OnPostUpdateMultipleMilestonesAsync(MilestonesUpdateLearningOutcome.Command command)
         {
-            return Page();
+            var result = await _milestonesUpdateUseCase.HandleAsync(command);
+
+            if (result.IsFailure)
+            {
+                ModelState.AddModelError("MilestoneSummary", result.Error);
+            }
+            
+            return await OnGetAsync(command.GroupId);
         }
     }
 }

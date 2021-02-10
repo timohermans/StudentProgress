@@ -92,7 +92,7 @@
                   <input type="hidden" name="groupId" value="@Model.StudentGroup.Id" />
                   <input x-model="learningOutcomeNew" type="text" name="learningOutcome" class="form-control" placeholder="New learning outcome"/>
                   <template x-for="id in milestonesSelected">
-                    <input type="hidden" name="ids[]" x-model="id"/>
+                    <input type="hidden" name="milestoneIds[]" x-model="id"/>
                   </template>
                   <button x-bind:disabled="!milestonesSelected.length || !learningOutcomeNew" class="btn btn-link text-nowrap" type="submit">Change <span x-show="milestonesSelected.length" x-text="milestonesSelected.length"></span></button>
                   <button x-on:click="stopSelecting" x-show="isSelecting" type="button" class="btn btn-link">Cancel</button>
