@@ -33,5 +33,10 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             }
             return Page();
         }
+
+        public async Task<IActionResult> OnPostUpdateMultipleMilestonesAsync(int groupId, string learningOutcome, int[] ids)
+        {
+            return Page();
+        }
     }
 }

@@ -16,3 +16,6 @@
     visibility: visible;
 }
 
+.milestone-form {
+    display: inline-block;
+}
