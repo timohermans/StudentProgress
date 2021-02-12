@@ -18,12 +18,19 @@ function manuallyResizeTextArea(textArea) {
 
 function preventUnsavedChanges() {
     let isFormChanged = false;
-    document.querySelector('form').addEventListener('input', () => {
+    let isSubmitting = false;
+    const form = document.querySelector('form');
+    if (!form) return;
+    form.addEventListener('submit', () => {
+        isSubmitting = true;
+        isFormChanged = false;
+    });
+    form.addEventListener('input', () => {
         isFormChanged = true;
     });
 
     window.onbeforeunload = function() {
-        if (isFormChanged) {
+        if (isFormChanged && !isSubmitting) {
             return "";
         }
     }
