@@ -12,7 +12,7 @@ namespace StudentProgress.Core.Entities
         public string StartDateFormattedValue => StartDate.ToString("yyyy-M-d");
 
         public IEnumerable<int> DaysPassedInsideSemester =>
-            Enumerable.Range(0, TimePassedInsideSemesterSince(DateTime.Now).Days);
+            Enumerable.Range(0, TimePassedInsideSemesterSince(DateTime.Now).Days + 1);
 
         private bool IsFirstSemester => StartDate.Month.IsInRange(8, 9);
         public bool IsVeryOldDate => StartDate.Year < 1994;
