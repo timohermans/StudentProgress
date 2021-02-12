@@ -16,6 +16,11 @@
         updateName(evt) {
             evt.preventDefault();
             const data = new FormData(this.$refs.form);
+            if (data.get('name') === this.$refs.nameOriginal.value) {
+                this.cancelEditing();
+                return;
+            }
+            
             fetch(`${window.applicationBaseUrl}api/student/${data.get('id')}/name`, {
                 method: 'PUT',
                 body: data
