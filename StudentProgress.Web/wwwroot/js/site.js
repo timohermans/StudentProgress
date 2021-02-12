@@ -15,4 +15,19 @@ function manuallyResizeTextArea(textArea) {
     textArea.dispatchEvent(new Event('input'));
 }
 
+
+function preventUnsavedChanges() {
+    let isFormChanged = false;
+    document.querySelector('form').addEventListener('input', () => {
+        isFormChanged = true;
+    });
+
+    window.onbeforeunload = function() {
+        if (isFormChanged) {
+            return "";
+        }
+    }
+}
+
+preventUnsavedChanges();
 autoSizeTextAreas();
