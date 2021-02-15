@@ -64,7 +64,7 @@ namespace StudentProgress.Core.UseCases
 
             var command = new ProgressCreateOrUpdate.Command
             {
-                Date = progressUpdate?.Date ?? DateTime.UtcNow,
+                Date = progressUpdate?.Date ?? DateTime.Now,
                 Feedback = progressUpdate?.Feedback,
                 Feedforward = progressUpdate?.Feedforward,
                 Feedup = progressUpdate?.Feedup,
