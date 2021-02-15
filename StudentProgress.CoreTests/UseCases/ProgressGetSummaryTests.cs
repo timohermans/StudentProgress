@@ -28,13 +28,17 @@ namespace StudentProgress.CoreTests.UseCases
                     ("first", "b. 2"),
                     ("first", "c. 3")
                 },
-                studentNames: new[] {"Timo "}
+                studentNames: new[] {"Timo", "Max", "Jordy"}
             );
-            var student = group.Students.FirstOrDefault();
+            var nonInterestingGroup = Fixture.DataMother.CreateGroup(name: "not interesting group", studentNames: new[] {"Timothy"});
+            var timo = group.Students.FirstOrDefault();
+            var max = group.Students.FirstOrDefault(s => s.Name == "Max");
+            var jordy = group.Students.FirstOrDefault(s => s.Name == "Jordy");
+            var timothy = nonInterestingGroup.Students.FirstOrDefault();
             var milestoneA = group.Milestones.FirstOrDefault(m => m.Artefact == "a. 1");
             var milestoneB = group.Milestones.FirstOrDefault(m => m.Artefact == "b. 2");
             var milestoneC = group.Milestones.FirstOrDefault(m => m.Artefact == "c. 3");
-            var updateA = Fixture.DataMother.CreateProgressUpdate(group, student,
+            var updateA = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2021, 1, 11),
                 milestoneProgresses: new[]
                 {
@@ -42,7 +46,7 @@ namespace StudentProgress.CoreTests.UseCases
                     new MilestoneProgress(Rating.Undefined, milestoneB, "undefined"),
                 }
             );
-            var updateB = Fixture.DataMother.CreateProgressUpdate(group, student,
+            var updateB = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2021, 2, 22),
                 milestoneProgresses: new[]
                 {
@@ -54,15 +58,15 @@ namespace StudentProgress.CoreTests.UseCases
 
             // act
             var result = await useCase.HandleAsync(new ProgressGetSummaryForStudentInGroup.Query
-                {GroupId = group.Id, StudentId = student.Id});
+                {GroupId = group.Id, StudentId = timo.Id});
 
             // assert
             result.IsSuccess.Should().BeTrue();
             var summary = result.Value;
             summary.GroupId.Should().Be(group.Id);
             summary.GroupName.Should().Be(group.Name);
-            summary.StudentId.Should().Be(student.Id);
-            summary.StudentName.Should().Be(student.Name);
+            summary.StudentId.Should().Be(timo.Id);
+            summary.StudentName.Should().Be(timo.Name);
             summary.Period.Should().Be(group.Period);
             summary.Milestones.Should().HaveCount(3);
             summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse(
@@ -80,6 +84,14 @@ namespace StudentProgress.CoreTests.UseCases
             summary.ProgressUpdates.Should().Contain(new ProgressGetSummaryForStudentInGroup.ProgressUpdateResponse(
                 updateB.Id,
                 new DateTime(2021, 2, 22), updateB.ProgressFeeling, updateB.StudentId, updateB.GroupId));
+            summary.OtherStudents.Should().Contain(
+                new ProgressGetSummaryForStudentInGroup.OtherStudentResponse(jordy!.Id, jordy!.Name));
+            summary.OtherStudents.Should().Contain(
+                new ProgressGetSummaryForStudentInGroup.OtherStudentResponse(max!.Id, max!.Name));
+            summary.OtherStudents.Should().Contain(
+                new ProgressGetSummaryForStudentInGroup.OtherStudentResponse(timo!.Id, timo!.Name));
+            summary.OtherStudents.Should().NotContain(
+                new ProgressGetSummaryForStudentInGroup.OtherStudentResponse(timothy!.Id, timothy!.Name));
         }
     }
 }

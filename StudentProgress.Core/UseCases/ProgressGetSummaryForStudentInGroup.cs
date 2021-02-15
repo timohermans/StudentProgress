@@ -38,6 +38,7 @@ namespace StudentProgress.Core.UseCases
         }
 
         public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
+        public record OtherStudentResponse(int Id, string Name);
 
         public record Response
         {
@@ -49,9 +50,10 @@ namespace StudentProgress.Core.UseCases
             public Period Period { get; set; }
             public IEnumerable<MilestoneResponse> Milestones { get; set; }
             public IEnumerable<ProgressUpdateResponse> ProgressUpdates { get; set; }
+            public IEnumerable<OtherStudentResponse> OtherStudents { get; set; }
 
             public Response(int groupId, int studentId, string groupName, string studentName, string? studentNote, Period period,
-                IEnumerable<MilestoneResponse> milestones, IEnumerable<ProgressUpdateResponse> progressUpdates)
+                IEnumerable<MilestoneResponse> milestones, IEnumerable<ProgressUpdateResponse> progressUpdates, IEnumerable<OtherStudentResponse> otherStudents)
             {
                 GroupId = groupId;
                 StudentId = studentId;
@@ -61,6 +63,7 @@ namespace StudentProgress.Core.UseCases
                 Period = period;
                 Milestones = milestones;
                 ProgressUpdates = progressUpdates;
+                OtherStudents = otherStudents;
             }
         }
 
@@ -114,6 +117,12 @@ namespace StudentProgress.Core.UseCases
                 .ThenBy(m => m.Artefact)
                 .ToList();
 
+            var otherStudents = await _context.Students
+                .Where(s => s.StudentGroups.Any(g => g.Id == query.GroupId))
+                .OrderBy(s => s.Name)
+                .Select(s => new OtherStudentResponse(s.Id, s.Name))
+                .ToListAsync();
+
             return Result.Success(new Response(
                 groupId: group.Value.Id,
                 groupName: group.Value.Name,
@@ -122,7 +131,8 @@ namespace StudentProgress.Core.UseCases
                 studentNote: student.Value.Note,
                 milestones: milestonesSummary,
                 progressUpdates: progressUpdates,
-                period: group.Value.Period
+                period: group.Value.Period,
+                otherStudents: otherStudents
             ));
         }
     }
