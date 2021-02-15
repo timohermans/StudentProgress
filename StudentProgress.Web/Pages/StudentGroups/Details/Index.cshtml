@@ -23,8 +23,8 @@
     <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
       <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="#group">Group</a>
-        <a class="nav-link" href="#milestones">Milestones</a>
         <a class="nav-link" href="#students">Students</a>
+        <a class="nav-link" href="#milestones">Milestones</a>
       </nav>
     </nav>
   </aside>
@@ -66,68 +66,6 @@
           @Html.DisplayFor(model => model.StudentGroup.UpdatedAt)
         </dd>
       </dl>
-    </section>
-
-    <section id="milestones">
-      <div class="milestones-header d-flex">
-        <h2>Milestones</h2>
-        <a class="btn btn-link btn-sm" asp-page="./AddMilestone" asp-route-id="@Model.StudentGroup.Id">Add new</a>
-      </div>
-      @if (!Model.StudentGroup.Milestones.Any())
-      {
-        <p>There are no milestones yet</p>
-      }
-      else
-      {
-        <table class="table" x-data="initMilestoneTableActionsController()">
-          <thead>
-          <tr>
-            <th x-show="isSelecting"></th>
-            <th id="milestone-artefact">
-              @Html.DisplayNameFor(m => m.StudentGroup.Milestones.FirstOrDefault().Artefact)
-
-              <button x-on:click="startSelecting" x-show="!isSelecting" class="btn btn-link">Edit multiple</button>
-              <form x-show="isSelecting" class="ms-3 milestone-form" method="post" asp-page-handler="UpdateMultipleMilestones">
-                <div class="d-flex">
-                  <input type="hidden" name="groupId" value="@Model.StudentGroup.Id" />
-                  <input x-model="learningOutcomeNew" type="text" name="learningOutcome" class="form-control" placeholder="New learning outcome"/>
-                  <template x-for="id in milestonesSelected">
-                    <input type="hidden" name="milestoneIds[]" x-model="id"/>
-                  </template>
-                  <button x-bind:disabled="!milestonesSelected.length || !learningOutcomeNew" class="btn btn-link text-nowrap" type="submit">Change <span x-show="milestonesSelected.length" x-text="milestonesSelected.length"></span></button>
-                  <button x-on:click="stopSelecting" x-show="isSelecting" type="button" class="btn btn-link">Cancel</button>
-                </div>
-              </form>
-            </th>
-            <th id="milestone-actions"></th>
-          </tr>
-          </thead>
-
-          <tbody>
-          @foreach (var milestoneGrouping in Model.StudentGroup.Milestones.ToLookup(m => m.LearningOutcome))
-          {
-            <tr>
-              <td x-on:click="useLearningOutcomeAsNewName" x-bind:class="{ 'pointer': isSelecting }" x-bind:colspan="isSelecting ? 3 : 2" class="text-muted fw-light" headers="milestone-learning-outcome">
-                @milestoneGrouping.Key
-              </td>
-            </tr>
-            @foreach (var milestone in milestoneGrouping.ToList())
-            {
-              <tr>
-                <td x-show="isSelecting">
-                  <input x-model="milestonesSelected" type="checkbox" value="@milestone.Id">
-                </td>
-                <td headers="milestone-artefact" class="ps-4">@milestone.Artefact</td>
-                <td headers="milestone-actions">
-                  <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a> |
-                  <a asp-page="/milestones/delete" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Delete</a>
-                </td>
-              </tr>
-            }
-          }
-          </tbody>
-        </table>
-      }
     </section>
 
     <section id="students">
@@ -187,5 +125,68 @@
         </table>
       }
     </section>
+
+    <section id="milestones">
+      <div class="milestones-header d-flex">
+        <h2>Milestones</h2>
+        <a class="btn btn-link btn-sm" asp-page="./AddMilestone" asp-route-id="@Model.StudentGroup.Id">Add new</a>
+      </div>
+      @if (!Model.StudentGroup.Milestones.Any())
+      {
+        <p>There are no milestones yet</p>
+      }
+      else
+      {
+        <table class="table" x-data="initMilestoneTableActionsController()">
+          <thead>
+          <tr>
+            <th x-show="isSelecting"></th>
+            <th id="milestone-artefact">
+              @Html.DisplayNameFor(m => m.StudentGroup.Milestones.FirstOrDefault().Artefact)
+
+              <button x-on:click="startSelecting" x-show="!isSelecting" class="btn btn-link">Edit multiple</button>
+              <form x-show="isSelecting" class="ms-3 milestone-form" method="post" asp-page-handler="UpdateMultipleMilestones">
+                <div class="d-flex">
+                  <input type="hidden" name="groupId" value="@Model.StudentGroup.Id"/>
+                  <input x-model="learningOutcomeNew" type="text" name="learningOutcome" class="form-control" placeholder="New learning outcome"/>
+                  <template x-for="id in milestonesSelected">
+                    <input type="hidden" name="milestoneIds[]" x-model="id"/>
+                  </template>
+                  <button x-bind:disabled="!milestonesSelected.length || !learningOutcomeNew" class="btn btn-link text-nowrap" type="submit">Change <span x-show="milestonesSelected.length" x-text="milestonesSelected.length"></span></button>
+                  <button x-on:click="stopSelecting" x-show="isSelecting" type="button" class="btn btn-link">Cancel</button>
+                </div>
+              </form>
+            </th>
+            <th id="milestone-actions"></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          @foreach (var milestoneGrouping in Model.StudentGroup.Milestones.ToLookup(m => m.LearningOutcome))
+          {
+            <tr>
+              <td x-on:click="useLearningOutcomeAsNewName" x-bind:class="{ 'pointer': isSelecting }" x-bind:colspan="isSelecting ? 3 : 2" class="text-muted fw-light" headers="milestone-learning-outcome">
+                @milestoneGrouping.Key
+              </td>
+            </tr>
+            @foreach (var milestone in milestoneGrouping.ToList())
+            {
+              <tr>
+                <td x-show="isSelecting">
+                  <input x-model="milestonesSelected" type="checkbox" value="@milestone.Id">
+                </td>
+                <td headers="milestone-artefact" class="ps-4">@milestone.Artefact</td>
+                <td headers="milestone-actions">
+                  <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a> |
+                  <a asp-page="/milestones/delete" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Delete</a>
+                </td>
+              </tr>
+            }
+          }
+          </tbody>
+        </table>
+      }
+    </section>
+
   </section>
 </div>
