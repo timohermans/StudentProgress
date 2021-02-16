@@ -48,7 +48,7 @@
         <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
         <div class="form-group mb-3">
           <label asp-for="Progress.Date"></label>
-          <div x-data="{ time: `${new Date().getHours()}:${new Date().getMinutes()}` }" class="d-flex">
+          <div x-data="{ time: new Date().toLocaleTimeString(undefined, { hour12: false }).replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, '$1') }" class="d-flex">
             <input class="form-control me-3" asp-for="Progress.DateDate"/>
             <input x-model="time" class="form-control" asp-for="Progress.DateTime" asp-format="{0:HH:mm}"/>
           </div>
