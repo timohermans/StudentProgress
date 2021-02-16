@@ -40,6 +40,7 @@ namespace StudentProgress.CoreTests.UseCases
             var milestoneC = group.Milestones.FirstOrDefault(m => m.Artefact == "c. 3");
             var updateA = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2021, 1, 11),
+                feedback: "feedback from A",
                 milestoneProgresses: new[]
                 {
                     new MilestoneProgress(Rating.Orienting, milestoneA, "orienting"),
@@ -48,6 +49,7 @@ namespace StudentProgress.CoreTests.UseCases
             );
             var updateB = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2021, 2, 22),
+                feedback: null,
                 milestoneProgresses: new[]
                 {
                     new MilestoneProgress(Rating.Advanced, milestoneA, null)
@@ -92,6 +94,8 @@ namespace StudentProgress.CoreTests.UseCases
                 new ProgressGetSummaryForStudentInGroup.OtherStudentResponse(timo!.Id, timo!.Name));
             summary.OtherStudents.Should().NotContain(
                 new ProgressGetSummaryForStudentInGroup.OtherStudentResponse(timothy!.Id, timothy!.Name));
+            summary.LastFeedback.Should().Be("feedback from A");
+            summary.LastFeedbackDate.Should().Be(new DateTime(2021, 1, 11));
         }
     }
 }

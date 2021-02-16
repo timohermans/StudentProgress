@@ -38,6 +38,7 @@ namespace StudentProgress.Core.UseCases
         }
 
         public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
+
         public record OtherStudentResponse(int Id, string Name);
 
         public record Response
@@ -48,12 +49,16 @@ namespace StudentProgress.Core.UseCases
             public string StudentName { get; set; }
             public string? StudentNote { get; set; }
             public Period Period { get; set; }
-            public IEnumerable<MilestoneResponse> Milestones { get; set; }
-            public IEnumerable<ProgressUpdateResponse> ProgressUpdates { get; set; }
-            public IEnumerable<OtherStudentResponse> OtherStudents { get; set; }
+            public string? LastFeedback { get; }
+            public DateTime? LastFeedbackDate { get; }
+            public IEnumerable<MilestoneResponse> Milestones { get; }
+            public IEnumerable<ProgressUpdateResponse> ProgressUpdates { get; }
+            public IEnumerable<OtherStudentResponse> OtherStudents { get; }
 
-            public Response(int groupId, int studentId, string groupName, string studentName, string? studentNote, Period period,
-                IEnumerable<MilestoneResponse> milestones, IEnumerable<ProgressUpdateResponse> progressUpdates, IEnumerable<OtherStudentResponse> otherStudents)
+            public Response(int groupId, int studentId, string groupName, string studentName, string? studentNote,
+                Period period,
+                IEnumerable<MilestoneResponse> milestones, IEnumerable<ProgressUpdateResponse> progressUpdates,
+                IEnumerable<OtherStudentResponse> otherStudents, string? lastFeedback, DateTime? lastFeedbackDate)
             {
                 GroupId = groupId;
                 StudentId = studentId;
@@ -64,6 +69,8 @@ namespace StudentProgress.Core.UseCases
                 Milestones = milestones;
                 ProgressUpdates = progressUpdates;
                 OtherStudents = otherStudents;
+                LastFeedback = lastFeedback;
+                LastFeedbackDate = lastFeedbackDate;
             }
         }
 
@@ -96,8 +103,12 @@ namespace StudentProgress.Core.UseCases
                 .ToListAsync();
             var progressUpdates = await _context.ProgressUpdates
                 .Where(u => u.GroupId == query.GroupId && u.StudentId == query.StudentId)
-                .Select(u => new ProgressUpdateResponse(u.Id, u.Date, u.ProgressFeeling, u.StudentId, u.GroupId))
                 .ToListAsync();
+
+            var lastProgressUpdate = progressUpdates
+                .Where(p => p.Feedback != null)
+                .OrderByDescending(p => p.Date)
+                .FirstOrDefault();
 
             var milestonesSummary = milestones.Select(milestone =>
                 {
@@ -130,9 +141,12 @@ namespace StudentProgress.Core.UseCases
                 studentName: student.Value.Name,
                 studentNote: student.Value.Note,
                 milestones: milestonesSummary,
-                progressUpdates: progressUpdates,
+                progressUpdates: progressUpdates.Select(u =>
+                    new ProgressUpdateResponse(u.Id, u.Date, u.ProgressFeeling, u.StudentId, u.GroupId)).ToList(),
                 period: group.Value.Period,
-                otherStudents: otherStudents
+                otherStudents: otherStudents,
+                lastFeedback: lastProgressUpdate?.Feedback,
+                lastFeedbackDate: lastProgressUpdate?.Date
             ));
         }
     }
