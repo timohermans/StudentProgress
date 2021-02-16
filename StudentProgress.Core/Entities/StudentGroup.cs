@@ -64,5 +64,10 @@ namespace StudentProgress.Core.Entities
             _milestones.Add(milestone ?? throw new NullReferenceException(nameof(milestone)));
             return Result.Success();
         }
+
+        public void RemoveStudent(Student student)
+        {
+            students.Remove(student);
+        }
     }
 }
