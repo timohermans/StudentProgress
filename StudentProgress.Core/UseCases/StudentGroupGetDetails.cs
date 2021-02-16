@@ -56,7 +56,7 @@ namespace StudentProgress.Core.UseCases
                 [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
                 public DateTime? LastUpdateDate { get; }
 
-                [Display(Name = "Last Feedforward")] public string? LastFeedforward { get; }
+                [Display(Name = "Last Feedback")] public string? LastFeedback { get; }
 
                 public IList<ProgressUpdateResponse> ProgressUpdates { get; set; } = new List<ProgressUpdateResponse>();
             }
@@ -103,7 +103,7 @@ SELECT
     s.""Name"",
     p.""Date"" as ""{nameof(Response.StudentsResponse.LastUpdateDate)}"",
     p.""ProgressFeeling"" as ""{nameof(Response.StudentsResponse.FeelingOfLatestProgress)}"",
-    p.""Feedforward"" as ""{nameof(Response.StudentsResponse.LastFeedforward)}"",
+    p.""Feedback"" as ""{nameof(Response.StudentsResponse.LastFeedback)}"",
     p2.""AmountOfProgressItems"" as ""{nameof(Response.StudentsResponse.AmountOfProgressItems)}"",
 	p.""Date"",
 	p2.""Date"",
@@ -121,7 +121,7 @@ LEFT JOIN
 			MAX(""Date"") as ""Date"", 
 			COUNT(*) as ""AmountOfProgressItems""
 		FROM ""ProgressUpdate""
-		group by ""GroupId"", ""StudentId"") p2
+		GROUP BY ""GroupId"", ""StudentId"") p2
     ON p.""StudentId"" = p2.""StudentId""
     AND p.""GroupId"" = p2.""GroupId""
     AND p.""Date"" = p2.""Date""

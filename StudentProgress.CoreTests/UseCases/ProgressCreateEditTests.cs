@@ -36,8 +36,6 @@ namespace StudentProgress.CoreTests.UseCases
         StudentId = student?.Id ?? 0,
         Date = new DateTime(2020, 12, 18),
         Feedback = "Come on!",
-        Feedforward = "Work on this!",
-        Feedup = "Good job!",
         Feeling = Feeling.Neutral,
         Milestones = new List<ProgressCreateOrUpdate.MilestoneProgressCommand>
                 {
@@ -56,8 +54,6 @@ namespace StudentProgress.CoreTests.UseCases
           .ShouldExist()
           .HasDate(new DateTime(2020, 12, 18))
           .HasFeedback("Come on!")
-          .HasFeedforward("Work on this!")
-          .HasFeedup("Good job!")
           .HasFeeling(Feeling.Neutral)
           .HasMilestonesProgressCount(1)
           .HasMilestoneProgressRatingAt(0, Rating.Orienting)
@@ -74,8 +70,6 @@ namespace StudentProgress.CoreTests.UseCases
         StudentId = 55,
         Date = new DateTime(2020, 12, 18),
         Feedback = "Come on!",
-        Feedforward = "Work on this!",
-        Feedup = "Good job!",
         Feeling = Feeling.Neutral
       };
       var useCase = new ProgressCreateOrUpdate(Fixture.CreateDbContext());
@@ -107,8 +101,6 @@ namespace StudentProgress.CoreTests.UseCases
       var progress = Fixture.DataMother.CreateProgressUpdate(
           group, student,
           feedback: "Or is it?",
-          feedup: "Nope this isn't right",
-          feedforward: null,
           feeling: Feeling.Bad,
           date: new DateTime(2021, 1, 7),
           milestoneProgresses: new List<MilestoneProgress>
@@ -122,8 +114,6 @@ namespace StudentProgress.CoreTests.UseCases
 
       command.Date = new DateTime(2021, 2, 11);
       command.Feedback = "back";
-      command.Feedup = "up";
-      command.Feedforward = "forward";
       command.Feeling = Feeling.Good;
       command.Milestones = command.Milestones.Where(m => m.MilestoneId != milestoneCooperation.Id).ToList();
       command.GetMilestoneProgress(milestoneCompleteness.Id).Comment = "completeness";
@@ -144,8 +134,6 @@ namespace StudentProgress.CoreTests.UseCases
       actualProgressUpdate
         .HasDate(new DateTime(2021, 2, 11))
         .HasFeedback("back")
-        .HasFeedup("up")
-        .HasFeedforward("forward")
         .HasFeeling(Feeling.Good)
         .HasMilestonesProgressCount(2)
         .HasMilestoneProgressIdAt(0, progress.MilestonesProgress.FirstOrDefault(mp => mp.Milestone == milestoneCompleteness)!.Id)

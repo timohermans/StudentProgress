@@ -44,24 +44,24 @@ namespace StudentProgress.CoreTests.UseCases
             var timo = group.Students.FirstOrDefault(g => g.Name == "Timo");
             var progress1 = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2020, 1, 1),
-                feedforward: "work on this 1",
+                feedback: "work on this 1",
                 feeling: Feeling.Good
             );
             var progress2 = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2020, 2, 2),
-                feedforward: "work on this 2",
+                feedback: "work on this 2",
                 feeling: Feeling.Bad
             );
 
             var ryanne = group.Students.FirstOrDefault(g => g.Name == "Ryanne");
             Fixture.DataMother.CreateProgressUpdate(group, ryanne,
                 date: new DateTime(2020, 5, 5),
-                feedforward: "ryanne forward 1",
+                feedback: "ryanne forward 1",
                 feeling: Feeling.Bad
             );
             Fixture.DataMother.CreateProgressUpdate(group, ryanne,
                 date: new DateTime(2020, 6, 6),
-                feedforward: "ryanne forward 2",
+                feedback: "ryanne forward 2",
                 feeling: Feeling.Good
             );
 
@@ -84,14 +84,14 @@ namespace StudentProgress.CoreTests.UseCases
             response!.Students.ElementAt(0).Id.Should().Be(ryanne!.Id);
             response!.Students.ElementAt(0).Name.Should().Be("Ryanne");
             response!.Students.ElementAt(0).LastUpdateDate.Should().Be(new DateTime(2020, 6, 6));
-            response!.Students.ElementAt(0).LastFeedforward.Should().Be("ryanne forward 2");
+            response!.Students.ElementAt(0).LastFeedback.Should().Be("ryanne forward 2");
             response!.Students.ElementAt(0).AmountOfProgressItems.Should().Be(2);
             response!.Students.ElementAt(0).FeelingOfLatestProgress.Should().Be(Feeling.Good);
 
             response!.Students.ElementAt(1).Id.Should().Be(timo!.Id);
             response!.Students.ElementAt(1).Name.Should().Be("Timo");
             response!.Students.ElementAt(1).LastUpdateDate.Should().Be(new DateTime(2020, 2, 2));
-            response!.Students.ElementAt(1).LastFeedforward.Should().Be("work on this 2");
+            response!.Students.ElementAt(1).LastFeedback.Should().Be("work on this 2");
             response!.Students.ElementAt(1).AmountOfProgressItems.Should().Be(2);
             response!.Students.ElementAt(1).FeelingOfLatestProgress.Should().Be(Feeling.Bad);
 

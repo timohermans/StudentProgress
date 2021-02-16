@@ -50,9 +50,7 @@ namespace StudentProgress.Core.UseCases
         get => Date;
         set => Date = Date.Date + value.TimeOfDay;
       }
-      public string? Feedback { get; set; }
-      public string? Feedup { get; set; }
-      public string? Feedforward { get; set; }
+      [Display(Name = "Comments")] public string? Feedback { get; set; }
       public List<MilestoneProgressCommand> Milestones { get; set; } = new List<MilestoneProgressCommand>();
     }
 
@@ -77,8 +75,6 @@ namespace StudentProgress.Core.UseCases
             student.Value,
             group.Value,
             command.Feedback,
-            command.Feedup,
-            command.Feedforward,
             command.Feeling,
             command.Date);
         progressUpdate.AddMilestones(milestonesProgress.Value);
@@ -92,7 +88,7 @@ namespace StudentProgress.Core.UseCases
             .ThenInclude(mp => mp.Milestone)
             .FirstOrDefaultAsync(p => p.Id == command.Id);
 
-        progressUpdate.Update(command.Feeling, command.Date, command.Feedback, command.Feedup, command.Feedforward);
+        progressUpdate.Update(command.Feeling, command.Date, command.Feedback);
         UpdateMilestoneProgresses(progressUpdate, milestonesProgress.Value);
       }
 

@@ -66,8 +66,6 @@ namespace StudentProgress.Core.UseCases
             {
                 Date = progressUpdate?.Date ?? DateTime.Now,
                 Feedback = progressUpdate?.Feedback,
-                Feedforward = progressUpdate?.Feedforward,
-                Feedup = progressUpdate?.Feedup,
                 GroupId = group.Id,
                 StudentId = student.Id,
                 Id = progressUpdate?.Id,

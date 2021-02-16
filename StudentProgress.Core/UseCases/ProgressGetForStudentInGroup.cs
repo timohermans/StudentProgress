@@ -45,8 +45,6 @@ namespace StudentProgress.Core.UseCases
             {
                 public int Id { get; init; }
                 public string? Feedback { get; init; }
-                public string? Feedup { get; init; }
-                public string? Feedforward { get; init; }
                 public DateTime UpdatedAt { get; init; }
                 public DateTime CreatedAt { get; init; }
                 [DataType(DataType.Date)]
@@ -87,8 +85,6 @@ namespace StudentProgress.Core.UseCases
                 {
                     Id = p.Id,
                     Feedback = p.Feedback,
-                    Feedforward = p.Feedforward,
-                    Feedup = p.Feedup,
                     Feeling = p.ProgressFeeling,
                     Date = p.Date,
                     UpdatedAt = p.UpdatedDate,

@@ -79,8 +79,6 @@ namespace StudentProgress.CoreTests
         public ProgressUpdate CreateProgressUpdate(
             StudentGroup group = null, Student student = null,
             string feedback = "bad",
-            string feedup = "good",
-            string feedforward = "next",
             Feeling feeling = Feeling.Neutral,
             DateTime? date = null,
             IEnumerable<MilestoneProgress> milestoneProgresses = null
@@ -95,8 +93,6 @@ namespace StudentProgress.CoreTests
                 student ?? new Student("student 1"),
                 group ?? new StudentGroup((Name) "group 1", (Period) new DateTime(2020, 9, 1), "mnemonic 1"),
                 feedback,
-                feedup,
-                feedforward,
                 feeling,
                 date ?? new DateTime(2020, 12, 19));
             if (milestoneProgresses != null) update.AddMilestones(milestoneProgresses);

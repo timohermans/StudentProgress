@@ -36,8 +36,6 @@ namespace StudentProgress.CoreTests.UseCases
       var progress = Fixture.DataMother.CreateProgressUpdate(
           group, student, 
           feedback: "Or is it?", 
-          feedup: "Nope this isn't right", 
-          feedforward: null, 
           feeling: Feeling.Bad, 
           date: new DateTime(2021, 1, 7),
           milestoneProgresses: new List<MilestoneProgress>
@@ -54,9 +52,7 @@ namespace StudentProgress.CoreTests.UseCases
       result.IsSuccess.Should().BeTrue();
       var command = result.Value.Command;
       command.Date.Should().Be(new DateTime(2021, 1, 7));
-      command.Feedup.Should().Be("Nope this isn't right");
       command.Feedback.Should().Be("Or is it?");
-      command.Feedforward.Should().BeNull();
       command.Feeling.Should().Be(Feeling.Bad);
       command.GroupId.Should().Be(group.Id);
       command.Id.Should().Be(progress.Id);

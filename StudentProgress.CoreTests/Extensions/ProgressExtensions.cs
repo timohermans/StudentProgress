@@ -20,18 +20,6 @@ namespace StudentProgress.CoreTests.Extensions
       return update;
     }
 
-    public static ProgressUpdate HasFeedforward(this ProgressUpdate update, string feedforward)
-    {
-      update.Feedforward.Should().Be(feedforward);
-      return update;
-    }
-
-    public static ProgressUpdate HasFeedup(this ProgressUpdate update, string feedup)
-    {
-      update.Feedup.Should().Be(feedup);
-      return update;
-    }
-
     public static ProgressUpdate HasFeeling(this ProgressUpdate update, Feeling feeling)
     {
       update.ProgressFeeling.Should().Be(feeling);

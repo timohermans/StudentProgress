@@ -45,8 +45,6 @@ namespace StudentProgress.CoreTests.UseCases
             Fixture.DataMother.CreateProgressUpdate(
                 group, student,
                 feedback: "bad",
-                feedforward: "next up",
-                feedup: "good",
                 date: new DateTime(2020, 3, 3));
 
             using var ucContext = Fixture.CreateDbContext();
@@ -61,8 +59,6 @@ namespace StudentProgress.CoreTests.UseCases
             result.ProgressUpdates.Count().Should().Be(3);
             result.ProgressUpdates.ElementAt(0)!.Date.Should().Be(new DateTime(2020, 3, 3));
             result.ProgressUpdates.ElementAt(0)!.Feedback.Should().Be("bad");
-            result.ProgressUpdates.ElementAt(0)!.Feedforward.Should().Be("next up");
-            result.ProgressUpdates.ElementAt(0)!.Feedup.Should().Be("good");
             result.ProgressUpdates.ElementAt(0)!.MilestoneProgresses.Should().HaveCount(0);
             result.ProgressUpdates.ElementAt(1)!.Date.Should().Be(new DateTime(2020, 2, 2));
             result.ProgressUpdates.ElementAt(1)!.MilestoneProgresses.Should().HaveCount(2);

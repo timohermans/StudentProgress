@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace StudentProgress.Core.UseCases
                 .ToResult("Group doesn't exist");
             var learningOutcomeResult = Name.Create(command.LearningOutcome);
             var milestoneIdsResult =
-                Result.FailureIf(command.MilestoneIds.Length == 0, "At least one milestone ID is required");
+                Result.FailureIf(!command.MilestoneIds.Any(), "At least one milestone ID is required");
             var validationResult = Result.Combine(group, learningOutcomeResult, milestoneIdsResult);
 
             if (validationResult.IsFailure)
@@ -48,7 +49,7 @@ namespace StudentProgress.Core.UseCases
         {
             public int GroupId { get; set; }
             public string LearningOutcome { get; set; } = null!;
-            public int[] MilestoneIds { get; set; }
+            public IEnumerable<int> MilestoneIds { get; set; } = Enumerable.Empty<int>();
         }
     }
 }

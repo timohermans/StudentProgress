@@ -87,7 +87,7 @@
             <th id="student-name">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
             <th id="student-timeline">Timeline</th>
             <th id="student-amount-of-progress">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
-            <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedforward)</th>
+            <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedback)</th>
           </tr>
           </thead>
           <tbody>
@@ -118,7 +118,7 @@
                   @Html.DisplayFor(_ => student.AmountOfProgressItems)
                 </a>
               </td>
-              <td headers="student-last-feedforward" class="feedback-text">@Html.DisplayFor(_ => student.LastFeedforward)</td>
+              <td headers="student-last-feedforward" class="feedback-text">@Html.DisplayFor(_ => student.LastFeedback)</td>
             </tr>
           }
           </tbody>
