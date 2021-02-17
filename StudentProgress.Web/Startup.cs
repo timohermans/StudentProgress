@@ -15,6 +15,7 @@ using StudentProgress.Core.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using HtmlTags;
+using Microsoft.AspNetCore.HttpOverrides;
 using Npgsql;
 using StudentProgress.Web.Infrastructure;
 
@@ -66,6 +67,12 @@ namespace StudentProgress.Web
                         options.GetClaimsFromUserInfoEndpoint = true;
                         options.ResponseType = OpenIdConnectResponseType.IdToken;
                     });
+
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders =
+                        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                });
             }
         }
 
