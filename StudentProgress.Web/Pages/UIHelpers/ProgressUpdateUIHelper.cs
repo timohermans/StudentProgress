@@ -28,7 +28,7 @@ namespace StudentProgress.Web.Pages.UIHelpers
 
             if (update == null)
             {
-                return $"{borderClass} bg-light";
+                return $"{borderClass} bg-white";
             }
 
             var colorClass = update.Feeling switch

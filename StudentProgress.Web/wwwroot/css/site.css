@@ -1,9 +1,17 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-/* Sticky footer styles
--------------------------------------------------- */
-[x-cloak] { display: none; }
+/* || GENERAL STYLES */
+:root {
+    --green: #40b24b;
+    --green-light: #4dd85b;
+    --green-dark: #318B39;
+    --gray-dark: #6A707E;
+}
+
+[x-cloak] {
+    display: none;
+}
 
 html {
     position: relative;
@@ -11,34 +19,57 @@ html {
     font-size: 14px;
 }
 
+body {
+    color: var(--gray-dark);
+    background-color: #F3F4F9;
+}
+
+.table {
+    color: var(--gray-dark);
+}
+
+a, .btn-link {
+    color: var(--green);
+}
+
+.btn-primary, .btn-outline-primary:hover {
+    background-color: var(--green);
+    border-color: var(--green-dark);
+}
+
+.btn-outline-primary {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.btn-primary:hover {
+    background-color: var(--green-dark);
+    border-color: var(--green-dark);
+}
+
+.form-control:focus {
+    color: var(--gray-dark);
+    background-color: #fff;
+    border-color: var(--green-light);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(77 216 91 / 25%);
+}
+
 @media (min-width: 768px) {
     html {
-        font-size: 16px;
+        /*font-size: 16px;*/
     }
 }
 
-.pointer {
-    cursor: pointer;
+/* || SEARCH
+-------------------------------------------------- */
+
+.search .form-control {
+    width: unset;
+    border-radius: 1rem;
 }
 
-.border-top {
-    border-top: 1px solid #e5e5e5;
-}
-
-.border-bottom {
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
-}
-
-/* Sticky footer styles
+/* || STICKY FOOTER
 -------------------------------------------------- */
 body {
     /* Margin bottom by footer height */
@@ -57,7 +88,7 @@ body {
     white-space: pre-line;
 }
 
-/* Timelines 
+/* || TIMELINE COMPONENT
 -------------------------------------------------- */
 
 .timeline-item {
@@ -92,4 +123,26 @@ body {
 .timeline-item-hoverable:hover .timeline-item-date {
     top: -20px;
     opacity: 1;
+}
+
+/* || UTILITIES */
+
+.bg-dark-grey {
+    background-color: #4C5366;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
