@@ -98,7 +98,7 @@
               <td x-data="initStudentNameController()" class="student-name" headers="student-name">
                 <input x-ref="nameOriginal" type="hidden" value="@student.Name"/>
                 <a x-show="!isEditing" x-ref="nameDisplay" class="me-3" asp-page="/Progress/Summary" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id">@Html.DisplayFor(_ => student.Name)</a>
-                <form x-show="isEditing" x-ref="form">
+                <form x-show="isEditing" x-ref="form" x-cloak>
                   <input name="id" type="hidden" value="@student.Id"/>
                   <div class="d-inline-flex">
                     <input x-ref="nameInput" name="name" type="text" class="form-control" value="@student.Name" x-on:keydown.enter="updateName" x-on:keydown.escape="cancelEditing">
