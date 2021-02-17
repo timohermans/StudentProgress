@@ -31,9 +31,19 @@ namespace StudentProgress.Web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            var isAuthenticationEnabled = Configuration.GetValue<bool>("Authentication:IsEnabled");
+            ConfigureServices(services, false);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            ConfigureServices(services, true);
+        }
+
+        private void ConfigureServices(IServiceCollection services, bool requireHttpsOnAuth)
+        {
+               var isAuthenticationEnabled = Configuration.GetValue<bool>("Authentication:IsEnabled");
             services.AddMiniProfiler().AddEntityFramework();
             services.AddRazorPages(options =>
             {
@@ -63,6 +73,8 @@ namespace StudentProgress.Web
                         options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
                         options.Authority = Configuration.GetValue<string>("Authentication:Authority");
 
+                        options.RequireHttpsMetadata = requireHttpsOnAuth;
+
                         options.SaveTokens = true;
                         options.GetClaimsFromUserInfoEndpoint = true;
                         options.ResponseType = OpenIdConnectResponseType.IdToken;
@@ -73,7 +85,7 @@ namespace StudentProgress.Web
                     options.ForwardedHeaders =
                         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                 });
-            }
+            } 
         }
 
         private string BuildConnectionString()
