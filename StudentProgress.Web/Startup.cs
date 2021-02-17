@@ -43,7 +43,7 @@ namespace StudentProgress.Web
 
         private void ConfigureServices(IServiceCollection services, bool requireHttpsOnAuth)
         {
-               var isAuthenticationEnabled = Configuration.GetValue<bool>("Authentication:IsEnabled");
+            var isAuthenticationEnabled = Configuration.GetValue<bool>("Authentication:IsEnabled");
             services.AddMiniProfiler().AddEntityFramework();
             services.AddRazorPages(options =>
             {
@@ -85,7 +85,7 @@ namespace StudentProgress.Web
                     options.ForwardedHeaders =
                         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                 });
-            } 
+            }
         }
 
         private string BuildConnectionString()
