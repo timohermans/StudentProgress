@@ -62,9 +62,6 @@ namespace StudentProgress.Web
                         options.ClientSecret = Configuration.GetValue<string>("Authentication:ClientSecret");
                         options.Authority = Configuration.GetValue<string>("Authentication:Authority");
 
-                        // because we don't expose to the outside, we can use this in production as well
-                        options.RequireHttpsMetadata = false;
-
                         options.SaveTokens = true;
                         options.GetClaimsFromUserInfoEndpoint = true;
                         options.ResponseType = OpenIdConnectResponseType.IdToken;
@@ -107,14 +104,6 @@ namespace StudentProgress.Web
                     // is used for new chrome cookiepolicy
                     // see https://stackoverflow.com/questions/50262561/correlation-failed-in-net-core-asp-net-identity-openid-connect/64874175#64874175
                     MinimumSameSitePolicy = SameSiteMode.Lax
-                });
-
-                // this is used for the reverse proxy
-                app.UsePathBase("/student");
-                app.Use((context, next) =>
-                {
-                    context.Request.PathBase = "/student";
-                    return next();
                 });
 
                 app.UseExceptionHandler("/Error");
