@@ -106,6 +106,15 @@ namespace StudentProgress.Web
             }
             else
             {
+                if (Configuration.GetValue<bool>("Authentication:IsEnabled"))
+                {
+                    app.Use((context, next) =>
+                    {
+                        context.Request.Scheme = "https";
+                        return next();
+                    });
+                }
+
                 app.UseCookiePolicy(new CookiePolicyOptions()
                 {
                     // is used for new chrome cookiepolicy
