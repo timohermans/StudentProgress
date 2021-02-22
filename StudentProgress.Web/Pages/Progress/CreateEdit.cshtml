@@ -6,15 +6,15 @@
   ViewData["Title"] = "Add Progress";
 }
 
-<div>
+<section id="page-nav">
   <a asp-page="/StudentGroups/Index">Groups</a> >
   <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Group.Id">@Model.Group.Name</a> >
-  <a asp-page="./Index" asp-route-studentId="@Model.Student.Id"
+  <a asp-page="./Summary" asp-route-studentId="@Model.Student.Id"
      asp-route-groupId="@Model.Group.Id">
     @Model.Student.Name
   </a> >
   <span>@(Model.Progress.Id == null ? "Add" : "Edit") progress</span>
-</div>
+</section>
 
 <h1>@Model.Student.Name</h1>
 <div asp-validation-summary="All"></div>
@@ -22,7 +22,8 @@
 
 <form class="row" method="post">
   <input type="hidden" asp-for="Progress.Id"/>
-  <aside class="col-sm-12 col-md-2 order-md-1">
+
+  <aside id="form-nav" class="col-sm-12 col-md-2 order-md-1">
     <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
       <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="#date">Date</a>
@@ -42,16 +43,19 @@
   </aside>
 
   <div class="col-md-10">
-    <section id="date" class="row">
-      <div class="col-sm-12">
-        <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
-        <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
-        <div class="form-group mb-3">
-          <label asp-for="Progress.Date"></label>
-          <div x-data="{ time: new Date().toLocaleTimeString(undefined, { hour12: false }).replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, '$1') }" class="d-flex">
-            <input class="form-control me-3" asp-for="Progress.DateDate"/>
-            <input x-model="time" class="form-control" asp-for="Progress.DateTime" asp-format="{0:HH:mm}"/>
-          </div>
+  
+    <section id="tags" x-data="initProgressTagsController()" x-init="loadTags([])">
+      
+    </section>
+
+    <section id="date">
+      <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
+      <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
+      <div class="form-group mb-3">
+        <label asp-for="Progress.Date"></label>
+        <div x-data="{ time: new Date().toLocaleTimeString(undefined, { hour12: false }).replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, '$1') }" class="d-flex">
+          <input class="form-control me-3" asp-for="Progress.DateDate"/>
+          <input x-model="time" class="form-control" asp-for="Progress.DateTime" asp-format="{0:HH:mm}"/>
         </div>
       </div>
     </section>
