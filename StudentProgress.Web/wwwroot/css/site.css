@@ -35,12 +35,14 @@ a, .btn-link {
     color: var(--green-50);
 }
 
-.btn-primary, .btn-outline-primary:hover {
+.btn-primary, 
+.btn-outline-primary:hover:not(label.btn-outline-primary:hover) {
     background-color: var(--green-50);
     border-color: var(--green-70);
+    color: var(--white-50);
 }
 
-.btn-outline-primary {
+.btn-outline-primary:not(label.btn-outline-primary) {
     color: var(--green-50);
     border-color: var(--green-50);
 }
@@ -50,7 +52,9 @@ a, .btn-link {
     border-color: var(--green-70);
 }
 
-.form-control:focus, .btn:focus {
+.form-control:focus, 
+.btn:focus,
+.btn:focus:active {
     color: var(--gray-dark);
     background-color: #fff;
     border-color: var(--green-20);
