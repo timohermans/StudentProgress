@@ -16,6 +16,8 @@ namespace StudentProgress.Core.Entities
     public DateTime Date { get; private set; }
     private readonly List<MilestoneProgress> _milestonesProgress = new();
     public IReadOnlyList<MilestoneProgress> MilestonesProgress => _milestonesProgress;
+    private readonly List<ProgressTag> _tags = new();
+    public IReadOnlyList<ProgressTag> Tags => _tags;
 
 #nullable disable
     private ProgressUpdate() { }

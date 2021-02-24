@@ -18,6 +18,7 @@ namespace StudentProgress.Core.Entities
         public DbSet<ProgressUpdate> ProgressUpdates => Set<ProgressUpdate>();
         public DbSet<Milestone> Milestones => Set<Milestone>();
         public DbSet<MilestoneProgress> MilestoneProgresses => Set<MilestoneProgress>();
+        public DbSet<ProgressTag> ProgressTags => Set<ProgressTag>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -50,6 +51,7 @@ namespace StudentProgress.Core.Entities
                 e.HasOne(p => p.Student).WithMany(s => s.ProgressUpdates);
                 e.HasOne(p => p.Group).WithMany();
                 e.HasMany(p => p.MilestonesProgress).WithOne(p => p.ProgressUpdate);
+                e.HasMany(p => p.Tags).WithMany(p => p.Updates);
             });
 
             modelBuilder.Entity<Student>(e =>
@@ -74,6 +76,12 @@ namespace StudentProgress.Core.Entities
                 e.HasKey(p => p.Id);
                 e.HasOne(p => p.Milestone)
                     .WithMany();
+            });
+
+            modelBuilder.Entity<ProgressTag>(e => {
+                e.ToTable("ProgressTag");
+                e.HasKey(p => p.Id);
+                e.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
             });
         }
     }
