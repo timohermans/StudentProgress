@@ -45,10 +45,13 @@ namespace StudentProgress.Web
         {
             var isAuthenticationEnabled = Configuration.GetValue<bool>("Authentication:IsEnabled");
             services.AddMiniProfiler().AddEntityFramework();
+            
             services.AddRazorPages(options =>
             {
                 if (isAuthenticationEnabled) options.Conventions.AuthorizeFolder("/");
             });
+            services.AddServerSideBlazor();
+            
             services.AddHtmlTags(new TagConventions());
             services.AddDbContext<ProgressContext>(options =>
                 options.UseNpgsql(BuildConnectionString(),
@@ -153,6 +156,7 @@ namespace StudentProgress.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapBlazorHub();
                 endpoints.MapRazorPages();
             });
 
