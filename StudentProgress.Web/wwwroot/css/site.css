@@ -7,6 +7,7 @@ for details on configuring this project to bundle and minify static web assets. 
     --green-50: #40b24b;
     --green-20: #4dd85b;
     --green-70: #318B39;
+    --green-90: #2F7F35;
     
     --gray: #6A707E;
     --gray-dark: #4C5366;
@@ -32,7 +33,7 @@ body {
 }
 
 a, .btn-link {
-    color: var(--green-50);
+    color: var(--green-90);
 }
 
 .btn-primary, 
