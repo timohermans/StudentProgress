@@ -25,16 +25,31 @@ namespace StudentProgress.CoreTests.UseCases
     [Fact]
     public async Task Creates_a_tag()
     {
-      await using var ucContext = Fixture.CreateDbContext();
-
-      var result = await Execute(async uc => await uc.HandleAsync(new ProgressTagCreateEdit.Request
+      var request = new ProgressTagCreateEdit.Command
       {
         Name = "Student gesprek"
-      }));
+      };
+
+      var result = await Execute(async uc => await uc.HandleAsync(request));
 
       result.IsSuccess.Should().BeTrue();
       var actualTag = Fixture.DataMother.Query<ProgressTag>();
       actualTag.Name.Should().Be((Name)"Student gesprek");
+    }
+
+    [Fact]
+    public async Task Edits_a_tag()
+    {
+      var tag = Fixture.DataMother.CreateProgressTag("Studentgesprek");
+
+      var result = await Execute(async uc => await uc.HandleAsync(
+        new ProgressTagCreateEdit.Command { Id = tag.Id, Name = "Docentgesprek" })
+        );
+
+      result.IsSuccess.Should().BeTrue();
+      var actualTag = Fixture.DataMother.Query<ProgressTag>();
+      actualTag.Id.Should().Be(tag.Id);
+      actualTag.Name.Should().Be((Name)"Docentgesprek");
     }
   }
 }
