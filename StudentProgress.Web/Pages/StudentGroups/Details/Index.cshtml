@@ -85,7 +85,15 @@
           <thead>
           <tr>
             <th id="student-name">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
-            <th id="student-timeline">Timeline</th>
+            <th id="student-timeline">
+              <a asp-page="./Index" asp-route-id="@Model.StudentGroup.Id" asp-route-sort="@(Model.IsSortedOnLastFeedback ? null : "last-feedback")">
+                Timeline
+                @if (Model.IsSortedOnLastFeedback)
+                {
+                  <svg-inject src="lib/bootstrap-icons/sort-numeric-down-alt.svg"></svg-inject>
+                }
+              </a>
+            </th>
             <th id="student-amount-of-progress">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
             <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedback)</th>
             <th id="student-actions"></th>
