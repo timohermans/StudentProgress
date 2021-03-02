@@ -51,7 +51,8 @@ namespace StudentProgress.CoreTests.UseCases
       var assertContext = Fixture.CreateDbContext();
       var actualTags = assertContext.ProgressTags.Where(t => t.Name == "Docentgesprek").ToList();
       actualTags.Count().Should().Be(1);
-      actualTags.FirstOrDefault().Name.Should().Be((Name)"Docentgesprek");
+      actualTags.FirstOrDefault()?.Name.Should().Be((Name)"Docentgesprek");
+      actualTags.FirstOrDefault()?.Id.Should().Be(tag.Id);
     }
   }
 }
