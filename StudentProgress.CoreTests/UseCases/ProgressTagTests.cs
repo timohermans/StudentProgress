@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
@@ -47,9 +48,10 @@ namespace StudentProgress.CoreTests.UseCases
         );
 
       result.IsSuccess.Should().BeTrue();
-      var actualTag = Fixture.DataMother.Query<ProgressTag>();
-      actualTag.Id.Should().Be(tag.Id);
-      actualTag.Name.Should().Be((Name)"Docentgesprek");
+      var assertContext = Fixture.CreateDbContext();
+      var actualTags = assertContext.ProgressTags.Where(t => t.Name == "Docentgesprek").ToList();
+      actualTags.Count().Should().Be(1);
+      actualTags.FirstOrDefault().Name.Should().Be((Name)"Docentgesprek");
     }
   }
 }
