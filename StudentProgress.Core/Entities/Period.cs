@@ -12,7 +12,7 @@ namespace StudentProgress.Core.Entities
         public string StartDateFormattedValue => StartDate.ToString("yyyy-M-d");
 
         public IEnumerable<int> DaysPassedInsideSemester =>
-            Enumerable.Range(0, TimePassedInsideSemesterSince(DateTime.Now).Days + 1);
+            Enumerable.Range(0, DaysPassedInsideSemesterSince(DateTime.Now) + 1);
 
         private bool IsFirstSemester => StartDate.Month.IsInRange(8, 9);
         public bool IsVeryOldDate => StartDate.Year < 1994;
@@ -127,11 +127,11 @@ namespace StudentProgress.Core.Entities
         ///
         /// Days that are outside the semester will not be counted!
         /// </summary>
-        public TimeSpan TimePassedInsideSemesterSince(DateTime sinceDate)
+        public int DaysPassedInsideSemesterSince(DateTime sinceDate)
         {
-            return sinceDate > EndOfSemester
+            return Math.Max(0, (sinceDate > EndOfSemester
                 ? (EndOfSemester - StartDate)
-                : (sinceDate - StartDate);
+                : (sinceDate - StartDate)).Days);
         }
     }
 }

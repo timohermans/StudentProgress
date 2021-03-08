@@ -64,13 +64,14 @@ namespace StudentProgress.CoreTests.Models
         [InlineData(2021, 2, 1, 2021, 2, 9, 1)]
         [InlineData(2021, 2, 1, 2021, 2, 10, 2)]
         [InlineData(2021, 2, 1, 2023, 2, 1, 202)]
+        [InlineData(2021, 8, 3, 2021, 3, 7, 0)]
         public void Gives_the_amount_of_days_passed_in_the_semester(int year, int month, int day, int sinceYear, int sinceMonth, int sinceDay, int actualDaysPassed)
         {
             var period = Period.Create(new DateTime(year, month, day)).Value;
 
-            var daysPassed = period.TimePassedInsideSemesterSince(new DateTime(sinceYear, sinceMonth, sinceDay));
+            var daysPassed = period.DaysPassedInsideSemesterSince(new DateTime(sinceYear, sinceMonth, sinceDay));
 
-            daysPassed.Should().Be(actualDaysPassed.Days());
+            daysPassed.Should().Be(actualDaysPassed);
         }
     }
 }
