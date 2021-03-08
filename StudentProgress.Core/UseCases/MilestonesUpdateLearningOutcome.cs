@@ -49,7 +49,7 @@ namespace StudentProgress.Core.UseCases
         {
             public int GroupId { get; set; }
             public string LearningOutcome { get; set; } = null!;
-            public IEnumerable<int> MilestoneIds { get; set; } = Enumerable.Empty<int>();
+            public List<int> MilestoneIds { get; set; } = new();
         }
     }
 }

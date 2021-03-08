@@ -85,7 +85,15 @@
           <thead>
           <tr>
             <th id="student-name">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().Name)</th>
-            <th id="student-timeline">Timeline</th>
+            <th id="student-timeline">
+              <a asp-page="./Index" asp-route-id="@Model.StudentGroup.Id" asp-route-sort="@(Model.IsSortedOnLastFeedback ? null : "last-feedback")">
+                Timeline
+                @if (Model.IsSortedOnLastFeedback)
+                {
+                  <svg-inject src="lib/bootstrap-icons/sort-numeric-down-alt.svg"></svg-inject>
+                }
+              </a>
+            </th>
             <th id="student-amount-of-progress">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().AmountOfProgressItems)</th>
             <th id="student-last-feedforward">@Html.DisplayNameFor(model => model.StudentGroup.Students.FirstOrDefault().LastFeedback)</th>
             <th id="student-actions"></th>
@@ -155,8 +163,8 @@
                 <div class="d-flex">
                   <input type="hidden" name="groupId" value="@Model.StudentGroup.Id"/>
                   <input x-model="learningOutcomeNew" type="text" name="learningOutcome" class="form-control" placeholder="New learning outcome"/>
-                  <template x-for="id in milestonesSelected">
-                    <input type="hidden" name="milestoneIds[]" x-model="id"/>
+                  <template x-for="(id, index) in milestonesSelected">
+                    <input type="hidden" x-bind:name="getMilestoneInputNameFor(index)" name="milestoneIds[]" x-model="id"/>
                   </template>
                   <button x-bind:disabled="!milestonesSelected.length || !learningOutcomeNew" class="btn btn-link text-nowrap" type="submit">Change <span x-show="milestonesSelected.length" x-text="milestonesSelected.length"></span></button>
                   <button x-on:click="stopSelecting" x-show="isSelecting" type="button" class="btn btn-link">Cancel</button>

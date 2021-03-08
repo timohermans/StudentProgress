@@ -66,7 +66,7 @@ namespace StudentProgress.Web.Pages.Progress
                 return await OnGetAsync(new ProgressGetForCreateOrUpdate.Query { GroupId = Progress.GroupId, StudentId = Progress.StudentId, Id = Progress.Id });
             }
 
-            return RedirectToPage("./Summary", new { StudentId = Progress.StudentId, GroupId = Progress.GroupId });
+            return RedirectToPage("./Summary", new { Progress.StudentId, Progress.GroupId });
         }
     }
 }

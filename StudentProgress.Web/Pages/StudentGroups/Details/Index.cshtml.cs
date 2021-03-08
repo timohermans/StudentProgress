@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.UseCases;
@@ -18,9 +20,10 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             _milestonesUpdateUseCase = new MilestonesUpdateLearningOutcome(context);
         }
 
+        public bool IsSortedOnLastFeedback { get; set; }
         public StudentGroupGetDetails.Response StudentGroup { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, string? sort)
         {
             if (id == null)
             {
@@ -32,6 +35,17 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             if (StudentGroup == null)
             {
                 return NotFound();
+            }
+
+            if (sort == "last-feedback")
+            {
+                IsSortedOnLastFeedback = true;
+                StudentGroup.Students = StudentGroup.Students
+                    .OrderByDescending(s => s.ProgressUpdates
+                        .Select(u => u.Date)
+                        .DefaultIfEmpty(DateTime.MinValue)
+                        .Max(p => p.Date))
+                    .ToList();
             }
             return Page();
         }
@@ -45,7 +59,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 ModelState.AddModelError("MilestoneSummary", result.Error);
             }
             
-            return await OnGetAsync(command.GroupId);
+            return await OnGetAsync(command.GroupId, null);
         }
     }
 }
