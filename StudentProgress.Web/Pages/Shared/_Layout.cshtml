@@ -2,70 +2,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Student Progress</title>
-  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="~/css/site.css"/>
+
+  <script type="module" defer>window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));</script>
+  @await RenderSectionAsync("Scripts", required: false)
+  <script type="module" src="~/dist/site.entry.js" defer></script>
+  <link href="~/dist/site.css" rel="stylesheet" />
   @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-<mini-profiler/>
-<header>
-  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">
-    <div class="container">
-      <a class="navbar-brand home-link text-white" asp-area="" asp-page="/Index">Progress</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-        <ul class="navbar-nav flex-grow-1">
-          <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
-          </li>
-        </ul>
-        <div x-data="initSearchController()" class="d-flex flex-grow-1 search" autocomplete="off">
-          <input
-            id="search" type="text" class="form-control" placeholder="search student.."
-            x-on:keyup.debounce="search"
-            autocomplete="off">
-          <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
-            <template x-for="student in searchResults" :key="student">
-              <div class="list-group-item list-group-item-action">
-                <p x-text="student.name"></p>
-                <template x-for="group in student.groups" :key="group">
-                  <a class="btn btn-link" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
-                </template>
-              </div>
-            </template>
+  <mini-profiler />
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">
+      <div class="container">
+        <a class="navbar-brand home-link text-white" asp-area="" asp-page="/Index">Progress</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+          <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+              <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
+            </li>
+          </ul>
+          <div x-data="initSearchController()" class="d-flex flex-grow-1 search" autocomplete="off">
+            <input id="search" type="text" class="form-control" placeholder="search student.."
+                   x-on:keyup.debounce="search"
+                   autocomplete="off">
+            <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
+              <template x-for="student in searchResults" :key="student">
+                <div class="list-group-item list-group-item-action">
+                  <p x-text="student.name"></p>
+                  <template x-for="group in student.groups" :key="group">
+                    <a class="btn btn-link" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                  </template>
+                </div>
+              </template>
+            </div>
           </div>
+          @if (User.Identity.IsAuthenticated)
+          {
+            <span class="navbar-text">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
+          }
         </div>
-        @if (User.Identity.IsAuthenticated)
-        {
-          <span class="navbar-text">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
-        }
       </div>
+    </nav>
+  </header>
+  <main role="main" class="pb-3 container">
+    @RenderBody()
+  </main>
+
+  <footer class="border-top footer text-muted">
+    <div class="container">
+      &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </div>
-  </nav>
-</header>
-<main role="main" class="pb-3 container">
-  @RenderBody()
-</main>
+  </footer>
 
-<footer class="border-top footer text-muted">
-  <div class="container">
-    &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
-  </div>
-</footer>
-
-<script src="~/lib/alpinejs/alpine.min.js"></script>
-<script src="~/lib/popper/popper.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script>window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));</script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/search.js" asp-append-version="true"></script>
-
-@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

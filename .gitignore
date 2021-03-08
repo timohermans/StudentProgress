@@ -345,3 +345,6 @@ healthchecksdb
 
 .vs/
 /.vscode
+
+**/wwwroot/dist/
+node_modules/

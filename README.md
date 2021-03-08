@@ -101,3 +101,7 @@ public void Name_cannot_be_empty() {
     name.IsSuccess.Should().BeFalse();
 } 
 ```
+
+### Webpack integration
+
+Used this approach, which is awesome: [use npm with .net core mvc](https://medium.com/@lars.willemsens/managing-asp-net-core-mvc-front-end-dependencies-with-npm-and-webpack-part-1-1f6a8b8a1289)

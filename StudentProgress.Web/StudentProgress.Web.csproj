@@ -1,11 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <UserSecretsId>4e8914cc-2bc6-479c-b121-e74105bc353a</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <MpaRoot>Client\</MpaRoot>
+    <WWWRoot>wwwroot\</WWWRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(MpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Client\src\css\group.css" />
+    <Content Include="Client\src\css\progress.css" />
+    <Content Include="Client\src\css\site.css" />
+    <Content Include="Client\src\css\summary.css" />
+    <Content Include="Client\src\js\group-details\milestoneTableActions.js" />
+    <Content Include="Client\src\js\search.js" />
+    <Content Include="Client\src\js\site.js" />
+    <Content Include="Client\src\js\group-details\studentName.js" />
+    <Content Include="Client\src\js\student-summary\index.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -37,5 +52,42 @@
   <ItemGroup>
     <ProjectReference Include="..\StudentProgress.Core\StudentProgress.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the MPA source files, but do show them in the project files list -->
+    <Content Remove="$(MpaRoot)**" />
+    <None Remove="$(MpaRoot)**" />
+    <None Include="$(MpaRoot)**" Exclude="$(MpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <Target Name="NpmInstall" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(MpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(MpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="NpmRunBuild" BeforeTargets="Build" DependsOnTargets="NpmInstall">
+    <Exec WorkingDirectory="$(MpaRoot)" Command="npm run build" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(WWWRoot)dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="NpmClean" BeforeTargets="Clean">
+    <RemoveDir Directories="$(WWWRoot)dist" />
+  </Target>
 
 </Project>
