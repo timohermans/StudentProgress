@@ -107,13 +107,13 @@ public void Name_cannot_be_empty() {
 I've used a combination of C4 and abstract class diagram to highlight the most important parts of the technical design.
 Find more information about the [c4 model here](https://www.c4model.com).
 
-## Context Diagram
+### Context Diagram
 
 ![context diagram](./docs/c4-model-C1.png)
 
 Note that the authentication can be disabled alltogether in the `appsettings.Development.json` or the environment variables.
 
-## Container Diagram
+### Container Diagram
 
 ![container diagram](./docs/c4-model-C2.png)
 
@@ -126,7 +126,7 @@ Documentation on the different technologies used can be found below:
 - [PostgreSQL documentation](https://www.postgresql.org/docs/12/index.html)
 - [Postgresql Npgsql Entity Framework Core Provider (the nuget package that makes Postgres work with EF)](https://www.npgsql.org/efcore/)
 
-## Component Diagram
+### Component Diagram
 
 To keep the diagram simple, only the creation or updating of a Progress entity has been modeled.
 However, you can apply the same principle to all entities (see Domain model for more info)
@@ -135,18 +135,19 @@ However, you can apply the same principle to all entities (see Domain model for 
 
 For each component some additional explanation is warranted:
 
-### Progress CreateEdit PageModel
+#### Progress CreateEdit PageModel
 
-This component is nothing more than a PageModel that you're used to from Razor Pages. Each PageModel is set up in either one of the following two ways:
+This component is nothing more than a PageModel that you're used to from Razor Pages. Each PageModel communicates with the business logic in either one of the following two ways:
 
-- `ProgressContext` class for GET and a `UseCase` class for POST/PUT
-- `UseCase` class for GET and a `UseCase` class for POST/PUT
+- A `ProgressContext` class for retrieving data and a `UseCase` class for persisting data
+- A `UseCase` class for retrieving data and a `UseCase` class for persisting data
 
-The reason not all GET requests have a seperate UseCase class is either I've been too lazy to create one or it was a very simple query that could be solved with Entity Framework.
+The reason not all data retrieval has a seperate UseCase class is either I've been too lazy to create one or it was a very simple query that could be solved with Entity Framework.
+**You should always aim to put everything in UseCase classes**
 
 A PageModel shouldn't be doing anything else except input validation and passing info to the UseCase classes.
 
-### ProgressCreateOrUpdateUseCase
+#### ProgressCreateOrUpdateUseCase
 
 UseCase classes are the meat of the system. They (should) contain all domain and business logic.
 
@@ -164,14 +165,14 @@ There are, however, some notable differences:
 
 Finally, you might notice I've made a lot of use of the [CSharpFunctionalExtensions Nuget package](https://github.com/vkhorikov/CSharpFunctionalExtensions). This is also heavily inspired by Vladimir Khorikov, but also my love for functional programming.
 
-### ProgressContext
+#### ProgressContext
 
 In almost every UseCase Entity Framework is used to query or mutate the database.
 There is, however, a notable exception when retrieving StudentGroup details.
 For this I've used [Dapper](https://dapperlib.github.io/Dapper/).
 The reason I used Dapper for this is that I wanted to test Dapper and because it's quite a hefty query to perform.
 
-## Domain model
+### Domain model
 
 See below the domain model of all the entities.
 Note that the ValueObjects and enums have been omitted to keep the model as simple as possible.
