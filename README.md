@@ -169,9 +169,11 @@ The reason not all data retrieval has a seperate UseCase class is either I've be
 
 A PageModel shouldn't be doing anything else except input validation and passing info to the UseCase classes.
 
-#### ProgressCreateOrUpdateUseCase
+#### ProgressCreateOrUpdateUseCase and ProgressUpdate
 
-UseCase classes are the meat of the system. They (should) contain all domain and business logic.
+UseCase classes are the meat of the system. They (should) speak to entities and persist data to the database.
+
+Note that this application does not have a lot of business logic. However, I've tried to put all business logic in the entity classes and value objects.
 
 Every UseCase class is **always** accompanied by the following three components:
 
