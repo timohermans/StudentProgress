@@ -4,6 +4,28 @@
 
 Project to track people, whether that's students, team members or yourself.
 
+## Table of contents
+
+- [Student Progress](#student-progress)
+  * [Feature showcase](#feature-showcase)
+  * [Installation](#installation)
+  * [Config](#config)
+    + [Port](#port)
+    + [Database](#database)
+  * [Development](#development)
+    + [Migrations](#migrations)
+    + [Integration tests](#integration-tests)
+    + [Unit Tests](#unit-tests)
+  * [Technical design](#technical-design)
+    + [Context Diagram](#context-diagram)
+    + [Container Diagram](#container-diagram)
+    + [Component Diagram](#component-diagram)
+      - [Progress CreateEdit PageModel](#progress-createedit-pagemodel)
+      - [ProgressCreateOrUpdateUseCase](#progresscreateorupdateusecase)
+      - [ProgressContext](#progresscontext)
+    + [Domain model](#domain-model)
+
+
 ## Feature showcase
 
 ![showcase](./docs/features.gif)
