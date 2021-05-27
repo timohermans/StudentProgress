@@ -15,7 +15,7 @@
             this.milestonesSelected = [];
             this.learningOutcomeNew = '';
             this.isSelecting = false;
-        },
+        },  
         getMilestoneInputNameFor(index) {
             return `milestoneIds[${index}]`;
         }

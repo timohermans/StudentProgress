@@ -26,18 +26,18 @@
   <aside id="form-nav" class="col-sm-12 col-md-2 order-md-1">
     <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
       <nav class="nav nav-pills flex-column">
-        <a class="nav-link" href="#date">Date</a>
+        <a class="nav-link" href="#date" data-turbo="false">Date</a>
         @if (Model.Milestones.Any())
         {
-          <a class="nav-link" href="#milestones">Milestones</a>
+          <a class="nav-link" href="#milestones" data-turbo="false">Milestones</a>
         }
         @foreach (var navId in Model.MilestoneNavIds)
         {
-          <a class="nav-link" href="#@navId.Value">@navId.Key</a>
+          <a class="nav-link" href="#@navId.Value" data-turbo="false">@navId.Key</a>
         }
-        <a class="nav-link" href="#feedback">Feedback</a>
-        <a class="nav-link" href="#feeling">Feeling</a>
-        <a class="nav-link" href="#save">Done</a>
+        <a class="nav-link" href="#feedback" data-turbo="false">Feedback</a>
+        <a class="nav-link" href="#feeling" data-turbo="false">Feeling</a>
+        <a class="nav-link" href="#save" data-turbo="false">Done</a>
       </nav>
     </nav>
   </aside>

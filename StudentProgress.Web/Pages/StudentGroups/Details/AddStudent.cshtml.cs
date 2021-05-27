@@ -38,29 +38,24 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
     public async Task<IActionResult> OnPostAsync()
     {
-      await AddStudentToGroup();
+      if (!ModelState.IsValid) return OnGet(Student.GroupId);
 
-      if (!ModelState.IsValid) return Page();
+      await AddStudentToGroup();
 
       return RedirectToPage("./Index", new { Id = Student.GroupId });
     }
 
     public async Task<IActionResult> OnPostAndAddAnotherAsync()
     {
-      await AddStudentToGroup();
+      if (!ModelState.IsValid) return OnGet(Student.GroupId);
 
-      if (!ModelState.IsValid) return Page();
+      await AddStudentToGroup();
 
       return RedirectToPage("./AddStudent", new { Student.GroupId });
     }
 
     private async Task<IActionResult> AddStudentToGroup()
     {
-      if (!ModelState.IsValid)
-      {
-        return Page();
-      }
-
       try
       {
         await _useCase.HandleAsync(Student);

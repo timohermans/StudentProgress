@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     site: './src/js/site.js',
     groupDetails: './src/js/group-details/index.js',
+    groupAddStudent: './src/js/group-add-student/index.js',
     studentSummary: './src/js/student-summary/index.js',
     progress: './src/js/progress/index.js'
   },

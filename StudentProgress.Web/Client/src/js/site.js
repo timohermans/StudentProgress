@@ -1,6 +1,9 @@
 ﻿// 3rd party js
 import 'bootstrap';
+import * as Turbo from "@hotwired/turbo"
+import 'alpine-turbo-drive-adapter'
 import 'alpinejs';
+
 // 3rd party css
 import 'bootstrap/dist/css/bootstrap.css';
 

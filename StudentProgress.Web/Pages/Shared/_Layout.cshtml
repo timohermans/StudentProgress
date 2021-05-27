@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Student Progress</title>
 
-  <script type="module" defer>window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));</script>
-  @await RenderSectionAsync("Scripts", required: false)
-  <script type="module" src="~/dist/site.entry.js" defer></script>
   <link href="~/dist/site.css" rel="stylesheet" />
   @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -61,5 +58,8 @@
     </div>
   </footer>
 
+  <script type="module" defer>window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));</script>
+  @await RenderSectionAsync("Scripts", required: false)
+  <script type="module" src="~/dist/site.entry.js" defer></script>
 </body>
 </html>
