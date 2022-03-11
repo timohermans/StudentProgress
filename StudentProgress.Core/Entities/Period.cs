@@ -29,10 +29,10 @@ namespace StudentProgress.Core.Entities
 
         public static Result<Period> Create(DateTime date)
         {
-            if (date.Month.IsInRange(10, 2)) {
-                return CreateSecondSemesterPeriod(date);
-            } else {
+            if (date.Month.IsInRange(3, 9)) {
                 return CreateFirstSemesterPeriod(date);
+            } else {
+                return CreateSecondSemesterPeriod(date);
             }
         }
 
