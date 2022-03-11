@@ -49,7 +49,6 @@ steps:
     - cd /home/apper/projects/StudentProgress
     - git checkout main
     - git pull
-    - cd /home/apper/projects/server-utils
     - docker-compose up -d --build
 
 trigger:
