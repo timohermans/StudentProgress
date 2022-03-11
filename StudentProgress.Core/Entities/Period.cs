@@ -29,14 +29,11 @@ namespace StudentProgress.Core.Entities
 
         public static Result<Period> Create(DateTime date)
         {
-            return date.Month switch
-            {
-                8 => CreateFirstSemesterPeriod(date),
-                9 => CreateFirstSemesterPeriod(date),
-                1 => CreateSecondSemesterPeriod(date),
-                2 => CreateSecondSemesterPeriod(date),
-                _ => Result.Failure<Period>("Can only create a period from February or September")
-            };
+            if (date.Month.IsInRange(10, 2)) {
+                return CreateSecondSemesterPeriod(date);
+            } else {
+                return CreateFirstSemesterPeriod(date);
+            }
         }
 
         private static Result<Period> CreateFirstSemesterPeriod(DateTime date)
