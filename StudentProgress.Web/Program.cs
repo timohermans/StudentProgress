@@ -7,6 +7,9 @@ using Microsoft.Extensions.Hosting;
 using StudentProgress.Core.Entities;
 using StudentProgress.Web.Infrastructure;
 
+// TODO: Integrate Canvas API + upsert avatar
+// TODO: Add Feedpulse reminders
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
