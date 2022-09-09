@@ -16,7 +16,6 @@ using HtmlTags;
 using Microsoft.AspNetCore.HttpOverrides;
 using StudentProgress.Web.Infrastructure;
 
-// TODO: Fix the failing integration test
 // TODO: Upgrade to .net 6
 // TODO: Integrate Canvas API support
 
