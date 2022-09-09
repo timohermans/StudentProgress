@@ -16,7 +16,7 @@ using HtmlTags;
 using Microsoft.AspNetCore.HttpOverrides;
 using StudentProgress.Web.Infrastructure;
 
-// TODO: Upgrade to .net 6
+// TODO: Rewrite startup.cs
 // TODO: Integrate Canvas API support
 
 namespace StudentProgress.Web
