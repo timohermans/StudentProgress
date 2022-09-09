@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StudentProgress.Core.Migrations
 {
@@ -6,11 +7,14 @@ namespace StudentProgress.Core.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
+                if (migrationBuilder.ActiveProvider == "Npgsql.EntityFrameworkCore.PostgreSQL")
+                {
+                    migrationBuilder.Sql(@"
 UPDATE ""ProgressUpdate""
 SET ""Feedback"" = concat_ws(E'\n', ""Feedup"", ""Feedback"", ""Feedforward"")
 ");
-            
+                }
+
             migrationBuilder.DropColumn(
                 name: "Feedforward",
                 table: "ProgressUpdate");

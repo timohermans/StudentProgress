@@ -21,7 +21,7 @@ namespace StudentProgress.CoreTests
             SetConnectionString();
 
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
-                .UseNpgsql(ConnectionString)
+                .UseSqlite(ConnectionString)
                 .Options;
 
             DataMother = new DataMother(ContextOptions);

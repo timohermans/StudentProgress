@@ -345,3 +345,4 @@ healthchecksdb
 
 .vs/
 /.vscode
+*.db
