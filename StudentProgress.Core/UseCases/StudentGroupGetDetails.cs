@@ -75,9 +75,17 @@ namespace StudentProgress.Core.UseCases
         private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId)
         {
             var group = await _context.Groups.Include(g => g.Milestones).FirstOrDefaultAsync(g => g.Id == groupId);
-            var students = await _context.Students.Where(s => s.StudentGroups.Any(g => g.Id == groupId)).ToListAsync();
-            var progressUpdates = await _context.ProgressUpdates.Where(pu =>
-                pu.GroupId == groupId && students.Select(s => s.Id).Contains(pu.StudentId)).ToListAsync();
+            var students = await _context
+                .Students
+                .Where(s => s.StudentGroups.Any(g => g.Id == groupId))
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+            var progressUpdates = await _context
+                .ProgressUpdates
+                .Where(pu =>
+                    pu.GroupId == groupId && students.Select(s => s.Id).Contains(pu.StudentId))
+                .OrderByDescending(p => p.Date)              
+                .ToListAsync();
 
             return new Response
             {
@@ -92,13 +100,16 @@ namespace StudentProgress.Core.UseCases
                     Id = m.Id,
                     Artefact = m.Artefact,
                     LearningOutcome = m.LearningOutcome
-                }).ToList(),
+                })
+                    .OrderBy(m => m.LearningOutcome)
+                    .ThenBy(m => m.Artefact)
+                    .ToList(),
                 Students = students.Select(s =>
                 {
                     var progressUpdatesOfStudent = progressUpdates.Where(pu => pu.StudentId == s.Id)
                         .OrderBy(pu => pu.Date)
                         .ToList();
-                    var lastProgressUpdate = progressUpdates
+                    var lastProgressUpdate = progressUpdatesOfStudent
                         .LastOrDefault();
 
                     return new Response.StudentsResponse
