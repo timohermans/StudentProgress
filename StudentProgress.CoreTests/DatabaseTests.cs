@@ -1,7 +1,4 @@
-﻿using System;
-using Dapper;
-using Npgsql;
-using StudentProgress.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace StudentProgress.CoreTests
 {
@@ -17,8 +14,8 @@ namespace StudentProgress.CoreTests
 
         private void CleanupData()
         {
-            using var connection = new NpgsqlConnection(Fixture.ConnectionString);
-            connection.Execute(@"
+            using var dbContext = Fixture.CreateDbContext();
+            dbContext.Database.ExecuteSqlRaw(@"
 DELETE FROM ""MilestoneProgress"";
 DELETE FROM ""Milestone"";
 DELETE FROM ""StudentStudentGroup"";
