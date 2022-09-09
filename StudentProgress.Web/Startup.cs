@@ -16,7 +16,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using HtmlTags;
 using Microsoft.AspNetCore.HttpOverrides;
-using Npgsql;
 using StudentProgress.Web.Infrastructure;
 
 namespace StudentProgress.Web
@@ -51,10 +50,8 @@ namespace StudentProgress.Web
             });
             services.AddHtmlTags(new TagConventions());
             services.AddDbContext<ProgressContext>(options =>
-                options.UseNpgsql(BuildConnectionString(),
+                options.UseSqlite(BuildConnectionString(),
                     b => b.MigrationsAssembly("StudentProgress.Core")));
-            services.AddScoped<IDbConnection>(_ =>
-                new NpgsqlConnection(BuildConnectionString()));
 
             if (isAuthenticationEnabled)
             {

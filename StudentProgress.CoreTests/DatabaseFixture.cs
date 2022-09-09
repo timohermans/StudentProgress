@@ -46,11 +46,6 @@ namespace StudentProgress.CoreTests
         {
             return new ProgressContext(ContextOptions);
         }
-
-        public IDbConnection CreateDbConnection()
-        {
-            return new NpgsqlConnection(ConnectionString);
-        }
     }
 
     [CollectionDefinition("db")]

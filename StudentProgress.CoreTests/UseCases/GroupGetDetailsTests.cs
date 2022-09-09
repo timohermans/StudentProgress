@@ -20,9 +20,8 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Gets_group_info_without_students()
         {
             var group = Fixture.DataMother.CreateGroup();
-            using var ucConnection = Fixture.CreateDbConnection();
             await using var ucDbContext = Fixture.CreateDbContext();
-            var useCase = new StudentGroupGetDetails(ucConnection, ucDbContext);
+            var useCase = new StudentGroupGetDetails(ucDbContext);
 
             var result = await useCase.HandleAsync(new StudentGroupGetDetails.Request(group.Id));
 
@@ -65,9 +64,8 @@ namespace StudentProgress.CoreTests.UseCases
                 feeling: Feeling.Good
             );
 
-            using var ucConnection = Fixture.CreateDbConnection();
             await using var ucDbContext = Fixture.CreateDbContext();
-            var useCase = new StudentGroupGetDetails(ucConnection, ucDbContext);
+            var useCase = new StudentGroupGetDetails(ucDbContext);
 
             // act
             var response = await useCase.HandleAsync(new StudentGroupGetDetails.Request(group.Id));

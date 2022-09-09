@@ -14,16 +14,16 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
         private readonly StudentGroupGetDetails _useCase;
         private readonly MilestonesUpdateLearningOutcome _milestonesUpdateUseCase;
 
-        public IndexModel(IDbConnection connection, ProgressContext context)
+        public IndexModel(ProgressContext context)
         {
-            _useCase = new StudentGroupGetDetails(connection, context);
+            _useCase = new StudentGroupGetDetails(context);
             _milestonesUpdateUseCase = new MilestonesUpdateLearningOutcome(context);
         }
 
         public bool IsSortedOnLastFeedback { get; set; }
         public StudentGroupGetDetails.Response StudentGroup { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id, string? sort)
+        public async Task<IActionResult> OnGetAsync(int? id, string sort)
         {
             if (id == null)
             {

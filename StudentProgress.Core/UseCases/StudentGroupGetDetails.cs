@@ -13,14 +13,9 @@ namespace StudentProgress.Core.UseCases
 {
     public class StudentGroupGetDetails
     {
-        private readonly IDbConnection _connection;
         private readonly ProgressContext _context;
 
-        public StudentGroupGetDetails(IDbConnection connection, ProgressContext context)
-        {
-            _connection = connection;
-            _context = context;
-        }
+        public StudentGroupGetDetails(ProgressContext context) => _context = context;
 
         public record Request(int Id);
 
@@ -37,26 +32,26 @@ namespace StudentProgress.Core.UseCases
 
             public record MilestoneResponse
             {
-                public int Id { get; }
+                public int Id { get; init; }
 
                 [DisplayName("Learning Outcome Artefact")]
-                public string Artefact { get; } = null!;
+                public string Artefact { get; init; } = null!;
 
-                [DisplayName("Learning Outcome")] public string LearningOutcome { get; } = null!;
+                [DisplayName("Learning Outcome")] public string LearningOutcome { get; init; } = null!;
             }
 
             public record StudentsResponse
             {
-                public int Id { get; }
-                public string Name { get; } = null!;
-                [Display(Name = "#")] public int AmountOfProgressItems { get; }
-                [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; }
+                public int Id { get; init; }
+                public string Name { get; init; } = null!;
+                [Display(Name = "#")] public int AmountOfProgressItems { get; init; }
+                [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; init; }
 
                 [Display(Name = "Last Time")]
                 [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
-                public DateTime? LastUpdateDate { get; }
+                public DateTime? LastUpdateDate { get; init; }
 
-                [Display(Name = "Last Feedback")] public string? LastFeedback { get; }
+                [Display(Name = "Last Feedback")] public string? LastFeedback { get; init; }
 
                 public IList<ProgressUpdateResponse> ProgressUpdates { get; set; } = new List<ProgressUpdateResponse>();
             }
@@ -71,107 +66,58 @@ namespace StudentProgress.Core.UseCases
                 return null;
             }
 
-            var group = await GetGroupWithStudentDataOfLatestFeedback(request.Id);
-            group.Students = await GetStudentsWithProgressUpdates(group);
-            return group;
+            return await GetGroupWithStudentDataOfLatestFeedback(request.Id);
         }
 
         private async Task<bool> DoesGroupExist(int groupId)
         {
-            return await _connection.QueryFirstAsync<bool>(
-                "select exists(select 1 from \"StudentGroup\" where \"Id\" = @Id)",
-                new {Id = groupId});
+            return await _context.Groups.AnyAsync(g => g.Id == groupId);
         }
 
         private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId)
         {
-            var groupDictionary = new Dictionary<int, Response>();
-            var studentProgressDictionary = new Dictionary<int, Response.StudentsResponse>();
-            var milestoneDictionary = new Dictionary<int, Response.MilestoneResponse>();
-            var result =
-                await _connection
-                    .QueryAsync<Response, Response.StudentsResponse, Response.MilestoneResponse, Response>(
-                        $@"
-SELECT
-    g.""Id"",
-    g.""Name"",
-    g.""Mnemonic"",
-    g.""Period"",
-    g.""CreatedDate"" as ""{nameof(Response.CreatedAt)}"",
-    g.""UpdatedDate"" as ""{nameof(Response.UpdatedAt)}"",
-    s.""Id"",
-    s.""Name"",
-    p.""Date"" as ""{nameof(Response.StudentsResponse.LastUpdateDate)}"",
-    p.""ProgressFeeling"" as ""{nameof(Response.StudentsResponse.FeelingOfLatestProgress)}"",
-    p.""Feedback"" as ""{nameof(Response.StudentsResponse.LastFeedback)}"",
-    p2.""AmountOfProgressItems"" as ""{nameof(Response.StudentsResponse.AmountOfProgressItems)}"",
-	p.""Date"",
-	p2.""Date"",
-    m.""Id"",
-    m.""Artefact"",
-    m.""LearningOutcome""
-FROM ""StudentGroup"" g
-LEFT JOIN ""StudentStudentGroup"" gs ON g.""Id"" = gs.""StudentGroupsId""
-LEFT JOIN ""Student"" s ON s.""Id"" = gs.""StudentsId""
-LEFT JOIN ""ProgressUpdate"" p ON p.""GroupId"" = g.""Id"" AND p.""StudentId"" = s.""Id""
-LEFT JOIN
-		(select 
-			""StudentId"",
-            ""GroupId"",
-			MAX(""Date"") as ""Date"", 
-			COUNT(*) as ""AmountOfProgressItems""
-		FROM ""ProgressUpdate""
-		GROUP BY ""GroupId"", ""StudentId"") p2
-    ON p.""StudentId"" = p2.""StudentId""
-    AND p.""GroupId"" = p2.""GroupId""
-    AND p.""Date"" = p2.""Date""
-LEFT JOIN ""Milestone"" m ON g.""Id"" = m.""StudentGroupId""
-WHERE g.""Id"" = @Id AND 
-	((p.""Date"" is null and p2.""Date"" is null) -- no progress updates
-	OR 
-	(p.""Date"" is not null and p2.""Date"" is not null)) -- with (aggregated) progress updates
-ORDER BY s.""Name"", p.""Date"" DESC, m.""LearningOutcome"", m.""Artefact"";
-", (group, studentProgress, milestone) =>
-                        {
-                            if (!groupDictionary.TryGetValue(group.Id, out var groupEntry))
-                            {
-                                groupEntry = group;
-                                groupEntry.Students = new List<Response.StudentsResponse>();
-                                groupEntry.Milestones = new List<Response.MilestoneResponse>();
-                                groupDictionary.Add(groupEntry.Id, groupEntry);
-                            }
+            var group = await _context.Groups.Include(g => g.Milestones).FirstOrDefaultAsync(g => g.Id == groupId);
+            var students = await _context.Students.Where(s => s.StudentGroups.Any(g => g.Id == groupId)).ToListAsync();
+            var progressUpdates = await _context.ProgressUpdates.Where(pu =>
+                pu.GroupId == groupId && students.Select(s => s.Id).Contains(pu.StudentId)).ToListAsync();
 
-                            if (studentProgress != null && !studentProgressDictionary.ContainsKey(studentProgress.Id))
-                            {
-                                groupEntry.Students.Add(studentProgress);
-                                studentProgressDictionary.Add(studentProgress.Id, studentProgress);
-                            }
-
-                            if (milestone != null && !milestoneDictionary.ContainsKey(milestone.Id))
-                            {
-                                groupEntry.Milestones.Add(milestone);
-                                milestoneDictionary.Add(milestone.Id, milestone);
-                            }
-
-                            return groupEntry;
-                        },
-                        splitOn: "Id",
-                        param: new {Id = groupId});
-
-            return result.FirstOrDefault()!; // "!" because we did the exists check beforehand
-        }
-
-        private async Task<IList<Response.StudentsResponse>> GetStudentsWithProgressUpdates(Response group)
-        {
-            var studentIds = group.Students.Select(s => s.Id).ToList();
-            var progressUpdates = await _context.ProgressUpdates
-                    .Where(p => studentIds.Contains(p.StudentId) && p.GroupId == group.Id)
-                    .Select(p => new ProgressUpdateResponse(p.Id, p.Date, p.ProgressFeeling, p.StudentId, p.GroupId))
-                    .ToListAsync();
-            return group.Students.Select(s => s with
+            return new Response
             {
-                ProgressUpdates = s.ProgressUpdates = progressUpdates.Where(p => p.StudentId == s.Id).ToList()
-            }).ToList();
+                Id = group.Id,
+                Mnemonic = group.Mnemonic,
+                Name = group.Name,
+                Period = group.Period,
+                CreatedAt = group.CreatedDate,
+                UpdatedAt = group.UpdatedDate,
+                Milestones = group.Milestones.Select(m => new Response.MilestoneResponse
+                {
+                    Id = m.Id,
+                    Artefact = m.Artefact,
+                    LearningOutcome = m.LearningOutcome
+                }).ToList(),
+                Students = students.Select(s =>
+                {
+                    var progressUpdatesOfStudent = progressUpdates.Where(pu => pu.StudentId == s.Id)
+                        .OrderBy(pu => pu.Date)
+                        .ToList();
+                    var lastProgressUpdate = progressUpdates
+                        .LastOrDefault();
+
+                    return new Response.StudentsResponse
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        LastUpdateDate = lastProgressUpdate?.Date,
+                        LastFeedback = lastProgressUpdate?.Feedback,
+                        FeelingOfLatestProgress = lastProgressUpdate?.ProgressFeeling,
+                        AmountOfProgressItems = progressUpdatesOfStudent.Count,
+                        ProgressUpdates = progressUpdatesOfStudent.Select(pu =>
+                                new ProgressUpdateResponse(pu.Id, pu.Date, pu.ProgressFeeling, pu.StudentId,
+                                    pu.GroupId))
+                            .ToList()
+                    };
+                }).ToList()
+            };
         }
     }
 }
