@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +15,10 @@ using System.Linq;
 using HtmlTags;
 using Microsoft.AspNetCore.HttpOverrides;
 using StudentProgress.Web.Infrastructure;
+
+// TODO: Fix the failing integration test
+// TODO: Upgrade to .net 6
+// TODO: Integrate Canvas API support
 
 namespace StudentProgress.Web
 {
