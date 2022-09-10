@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using StudentProgress.Core.Entities;
-
-namespace StudentProgress.CoreTests
+﻿namespace StudentProgress.CoreTests
 {
   public class DataMother
   {
@@ -108,6 +102,13 @@ namespace StudentProgress.CoreTests
       context.ProgressUpdates.Add(update);
       context.SaveChanges();
       return update;
+    }
+
+    public async Task CreateSetting(string key, string value)
+    {
+      await using var db = new ProgressContext(ContextOptions);
+      await db.Settings.AddAsync(new Setting(key, value));
+      await db.SaveChangesAsync();
     }
   }
 }

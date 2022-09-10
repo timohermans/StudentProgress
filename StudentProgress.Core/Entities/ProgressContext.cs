@@ -19,6 +19,7 @@ namespace StudentProgress.Core.Entities
         public DbSet<Milestone> Milestones => Set<Milestone>();
         public DbSet<MilestoneProgress> MilestoneProgresses => Set<MilestoneProgress>();
         public DbSet<ProgressTag> ProgressTags => Set<ProgressTag>();
+        public DbSet<Setting> Settings => Set<Setting>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -82,6 +83,11 @@ namespace StudentProgress.Core.Entities
                 e.ToTable("ProgressTag");
                 e.HasKey(p => p.Id);
                 e.Property(p => p.Name).HasConversion(p => p.Value, p => Name.Create(p).Value);
+            });
+
+            modelBuilder.Entity<Setting>(e =>
+            {
+                e.HasIndex(k => k.Key).IsUnique();
             });
         }
     }
