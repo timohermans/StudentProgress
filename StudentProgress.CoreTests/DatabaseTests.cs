@@ -21,7 +21,8 @@ DELETE FROM ""Milestone"";
 DELETE FROM ""StudentStudentGroup"";
 DELETE FROM ""ProgressUpdate"";
 DELETE FROM ""Student"";
-DELETE FROM ""StudentGroup"";");
+DELETE FROM ""StudentGroup"";
+DELETE FROM Settings;");
         }
     }
 }

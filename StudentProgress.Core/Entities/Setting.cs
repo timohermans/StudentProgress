@@ -1,4 +1,6 @@
-﻿namespace StudentProgress.Core.Entities;
+﻿using CSharpFunctionalExtensions;
+
+namespace StudentProgress.Core.Entities;
 
 public class Setting : AuditableEntity<int>
 {
@@ -15,5 +17,16 @@ public class Setting : AuditableEntity<int>
     {
         Key = key;
         Value = value;
+    }
+
+    public Result Update(string requestCanvasApiKey)
+    {
+        Value = requestCanvasApiKey;
+        return Result.Success();
+    }
+
+    public static class Keys
+    {
+        public const string CanvasApiKey = "canvasApiKey";
     }
 }

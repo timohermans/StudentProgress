@@ -19,6 +19,6 @@ public class SettingsGet : UseCaseBase<SettingsGet.Response>
 
         var settingsPerKey = settings.ToDictionary(k => k.Key, v => v.Value);
         return new Response(
-            settingsPerKey.GetValueOrDefault("canvasApiKey"));
+            settingsPerKey.GetValueOrDefault(Setting.Keys.CanvasApiKey));
     }
 }

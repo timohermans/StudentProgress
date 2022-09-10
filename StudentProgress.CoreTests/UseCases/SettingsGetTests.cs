@@ -13,7 +13,7 @@ public class SettingsGetTests : DatabaseTests
     [Fact]
     public async Task Gets_the_settings()
     {
-        await Fixture.DataMother.CreateSetting("canvasApiKey", "123-canvas-api");
+        await Fixture.DataMother.CreateSetting(Setting.Keys.CanvasApiKey, "123-canvas-api");
         await using var ucContext = Fixture.CreateDbContext();
         var uc = new SettingsGet(ucContext);
 

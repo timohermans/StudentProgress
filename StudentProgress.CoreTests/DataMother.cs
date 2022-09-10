@@ -1,4 +1,6 @@
-﻿namespace StudentProgress.CoreTests
+﻿using CSharpFunctionalExtensions;
+
+namespace StudentProgress.CoreTests
 {
   public class DataMother
   {
@@ -13,6 +15,12 @@
     {
       using var context = new ProgressContext(ContextOptions);
       return context.Set<T>().FirstOrDefault();
+    }
+    
+    public async Task<List<T>> QueryAllAsync<T>() where T : class
+    {
+      await using var context = new ProgressContext(ContextOptions);
+      return await context.Set<T>().ToListAsync();
     }
 
     public StudentGroup GroupWithStudents()
