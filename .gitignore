@@ -346,3 +346,4 @@ healthchecksdb
 .vs/
 /.vscode
 *.db
+*.db-*

@@ -4,21 +4,21 @@ using StudentProgress.Core.UseCases;
 namespace StudentProgress.CoreTests.UseCases;
 
 [Collection("db")]
-public class SettingsSet : DatabaseTests
+public class SettingsSetTests : DatabaseTests
 {
-    public SettingsSet(DatabaseFixture fixture) : base(fixture)
+    public SettingsSetTests(DatabaseFixture fixture) : base(fixture)
     {
     }
 
     [Fact]
     public async Task Can_store_new_setting()
     {
-        var request = new SettingSet.Request
+        var request = new SettingsSet.Request
         {
             CanvasApiKey = "123-api"
         };
         await using var ucDb = Fixture.CreateDbContext();
-        var uc = new SettingSet(ucDb);
+        var uc = new SettingsSet(ucDb);
 
         var result = uc.HandleAsync(request);
 
@@ -33,12 +33,12 @@ public class SettingsSet : DatabaseTests
     public async Task Updates_setting_when_already_exists()
     {
         await Fixture.DataMother.CreateSetting(Setting.Keys.CanvasApiKey, "old-value");
-        var request = new SettingSet.Request
+        var request = new SettingsSet.Request
         {
             CanvasApiKey = "123-api"
         };
         await using var ucDb = Fixture.CreateDbContext();
-        var uc = new SettingSet(ucDb);
+        var uc = new SettingsSet(ucDb);
 
         var result = uc.HandleAsync(request);
 

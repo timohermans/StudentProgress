@@ -1,0 +1,15 @@
+﻿@page
+@model StudentProgress.Web.Pages.Settings.Index
+
+@{
+  ViewData["Title"] = "Settings";
+}
+
+<h1>Settings</h1>
+
+<form method="post">
+  @Html.ValidationSummary()
+  @Html.FormBlock(m => m.Settings.CanvasApiKey)
+  @Html.SubmitBlock("Save")
+</form>
+

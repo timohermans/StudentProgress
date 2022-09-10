@@ -5,7 +5,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases;
 
-public class SettingSet : UseCaseBase<SettingSet.Request, Result>
+public class SettingsSet : UseCaseBase<SettingsSet.Request, Result>
 {
     private readonly ProgressContext _db;
     public class Request
@@ -13,7 +13,7 @@ public class SettingSet : UseCaseBase<SettingSet.Request, Result>
         public string CanvasApiKey { get; set; } = null!;
     }
 
-    public SettingSet(ProgressContext db) => _db = db;
+    public SettingsSet(ProgressContext db) => _db = db;
 
     public async Task<Result> HandleAsync(Request request)
     {
