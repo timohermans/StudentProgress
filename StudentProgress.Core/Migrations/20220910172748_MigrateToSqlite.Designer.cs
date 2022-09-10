@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentProgress.Core.Entities;
 
@@ -10,9 +11,10 @@ using StudentProgress.Core.Entities;
 namespace StudentProgress.Core.Migrations
 {
     [DbContext(typeof(ProgressContext))]
-    partial class ProgressContextModelSnapshot : ModelSnapshot
+    [Migration("20220910172748_MigrateToSqlite")]
+    partial class MigrateToSqlite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -139,23 +141,6 @@ namespace StudentProgress.Core.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("ProgressUpdate", (string)null);
-                });
-
-            modelBuilder.Entity("StudentProgress.Core.Entities.Setting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("StudentProgress.Core.Entities.Student", b =>
