@@ -21,18 +21,18 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
         }
 
         public bool IsSortedOnLastFeedback { get; set; }
-        public StudentGroupGetDetails.Response StudentGroup { get; set; }
+        public StudentGroupGetDetails.Response StudentGroup { get; set; } = null!;
 
-        public async Task<IActionResult> OnGetAsync(int? id, string sort)
+        public async Task<IActionResult> OnGetAsync(int? id, string? sort)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            StudentGroup = await _useCase.HandleAsync(new StudentGroupGetDetails.Request((int)id));
+            var studentGroup = await _useCase.HandleAsync(new StudentGroupGetDetails.Request((int)id));
 
-            if (StudentGroup == null)
+            if (studentGroup == null)
             {
                 return NotFound();
             }
@@ -40,13 +40,16 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             if (sort == "last-feedback")
             {
                 IsSortedOnLastFeedback = true;
-                StudentGroup.Students = StudentGroup.Students
+                studentGroup.Students = StudentGroup.Students
                     .OrderByDescending(s => s.ProgressUpdates
                         .Select(u => u.Date)
                         .DefaultIfEmpty(DateTime.MinValue)
                         .Max(p => p.Date))
                     .ToList();
             }
+
+            StudentGroup = studentGroup;
+            
             return Page();
         }
 

@@ -13,7 +13,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     private readonly ProgressContext _context;
     private readonly StudentAddToGroup _useCase;
 
-    public StudentGroup Group { get; set; }
+    public StudentGroup Group { get; set; } = null!;
 
     public AddStudentModel(ProgressContext context)
     {
@@ -23,18 +23,20 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
     public IActionResult OnGet(int? groupId)
     {
-      Group = _context.Groups.FirstOrDefault(g => g.Id == (groupId ?? 0));
-      if (Group == null)
+      var group = _context.Groups.FirstOrDefault(g => g.Id == (groupId ?? 0));
+      if (group == null)
       {
-        RedirectToPage("/StudentGroups/Index");
+        return NotFound();
       }
+
+      Group = group;
 
       return Page();
     }
 
     public int? GroupId { get; set; }
 
-    [BindProperty] public StudentAddToGroup.Request Student { get; set; }
+    [BindProperty] public StudentAddToGroup.Request Student { get; set; } = null!;
 
     public async Task<IActionResult> OnPostAsync()
     {
