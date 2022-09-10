@@ -13,14 +13,13 @@ namespace StudentProgress.Web.Pages.StudentGroups
         private readonly ProgressContext _context;
         private readonly GroupUpdate _useCase;
 
+        [BindProperty] public GroupUpdate.Request StudentGroup { get; set; } = null!;
+        
         public EditModel(ProgressContext context)
         {
             _context = context;
             _useCase = new GroupUpdate(context);
         }
-
-        [BindProperty]
-        public GroupUpdate.Request StudentGroup { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

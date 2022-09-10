@@ -14,15 +14,12 @@ namespace StudentProgress.Web.Pages.StudentGroups
     {
         private readonly ProgressContext _context;
 
-        public List<StudentGroup> StudentGroups { get; set; }
+        public List<StudentGroup> StudentGroups { get; set; } = new();
 
-        public IEnumerable<SelectListItem> Periods { get; set; }
-        public Period CurrentPeriod { get; set; }
+        public List<SelectListItem> Periods { get; set; } = new();
+        public Period CurrentPeriod { get; set; } = null!;
 
-        public IndexModel(ProgressContext context)
-        {
-            _context = context;
-        }
+        public IndexModel(ProgressContext context) => _context = context;
 
         public async Task<IActionResult> OnGetAsync(DateTime? date)
         {

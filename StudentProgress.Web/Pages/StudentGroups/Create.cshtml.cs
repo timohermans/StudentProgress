@@ -12,12 +12,9 @@ namespace StudentProgress.Web.Pages.StudentGroups
     {
         private readonly GroupCreate _useCase;
 
-        [BindProperty] public GroupCreate.Request StudentGroup { get; set; }
+        [BindProperty] public GroupCreate.Request StudentGroup { get; set; } = null!;
 
-        public CreateModel(ProgressContext context)
-        {
-            _useCase = new GroupCreate(context);
-        }
+        public CreateModel(ProgressContext context) => _useCase = new GroupCreate(context);
 
         public IActionResult OnGet()
         {

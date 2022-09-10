@@ -11,20 +11,23 @@ namespace StudentProgress.Web.Pages.Milestones
     {
         private readonly ProgressContext _context;
 
-        public Milestone Milestone { get; set; }
+        public Milestone? Milestone { get; set; }
+        [BindProperty] public MilestoneDelete.Command Command { get; set; } = null!;
 
-        [BindProperty] public MilestoneDelete.Command Command { get; set; }
+        public Delete(ProgressContext context) => _context = context;
 
-        public Delete(ProgressContext context)
-        {
-            _context = context;
-        }
-
-        public async Task OnGetAsync(int milestoneId)
+        public async Task<IActionResult> OnGetAsync(int milestoneId)
         {
             Milestone = await _context.Milestones
                 .Include(m => m.StudentGroup)
                 .FirstOrDefaultAsync(m => m.Id == milestoneId);
+
+            if (Milestone == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int groupId)

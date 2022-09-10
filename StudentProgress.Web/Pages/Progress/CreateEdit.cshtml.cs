@@ -17,7 +17,7 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressContext _context;
         private readonly ProgressGetForCreateOrUpdate _getUseCase;
         private readonly ProgressCreateOrUpdate _useCase;
-        public ProgressGetForCreateOrUpdate.Response GetResponse { get; set; }
+        public ProgressGetForCreateOrUpdate.Response GetResponse { get; set; } = null!;
         public Student Student => GetResponse.Student;
         public StudentGroup Group => GetResponse.Group;
         public List<Milestone> Milestones => GetResponse.Milestones;
@@ -25,7 +25,8 @@ namespace StudentProgress.Web.Pages.Progress
                 .Select(m => m.LearningOutcome)
                 .Distinct()
                 .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
-        [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; }
+
+        [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; } = null!;
 
         public CreateEditModel(ProgressContext context)
         {

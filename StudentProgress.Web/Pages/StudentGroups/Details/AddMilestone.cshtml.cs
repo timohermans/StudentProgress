@@ -14,19 +14,16 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
     public class AddMilestone : PageModel
     {
         private readonly ProgressContext _context;
-        public StudentGroup Group { get; set; }
-        public List<StudentGroup> OtherGroups { get; set; }
-        [BindProperty] public MilestoneCreate.Command Milestone { get; set; }
-        [BindProperty] public MilestonesCopyFromGroup.Command CopyCommand { get; set; }
+        public StudentGroup Group { get; set; } = null!;
+        public List<StudentGroup> OtherGroups { get; set; } = new();
+        [BindProperty] public MilestoneCreate.Command Milestone { get; set; } = null!;
+        [BindProperty] public MilestonesCopyFromGroup.Command CopyCommand { get; set; } = null!;
 
-        public AddMilestone(ProgressContext context)
-        {
-            _context = context;
-        }
+        public AddMilestone(ProgressContext context) => _context = context;
 
         public async Task<IActionResult> OnGet(int id)
         {
-            var group = Maybe<StudentGroup>.From(await _context
+            var group = Maybe<StudentGroup?>.From(await _context
                 .Groups
                 .Include(g => g.Milestones)
                 .FirstOrDefaultAsync(g => g.Id == id));
@@ -36,8 +33,8 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 return RedirectToPage("/StudentGroups/Index");
             }
 
-            Group = group.Value;
-            OtherGroups = _context.Groups.Where(g => g.Id != group.Value.Id).ToList();
+            Group = group.Value!;
+            OtherGroups = _context.Groups.Where(g => g.Id != group.Value!.Id).ToList();
 
             return Page();
         }

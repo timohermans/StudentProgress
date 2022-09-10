@@ -8,12 +8,9 @@ namespace StudentProgress.Web.Pages.TagHelpers
     {
         private readonly IWebHostEnvironment _env;
 
-        public string Src { get; set; }
+        public string Src { get; set; } = null!;
 
-        public SvgInjectTagHelper(IWebHostEnvironment env)
-        {
-            _env = env;
-        }
+        public SvgInjectTagHelper(IWebHostEnvironment env) => _env = env;
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

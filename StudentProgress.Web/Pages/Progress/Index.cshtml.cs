@@ -12,12 +12,9 @@ namespace StudentProgress.Web.Pages.Progress
     {
         private readonly ProgressGetForStudentInGroup _useCase;
 
-        public IndexModel(ProgressContext context)
-        {
-            _useCase = new ProgressGetForStudentInGroup(context);
-        }
+        public ProgressGetForStudentInGroup.Response Student { get; set; } = null!;
 
-        public ProgressGetForStudentInGroup.Response Student { get; set; }
+        public IndexModel(ProgressContext context) => _useCase = new ProgressGetForStudentInGroup(context);
 
         public async Task<IActionResult> OnGetAsync(ProgressGetForStudentInGroup.Request request)
         {

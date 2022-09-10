@@ -10,14 +10,14 @@ namespace StudentProgress.Web.Pages.UIHelpers
 
     public class ProgressUpdateUIHelper
     {
-        public static IDictionary<int, ProgressUpdateUI> GetTimelineWithUpdatesFrom(Period period,
+        public static IDictionary<int, ProgressUpdateUI?> GetTimelineWithUpdatesFrom(Period period,
             IEnumerable<ProgressUpdateUI> updates)
         {
             return period.DaysPassedInsideSemester
                         .ToDictionary(day => day, day => updates.FirstOrDefault(u => u.Date.Date == period.StartDate.AddDays(day).Date));
         }
         
-        public static string GetTimelineBgColor(Period period, int dayFromStart, ProgressUpdateUI update)
+        public static string GetTimelineBgColor(Period period, int dayFromStart, ProgressUpdateUI? update)
         {
             var date = period.StartDate.AddDays(dayFromStart);
 

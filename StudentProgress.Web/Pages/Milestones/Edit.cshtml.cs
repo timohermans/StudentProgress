@@ -17,17 +17,22 @@ namespace StudentProgress.Web.Pages.Milestones
             _useCase = new MilestoneUpdate(context);
         }
 
-        [BindProperty] public MilestoneUpdate.Command Command { get; set; }
+        [BindProperty] public MilestoneUpdate.Command Command { get; set; } = null!;
 
-        public async Task OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             var milestone = await _context.Milestones.FindAsync(id);
+
+            if (milestone == null) return NotFound();
+            
             Command = new MilestoneUpdate.Command
             {
                 Id = id,
                 Artefact = milestone.Artefact,
                 LearningOutcome = milestone.LearningOutcome
             };
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id, int groupId)

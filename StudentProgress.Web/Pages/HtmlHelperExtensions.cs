@@ -24,8 +24,8 @@ namespace StudentProgress.Web.Pages
         
         public static HtmlTag FormBlock<T, TMember>(this IHtmlHelper<T> helper,
             Expression<Func<T, TMember>> expression,
-            Action<HtmlTag> labelModifier = null,
-            Action<HtmlTag> inputModifier = null
+            Action<HtmlTag>? labelModifier = null,
+            Action<HtmlTag>? inputModifier = null
         ) where T : class
         {
             labelModifier ??= _ => { };

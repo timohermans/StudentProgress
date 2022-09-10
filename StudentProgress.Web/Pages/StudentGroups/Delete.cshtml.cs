@@ -10,13 +10,9 @@ namespace StudentProgress.Web.Pages.StudentGroups
     {
         private readonly ProgressContext _context;
 
-        public DeleteModel(ProgressContext context)
-        {
-            _context = context;
-        }
+        public DeleteModel(ProgressContext context) => _context = context;
 
-        [BindProperty]
-        public StudentGroup Group { get; set; }
+        [BindProperty] public StudentGroup Group { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,12 +21,12 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            Group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
+            var group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Group == null)
-            {
-                return NotFound();
-            }
+            if (group == null) return NotFound();
+
+            Group = group;
+            
             return Page();
         }
 
@@ -41,9 +37,9 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return NotFound();
             }
 
-            Group = await _context.Groups.FindAsync(id);
+            var group = await _context.Groups.FindAsync(id);
 
-            if (Group != null)
+            if (group != null)
             {
                 _context.Groups.Remove(Group);
                 await _context.SaveChangesAsync();

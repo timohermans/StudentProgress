@@ -11,8 +11,9 @@ namespace StudentProgress.Web.Infrastructure
     {
         public HtmlTag Build(ElementRequest request)
         {
+            var fieldName = request.Accessor.PropertyNames.LastOrDefault();
             return new HtmlTag("label").Attr("for", DefaultIdBuilder.Build(request))
-                .Text(BreakUpCamelCase(request.Accessor.PropertyNames.LastOrDefault()));
+                .Text(BreakUpCamelCase(fieldName ?? ""));
         }
 
         private static string BreakUpCamelCase(string fieldName)

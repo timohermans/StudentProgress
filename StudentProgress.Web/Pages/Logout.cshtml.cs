@@ -15,7 +15,7 @@ namespace StudentProgress.Web.Pages
         {
             await HttpContext.SignOutAsync("Cookies");
             await HttpContext.SignOutAsync("OpenIdConnect");
-            return Redirect(User.FindFirst("iss").Value + $"/protocol/openid-connect/logout?redirect_uri={Request.Scheme}://{Request.Host.Value}");
+            return Redirect(User.FindFirst("iss")?.Value + $"/protocol/openid-connect/logout?redirect_uri={Request.Scheme}://{Request.Host.Value}");
         }
     }
 }

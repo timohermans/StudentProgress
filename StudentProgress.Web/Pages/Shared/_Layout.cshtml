@@ -41,7 +41,7 @@
             </template>
           </div>
         </div>
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity?.IsAuthenticated ?? false)
         {
           <span class="navbar-text">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
         }
