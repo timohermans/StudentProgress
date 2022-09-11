@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.UseCases

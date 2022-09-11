@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace StudentProgress.Core.UseCases;
+﻿namespace StudentProgress.Core.UseCases;
 
 public interface UseCaseBase<TResponse>
 {

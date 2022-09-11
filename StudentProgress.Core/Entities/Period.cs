@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using StudentProgress.Core.Extensions;
 
 namespace StudentProgress.Core.Entities

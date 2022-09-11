@@ -2,6 +2,9 @@
 
 namespace StudentProgress.CoreTests
 {
+    // This class is created to provide:
+    // 1: a property that exposes the fixture (instead of injecting it and assigning it to a field)
+    // 2: cleans up the database after every test. CollectionFixtures don't do this
     public class DatabaseTests
     {
         protected readonly DatabaseFixture Fixture;

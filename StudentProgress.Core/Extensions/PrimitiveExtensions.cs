@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StudentProgress.Core.Extensions
+﻿namespace StudentProgress.Core.Extensions
 {
     public static class PrimitiveExtensions
     {

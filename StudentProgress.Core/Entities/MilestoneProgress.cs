@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentProgress.Core.Entities
+﻿namespace StudentProgress.Core.Entities
 {
   public class MilestoneProgress : AuditableEntity<int>
   {

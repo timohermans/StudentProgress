@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 

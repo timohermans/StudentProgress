@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases;

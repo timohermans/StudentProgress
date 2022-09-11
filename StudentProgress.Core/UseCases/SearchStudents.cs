@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using StudentProgress.Core.Entities;
-using System.Linq;
+﻿using StudentProgress.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace StudentProgress.Core.UseCases

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace StudentProgress.Core.Extensions
+﻿namespace StudentProgress.Core.Extensions
 {
     public static class ListExtensions
     {

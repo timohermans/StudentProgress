@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.Entities

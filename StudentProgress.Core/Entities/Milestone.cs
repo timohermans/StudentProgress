@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using StudentProgress.Core.UseCases;
 
 namespace StudentProgress.Core.Entities
 {
