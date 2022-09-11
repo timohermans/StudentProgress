@@ -18,6 +18,7 @@ namespace StudentProgress.Core.UseCases
         {
             [Required] public string Name { get; init; } = null!;
             [Required] public int GroupId { get; init; }
+            public string? AvatarPath { get; init; } = null;
         };
 
         public async Task<Result> HandleAsync(Request request)
@@ -31,6 +32,8 @@ namespace StudentProgress.Core.UseCases
 
             if (result.IsFailure)
                 return Result.Failure(result.Error);
+
+            student.Value.UpdateAvatar(request.AvatarPath);
 
             return await studentGroup.Value?.AddStudent(student.Value)
                 .Tap(async () => await context.SaveChangesAsync())!;

@@ -25,7 +25,7 @@ namespace StudentProgress.Core.UseCases
             public DateTime StartDate { get; init; }
         }
 
-        public async Task<Result> HandleAsync(Request request)
+        public async Task<Result<StudentGroup>> HandleAsync(Request request)
         {
             var name = Name.Create(request.Name);
             var periodResult = Period.Create(request.StartDate);
@@ -33,12 +33,13 @@ namespace StudentProgress.Core.UseCases
 
             if (validationResult.IsFailure)
             {
-                return validationResult;
+                return validationResult.ConvertFailure<StudentGroup>();
             }
 
-            return await name
-                .Check(nameValue => IsGroupNew(nameValue, periodResult.Value))
-                .Tap(async () => await context.Groups.AddAsync(new StudentGroup(name.Value, periodResult.Value, request.Mnemonic)))
+            var group = Result.Success(new StudentGroup(name.Value, periodResult.Value, request.Mnemonic));
+            return await group
+                .Ensure(g => IsGroupNew(g.Name, g.Period))
+                .Tap(async (g) => await context.Groups.AddAsync(g))
                 .Tap(() => context.SaveChangesAsync());
         }
 
