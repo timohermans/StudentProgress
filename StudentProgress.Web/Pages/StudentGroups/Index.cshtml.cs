@@ -7,19 +7,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using StudentProgress.Core.CanvasApi;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {
     public class IndexModel : PageModel
     {
         private readonly ProgressContext _context;
+        private readonly ICanvasApiConfig _apiConfig;
 
+        public bool CanImportGroups { get; private set; }
         public List<StudentGroup> StudentGroups { get; set; } = new();
 
         public List<SelectListItem> Periods { get; set; } = new();
         public Period CurrentPeriod { get; set; } = null!;
 
-        public IndexModel(ProgressContext context) => _context = context;
+        public IndexModel(ProgressContext context, ICanvasApiConfig apiConfig)
+        {
+            _context = context;
+            _apiConfig = apiConfig;
+        }
 
         public async Task<IActionResult> OnGetAsync(DateTime? date)
         {
@@ -28,6 +35,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return RedirectToPage("./Index", new {date = DateTime.Now.ToString("yyyy-M-d")});
             }
 
+            CanImportGroups = await _apiConfig.CanUseCanvasApiAsync();
             CurrentPeriod = Period.CreateCurrentlyActivePeriodBy(DateTime.Today).Value;
             var groups = await _context.Groups
                                          .OrderByDescending(g => g.Period)

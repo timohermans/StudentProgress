@@ -54,16 +54,17 @@ public class GroupImportFromCanvas : UseCaseBase<GroupImportFromCanvas.Request, 
             StartPeriod = request.TermStartsAt
         });
 
-        if (groupResult.IsFailure) return groupResult;
+        if (groupResult.IsFailure && !groupResult.Error.Contains("already exists")) return groupResult;
         var group = await _db
             .Groups
             .Include(g => g.Students)
-            .FirstAsync(g => g.Id == groupResult.Value);
+            .FirstAsync(g => g.Name == request.Name);
         var studentNamesRequest = request.Students.Select(s => s.Name).ToList();
         var studentsAlreadyInDb = await _db.Students.Where(s => studentNamesRequest.Contains(s.Name)).ToListAsync();
 
         var imageLocation = Path.Combine(_config.MediaLocation, "images", "avatars");
         if (!Directory.Exists(imageLocation)) Directory.CreateDirectory(imageLocation);
+        
         foreach (var studentRequest in request.Students)
         {
             Student student;

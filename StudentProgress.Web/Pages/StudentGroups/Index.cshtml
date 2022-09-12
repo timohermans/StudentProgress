@@ -8,8 +8,11 @@
 <h1>Groups Overview</h1>
 
 <p>
-  @* TODO: Disable improt when no api key *@
-  <a asp-page="Create">Create New</a> or <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
+  <a asp-page="Create">Create New</a> or
+  @if (Model.CanImportGroups)
+  {
+    <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
+  }
 </p>
 
 <table class="table">
