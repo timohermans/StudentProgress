@@ -18,7 +18,7 @@ namespace StudentProgress.CoreTests.UseCases
         {
         }
 
-        private async Task<Result<StudentGroup>> ActUseCase(Func<GroupCreate, Task<Result<StudentGroup>>> action)
+        private async Task<Result<int>> ActUseCase(Func<GroupCreate, Task<Result<int>>> action)
         {
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new GroupCreate(dbContext);

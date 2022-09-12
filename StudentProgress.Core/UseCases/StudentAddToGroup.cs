@@ -21,7 +21,7 @@ namespace StudentProgress.Core.UseCases
             public string? AvatarPath { get; init; } = null;
         };
 
-        public async Task<Result> HandleAsync(Request request)
+        public async Task<Result<int>> HandleAsync(Request request)
         {
             var studentGroup = Maybe<StudentGroup?>.From(
                     await context.Groups.Include(_ => _.Students)
@@ -31,12 +31,11 @@ namespace StudentProgress.Core.UseCases
             var result = Result.Combine(studentGroup, student);
 
             if (result.IsFailure)
-                return Result.Failure(result.Error);
-
-            student.Value.UpdateAvatar(request.AvatarPath);
+                return Result.Failure<int>(result.Error);
 
             return await studentGroup.Value?.AddStudent(student.Value)
-                .Tap(async () => await context.SaveChangesAsync())!;
+                .Tap(async () => await context.SaveChangesAsync())
+                .Map(() => Task.FromResult(student.Value.Id))!;
         }
         
         private async Task<Result<Student>> GetOrCreateUserFrom(string name)

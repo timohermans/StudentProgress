@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.IO;
+using System.Net.Http;
+using FluentAssertions;
 using StudentProgress.Core.UseCases;
 
 namespace StudentProgress.CoreTests.UseCases;
@@ -13,6 +15,10 @@ public class GroupImportFromCanvasTests : DatabaseTests
     [Fact]
     public async Task Imports_the_selected_canvas_course_section_as_a_group()
     {
+        var client = new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
+        var config = new CoreTestConfiguration();
+        var imageDir = Path.Combine(config.MediaLocation, "images", "avatars");
+        if (Directory.Exists(imageDir)) Directory.Delete(imageDir, true);
         var request = new GroupImportFromCanvas.Request
         {
             Name = "S-DB-S2-CMK",
@@ -26,20 +32,20 @@ public class GroupImportFromCanvasTests : DatabaseTests
             {
                 new()
                 {
-                    Name = "Timo",
-                    AvatarUrl = "http://avatar1.net",
-                    CanvasId = "1"
+                    Name = "Hermans, Timo T.M.",
+                    AvatarUrl = "https://pngimg.com/uploads/apple/apple_PNG12405.png",
+                    CanvasId = "1234"
                 },
                 new()
                 {
                     Name = "Luuk",
                     AvatarUrl = null,
-                    CanvasId = "2"
+                    CanvasId = "1235"
                 }
             }
         };
         await using var ucContext = Fixture.CreateDbContext();
-        var uc = new GroupImportFromCanvas(ucContext);
+        var uc = new GroupImportFromCanvas(ucContext, config, client);
 
         await uc.HandleAsync(request);
 
@@ -49,9 +55,14 @@ public class GroupImportFromCanvasTests : DatabaseTests
         resultGroup.Period.StartDate.Should().Be(new DateTime(2022, 8, 29));
         var resultStudents = resultGroup.Students;
         resultStudents.Should().HaveCount(2);
-        var timo = resultStudents.First(s => s.Name == "Timo");
-        timo.AvatarPath.Should().Be($"{timo.Id}.png");
+        var timo = resultStudents.First(s => s.Name == "Hermans, Timo T.M.");
+        timo.AvatarPath.Should().Be($"1234-canvas.png");
         var luuk = resultStudents.First(s => s.Name == "Luuk");
         luuk.AvatarPath.Should().BeNull();
+
+        Directory.Exists(imageDir).Should().BeTrue();
+        var files = Directory.GetFiles(imageDir);
+        files.Should().HaveCount(1);
+        files.First().Should().Contain("1234-canvas.png");
     }
 }
