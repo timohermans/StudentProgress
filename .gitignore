@@ -348,3 +348,5 @@ healthchecksdb
 /.vscode
 *.db
 *.db-*
+
+StudentProgress.Web/media/**

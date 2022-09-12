@@ -6,7 +6,7 @@ namespace StudentProgress.Core.UseCases;
 public class SettingsGet : UseCaseBase<SettingsGet.Response>
 {
     private readonly ProgressContext _db;
-    public record Response(string? CanvasApiKey);
+    public record Response(string? CanvasApiKey, string? CanvasUrl);
 
     public SettingsGet(ProgressContext db) => _db = db;
 
@@ -16,6 +16,7 @@ public class SettingsGet : UseCaseBase<SettingsGet.Response>
 
         var settingsPerKey = settings.ToDictionary(k => k.Key, v => v.Value);
         return new Response(
-            settingsPerKey.GetValueOrDefault(Setting.Keys.CanvasApiKey));
+            settingsPerKey.GetValueOrDefault(Setting.Keys.CanvasApiKey),
+            settingsPerKey.GetValueOrDefault(Setting.Keys.CanvasApiUrl));
     }
 }

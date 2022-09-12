@@ -1,0 +1,70 @@
+﻿@page "{id}"
+@using StudentProgress.Core.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model StudentProgress.Web.Pages.Canvas.Courses.Details
+
+@{
+    ViewData["Title"] = "Semester";
+}
+
+
+@if (Model.Semesters?.Any() ?? false)
+{
+    <h2>@Model.Semesters.FirstOrDefault()?.Name</h2>
+                                                
+    <ul data-testid="nav-local">
+        @foreach (var semester in Model.Semesters)
+        {
+            <li>
+                <a href="#section-@(semester.SectionCanvasId)">@(semester.SectionName)</a>
+            </li>
+        }
+    </ul>
+
+    @foreach (var semester in Model.Semesters)
+    {
+        <section id="section-@(semester.SectionCanvasId)">
+            <h3>@(semester.SectionName)</h3>
+
+            <form method="post">
+                <input type="hidden" name="Semester.CanvasId" value="@(semester.CanvasId)">
+                <input type="hidden" name="Semester.Name" value="@(semester.Name)">
+                <input type="hidden" name="Semester.TermName" value="@(semester.TermName)">
+                <input type="hidden" name="Semester.TermStartsAt" value="@(semester.TermStartsAt)">
+                <input type="hidden" name="Semester.TermEndsAt" value="@(semester.TermEndsAt)">
+                <input type="hidden" name="Semester.SectionCanvasId" value="@(semester.SectionCanvasId)">
+                <input type="hidden" name="Semester.SectionName" value="@(semester.SectionName)">
+
+                @foreach (var (student, index) in semester.Students.WithIndex())
+                {
+                    <input type="hidden" name="Semester.Students[@(index)].Name" value="@student.Name">
+                    <input type="hidden" name="Semester.Students[@(index)].AvatarUrl" value="@student.AvatarUrl">
+                    <input type="hidden" name="Semester.Students[@(index)].CanvasId" value="@student.CanvasId">
+                }
+                
+                <input type="submit" value="Start managing" formaction="@(Request.Path)"/>
+            </form>
+
+            <table>
+                <tbody>
+                @foreach (var student in semester.Students)
+                {
+                    <tr>
+                        <td>
+                            @if (student.AvatarUrl is not null)
+                            {
+                                <img src="@(student.AvatarUrl)" alt="@(student.Name) avatar" width="128" height="128">
+                            }
+                        </td>
+                        <td>@(student.Name)</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </section>
+    }
+}
+else
+{
+    <p>Well, something went wrong with parsing the JSON from Canvas, I guess. Did something change?</p>
+}

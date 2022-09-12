@@ -2,6 +2,6 @@
 
 public interface ICanvasApiConfig
 {
-    string CanvasApiKey { get; }
-    string CanvasApiUrl { get; }
+    string? CanvasApiKey { get; }
+    string? CanvasApiUrl { get; }
 }

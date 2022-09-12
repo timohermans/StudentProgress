@@ -8,7 +8,7 @@ namespace StudentProgress.Core.CanvasApi;
 public class CanvasClient : ICanvasClient
 {
     private readonly HttpClient _client;
-    private readonly string _url;
+    private readonly string? _url;
 
     public CanvasClient(HttpClient client, ICanvasApiConfig config)
     {

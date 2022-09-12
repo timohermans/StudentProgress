@@ -26,7 +26,8 @@ public class Index : PageModel
 
         Settings = new SettingsSet.Request
         {
-            CanvasApiKey = response.CanvasApiKey ?? ""
+            CanvasApiKey = response.CanvasApiKey ?? "",
+            CanvasApiUrl = response.CanvasUrl ?? ""
         };
     }
 

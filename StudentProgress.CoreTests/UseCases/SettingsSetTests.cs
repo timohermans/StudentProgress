@@ -15,7 +15,8 @@ public class SettingsSetTests : DatabaseTests
     {
         var request = new SettingsSet.Request
         {
-            CanvasApiKey = "123-api"
+            CanvasApiKey = "123-api",
+            CanvasApiUrl = "http://test.nl"
         };
         await using var ucDb = Fixture.CreateDbContext();
         var uc = new SettingsSet(ucDb);
@@ -24,9 +25,11 @@ public class SettingsSetTests : DatabaseTests
 
         result.Result.IsSuccess.Should().BeTrue();
         var settings = await Fixture.DataMother.QueryAllAsync<Setting>();
-        settings.Should().HaveCount(1);
-        settings.First().Key.Should().Be(Setting.Keys.CanvasApiKey);
-        settings.First().Value.Should().Be("123-api");
+        settings.Should().HaveCount(2);
+        settings[0].Key.Should().Be(Setting.Keys.CanvasApiKey);
+        settings[0].Value.Should().Be("123-api");
+        settings[1].Key.Should().Be(Setting.Keys.CanvasApiUrl);
+        settings[1].Value.Should().Be("http://test.nl");
     }
     
     [Fact]
@@ -35,7 +38,8 @@ public class SettingsSetTests : DatabaseTests
         await Fixture.DataMother.CreateSetting(Setting.Keys.CanvasApiKey, "old-value");
         var request = new SettingsSet.Request
         {
-            CanvasApiKey = "123-api"
+            CanvasApiKey = "123-api",
+            CanvasApiUrl = "http://client.nl"
         };
         await using var ucDb = Fixture.CreateDbContext();
         var uc = new SettingsSet(ucDb);
@@ -44,8 +48,8 @@ public class SettingsSetTests : DatabaseTests
 
         result.Result.IsSuccess.Should().BeTrue();
         var settings = await Fixture.DataMother.QueryAllAsync<Setting>();
-        settings.Should().HaveCount(1);
-        settings.First().Key.Should().Be(Setting.Keys.CanvasApiKey);
-        settings.First().Value.Should().Be("123-api");
+        var key = settings.First(s => s.Key == Setting.Keys.CanvasApiKey);
+        key.Key.Should().Be(Setting.Keys.CanvasApiKey);
+        key.Value.Should().Be("123-api");
     }
 }

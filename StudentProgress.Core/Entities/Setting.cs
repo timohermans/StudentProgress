@@ -28,5 +28,6 @@ public class Setting : AuditableEntity<int>
     public static class Keys
     {
         public const string CanvasApiKey = "canvasApiKey";
+        public const string CanvasApiUrl = "canvasApiUrl";
     }
 }

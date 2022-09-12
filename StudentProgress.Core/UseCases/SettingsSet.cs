@@ -9,25 +9,33 @@ public class SettingsSet : UseCaseBase<SettingsSet.Request, Result>
     public class Request
     {
         public string CanvasApiKey { get; set; } = null!;
+        public string CanvasApiUrl { get; set; } = null!;
     }
 
     public SettingsSet(ProgressContext db) => _db = db;
 
     public async Task<Result> HandleAsync(Request request)
     {
-        var setting = _db.Settings.FirstOrDefault(s => s.Key == Setting.Keys.CanvasApiKey);
+        var upsertKeyTask = UpsertSetting(Setting.Keys.CanvasApiKey, request.CanvasApiKey);
+        var upsertUrlTask = UpsertSetting(Setting.Keys.CanvasApiUrl, request.CanvasApiUrl);
+
+        await Task.WhenAll(upsertKeyTask, upsertUrlTask);
+        await _db.SaveChangesAsync();
+        return Result.Success();
+    }
+
+    private async Task UpsertSetting(string key, string value)
+    {
+        var setting = _db.Settings.FirstOrDefault(s => s.Key == key);
 
         if (setting == null)
         {
-            setting = new Setting(Setting.Keys.CanvasApiKey, request.CanvasApiKey);
+            setting = new Setting(key, value);
             await _db.Settings.AddAsync(setting);
         }
         else
         {
-            setting.Update(request.CanvasApiKey);
+            setting.Update(value);
         }
-        
-        await _db.SaveChangesAsync();
-        return Result.Success();
     }
 }

@@ -1,14 +1,21 @@
+using System;
+using System.Net.Http;
 using HtmlTags;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StudentProgress.Core;
+using StudentProgress.Core.CanvasApi;
 using StudentProgress.Core.Entities;
+using StudentProgress.Web;
+using StudentProgress.Web.Configuration;
 using StudentProgress.Web.Infrastructure;
 
-// TODO: Integrate Canvas API
-// TODO: upsert avatar
+// TODO: Make sure you cannot import with no settings key
+// TODO: Display Student Avatar
+// TODO: Fix and test upsert import avatar Upsert
 // TODO: Add Feedpulse reminders
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +27,14 @@ builder.Services.AddHtmlTags(new TagConventions());
 builder.Services.AddDbContext<ProgressContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContext"),
         b => b.MigrationsAssembly("StudentProgress.Core")));
+
+builder.Services.AddSingleton<ICoreConfiguration, CoreConfiguration>();
+builder.Services.AddSingleton(_ =>
+    new HttpClient(new SocketsHttpHandler { PooledConnectionIdleTimeout = TimeSpan.FromHours(1) }));
+builder.Services.AddScoped<ICanvasApiConfig, CanvasConfiguration>();
+builder.Services.AddScoped<ICanvasClient, CanvasClient>();
+
+
 
 var app = builder.Build();
 
