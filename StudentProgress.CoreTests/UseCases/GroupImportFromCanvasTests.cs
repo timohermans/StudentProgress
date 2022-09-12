@@ -51,7 +51,7 @@ public class GroupImportFromCanvasTests : DatabaseTests
 
         await using var assertDb = Fixture.CreateDbContext();
         var resultGroup = await assertDb.Groups.Include(g => g.Students).FirstAsync();
-        resultGroup.Name.Should().Be((Name)"S-DB-S2-CMK");
+        resultGroup.Name.Should().Be((Name)"S-DB-S2-CMK - S2-DB02 - 2223nj");
         resultGroup.Period.StartDate.Should().Be(new DateTime(2022, 8, 29));
         var resultStudents = resultGroup.Students;
         resultStudents.Should().HaveCount(2);

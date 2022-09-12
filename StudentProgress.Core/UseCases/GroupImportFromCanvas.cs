@@ -47,9 +47,10 @@ public class GroupImportFromCanvas : UseCaseBase<GroupImportFromCanvas.Request, 
 
     public async Task<Result> HandleAsync(Request request)
     {
+        var groupName = $"{request.Name} - {request.SectionName} - {request.TermName}";
         var groupResult = await new GroupCreate(_db).HandleAsync(new GroupCreate.Request
         {
-            Name = request.Name,
+            Name = groupName,
             StartDate = request.TermStartsAt,
             StartPeriod = request.TermStartsAt
         });
@@ -58,7 +59,7 @@ public class GroupImportFromCanvas : UseCaseBase<GroupImportFromCanvas.Request, 
         var group = await _db
             .Groups
             .Include(g => g.Students)
-            .FirstAsync(g => g.Name == request.Name);
+            .FirstAsync(g => g.Name == groupName);
         var studentNamesRequest = request.Students.Select(s => s.Name).ToList();
         var studentsAlreadyInDb = await _db.Students.Where(s => studentNamesRequest.Contains(s.Name)).ToListAsync();
 
