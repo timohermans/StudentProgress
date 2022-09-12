@@ -12,7 +12,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
         public DeleteModel(ProgressContext context) => _context = context;
 
-        [BindProperty] public StudentGroup Group { get; set; } = null!;
+        public StudentGroup Group { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -41,7 +41,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
             if (group != null)
             {
-                _context.Groups.Remove(Group);
+                _context.Groups.Remove(group);
                 await _context.SaveChangesAsync();
             }
 
