@@ -23,3 +23,7 @@
 .milestone-form {
     display: inline-block;
 }
+
+.student-table tr {
+    vertical-align: middle;
+}

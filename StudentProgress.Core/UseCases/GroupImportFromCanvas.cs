@@ -63,7 +63,8 @@ public class GroupImportFromCanvas : UseCaseBase<GroupImportFromCanvas.Request, 
         var studentNamesRequest = request.Students.Select(s => s.Name).ToList();
         var studentsAlreadyInDb = await _db.Students.Where(s => studentNamesRequest.Contains(s.Name)).ToListAsync();
 
-        var imageLocation = Path.Combine(_config.MediaLocation, "images", "avatars");
+        var relativeAvatarLocation = Path.Combine("images", "avatars");
+        var imageLocation = Path.Combine(_config.MediaLocation, relativeAvatarLocation);
         if (!Directory.Exists(imageLocation)) Directory.CreateDirectory(imageLocation);
         
         foreach (var studentRequest in request.Students)
@@ -90,10 +91,10 @@ public class GroupImportFromCanvas : UseCaseBase<GroupImportFromCanvas.Request, 
             var fileResponse = await _client.GetAsync(studentRequest.AvatarUrl);
             if (fileResponse.IsSuccessStatusCode)
             {
-                var filePath = Path.Combine(_config.MediaLocation, "images", "avatars", fileName);
+                var filePath = Path.Combine(_config.MediaLocation, relativeAvatarLocation, fileName);
                 await using var fs = new FileStream(filePath, FileMode.Create);
                 await fileResponse.Content.CopyToAsync(fs);
-                student.UpdateAvatar(fileName);
+                student.UpdateAvatar(Path.Combine(relativeAvatarLocation, fileName));
             }
         }
 

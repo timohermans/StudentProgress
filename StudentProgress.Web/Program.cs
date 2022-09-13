@@ -1,10 +1,13 @@
 using System;
+using System.IO;
 using System.Net.Http;
 using HtmlTags;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using StudentProgress.Core;
 using StudentProgress.Core.CanvasApi;
@@ -13,10 +16,8 @@ using StudentProgress.Web;
 using StudentProgress.Web.Configuration;
 using StudentProgress.Web.Infrastructure;
 
-// TODO: Make sure you cannot import with no settings key
 // TODO: Display Student Avatar
-// TODO: Fix and test upsert import avatar Upsert
-// TODO: Add Feedpulse reminders
+// TODO: Add Feedpulse reminders (IsReviewed)
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,6 @@ builder.Services.AddSingleton(_ =>
     new HttpClient(new SocketsHttpHandler { PooledConnectionIdleTimeout = TimeSpan.FromHours(1) }));
 builder.Services.AddScoped<ICanvasApiConfig, CanvasConfiguration>();
 builder.Services.AddScoped<ICanvasClient, CanvasClient>();
-
 
 
 var app = builder.Build();
@@ -54,6 +54,12 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+var mediaPath = app.Services.GetService<ICoreConfiguration>()!.MediaLocation;
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(mediaPath),
+    RequestPath = new PathString("/media")
+});
 
 app.UseRouting();
 
@@ -63,7 +69,3 @@ app.MapControllers();
 app.MapRazorPages();
 
 app.Run();
-
-using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-var context = serviceScope.ServiceProvider.GetService<ProgressContext>();
-context?.Database.Migrate();

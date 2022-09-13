@@ -9,7 +9,10 @@ namespace StudentProgress.Core.UseCases
     {
         private readonly ProgressContext _context;
 
-        public StudentGroupGetDetails(ProgressContext context) => _context = context;
+        public StudentGroupGetDetails(ProgressContext context)
+        {
+            _context = context;
+        }
 
         public record Request(int Id);
 
@@ -38,6 +41,7 @@ namespace StudentProgress.Core.UseCases
             {
                 public int Id { get; init; }
                 public string Name { get; init; } = null!;
+                public string? AvatarPath { get; init; }
                 [Display(Name = "#")] public int AmountOfProgressItems { get; init; }
                 [Display(Name = "Latest Feeling")] public Feeling? FeelingOfLatestProgress { get; init; }
 
@@ -112,6 +116,7 @@ namespace StudentProgress.Core.UseCases
                     {
                         Id = s.Id,
                         Name = s.Name,
+                        AvatarPath = s.AvatarPath,
                         LastUpdateDate = lastProgressUpdate?.Date,
                         LastFeedback = lastProgressUpdate?.Feedback,
                         FeelingOfLatestProgress = lastProgressUpdate?.ProgressFeeling,
