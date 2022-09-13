@@ -17,7 +17,7 @@ namespace StudentProgress.CoreTests.UseCases
         [Fact]
         public async Task Updates_the_user_with_a_note()
         {
-            var group = Fixture.DataMother.CreateGroup(studentNames: new[] {"TimO"});
+            var group = Fixture.DataMother.CreateGroup(students: new[] {new TestStudent("TimO")});
             var student = group.Students.FirstOrDefault();
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new StudentUpdate(dbContext);
@@ -34,7 +34,7 @@ namespace StudentProgress.CoreTests.UseCases
         [Fact]
         public async Task Cannot_update_a_user_to_a_user_that_already_exists()
         {
-            var group = Fixture.DataMother.CreateGroup(studentNames: new[] {"Tiimo", "Timo"});
+            var group = Fixture.DataMother.CreateGroup(students: new[] {new TestStudent("Tiimo"), new TestStudent("Timo")});
             var studentWrongName = group.Students.FirstOrDefault(g => g.Name == "Tiimo");
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new StudentUpdate(dbContext);

@@ -20,7 +20,7 @@ namespace StudentProgress.CoreTests.UseCases
     public async Task Gets_all_data_needed_to_update_progresss()
     {
       var group = Fixture.DataMother.CreateGroup(
-         studentNames: new[] { "Timo" },
+         students: new[] { new TestStudent("Timo") },
          milestones: new[] {
                       ("1. Feedback van stakeholders", "Compleetheid documentatie"),
                       ("1. Feedback van stakeholders", "Onderbouwing beslissingen"),

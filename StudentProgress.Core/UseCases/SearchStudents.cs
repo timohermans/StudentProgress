@@ -14,6 +14,7 @@ namespace StudentProgress.Core.UseCases
         {
             public int Id { get; }
             public string Name { get; }
+        
 
             public GroupResponse(int id, string name)
             {
@@ -26,6 +27,7 @@ namespace StudentProgress.Core.UseCases
         {
             public int Id { get; set; }
             public string Name { get; set; } = null!;
+            public string? AvatarPath { get; set; }
             public List<GroupResponse> Groups { get; set; } = new();
         }
 
@@ -47,6 +49,7 @@ namespace StudentProgress.Core.UseCases
                     {
                         Id = s.Id,
                         Name = s.Name,
+                        AvatarPath = s.AvatarPath,
                         Groups = s.StudentGroups
                             .Select(g => new GroupResponse(g.Id, g.Name))
                             .ToList()

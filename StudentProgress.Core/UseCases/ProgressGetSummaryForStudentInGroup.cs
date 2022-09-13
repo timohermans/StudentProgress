@@ -41,6 +41,7 @@ namespace StudentProgress.Core.UseCases
             public int StudentId { get; set; }
             public string GroupName { get; set; }
             public string StudentName { get; set; }
+            public string? StudentAvatarPath { get; set; }
             public string? StudentNote { get; set; }
             public Period Period { get; set; }
             public string? LastFeedback { get; }
@@ -49,7 +50,8 @@ namespace StudentProgress.Core.UseCases
             public IEnumerable<ProgressUpdateResponse> ProgressUpdates { get; }
             public IEnumerable<OtherStudentResponse> OtherStudents { get; }
 
-            public Response(int groupId, int studentId, string groupName, string studentName, string? studentNote,
+            public Response(int groupId, int studentId, string groupName, string studentName, string? studentAvatarPath,
+                string? studentNote,
                 Period period,
                 IEnumerable<MilestoneResponse> milestones, IEnumerable<ProgressUpdateResponse> progressUpdates,
                 IEnumerable<OtherStudentResponse> otherStudents, string? lastFeedback, DateTime? lastFeedbackDate)
@@ -58,6 +60,7 @@ namespace StudentProgress.Core.UseCases
                 StudentId = studentId;
                 GroupName = groupName;
                 StudentName = studentName;
+                StudentAvatarPath = studentAvatarPath;
                 StudentNote = studentNote;
                 Period = period;
                 Milestones = milestones;
@@ -133,6 +136,7 @@ namespace StudentProgress.Core.UseCases
                 groupName: group.Value.Name,
                 studentId: student.Value.Id,
                 studentName: student.Value.Name,
+                studentAvatarPath: student.Value.AvatarPath,
                 studentNote: student.Value.Note,
                 milestones: milestonesSummary,
                 progressUpdates: progressUpdates.Select(u =>

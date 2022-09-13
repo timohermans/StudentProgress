@@ -28,9 +28,9 @@ namespace StudentProgress.CoreTests.UseCases
                     ("first", "b. 2"),
                     ("first", "c. 3")
                 },
-                studentNames: new[] {"Timo", "Max", "Jordy"}
+                students: new[] {new TestStudent("Timo", null, "timo.png"), new TestStudent("Max"), new TestStudent("Jordy")}
             );
-            var nonInterestingGroup = Fixture.DataMother.CreateGroup(name: "not interesting group", studentNames: new[] {"Timothy"});
+            var nonInterestingGroup = Fixture.DataMother.CreateGroup(name: "not interesting group", students: new[] {new TestStudent("Timothy")});
             var timo = group.Students.FirstOrDefault();
             var max = group.Students.FirstOrDefault(s => s.Name == "Max");
             var jordy = group.Students.FirstOrDefault(s => s.Name == "Jordy");
@@ -69,6 +69,7 @@ namespace StudentProgress.CoreTests.UseCases
             summary.GroupName.Should().Be(group.Name);
             summary.StudentId.Should().Be(timo.Id);
             summary.StudentName.Should().Be(timo.Name);
+            summary.StudentAvatarPath.Should().Be(timo.AvatarPath);
             summary.Period.Should().Be(group.Period);
             summary.Milestones.Should().HaveCount(3);
             summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse(

@@ -22,7 +22,7 @@ namespace StudentProgress.CoreTests.UseCases
     public async Task Creates_progress_for_a_student_of_a_group()
     {
       var group = Fixture.DataMother.CreateGroup(
-          studentNames: new[] { "Timo" },
+          students: new[] { new TestStudent("Timo") },
           milestones: new[] {
                       ("1. OO application", "DAL met SQLCommand"),
                       ("1. OO application", "SOLID principles"),
@@ -85,7 +85,7 @@ namespace StudentProgress.CoreTests.UseCases
     {
       // arrange
       var group = Fixture.DataMother.CreateGroup(
-            studentNames: new[] { "Timo" },
+            students: new[] { new TestStudent("Timo") },
             milestones: new[] {
                       ("1. Feedback van stakeholders", "Compleetheid documentatie"),
                       ("1. Feedback van stakeholders", "Onderbouwing beslissingen"),

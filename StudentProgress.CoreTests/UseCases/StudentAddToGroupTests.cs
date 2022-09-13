@@ -36,7 +36,7 @@ namespace StudentProgress.CoreTests.UseCases
         [Fact]
         public async Task Fails_to_add_student_that_is_already_added()
         {
-            var group = Fixture.DataMother.CreateGroup(studentNames: new[] {"Timo Hermans"});
+            var group = Fixture.DataMother.CreateGroup(students: new[] {new TestStudent("Timo Hermans")});
             var request = new StudentAddToGroup.Request
             {
                 Name = "Timo Hermans",

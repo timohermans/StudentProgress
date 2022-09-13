@@ -20,7 +20,7 @@ namespace StudentProgress.CoreTests.UseCases
         {
             // arrange
             var group = Fixture.DataMother.CreateGroup(
-                studentNames: "Timo",
+                students: new TestStudent("Timo"),
                 milestones: new[] { ("1. Application", "SOLID patterns"), ("2. Professional", "Acting"), ("3. Algorithms", "Circustrain") });
             var student = group.Students.FirstOrDefault();
             var solidMilestone = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID patterns");

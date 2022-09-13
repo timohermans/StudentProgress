@@ -20,7 +20,7 @@ namespace StudentProgress.CoreTests.UseCases
         {
             var group = Fixture.DataMother.CreateGroup(
                 name: "S2 DB04",
-                studentNames: new[] {"Timo", "Patrick"},
+                students: new[] {new TestStudent("Timo"), new TestStudent("Patrick")},
                 milestones: new []{ ("1. learning outcome 1", "first milestone")});
             var milestone = group.Milestones.FirstOrDefault();
             var patrick = group.Students.FirstOrDefault(s => s.Name == "Patrick");

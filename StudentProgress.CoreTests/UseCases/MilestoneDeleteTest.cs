@@ -18,7 +18,7 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Deletes_a_milestone_with_progress_from_a_group()
         {
             var group = Fixture.DataMother.CreateGroup(
-                studentNames: new[] {"Timo"},
+                students: new[] {new TestStudent("Timo")},
                 milestones: new[] {("1. a", "artefact 1")}
             );
             var student = group.Students.FirstOrDefault();

@@ -35,10 +35,11 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Gets_the_most_important_details_per_student_of_a_group()
         {
             // arrange
-            Fixture.DataMother.CreateGroup("diversion group", new DateTime(2020, 9, 1), null, null, "Arnold");
+            Fixture.DataMother.CreateGroup("diversion group", new DateTime(2020, 9, 1), null, null,
+                new TestStudent("Arnold"));
             var group = Fixture.DataMother.CreateGroup("S3 - Leon", new DateTime(2020, 9, 1), "tips",
-                new[] {("1. Specifications and design", "Ontwerp document"), ("5. Algorithms", "Analyse document")},
-                "Timo", "Ryanne");
+                new[] { ("1. Specifications and design", "Ontwerp document"), ("5. Algorithms", "Analyse document") },
+                new TestStudent("Timo", null, "timo.png"), new TestStudent("Ryanne"));
 
             var timo = group.Students.FirstOrDefault(g => g.Name == "Timo");
             var progress1 = Fixture.DataMother.CreateProgressUpdate(group, timo,
@@ -75,12 +76,13 @@ namespace StudentProgress.CoreTests.UseCases
             response!.Id.Should().Be(group.Id);
             response!.Mnemonic.Should().Be("tips");
             response!.Name.Should().Be("S3 - Leon");
-            response!.Period.Should().Be((Period) new DateTime(2020, 9, 1));
+            response!.Period.Should().Be((Period)new DateTime(2020, 9, 1));
 
             response!.Students.Count.Should().Be(2);
 
             response!.Students.ElementAt(0).Id.Should().Be(ryanne!.Id);
             response!.Students.ElementAt(0).Name.Should().Be("Ryanne");
+            response!.Students.ElementAt(0).AvatarPath.Should().BeNull();
             response!.Students.ElementAt(0).LastUpdateDate.Should().Be(new DateTime(2020, 6, 6));
             response!.Students.ElementAt(0).LastFeedback.Should().Be("ryanne forward 2");
             response!.Students.ElementAt(0).AmountOfProgressItems.Should().Be(2);
@@ -88,6 +90,7 @@ namespace StudentProgress.CoreTests.UseCases
 
             response!.Students.ElementAt(1).Id.Should().Be(timo!.Id);
             response!.Students.ElementAt(1).Name.Should().Be("Timo");
+            response!.Students.ElementAt(1).AvatarPath.Should().Be("timo.png");
             response!.Students.ElementAt(1).LastUpdateDate.Should().Be(new DateTime(2020, 2, 2));
             response!.Students.ElementAt(1).LastFeedback.Should().Be("work on this 2");
             response!.Students.ElementAt(1).AmountOfProgressItems.Should().Be(2);

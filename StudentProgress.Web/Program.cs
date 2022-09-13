@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Net.Http;
 using HtmlTags;
 using Microsoft.AspNetCore.Builder;
@@ -16,7 +15,6 @@ using StudentProgress.Web;
 using StudentProgress.Web.Configuration;
 using StudentProgress.Web.Infrastructure;
 
-// TODO: Display Student Avatar
 // TODO: Add Feedpulse reminders (IsReviewed)
 
 var builder = WebApplication.CreateBuilder(args);
