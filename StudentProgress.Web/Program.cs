@@ -27,6 +27,7 @@ builder.Services.AddDbContext<ProgressContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContext"),
         b => b.MigrationsAssembly("StudentProgress.Core")));
 
+builder.Services.AddSingleton<IDateProvider, DateProvider>();
 builder.Services.AddSingleton<ICoreConfiguration, CoreConfiguration>();
 builder.Services.AddSingleton(_ =>
     new HttpClient(new SocketsHttpHandler { PooledConnectionIdleTimeout = TimeSpan.FromHours(1) }));

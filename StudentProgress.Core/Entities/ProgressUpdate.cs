@@ -11,6 +11,7 @@ namespace StudentProgress.Core.Entities
     public int GroupId { get; private set; }
     public int StudentId { get; private set; }
     public DateTime Date { get; private set; }
+    public bool IsReviewed { get; private set; }
     private readonly List<MilestoneProgress> _milestonesProgress = new();
     public IReadOnlyList<MilestoneProgress> MilestonesProgress => _milestonesProgress;
     private readonly List<ProgressTag> _tags = new();
@@ -20,7 +21,7 @@ namespace StudentProgress.Core.Entities
     private ProgressUpdate() { }
 #nullable enable
 
-    public ProgressUpdate(Student student, StudentGroup group, string? feedback, Feeling progressFeeling, DateTime date)
+    public ProgressUpdate(Student student, StudentGroup group, string? feedback, Feeling progressFeeling, DateTime date, bool isReviewed = false)
     {
       Student = student ?? throw new NullReferenceException(nameof(student));
       Group = group ?? throw new NullReferenceException(nameof(group));
@@ -28,13 +29,15 @@ namespace StudentProgress.Core.Entities
       ProgressFeeling = progressFeeling;
       GroupId = group.Id;
       Date = date;
+      IsReviewed = isReviewed;
     }
 
-    public Result Update(Feeling feeling, DateTime date, string? feedback)
+    public Result Update(Feeling feeling, DateTime date, string? feedback, bool isReviewed)
     {
       ProgressFeeling = feeling;
       Feedback = feedback;
       Date = date;
+      IsReviewed = isReviewed;
 
       return Result.Success();
     }

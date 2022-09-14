@@ -50,6 +50,18 @@ namespace StudentProgress.CoreTests.Extensions
       return update;
     }
 
+    public static ProgressUpdate IsReviewed(this ProgressUpdate update)
+    {
+      update.IsReviewed.Should().BeTrue();
+      return update;
+    }
+    
+    public static ProgressUpdate IsNotReviewed(this ProgressUpdate update)
+    {
+      update.IsReviewed.Should().BeFalse();
+      return update;
+    }
+
     public static ProgressCreateOrUpdate.MilestoneProgressCommand GetMilestoneProgress(this ProgressCreateOrUpdate.Command command, int milestoneId)
     {
       return command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneId);

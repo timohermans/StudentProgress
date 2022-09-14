@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using StudentProgress.Core;
 using StudentProgress.Core.CanvasApi;
 
 namespace StudentProgress.Web.Pages.StudentGroups
@@ -17,15 +18,17 @@ namespace StudentProgress.Web.Pages.StudentGroups
         private readonly ICanvasApiConfig _apiConfig;
 
         public bool CanImportGroups { get; private set; }
+        public IDateProvider DateProvider;
         public List<StudentGroup> StudentGroups { get; set; } = new();
-
         public List<SelectListItem> Periods { get; set; } = new();
+        public List<ProgressUpdate> ProgressesToReview { get; set; } = new();
         public Period CurrentPeriod { get; set; } = null!;
 
-        public IndexModel(ProgressContext context, ICanvasApiConfig apiConfig)
+        public IndexModel(ProgressContext context, ICanvasApiConfig apiConfig, IDateProvider dateProvider)
         {
             _context = context;
             _apiConfig = apiConfig;
+            DateProvider = dateProvider;
         }
 
         public async Task<IActionResult> OnGetAsync(DateTime? date)
@@ -43,7 +46,32 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
             StudentGroups = groups.Where(g => g.Period.IsVeryOldDate).ToList();
             StudentGroups.AddRange(groups.Where(g => !g.Period.IsVeryOldDate).ToList());
+
+            ProgressesToReview = await _context
+                .ProgressUpdates
+                .Include(p => p.Student)
+                .Include(p => p.Group)
+                .Where(pu => !pu.IsReviewed)
+                .OrderBy(pu => pu.Date)
+                .ToListAsync();
+            
             return Page();
         }
+
+        [BindProperty] public Request Update { get; set; }
+
+        public async Task<IActionResult> OnPostMarkReviewedAsync(DateTime? date)
+        {
+            var update = await _context.ProgressUpdates.FindAsync(Update.Id);
+            if (update == null) throw new InvalidOperationException();
+            update.Update(update.ProgressFeeling, update.Date, update.Feedback, true);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("/StudentGroups/Index");
+        }
+    }
+
+    public class Request
+    {
+        public int Id { get; set; }
     }
 }

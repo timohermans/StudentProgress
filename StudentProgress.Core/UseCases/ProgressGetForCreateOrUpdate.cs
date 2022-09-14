@@ -65,6 +65,7 @@ namespace StudentProgress.Core.UseCases
                 StudentId = student.Id,
                 Id = progressUpdate?.Id,
                 Feeling = progressUpdate?.ProgressFeeling ?? Feeling.Neutral,
+                IsReviewed = progressUpdate?.IsReviewed ?? false,
                 Milestones = milestones.Select(milestone =>
                     {
                         var milestoneProgress =

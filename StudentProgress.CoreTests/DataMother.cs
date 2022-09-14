@@ -98,6 +98,7 @@ namespace StudentProgress.CoreTests
             string feedback = "bad",
             Feeling feeling = Feeling.Neutral,
             DateTime? date = null,
+            bool isReviewed = false,
             IEnumerable<MilestoneProgress> milestoneProgresses = null
         )
         {
@@ -111,7 +112,8 @@ namespace StudentProgress.CoreTests
                 group ?? new StudentGroup((Name)"group 1", (Period)new DateTime(2020, 9, 1), "mnemonic 1"),
                 feedback,
                 feeling,
-                date ?? new DateTime(2020, 12, 19));
+                date ?? new DateTime(2020, 12, 19),
+                isReviewed);
             if (milestoneProgresses != null) update.AddMilestones(milestoneProgresses);
             context.ProgressUpdates.Add(update);
             context.SaveChanges();

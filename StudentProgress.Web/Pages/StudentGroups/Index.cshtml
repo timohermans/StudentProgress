@@ -1,53 +1,102 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using StudentProgress.Core.Extensions
 @model StudentProgress.Web.Pages.StudentGroups.IndexModel
 
 @{
   ViewData["Title"] = "Groups";
 }
 
-<h1>Groups Overview</h1>
+<h1>Home</h1>
 
-<p>
-  <a asp-page="Create">Create New</a> or
-  @if (Model.CanImportGroups)
+<section>
+  <h2>Updates to review</h2>
+  @if (Model.ProgressesToReview.Any())
   {
-    <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
+    <table class="table">
+      <caption>Updates that need to be reviewed (e.g. Feedpulse or colleague)</caption>
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Days ago</th>
+        <th>Student</th>
+        <th>Group</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      @foreach (var update in Model.ProgressesToReview)
+      {
+        <tr>
+          <td>
+            <a asp-page="/Progress/CreateEdit" asp-route-id="@update.Id" asp-route-studentId="@update.StudentId" asp-route-groupId="@update.GroupId">@update.Date.ToShortDateString()</a>
+          </td>
+          <td>@update.Date.TimePassed(Model.DateProvider) ago</td>
+          <td>@update.Student.Name</td>
+          <td>
+            <a asp-page="/StudentGroups/Details/Index" asp-route-id="@update.GroupId">@update.Group.Name</a>
+          </td>
+          <td>
+            <form method="post" asp-page-handler="MarkReviewed">
+              @Html.HiddenFor(m => update.Id)
+              <input type="submit" class="btn btn-link" value="Mark as reviewed">
+            </form>
+          </td>
+        </tr>
+      }
+      </tbody>
+    </table>
   }
-</p>
-
-<table class="table">
-  <caption>Overview of groups available</caption>
-  <thead>
-  <tr>
-    <th id="name">
-      @Html.DisplayNameFor(model => model.StudentGroups[0].Name)
-    </th>
-    <th id="mnemonic">
-      @Html.DisplayNameFor(model => model.StudentGroups[0].Mnemonic)
-    </th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  @foreach (var groupGrouping in Model.StudentGroups.GroupBy(g => g.Period))
+  else
   {
+    <p>No updates to review 😊</p>
+  }
+</section>
+
+<section>
+  <h2>Groups</h2>
+  <p>
+    <a asp-page="Create">Create New</a> or
+    @if (Model.CanImportGroups)
+    {
+      <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
+    }
+  </p>
+
+  <table class="table">
+    <caption>Overview of groups available</caption>
+    <thead>
     <tr>
-      <td class="@(Model.CurrentPeriod == groupGrouping.Key ? "fw-bold" : "text-muted")" colspan="4">@groupGrouping.Key</td>
+      <th id="name">
+        @Html.DisplayNameFor(model => model.StudentGroups[0].Name)
+      </th>
+      <th id="mnemonic">
+        @Html.DisplayNameFor(model => model.StudentGroups[0].Mnemonic)
+      </th>
+      <th></th>
     </tr>
-    @foreach (var item in groupGrouping.ToList())
+    </thead>
+    <tbody>
+    @foreach (var groupGrouping in Model.StudentGroups.GroupBy(g => g.Period))
     {
       <tr>
-        <td headers="name">
-          <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
-        </td>
-        <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
-        <td>
-          <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-          <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
-          <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-        </td>
+        <td class="@(Model.CurrentPeriod == groupGrouping.Key ? "fw-bold" : "text-muted")" colspan="4">@groupGrouping.Key</td>
       </tr>
+      @foreach (var item in groupGrouping.ToList())
+      {
+        <tr>
+          <td headers="name">
+            <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
+          </td>
+          <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
+          <td>
+            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
+            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+          </td>
+        </tr>
+      }
     }
-  }
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</section>

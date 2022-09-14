@@ -123,6 +123,9 @@ namespace StudentProgress.Core.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsReviewed")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ProgressFeeling")
                         .HasColumnType("INTEGER");
 

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,9 @@ namespace StudentProgress.Core.UseCases
       [Required] public int StudentId { get; set; }
       [Required] public int GroupId { get; set; }
       [Required] public Feeling Feeling { get; set; }
+      [Required] 
+      [DisplayName("Is reviewed")]
+      public bool IsReviewed { get; set; }
       public DateTime Date { get; set; }
 
       [Required]
@@ -72,7 +76,8 @@ namespace StudentProgress.Core.UseCases
             group.Value,
             command.Feedback,
             command.Feeling,
-            command.Date);
+            command.Date,
+            command.IsReviewed);
         progressUpdate.AddMilestones(milestonesProgress.Value);
         await _context.ProgressUpdates.AddAsync(progressUpdate);
       }
@@ -84,7 +89,7 @@ namespace StudentProgress.Core.UseCases
             .ThenInclude(mp => mp.Milestone)
             .FirstOrDefaultAsync(p => p.Id == command.Id);
 
-        progressUpdate.Update(command.Feeling, command.Date, command.Feedback);
+        progressUpdate.Update(command.Feeling, command.Date, command.Feedback, command.IsReviewed);
         UpdateMilestoneProgresses(progressUpdate, milestonesProgress.Value);
       }
 
