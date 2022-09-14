@@ -5,6 +5,20 @@
 @{
   ViewData["Title"] = "Add Progress";
 }
+@section Scripts
+{
+  <script src="~/js/progressCreateEdit.js"></script>
+  <script>
+    function removeRatingFrom(event) {
+      const tableRow = event.parentNode.parentNode;
+      const ratings = tableRow.querySelectorAll('input[type="radio"]');
+      ratings.forEach(radio => radio.checked = false);
+      const commentArea = tableRow.querySelector('textarea');
+      commentArea.value = '';
+      manuallyResizeTextArea(commentArea);
+    }
+  </script>
+}
 
 <section id="page-nav">
   <a asp-page="/StudentGroups/Index">Groups</a> >
@@ -20,7 +34,7 @@
 <div asp-validation-summary="All"></div>
 <h2>@(Model.Progress.Id == null ? "New" : "Update") Progress</h2>
 
-<form class="row" method="post">
+<form class="row" method="post" x-data="hotkeyController()" x-init="listenToKeys()">
   <input type="hidden" asp-for="Progress.Id"/>
 
   <aside id="form-nav" class="col-sm-12 col-md-2 order-md-1">
@@ -44,10 +58,6 @@
 
   <div class="col-md-10">
   
-    <section id="tags" x-data="initProgressTagsController()" x-init="loadTags([])">
-      
-    </section>
-
     <section id="date">
       <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
       <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
@@ -111,6 +121,7 @@
         </table>
       }
     </section>
+    
     <section id="feedback">
       <h3>Feedback</h3>
       <p class="form-group">
@@ -118,30 +129,23 @@
         <textarea class="form-control" asp-for="Progress.Feedback"></textarea>
       </p>
     </section>
+    
+    <section class="row">
+      <p x-text="message"></p>
+    </section>
+    
     <section id="feeling" class="row col-xl-6">
       <p class="form-group">
         <label asp-for="Progress.Feeling"></label>
         <select class="form-control" asp-for="Progress.Feeling"
-                asp-items="@Html.GetEnumSelectList<Feeling>()">
+                asp-items="@Html.GetEnumSelectList<Feeling>()"
+                x-ref="feelingSelect">
         </select>
       </p>
     </section>
+    
     <p id="save">
       <input class="btn btn-primary" type="submit" value="@(Model.Progress.Id == null ? "Add" : "Update")"/>
     </p>
   </div>
 </form>
-
-@section Scripts
-{
-  <script>
-    function removeRatingFrom(event) {
-      const tableRow = event.parentNode.parentNode;
-      const ratings = tableRow.querySelectorAll('input[type="radio"]');
-      ratings.forEach(radio => radio.checked = false);
-      const commentArea = tableRow.querySelector('textarea');
-      commentArea.value = '';
-      manuallyResizeTextArea(commentArea);
-    }
-  </script>
-}
