@@ -40,7 +40,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             if (sort == "last-feedback")
             {
                 IsSortedOnLastFeedback = true;
-                studentGroup.Students = StudentGroup.Students
+                studentGroup.Students = studentGroup.Students
                     .OrderByDescending(s => s.ProgressUpdates
                         .Select(u => u.Date)
                         .DefaultIfEmpty(DateTime.MinValue)
