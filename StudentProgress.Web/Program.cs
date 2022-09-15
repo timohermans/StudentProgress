@@ -15,8 +15,6 @@ using StudentProgress.Web;
 using StudentProgress.Web.Configuration;
 using StudentProgress.Web.Infrastructure;
 
-// TODO: Add Feedpulse reminders (IsReviewed)
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
