@@ -16,6 +16,20 @@
                 }
                 
             };
+        },
+        setFeeling(event) {
+            const mileStoneRating = event.target.value;
+            
+            let feeling;
+            if (["Undefined", "Orienting"].includes(mileStoneRating)){
+                feeling = 1;
+            } else if (mileStoneRating === "Beginning") {
+                feeling = 2;
+            } else {
+                feeling = 3;
+            }
+            
+            this.$refs.feeling.value = feeling;
         }
     };
 }
