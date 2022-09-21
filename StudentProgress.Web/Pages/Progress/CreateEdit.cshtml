@@ -58,11 +58,6 @@
   </aside>
 
   <div class="col-md-10">
-    <section id="isReviewed" class="form-group mb-3">
-      <input x-ref="isReviewed" asp-for="Progress.IsReviewed"/>
-      <label asp-for="Progress.IsReviewed"></label>
-    </section>
-
     <section id="date">
       <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
       <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
@@ -107,7 +102,8 @@
                     <input type="radio" class="btn-check"
                            asp-for="Progress.Milestones[index].Rating"
                            id="milestone-@milestone.Id-@i"
-                           value="@((Rating)(i + 1))"/>
+                           value="@((Rating)(i + 1))"
+                           x-on:change="setFeeling"/>
                     <label class="btn btn-outline-@MilestoneUiHelper.RatingColor((Rating)(i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
                   }
                 </div>
@@ -133,6 +129,11 @@
         <label asp-for="Progress.Feedback"></label>
         <textarea class="form-control" asp-for="Progress.Feedback"></textarea>
       </p>
+    </section>
+    
+    <section id="isReviewed" class="form-group mb-3">
+      <input x-ref="isReviewed" asp-for="Progress.IsReviewed"/>
+      <label asp-for="Progress.IsReviewed"></label>
     </section>
 
     <section id="feeling" class="row col-xl-6">
