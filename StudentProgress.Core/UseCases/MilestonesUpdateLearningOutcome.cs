@@ -4,7 +4,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestonesUpdateLearningOutcome
+    public class MilestonesUpdateLearningOutcome : UseCaseBase<MilestonesUpdateLearningOutcome.Command, Result>
     {
         private readonly ProgressContext _dbContext;
 
@@ -12,7 +12,6 @@ namespace StudentProgress.Core.UseCases
         {
             _dbContext = dbContext;
         }
-
 
         public async Task<Result> HandleAsync(Command command)
         {

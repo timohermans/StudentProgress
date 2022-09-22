@@ -3,7 +3,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-  public class ProgressTagCreateEdit
+  public class ProgressTagCreateEdit : UseCaseBase<ProgressTagCreateEdit.Command, Result>
   {
     private readonly ProgressContext _context;
 

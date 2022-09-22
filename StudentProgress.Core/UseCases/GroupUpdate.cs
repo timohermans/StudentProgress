@@ -4,7 +4,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class GroupUpdate
+    public class GroupUpdate : UseCaseBase<GroupUpdate.Request, Result>
     {
         public class Request
         {

@@ -6,7 +6,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class GroupCreate
+    public class GroupCreate : UseCaseBase<GroupCreate.Request, Result<int>>
     {
         private readonly ProgressContext context;
 

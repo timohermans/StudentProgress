@@ -3,7 +3,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestoneDelete
+    public class MilestoneDelete : UseCaseBase<MilestoneDelete.Command, Result>
     {
         private readonly ProgressContext _db;
 

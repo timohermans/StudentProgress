@@ -5,7 +5,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestoneCreate
+    public class MilestoneCreate : UseCaseBase<MilestoneCreate.Command, Result>
     {
         private readonly ProgressContext _context;
 

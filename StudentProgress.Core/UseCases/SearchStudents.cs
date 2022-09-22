@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class SearchStudents
+    public class SearchStudents : UseCaseBase<SearchStudents.Query, IList<SearchStudents.Response>>
     {
         public record Query
         {

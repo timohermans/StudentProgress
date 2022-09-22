@@ -4,7 +4,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestonesCopyFromGroup
+    public class MilestonesCopyFromGroup : UseCaseBase<MilestonesCopyFromGroup.Command, Result>
     {
         private readonly ProgressContext _db;
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressGetForStudentInGroup
+    public class ProgressGetForStudentInGroup : UseCaseBase<ProgressGetForStudentInGroup.Request, ProgressGetForStudentInGroup.Response>
     {
         public record Request(int? GroupId, int? StudentId);
         public record Response

@@ -6,7 +6,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-  public class ProgressCreateOrUpdate
+  public class ProgressCreateOrUpdate : UseCaseBase<ProgressCreateOrUpdate.Command, Result>
   {
     private readonly ProgressContext _context;
 

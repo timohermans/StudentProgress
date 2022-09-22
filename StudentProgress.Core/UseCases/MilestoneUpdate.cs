@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentProgress.Core.UseCases
 {
-  public class MilestoneUpdate
+  public class MilestoneUpdate : UseCaseBase<MilestoneUpdate.Command, Result>
   {
     private readonly ProgressContext _context;
 

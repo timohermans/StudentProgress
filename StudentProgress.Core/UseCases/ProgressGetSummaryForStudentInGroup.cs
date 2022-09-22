@@ -4,7 +4,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressGetSummaryForStudentInGroup
+    public class ProgressGetSummaryForStudentInGroup : UseCaseBase<ProgressGetSummaryForStudentInGroup.Query, Result<ProgressGetSummaryForStudentInGroup.Response>>
     {
         public record Query
         {
