@@ -5,7 +5,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class StudentGroupGetDetails
+    public class StudentGroupGetDetails : UseCaseBase<StudentGroupGetDetails.Request, StudentGroupGetDetails.Response?>
     {
         private readonly ProgressContext _context;
 

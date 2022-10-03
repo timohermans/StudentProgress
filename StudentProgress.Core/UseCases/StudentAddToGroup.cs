@@ -5,7 +5,7 @@ using CSharpFunctionalExtensions;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class StudentAddToGroup
+    public class StudentAddToGroup : UseCaseBase<StudentAddToGroup.Request, Result<int>>
     {
         private readonly ProgressContext context;
 

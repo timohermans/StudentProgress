@@ -4,7 +4,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class StudentUpdate
+    public class StudentUpdate : UseCaseBase<StudentUpdate.Command, Result>
     {
         private readonly ProgressContext _context;
 

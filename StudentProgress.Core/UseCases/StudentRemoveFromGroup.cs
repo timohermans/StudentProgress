@@ -4,7 +4,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class StudentRemoveFromGroup
+    public class StudentRemoveFromGroup : UseCaseBase<StudentRemoveFromGroup.Command, Result>
     {
         private readonly ProgressContext _ucContext;
 
