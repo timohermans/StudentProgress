@@ -30,6 +30,9 @@
             }
             
             this.$refs.feeling.value = feeling;
+        },
+        submit(event) {
+            event.target.form.submit();
         }
     };
 }

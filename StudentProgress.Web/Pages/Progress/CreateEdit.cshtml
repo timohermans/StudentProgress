@@ -35,7 +35,7 @@
 <div asp-validation-summary="All"></div>
 <h2>@(Model.Progress.Id == null ? "New" : "Update") Progress</h2>
 
-<form class="row" method="post" x-data="hotkeyController()" x-init="listenToKeys()">
+<form class="row" method="post" x-data="hotkeyController()" x-init="listenToKeys()" x-on:keyup.ctrl.enter="submit">
   <input type="hidden" asp-for="Progress.Id"/>
 
   <aside id="form-nav" class="col-sm-12 col-md-2 order-md-1">
