@@ -8,6 +8,7 @@ namespace StudentProgress.CoreTests
     public class DatabaseTests
     {
         protected readonly DatabaseFixture Fixture;
+        
 
         protected DatabaseTests(DatabaseFixture fixture)
         {
