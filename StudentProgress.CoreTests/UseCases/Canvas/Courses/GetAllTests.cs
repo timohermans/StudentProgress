@@ -27,8 +27,8 @@ public class GetAllTests : CanvasTests
         sem1.Should().NotBeNull();
         sem1.Name.Should().Be("P-SEM1-CB-CMK");
         sem1.Term!.Name.Should().Be("2223nj");
-        sem1.Term.StartAt.Value.AsUtc().Should().Be(new DateTime(2022, 8, 1));
-        sem1.Term.EndAt.Value.AsUtc().Should().Be(new DateTime(2023, 3, 27));
+        sem1.Term.StartAt.Value.AsUtc().Should().Be(new DateTime(2022, 8, 1).AsUtc());
+        sem1.Term.EndAt.Value.AsUtc().Should().Be(new DateTime(2023, 3, 27).AsUtc());
 
         var sem2 = result.First(s => s.Id == "12685");
         sem2.Should().NotBeNull();
