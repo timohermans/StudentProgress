@@ -9,7 +9,6 @@ namespace StudentProgress.CoreTests
     {
         protected readonly DatabaseFixture Fixture;
         
-
         protected DatabaseTests(DatabaseFixture fixture)
         {
             Fixture = fixture;
