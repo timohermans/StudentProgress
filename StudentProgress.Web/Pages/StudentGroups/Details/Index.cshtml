@@ -136,7 +136,7 @@
               </td>
               <td headers="student-last-feedforward" class="feedback-text">@Html.DisplayFor(_ => student.LastFeedback)</td>
               <td class="action-links">
-                <a class="btn btn-link" asp-page="/Progress/CreateEdit" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id" title="Remove student from group">
+                <a class="btn btn-link" asp-page="/Progress/CreateEdit" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id" asp-route-origin="/StudentGroups/Details/Index?Id=@(Model.StudentGroup.Id)" title="Remove student from group">
                   <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
                 </a>
                 <a class="btn btn-link" asp-page="./RemoveStudent" asp-route-studentId="@student.Id" asp-route-groupId="@Model.StudentGroup.Id" title="Remove student from group">
