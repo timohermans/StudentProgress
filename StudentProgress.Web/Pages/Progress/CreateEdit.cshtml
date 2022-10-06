@@ -6,6 +6,10 @@
   ViewData["Title"] = "Add Progress";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/progress-create-edit.css">
+}
+
 @section Scripts
 {
   <script src="~/js/progressCreateEdit.js"></script>
@@ -31,7 +35,7 @@
   <span>@(Model.Progress.Id == null ? "Add" : "Edit") progress</span>
 </section>
 
-<h1>@Model.Student.Name</h1>
+<h1 class="test">@Model.Student.Name</h1>
 <div asp-validation-summary="All"></div>
 <h2>@(Model.Progress.Id == null ? "New" : "Update") Progress</h2>
 
