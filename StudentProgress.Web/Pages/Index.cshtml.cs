@@ -5,9 +5,8 @@ namespace StudentProgress.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        public IActionResult OnGet()
+        public void OnGet()
         {
-            return RedirectToPage("/StudentGroups/Index");
         }
     }
 }

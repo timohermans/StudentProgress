@@ -23,6 +23,10 @@ steps:
   environment:
     ConnectionStrings__Test:
       from_secret: connectionstringtest
+    canvas__url:
+      from_secret: canvasurl
+    canvas__key:
+      from_secret: canvaskey
       
 ---
 
