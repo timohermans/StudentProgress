@@ -31,7 +31,7 @@
         <div x-data="initSearchController()" class="d-flex flex-grow-1 search" autocomplete="off">
           <input
             id="search" type="text" class="form-control" placeholder="search student.."
-            x-on:keyup.debounce="search"
+            x-on:input.debounce="search"
             autocomplete="off">
           <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
             <template x-for="student in searchResults" :key="student">
