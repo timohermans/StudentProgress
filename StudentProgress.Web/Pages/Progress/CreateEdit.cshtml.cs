@@ -18,7 +18,9 @@ namespace StudentProgress.Web.Pages.Progress
         private readonly ProgressContext _context;
         private readonly ProgressGetForCreateOrUpdate _getUseCase;
         private readonly ProgressCreateOrUpdate _useCase;
+        private readonly ProgressGetSummaryForStudentInGroup _summaryUseCase;
         public ProgressGetForCreateOrUpdate.Response GetResponse { get; set; } = null!;
+        public ProgressGetSummaryForStudentInGroup.Response Summary { get; set; } = null!;
         public Student Student => GetResponse.Student;
         public StudentGroup Group => GetResponse.Group;
         public List<Milestone> Milestones => GetResponse.Milestones;
@@ -35,19 +37,27 @@ namespace StudentProgress.Web.Pages.Progress
             _context = context;
             _useCase = new ProgressCreateOrUpdate(context);
             _getUseCase = new ProgressGetForCreateOrUpdate(context);
+            _summaryUseCase = new ProgressGetSummaryForStudentInGroup(context);
         }
 
         public async Task<IActionResult> OnGetAsync(ProgressGetForCreateOrUpdate.Query query, CancellationToken token)
         {
             var getResult = await _getUseCase.Handle(query, token);
+            // TODO: in the end, refactor this into the progress get for create or update
+            var summaryResult = await _summaryUseCase.Handle(new ProgressGetSummaryForStudentInGroup.Query
+            {
+                GroupId = query.GroupId,
+                StudentId = query.StudentId
+            }, token);
 
-            if (getResult.IsFailure)
+            if (getResult.IsFailure || summaryResult.IsFailure)
             {
                 return RedirectToPage("/StudentGroups/Index");
             }
 
             GetResponse = getResult.Value;
             Progress = getResult.Value.Command;
+            Summary = summaryResult.Value;
 
             return Page();
         }
