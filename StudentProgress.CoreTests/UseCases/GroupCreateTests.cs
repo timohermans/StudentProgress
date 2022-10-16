@@ -35,7 +35,7 @@ namespace StudentProgress.CoreTests.UseCases
                 StartPeriod = new DateTime(2020, 9, 1)
             };
 
-            var result = await ActUseCase(useCase => useCase.HandleAsync(request));
+            var result = await ActUseCase(useCase => useCase.Handle(request));
 
             Assert.True(result.IsSuccess);
             await using var assertDb = new ProgressContext(Fixture.ContextOptions);
@@ -57,7 +57,7 @@ namespace StudentProgress.CoreTests.UseCases
                 StartDate = new DateTime(2020, 9, 1)
             };
 
-            var result = await ActUseCase(useCase => useCase.HandleAsync(request));
+            var result = await ActUseCase(useCase => useCase.Handle(request));
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Contain("already exists");

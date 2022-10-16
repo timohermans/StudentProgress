@@ -47,7 +47,7 @@ public class GroupImportFromCanvasTests : DatabaseTests
         await using var ucContext = Fixture.CreateDbContext();
         var uc = new GroupImportFromCanvas(ucContext, config, client);
 
-        await uc.HandleAsync(request);
+        await uc.Handle(request);
 
         await using var assertDb = Fixture.CreateDbContext();
         var resultGroup = await assertDb.Groups.Include(g => g.Students).FirstAsync();

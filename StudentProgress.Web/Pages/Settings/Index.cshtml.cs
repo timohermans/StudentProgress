@@ -38,7 +38,7 @@ public class Index : PageModel
             return Page();
         }
 
-        await _setUseCase.HandleAsync(Settings);
+        await _setUseCase.Handle(Settings);
 
         return RedirectToPage("/Settings/Index");
     }

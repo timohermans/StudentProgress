@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30709.132
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentProgress.Web", "StudentProgress.Web\StudentProgress.Web.csproj", "{F8CCCCC0-1A85-46DA-9FE1-8FE233FBD62A}"
 EndProject
@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProgress.Api", "StudentProgress.Api\StudentProgress.Api.csproj", "{DED41F7B-58C9-4182-9A0E-F039F2881467}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B728F25-A50C-46EB-A073-EF7688FB9F81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DED41F7B-58C9-4182-9A0E-F039F2881467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED41F7B-58C9-4182-9A0E-F039F2881467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED41F7B-58C9-4182-9A0E-F039F2881467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED41F7B-58C9-4182-9A0E-F039F2881467}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

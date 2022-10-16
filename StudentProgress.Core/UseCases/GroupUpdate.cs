@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using CSharpFunctionalExtensions;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class GroupUpdate : UseCaseBase<GroupUpdate.Request, Result>
+    public class GroupUpdate : IUseCaseBase<GroupUpdate.Request, Result>
     {
-        public class Request
+        public class Request : IUseCaseRequest<Result>
         {
             public int Id { get; set; }
             [Required] public string Name { get; set; } = null!;
@@ -21,9 +22,9 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public async Task<Result> HandleAsync(Request request)
+        public async Task<Result> Handle(Request request, CancellationToken token)
         {
-            var studentGroup = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(request.Id));
+            var studentGroup = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(request.Id, token));
             var nameResult = Name.Create(request.Name);
             var periodResult = Period.Create(request.StartDate);
             var validationResult = Result.Combine(nameResult, periodResult);

@@ -39,7 +39,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var useCase = new MilestonesUpdateLearningOutcome(ucContext);
 
-            var result = await useCase.HandleAsync(new MilestonesUpdateLearningOutcome.Command
+            var result = await useCase.Handle(new MilestonesUpdateLearningOutcome.Command
             {
                 GroupId = group.Id, LearningOutcome = "1. a",
                 MilestoneIds = new List<int> {milestone1!.Id, milestone2!.Id, milestone4!.Id}
@@ -80,7 +80,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var useCase = new MilestonesUpdateLearningOutcome(ucContext);
 
-            var result = await useCase.HandleAsync(new MilestonesUpdateLearningOutcome.Command
+            var result = await useCase.Handle(new MilestonesUpdateLearningOutcome.Command
             {
                 GroupId = group.Id, LearningOutcome = "1. 1. a",
                 MilestoneIds = group.Milestones.Where(m => m.LearningOutcome == "1. a").Select(m => m.Id).ToList()

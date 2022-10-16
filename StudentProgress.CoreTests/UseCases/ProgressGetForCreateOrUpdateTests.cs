@@ -47,7 +47,7 @@ namespace StudentProgress.CoreTests.UseCases
       using var ucContext = Fixture.CreateDbContext();
       var usecase = new ProgressGetForCreateOrUpdate(ucContext);
 
-      var result = await usecase.HandleAsync(new ProgressGetForCreateOrUpdate.Query { GroupId = group.Id, StudentId = student.Id, Id = progress.Id });
+      var result = await usecase.Handle(new ProgressGetForCreateOrUpdate.Query { GroupId = group.Id, StudentId = student.Id, Id = progress.Id });
 
       result.IsSuccess.Should().BeTrue();
       var command = result.Value.Command;

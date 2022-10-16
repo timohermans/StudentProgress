@@ -22,7 +22,7 @@ namespace StudentProgress.CoreTests.UseCases
       await using var ucContext = Fixture.CreateDbContext();
       var uc = new MilestoneUpdate(ucContext);
 
-      var result = await uc.HandleAsync(new MilestoneUpdate.Command
+      var result = await uc.Handle(new MilestoneUpdate.Command
       {
         Id = milestone!.Id,
         LearningOutcome = "2. Specifications and design",
@@ -50,7 +50,7 @@ namespace StudentProgress.CoreTests.UseCases
       await using var ucContext = Fixture.CreateDbContext();
       var uc = new MilestoneUpdate(ucContext);
 
-      var result = await uc.HandleAsync(new MilestoneUpdate.Command
+      var result = await uc.Handle(new MilestoneUpdate.Command
       {
         Id = milestone!.Id,
         LearningOutcome = milestone!.LearningOutcome,

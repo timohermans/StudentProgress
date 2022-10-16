@@ -25,7 +25,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new MilestoneCreate(ucContext);
 
-            var result = await uc.HandleAsync(new MilestoneCreate.Command
+            var result = await uc.Handle(new MilestoneCreate.Command
             {
                 LearningOutcome = "2. Specifications and design",
                 Artefact = "Design document",
@@ -50,7 +50,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new MilestoneCreate(ucContext);
 
-            var result = await uc.HandleAsync(new MilestoneCreate.Command
+            var result = await uc.Handle(new MilestoneCreate.Command
             {
                 LearningOutcome = "2. Specifications and design",
                 Artefact = "Design document",

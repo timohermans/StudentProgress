@@ -37,7 +37,7 @@ public class Details : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        await _importUseCase.HandleAsync(Semester);
+        await _importUseCase.Handle(Semester);
         return RedirectToPage("/Index");
     } 
 }

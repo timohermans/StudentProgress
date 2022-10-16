@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestonesUpdateLearningOutcome : UseCaseBase<MilestonesUpdateLearningOutcome.Command, Result>
+    public class MilestonesUpdateLearningOutcome : IUseCaseBase<MilestonesUpdateLearningOutcome.Command, Result>
     {
         private readonly ProgressContext _dbContext;
 
@@ -13,7 +14,7 @@ namespace StudentProgress.Core.UseCases
             _dbContext = dbContext;
         }
 
-        public async Task<Result> HandleAsync(Command command)
+        public async Task<Result> Handle(Command command, CancellationToken token)
         {
             var group = Maybe<StudentGroup>.From(await _dbContext.Groups.FindAsync(command.GroupId))
                 .ToResult("Group doesn't exist");
@@ -41,7 +42,7 @@ namespace StudentProgress.Core.UseCases
             ).Tap(async () => await _dbContext.SaveChangesAsync());
         }
 
-        public record Command
+        public record Command : IUseCaseRequest<Result>
         {
             public int GroupId { get; set; }
             public string LearningOutcome { get; set; } = null!;

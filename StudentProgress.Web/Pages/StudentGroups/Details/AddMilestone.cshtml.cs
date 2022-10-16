@@ -56,7 +56,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 return await OnGet(Milestone.GroupId);
             }
 
-            var result = await new MilestoneCreate(_context).HandleAsync(Milestone);
+            var result = await new MilestoneCreate(_context).Handle(Milestone);
 
             if (result.IsFailure)
             {
@@ -74,7 +74,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
         public async Task<IActionResult> OnPostCopyFromGroup()
         {
-            var result = await new MilestonesCopyFromGroup(_context).HandleAsync(CopyCommand);
+            var result = await new MilestonesCopyFromGroup(_context).Handle(CopyCommand);
 
             if (result.IsFailure)
             {

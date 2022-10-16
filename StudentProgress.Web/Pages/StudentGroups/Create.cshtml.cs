@@ -34,7 +34,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 return Page();
             }
 
-            await _useCase.HandleAsync(StudentGroup);
+            await _useCase.Handle(StudentGroup);
 
             return RedirectToPage("./Index");
         }

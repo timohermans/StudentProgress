@@ -30,7 +30,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucDb = Fixture.CreateDbContext();
             var useCase = new MilestoneDelete(ucDb);
 
-            await useCase.HandleAsync(new MilestoneDelete.Command {Id = milestone.Id});
+            await useCase.Handle(new MilestoneDelete.Command {Id = milestone.Id});
 
             var groupAfterDeletion = Fixture.DataMother.GroupWithMilestones();
             groupAfterDeletion.ShouldExist();

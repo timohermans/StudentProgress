@@ -1,14 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
 using StudentProgress.Core.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-  public class MilestoneUpdate : UseCaseBase<MilestoneUpdate.Command, Result>
+  public class MilestoneUpdate : IUseCaseBase<MilestoneUpdate.Command, Result>
   {
     private readonly ProgressContext _context;
 
-    public record Command
+    public record Command : IUseCaseRequest<Result>
     {
       public int Id { get; init; }
       [Required] public string LearningOutcome { get; init; } = null!;
@@ -20,9 +21,9 @@ namespace StudentProgress.Core.UseCases
       _context = context;
     }
 
-    public async Task<Result> HandleAsync(Command command)
+    public async Task<Result> Handle(Command command, CancellationToken token)
     {
-      var milestoneResult = Maybe<Milestone>.From(_context.Milestones.Find(command.Id)).ToResult("Milestone doesn't exist");
+      var milestoneResult = Maybe<Milestone>.From(await _context.Milestones.FindAsync(command.Id, token)).ToResult("Milestone doesn't exist");
       var learningOutcomeResult = Name.Create(command.LearningOutcome);
       var artefactResult = Name.Create(command.Artefact);
       var validationResult = Result.Combine(milestoneResult, artefactResult, learningOutcomeResult);

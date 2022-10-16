@@ -65,7 +65,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
       try
       {
-        await _useCase.HandleAsync(Student);
+        await _useCase.Handle(Student);
       }
       catch (InvalidOperationException ex)
       {

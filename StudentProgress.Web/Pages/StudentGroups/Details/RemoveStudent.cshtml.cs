@@ -33,7 +33,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await new StudentRemoveFromGroup(_context).HandleAsync(Command);
+            await new StudentRemoveFromGroup(_context).Handle(Command);
 
             return RedirectToPage("./Index", new {Id = Command.GroupId});
         }

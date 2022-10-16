@@ -59,7 +59,7 @@ namespace StudentProgress.CoreTests.UseCases
             var useCase = new ProgressGetSummaryForStudentInGroup(ucContext);
 
             // act
-            var result = await useCase.HandleAsync(new ProgressGetSummaryForStudentInGroup.Query
+            var result = await useCase.Handle(new ProgressGetSummaryForStudentInGroup.Query
                 {GroupId = group.Id, StudentId = timo.Id});
 
             // assert

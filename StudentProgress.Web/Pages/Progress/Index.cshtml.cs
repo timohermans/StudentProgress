@@ -18,7 +18,7 @@ namespace StudentProgress.Web.Pages.Progress
 
         public async Task<IActionResult> OnGetAsync(ProgressGetForStudentInGroup.Request request)
         {
-            Student = await _useCase.HandleAsync(request);
+            Student = await _useCase.Handle(request);
             return Page();
         }
     }

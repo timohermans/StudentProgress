@@ -1,11 +1,12 @@
-﻿namespace StudentProgress.Core.UseCases;
+﻿using MediatR;
 
-public interface UseCaseBase<TResponse>
-{
-    Task<TResponse> HandleAsync();
+namespace StudentProgress.Core.UseCases;
+
+public class EmptyCommand<TResponse> : IRequest<TResponse> { }
+
+public interface IUseCaseBase<TResponse> : IRequestHandler<EmptyCommand<TResponse>, TResponse> {
 }
 
-public interface UseCaseBase<in TRequest, TResponse>
+public interface IUseCaseBase<in TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    Task<TResponse> HandleAsync(TRequest request);
 }

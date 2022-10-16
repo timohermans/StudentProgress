@@ -22,7 +22,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new StudentUpdate(dbContext);
 
-            var result = await useCase.HandleAsync(new StudentUpdate.Command
+            var result = await useCase.Handle(new StudentUpdate.Command
                 {Id = student!.Id, Name = "Timo", Note = "Everything is going just fine"});
 
             result.IsSuccess.Should().BeTrue();
@@ -39,7 +39,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new StudentUpdate(dbContext);
 
-            var result = await useCase.HandleAsync(new StudentUpdate.Command {Id = studentWrongName.Id, Name = "Timo"});
+            var result = await useCase.Handle(new StudentUpdate.Command {Id = studentWrongName.Id, Name = "Timo"});
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("already exists");

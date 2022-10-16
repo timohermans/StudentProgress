@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressGetForStudentInGroup : UseCaseBase<ProgressGetForStudentInGroup.Request, ProgressGetForStudentInGroup.Response>
+    public class ProgressGetForStudentInGroup : IUseCaseBase<ProgressGetForStudentInGroup.Request, ProgressGetForStudentInGroup.Response>
     {
-        public record Request(int? GroupId, int? StudentId);
+        public record Request(int? GroupId, int? StudentId) : IUseCaseRequest<Response>;
         public record Response
         {
             public int StudentId { get; init; }
@@ -55,13 +56,13 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public async Task<Response> HandleAsync(Request request)
+        public async Task<Response> Handle(Request request, CancellationToken token)
         {
             var student = await _context.Students
                 .Include(_ => _.ProgressUpdates)
                 .ThenInclude(_ => _.MilestonesProgress)
                 .ThenInclude(_ => _.Milestone)
-                .FirstOrDefaultAsync(g => g.Id == (request.StudentId ?? 0));
+                .FirstOrDefaultAsync(g => g.Id == (request.StudentId ?? 0), token);
             var group = _context.Groups.FirstOrDefault(g => g.Id == (request.GroupId ?? 0));
 
             if (student == null || group == null) throw new InvalidOperationException("Must supply a valid student and group");

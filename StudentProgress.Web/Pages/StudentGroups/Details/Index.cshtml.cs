@@ -30,7 +30,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 return NotFound();
             }
 
-            var studentGroup = await _useCase.HandleAsync(new StudentGroupGetDetails.Request((int)id));
+            var studentGroup = await _useCase.Handle(new StudentGroupGetDetails.Request((int)id));
 
             if (studentGroup == null)
             {
@@ -55,7 +55,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
         public async Task<IActionResult> OnPostUpdateMultipleMilestonesAsync(MilestonesUpdateLearningOutcome.Command command)
         {
-            var result = await _milestonesUpdateUseCase.HandleAsync(command);
+            var result = await _milestonesUpdateUseCase.Handle(command);
 
             if (result.IsFailure)
             {

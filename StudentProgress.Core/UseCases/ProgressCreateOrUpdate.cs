@@ -1,12 +1,13 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-  public class ProgressCreateOrUpdate : UseCaseBase<ProgressCreateOrUpdate.Command, Result>
+  public class ProgressCreateOrUpdate : IUseCaseBase<ProgressCreateOrUpdate.Command, Result>
   {
     private readonly ProgressContext _context;
 
@@ -24,7 +25,7 @@ namespace StudentProgress.Core.UseCases
       public string? Comment { get; set; }
     }
 
-    public record Command
+    public record Command : IUseCaseRequest<Result>
     {
       public int? Id { get; set; }
       [Required] public int StudentId { get; set; }
@@ -54,13 +55,13 @@ namespace StudentProgress.Core.UseCases
       public List<MilestoneProgressCommand> Milestones { get; set; } = new List<MilestoneProgressCommand>();
     }
 
-    public async Task<Result> HandleAsync(Command command)
+    public async Task<Result> Handle(Command command, CancellationToken token)
     {
       var student = Maybe<Student>.From(
-          await _context.Students.FirstOrDefaultAsync(s => s.Id == command.StudentId)
+          await _context.Students.FirstOrDefaultAsync(s => s.Id == command.StudentId, token)
       ).ToResult("Student does not exist");
       var group = Maybe<StudentGroup>.From(
-          await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId)
+          await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId, token)
       ).ToResult("Group does not exist");
       var milestonesProgress = await GetMilestonesFrom(command.Milestones);
       var result = Result.Combine(student, group, milestonesProgress);
@@ -87,13 +88,13 @@ namespace StudentProgress.Core.UseCases
             .ProgressUpdates
             .Include(p => p.MilestonesProgress)
             .ThenInclude(mp => mp.Milestone)
-            .FirstOrDefaultAsync(p => p.Id == command.Id);
+            .FirstOrDefaultAsync(p => p.Id == command.Id, token);
 
         progressUpdate.Update(command.Feeling, command.Date, command.Feedback, command.IsReviewed);
         UpdateMilestoneProgresses(progressUpdate, milestonesProgress.Value);
       }
 
-      await _context.SaveChangesAsync();
+      await _context.SaveChangesAsync(token);
       return Result.Success();
     }
 

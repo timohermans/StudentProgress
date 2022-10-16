@@ -24,7 +24,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var useCase = new SearchStudents(ucContext);
 
-            var response = await useCase.HandleAsync(new SearchStudents.Query {SearchTerm = "timo"});
+            var response = await useCase.Handle(new SearchStudents.Query {SearchTerm = "timo"});
 
             response.Should().HaveCount(1);
             response.First().Name.Should().Be("Timo");

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
@@ -18,18 +19,18 @@ namespace StudentProgress.Web.Controllers
         }
         
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(StudentUpdate.Command command)
+        public async Task<IActionResult> Update(StudentUpdate.Command command, CancellationToken token)
         {
-            await _useCase.HandleAsync(command);
+            await _useCase.Handle(command, token);
             return Ok();
         }
 
         [HttpPut("{id:int}/name")]
-        public async Task<IActionResult> UpdateName(StudentUpdate.Command command)
+        public async Task<IActionResult> UpdateName(StudentUpdate.Command command, CancellationToken token)
         {
             var student = await _context.Students.FindAsync(command.Id);
             command.Note = student?.Note;
-            var result = await _useCase.HandleAsync(command);
+            var result = await _useCase.Handle(command, token);
 
             if (!result.IsSuccess)
             {

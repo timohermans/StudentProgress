@@ -31,7 +31,7 @@ namespace StudentProgress.CoreTests.UseCases
         Name = "Student gesprek"
       };
 
-      var result = await Execute(async uc => await uc.HandleAsync(request));
+      var result = await Execute(async uc => await uc.Handle(request));
 
       result.IsSuccess.Should().BeTrue();
       var actualTag = Fixture.DataMother.Query<ProgressTag>();
@@ -43,7 +43,7 @@ namespace StudentProgress.CoreTests.UseCases
     {
       var tag = Fixture.DataMother.CreateProgressTag("Studentgesprek");
 
-      var result = await Execute(async uc => await uc.HandleAsync(
+      var result = await Execute(async uc => await uc.Handle(
         new ProgressTagCreateEdit.Command { Id = tag.Id, Name = "Docentgesprek" })
         );
 

@@ -16,7 +16,7 @@ namespace StudentProgress.Web.Pages.Progress
 
     public async Task<IActionResult> OnGetAsync(ProgressGetSummaryForStudentInGroup.Query query)
     {
-      var summaryResult = await _useCase.HandleAsync(query);
+      var summaryResult = await _useCase.Handle(query);
 
       if (summaryResult.IsFailure)
       {

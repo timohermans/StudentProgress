@@ -37,7 +37,7 @@ namespace StudentProgress.Web.Pages.Progress
 
         public async Task<IActionResult> OnGetAsync(ProgressGetForCreateOrUpdate.Query query)
         {
-            var getResult = await _getUseCase.HandleAsync(query);
+            var getResult = await _getUseCase.Handle(query);
 
             if (getResult.IsFailure)
             {
@@ -59,7 +59,7 @@ namespace StudentProgress.Web.Pages.Progress
 
             try
             {
-                await _useCase.HandleAsync(Progress);
+                await _useCase.Handle(Progress);
             }
             catch (InvalidOperationException ex)
             {

@@ -42,7 +42,7 @@ namespace StudentProgress.Web.Pages.Milestones
                 return Page();
             }
 
-            var result = await _useCase.HandleAsync(Command);
+            var result = await _useCase.Handle(Command);
 
             if (result.IsFailure)
             {

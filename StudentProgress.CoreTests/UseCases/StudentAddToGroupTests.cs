@@ -25,7 +25,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new StudentAddToGroup(Fixture.CreateDbContext());
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request);
 
             result.IsSuccess.Should().BeTrue();
             Fixture.DataMother.GroupWithStudents()
@@ -44,7 +44,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new StudentAddToGroup(Fixture.CreateDbContext());
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("already");

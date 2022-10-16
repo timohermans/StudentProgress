@@ -1,12 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressGetForCreateOrUpdate : UseCaseBase<ProgressGetForCreateOrUpdate.Query, Result<ProgressGetForCreateOrUpdate.Response>>
+    public class ProgressGetForCreateOrUpdate : IUseCaseBase<ProgressGetForCreateOrUpdate.Query, Result<ProgressGetForCreateOrUpdate.Response>>
     {
-        public record Query
+        public record Query : IUseCaseRequest<Result<Response>>
         {
             public int? Id { get; set; }
             public int GroupId { get; set; }
@@ -37,10 +38,10 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public async Task<Result<Response>> HandleAsync(Query query)
+        public async Task<Result<Response>> Handle(Query query, CancellationToken token)
         {
-            var student = await _context.Students.FirstOrDefaultAsync(s => s.Id == query.StudentId);
-            var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == query.GroupId);
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.Id == query.StudentId, token);
+            var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == query.GroupId, token);
             var milestones = _context.Milestones
                 .Where(m => m.StudentGroup.Id == query.GroupId)
                 .OrderBy(m => m.LearningOutcome)
@@ -49,7 +50,7 @@ namespace StudentProgress.Core.UseCases
             var progressUpdate = await _context.ProgressUpdates
                 .Include(p => p.MilestonesProgress)
                 .ThenInclude(m => m.Milestone)
-                .FirstOrDefaultAsync(p => p.Id == (query.Id ?? 0));
+                .FirstOrDefaultAsync(p => p.Id == (query.Id ?? 0), token);
 
             if (student == null || group == null || (query.Id != null && progressUpdate == null))
             {

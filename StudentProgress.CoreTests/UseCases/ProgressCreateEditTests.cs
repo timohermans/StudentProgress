@@ -56,7 +56,7 @@ namespace StudentProgress.CoreTests.UseCases
             using var ucContext = Fixture.CreateDbContext();
             var useCase = new ProgressCreateOrUpdate(ucContext);
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request);
 
             result.IsSuccess.Should().BeTrue();
             var progress = Fixture.DataMother.QueryProgressUpdateWithMilestonesProgress();
@@ -86,7 +86,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new ProgressCreateOrUpdate(Fixture.CreateDbContext());
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("exist");
@@ -126,7 +126,7 @@ namespace StudentProgress.CoreTests.UseCases
                     new MilestoneProgress(Rating.Beginning, milestoneCooperation, "Communicatie is perfect"),
                 });
             using var getContext = Fixture.CreateDbContext();
-            var command = (await new ProgressGetForCreateOrUpdate(getContext).HandleAsync(
+            var command = (await new ProgressGetForCreateOrUpdate(getContext).Handle(
                 new ProgressGetForCreateOrUpdate.Query
                     { GroupId = group.Id, StudentId = student.Id, Id = progress.Id })).Value.Command;
 
@@ -144,7 +144,7 @@ namespace StudentProgress.CoreTests.UseCases
             var useCase = new ProgressCreateOrUpdate(ucContext);
 
             // act
-            var result = await useCase.HandleAsync(command);
+            var result = await useCase.Handle(command);
 
             // assert
             result.IsSuccess.Should().BeTrue();

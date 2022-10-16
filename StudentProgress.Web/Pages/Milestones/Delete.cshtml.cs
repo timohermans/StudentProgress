@@ -34,7 +34,7 @@ namespace StudentProgress.Web.Pages.Milestones
 
         public async Task<IActionResult> OnPostAsync(int groupId)
         {
-            var result = await new MilestoneDelete(_context).HandleAsync(Command);
+            var result = await new MilestoneDelete(_context).Handle(Command);
 
             if (result.IsFailure)
             {

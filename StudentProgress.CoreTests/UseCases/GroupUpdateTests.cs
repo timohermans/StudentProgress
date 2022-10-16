@@ -28,7 +28,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new GroupUpdate(new ProgressContext(Fixture.ContextOptions));
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request);
 
             result.IsSuccess.Should().BeTrue();
             var groupUpdated = Fixture.DataMother.Query<StudentGroup>();
@@ -49,7 +49,7 @@ namespace StudentProgress.CoreTests.UseCases
              };
              var useCase = new GroupUpdate(new ProgressContext(Fixture.ContextOptions));
  
-             var result = await useCase.HandleAsync(request);
+             var result = await useCase.Handle(request);
  
              result.IsFailure.Should().BeTrue();
              result.Error.Should().Contain("exist");

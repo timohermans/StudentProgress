@@ -21,7 +21,7 @@ public class SettingsSetTests : DatabaseTests
         await using var ucDb = Fixture.CreateDbContext();
         var uc = new SettingsSet(ucDb);
 
-        var result = uc.HandleAsync(request);
+        var result = uc.Handle(request);
 
         result.Result.IsSuccess.Should().BeTrue();
         var settings = await Fixture.DataMother.QueryAllAsync<Setting>();
@@ -44,7 +44,7 @@ public class SettingsSetTests : DatabaseTests
         await using var ucDb = Fixture.CreateDbContext();
         var uc = new SettingsSet(ucDb);
 
-        var result = uc.HandleAsync(request);
+        var result = uc.Handle(request);
 
         result.Result.IsSuccess.Should().BeTrue();
         var settings = await Fixture.DataMother.QueryAllAsync<Setting>();

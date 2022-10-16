@@ -50,7 +50,7 @@ namespace StudentProgress.CoreTests.UseCases
             using var ucContext = Fixture.CreateDbContext();
             var useCase = new ProgressGetForStudentInGroup(ucContext);
 
-            var result = await useCase.HandleAsync(new ProgressGetForStudentInGroup.Request(group.Id, student?.Id));
+            var result = await useCase.Handle(new ProgressGetForStudentInGroup.Request(group.Id, student?.Id));
 
             result.StudentId.Should().Be(student?.Id);
             result.Name.Should().Be("Timo");

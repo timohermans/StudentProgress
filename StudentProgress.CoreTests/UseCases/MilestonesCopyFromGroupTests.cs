@@ -25,7 +25,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var db = Fixture.CreateDbContext();
             var useCase = new MilestonesCopyFromGroup(db);
 
-            var result = await useCase.HandleAsync(new MilestonesCopyFromGroup.Command
+            var result = await useCase.Handle(new MilestonesCopyFromGroup.Command
                 {FromGroupId = groupToCopyFrom.Id, ToGroupId = groupToCopyTo.Id});
 
             result.IsSuccess.Should().BeTrue();
