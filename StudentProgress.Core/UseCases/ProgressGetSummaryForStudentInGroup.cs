@@ -1,12 +1,13 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressGetSummaryForStudentInGroup
+    public class ProgressGetSummaryForStudentInGroup : IUseCaseBase<ProgressGetSummaryForStudentInGroup.Query, Result<ProgressGetSummaryForStudentInGroup.Response>>
     {
-        public record Query
+        public record Query : IUseCaseRequest<Result<Response>>
         {
             public int GroupId { get; set; }
             public int StudentId { get; set; }
@@ -78,11 +79,11 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public async Task<Result<Response>> HandleAsync(Query query)
+        public async Task<Result<Response>> Handle(Query query, CancellationToken token)
         {
-            var group = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(query.GroupId))
+            var group = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(query.GroupId, token))
                 .ToResult("Group does not exist");
-            var student = Maybe<Student>.From(await _context.Students.FindAsync(query.StudentId))
+            var student = Maybe<Student>.From(await _context.Students.FindAsync(query.StudentId, token))
                 .ToResult("Student does not exist");
             var doGroupStudentExist = Result.Combine(group, student);
 
@@ -91,16 +92,16 @@ namespace StudentProgress.Core.UseCases
                 return Result.Failure<Response>(doGroupStudentExist.Error);
             }
 
-            var milestones = await _context.Milestones.Where(m => m.StudentGroup.Id == query.GroupId).ToListAsync();
+            var milestones = await _context.Milestones.Where(m => m.StudentGroup.Id == query.GroupId).ToListAsync(token);
             var studentMilestoneProgresses = await _context.MilestoneProgresses
                 .Include(mp => mp.Milestone)
                 .Where(mp =>
                     mp.ProgressUpdate.StudentId == query.StudentId && mp.Milestone.StudentGroup.Id == query.GroupId)
                 .OrderByDescending(mp => mp.ProgressUpdate.Date)
-                .ToListAsync();
+                .ToListAsync(token);
             var progressUpdates = await _context.ProgressUpdates
                 .Where(u => u.GroupId == query.GroupId && u.StudentId == query.StudentId)
-                .ToListAsync();
+                .ToListAsync(token);
 
             var lastProgressUpdate = progressUpdates
                 .Where(p => p.Feedback != null)
@@ -129,7 +130,7 @@ namespace StudentProgress.Core.UseCases
                 .Where(s => s.StudentGroups.Any(g => g.Id == query.GroupId))
                 .OrderBy(s => s.Name)
                 .Select(s => new OtherStudentResponse(s.Id, s.Name))
-                .ToListAsync();
+                .ToListAsync(token);
 
             return Result.Success(new Response(
                 groupId: group.Value.Id,

@@ -1,5 +1,7 @@
-﻿using StudentProgress.Core.CanvasApi;
+﻿using MediatR;
+using StudentProgress.Core.CanvasApi;
 using StudentProgress.Core.CanvasApi.Models;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases.Canvas.Courses;
 
@@ -22,8 +24,10 @@ public class GetCourseDetailsStudent
     public string? CanvasId { get; init; }
 }
 
-public class GetCourseDetailsUseCase
+public class GetCourseDetailsUseCase : IUseCaseBase<GetCourseDetailsUseCase.Command, GetCourseDetailsUseCase.Response>
 {
+    public record Response(IEnumerable<GetCourseDetailsResponse> Courses);
+    public record Command(string Id) : IRequest<Response>;
     private readonly ICanvasClient _client;
 
     private readonly string _query = @"query MyQuery {
@@ -61,13 +65,13 @@ course(id: ""{id}"") {
 
     public GetCourseDetailsUseCase(ICanvasClient client) => _client = client;
 
-    public async Task<IEnumerable<GetCourseDetailsResponse>> Execute(string id)
+    public async Task<Response> Handle(Command command, CancellationToken token)
     {
-        var query = _query.Replace("{id}", id);
-        var data = await _client.GetAsync<Response>(query);
+        var query = _query.Replace("{id}", command.Id);
+        var data = await _client.GetAsync<ApiResponse>(query, token);
         var course = data?.Data?.Course;
 
-        return course?.SectionsConnection?.Nodes.Select(section =>
+        return new Response(course?.SectionsConnection?.Nodes.Select(section =>
         {
             return new GetCourseDetailsResponse
             {
@@ -85,11 +89,11 @@ course(id: ""{id}"") {
                     })
                     .ToList() ?? new List<GetCourseDetailsStudent>()
             };
-        }) ?? new List<GetCourseDetailsResponse>();
+        }) ?? new List<GetCourseDetailsResponse>());
     }
 }
 
-public class Response
+public class ApiResponse
 {
     public Course? Course { get; set; }
 }

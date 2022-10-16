@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestoneCreate
+    public class MilestoneCreate : IUseCaseBase<MilestoneCreate.Command, Result>
     {
         private readonly ProgressContext _context;
 
@@ -14,7 +15,7 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public record Command
+        public record Command : IUseCaseRequest<Result>
         {
             public int? Id { get; init; }
             [Required] public int GroupId { get; init; }
@@ -22,10 +23,10 @@ namespace StudentProgress.Core.UseCases
             [Required] public string Artefact { get; init; } = null!;
         }
 
-        public async Task<Result> HandleAsync(Command command)
+        public async Task<Result> Handle(Command command, CancellationToken token)
         {
             var groupResult = Maybe<StudentGroup>.From(
-                await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId)
+                await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId, token)
             ).ToResult($"Group with ID {command.GroupId} does not exist");
             var learningOutcomeResult = Name.Create(command.LearningOutcome);
             var artefactResult = Name.Create(command.Artefact);
@@ -39,6 +40,7 @@ namespace StudentProgress.Core.UseCases
             var doesArtefactAlreadyExist = _context.Milestones.Any(m =>
                 m.StudentGroupId == command.GroupId && m.Artefact == artefactResult.Value &&
                 m.LearningOutcome == learningOutcomeResult.Value);
+
             if (doesArtefactAlreadyExist)
             {
                 return Result.Failure("Artefact already exists for that learning outcome");

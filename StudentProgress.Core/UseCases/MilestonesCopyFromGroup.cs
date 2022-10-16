@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestonesCopyFromGroup
+    public class MilestonesCopyFromGroup : IUseCaseBase<MilestonesCopyFromGroup.Command, Result>
     {
         private readonly ProgressContext _db;
 
@@ -13,12 +14,12 @@ namespace StudentProgress.Core.UseCases
             _db = db;
         }
 
-        public async Task<Result> HandleAsync(Command command)
+        public async Task<Result> Handle(Command command, CancellationToken token)
         {
             var groupFrom = Maybe<StudentGroup>.From(
                     await _db.Groups.Include(g => g.Milestones)
                         .AsNoTracking()
-                        .FirstOrDefaultAsync(g => g.Id == command.FromGroupId))
+                        .FirstOrDefaultAsync(g => g.Id == command.FromGroupId, token))
                 .ToResult("Group to copy from does not exist");
             var groupTo = Maybe<StudentGroup>.From(
                     await _db.Groups.Include(g => g.Milestones).FirstOrDefaultAsync(g => g.Id == command.ToGroupId))
@@ -44,7 +45,7 @@ namespace StudentProgress.Core.UseCases
             return Result.Success();
         }
 
-        public record Command
+        public record Command : IUseCaseRequest<Result>
         {
             public int FromGroupId { get; set; }
             public int ToGroupId { get; set; }

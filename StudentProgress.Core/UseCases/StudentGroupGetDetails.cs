@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class StudentGroupGetDetails
+    public class StudentGroupGetDetails : IUseCaseBase<StudentGroupGetDetails.Request, StudentGroupGetDetails.Response?>
     {
         private readonly ProgressContext _context;
 
@@ -14,7 +15,7 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public record Request(int Id);
+        public record Request(int Id) : IUseCaseRequest<Response?>;
 
         public record Response
         {
@@ -57,14 +58,14 @@ namespace StudentProgress.Core.UseCases
 
         public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
 
-        public async Task<Response?> HandleAsync(Request request)
+        public async Task<Response?> Handle(Request request, CancellationToken token)
         {
             if (!await DoesGroupExist(request.Id))
             {
                 return null;
             }
 
-            return await GetGroupWithStudentDataOfLatestFeedback(request.Id);
+            return await GetGroupWithStudentDataOfLatestFeedback(request.Id, token);
         }
 
         private async Task<bool> DoesGroupExist(int groupId)
@@ -72,20 +73,20 @@ namespace StudentProgress.Core.UseCases
             return await _context.Groups.AnyAsync(g => g.Id == groupId);
         }
 
-        private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId)
+        private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId, CancellationToken token)
         {
-            var group = await _context.Groups.Include(g => g.Milestones).FirstOrDefaultAsync(g => g.Id == groupId);
+            var group = await _context.Groups.Include(g => g.Milestones).FirstOrDefaultAsync(g => g.Id == groupId, token);
             var students = await _context
                 .Students
                 .Where(s => s.StudentGroups.Any(g => g.Id == groupId))
                 .OrderBy(s => s.Name)
-                .ToListAsync();
+                .ToListAsync(token);
             var progressUpdates = await _context
                 .ProgressUpdates
                 .Where(pu =>
                     pu.GroupId == groupId && students.Select(s => s.Id).Contains(pu.StudentId))
-                .OrderByDescending(p => p.Date)              
-                .ToListAsync();
+                .OrderByDescending(p => p.Date)
+                .ToListAsync(token);
 
             return new Response
             {

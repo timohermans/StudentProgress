@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading;
+using FluentAssertions;
 using StudentProgress.Core.UseCases;
 
 namespace StudentProgress.CoreTests.UseCases;
@@ -18,7 +19,7 @@ public class SettingsGetTests : DatabaseTests
         await using var ucContext = Fixture.CreateDbContext();
         var uc = new SettingsGet(ucContext);
 
-        var result = await uc.HandleAsync();
+        var result = await uc.Handle(new SettingsGet.Request(), CancellationToken.None);
 
         result.CanvasApiKey.Should().Be("123-canvas-api");
         result.CanvasUrl.Should().Be("http://canvas.nl");

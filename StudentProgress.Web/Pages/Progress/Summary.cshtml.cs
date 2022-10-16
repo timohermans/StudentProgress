@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,9 +15,9 @@ namespace StudentProgress.Web.Pages.Progress
 
     public SummaryModel(ProgressContext context) => _useCase = new ProgressGetSummaryForStudentInGroup(context);
 
-    public async Task<IActionResult> OnGetAsync(ProgressGetSummaryForStudentInGroup.Query query)
+    public async Task<IActionResult> OnGetAsync(ProgressGetSummaryForStudentInGroup.Query query, CancellationToken token)
     {
-      var summaryResult = await _useCase.HandleAsync(query);
+      var summaryResult = await _useCase.Handle(query, token);
 
       if (summaryResult.IsFailure)
       {

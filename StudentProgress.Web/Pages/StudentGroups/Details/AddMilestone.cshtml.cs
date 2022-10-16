@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
@@ -39,24 +40,24 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(CancellationToken token)
         {
-            return await CreateMilestone(() => RedirectToPage("./Index", new {Id = Milestone.GroupId}));
+            return await CreateMilestone(() => RedirectToPage("./Index", new {Id = Milestone.GroupId}), token);
         }
 
-        public async Task<IActionResult> OnPostAndAddAnother()
+        public async Task<IActionResult> OnPostAndAddAnother(CancellationToken token)
         {
-            return await CreateMilestone(() => RedirectToPage("./AddMilestone", new {Id = Milestone.GroupId}));
+            return await CreateMilestone(() => RedirectToPage("./AddMilestone", new {Id = Milestone.GroupId}), token);
         }
 
-        private async Task<IActionResult> CreateMilestone(Func<IActionResult> onSuccessFunc)
+        private async Task<IActionResult> CreateMilestone(Func<IActionResult> onSuccessFunc, CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
                 return await OnGet(Milestone.GroupId);
             }
 
-            var result = await new MilestoneCreate(_context).HandleAsync(Milestone);
+            var result = await new MilestoneCreate(_context).Handle(Milestone, token);
 
             if (result.IsFailure)
             {
@@ -72,9 +73,9 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             return await OnGet(Milestone.GroupId);
         }
 
-        public async Task<IActionResult> OnPostCopyFromGroup()
+        public async Task<IActionResult> OnPostCopyFromGroup(CancellationToken token)
         {
-            var result = await new MilestonesCopyFromGroup(_context).HandleAsync(CopyCommand);
+            var result = await new MilestonesCopyFromGroup(_context).Handle(CopyCommand, token);
 
             if (result.IsFailure)
             {

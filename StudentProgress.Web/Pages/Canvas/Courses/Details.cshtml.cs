@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -30,14 +31,14 @@ public class Details : PageModel
         _importUseCase = new GroupImportFromCanvas(db, config, httpClient);
     }
 
-    public async Task OnGetAsync(string id)
+    public async Task OnGetAsync(string id, CancellationToken token)
     {
-        Semesters = await _getUseCase.Execute(id);
+        Semesters = (await _getUseCase.Handle(new GetCourseDetailsUseCase.Command(id), token)).Courses;
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync(CancellationToken token)
     {
-        await _importUseCase.HandleAsync(Semester);
+        await _importUseCase.Handle(Semester, token);
         return RedirectToPage("/Index");
     } 
 }

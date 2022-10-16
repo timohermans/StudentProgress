@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading;
+using FluentAssertions;
 using StudentProgress.Core.UseCases.Canvas.Courses;
 
 namespace StudentProgress.CoreTests.UseCases.Canvas.Courses;
@@ -15,7 +16,7 @@ public class GetCourseDetailsTests : CanvasTests
     {
         var uc = new GetCourseDetailsUseCase(Fixture.Client);
 
-        var result = (await uc.Execute("12685")).ToList();
+        var result = (await uc.Handle(new GetCourseDetailsUseCase.Command("12685"), CancellationToken.None)).Courses.ToList();
 
         result.Should().NotBeNull();
         result.Should().HaveCount(6);

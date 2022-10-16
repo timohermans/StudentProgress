@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.Progress
@@ -36,9 +37,9 @@ namespace StudentProgress.Web.Pages.Progress
             _getUseCase = new ProgressGetForCreateOrUpdate(context);
         }
 
-        public async Task<IActionResult> OnGetAsync(ProgressGetForCreateOrUpdate.Query query)
+        public async Task<IActionResult> OnGetAsync(ProgressGetForCreateOrUpdate.Query query, CancellationToken token)
         {
-            var getResult = await _getUseCase.HandleAsync(query);
+            var getResult = await _getUseCase.Handle(query, token);
 
             if (getResult.IsFailure)
             {
@@ -51,7 +52,7 @@ namespace StudentProgress.Web.Pages.Progress
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string? origin)
+        public async Task<IActionResult> OnPostAsync(string? origin, CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
@@ -60,13 +61,13 @@ namespace StudentProgress.Web.Pages.Progress
 
             try
             {
-                await _useCase.HandleAsync(Progress);
+                await _useCase.Handle(Progress, token);
             }
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("UseCase", ex.Message);
                 return await OnGetAsync(new ProgressGetForCreateOrUpdate.Query
-                    { GroupId = Progress.GroupId, StudentId = Progress.StudentId, Id = Progress.Id });
+                    { GroupId = Progress.GroupId, StudentId = Progress.StudentId, Id = Progress.Id }, token);
             }
 
             if (string.IsNullOrEmpty(origin))

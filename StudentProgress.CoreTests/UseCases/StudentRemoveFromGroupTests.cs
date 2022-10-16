@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -34,11 +35,11 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new StudentRemoveFromGroup(ucContext);
 
-            var result = await uc.HandleAsync(new StudentRemoveFromGroup.Command
+            var result = await uc.Handle(new StudentRemoveFromGroup.Command
             {
                 StudentId = patrick!.Id, 
                 GroupId = group.Id
-            });
+            }, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             await using var assertContext = Fixture.CreateDbContext();

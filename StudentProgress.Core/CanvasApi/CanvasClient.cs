@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading;
 
 namespace StudentProgress.Core.CanvasApi;
 
@@ -18,11 +19,11 @@ public class CanvasClient : ICanvasClient
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
     }
 
-    public async Task<CanvasResponse<T>?> GetAsync<T>(string query)
+    public async Task<CanvasResponse<T>?> GetAsync<T>(string query, CancellationToken token)
     {
         var body = new { operationName = "MyQuery", query, variables = (string)null! };
-        var response = await _client.PostAsJsonAsync(_url, body);
-        var json = await response.Content.ReadAsStringAsync();
+        var response = await _client.PostAsJsonAsync(_url, body, token);
+        var json = await response.Content.ReadAsStringAsync(token);
         return JsonSerializer.Deserialize<CanvasResponse<T>>(json,
             new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true });
     }

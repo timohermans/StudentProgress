@@ -1,12 +1,13 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class GroupCreate
+    public class GroupCreate : IUseCaseBase<GroupCreate.Request, Result<int>>
     {
         private readonly ProgressContext context;
 
@@ -15,7 +16,7 @@ namespace StudentProgress.Core.UseCases
             this.context = context;
         }
 
-        public record Request
+        public record Request : IUseCaseRequest<Result<int>>
         {
             [Required] public string Name { get; init; } = null!;
 
@@ -25,7 +26,7 @@ namespace StudentProgress.Core.UseCases
             public DateTime StartDate { get; init; }
         }
 
-        public async Task<Result<int>> HandleAsync(Request request)
+        public async Task<Result<int>> Handle(Request request, CancellationToken token)
         {
             var name = Name.Create(request.Name);
             var periodResult = Period.Create(request.StartDate);
@@ -37,11 +38,12 @@ namespace StudentProgress.Core.UseCases
             }
 
             var group = Result.Success(new StudentGroup(name.Value, periodResult.Value, request.Mnemonic));
-            return await group
+            var groupIdResult = await group
                 .Ensure(g => IsGroupNew(g.Name, g.Period))
-                .Tap(async (g) => await context.Groups.AddAsync(g))
-                .Tap(() => context.SaveChangesAsync())
+                .Tap(async (g) => await context.Groups.AddAsync(g, token))
+                .Tap(() => context.SaveChangesAsync(token))
                 .Map(g => g.Id);
+            return groupIdResult;
         }
 
         private async Task<Result> IsGroupNew(Name name, Period period)

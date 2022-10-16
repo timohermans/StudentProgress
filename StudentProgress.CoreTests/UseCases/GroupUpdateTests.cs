@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -28,7 +29,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new GroupUpdate(new ProgressContext(Fixture.ContextOptions));
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             var groupUpdated = Fixture.DataMother.Query<StudentGroup>();
@@ -49,7 +50,7 @@ namespace StudentProgress.CoreTests.UseCases
              };
              var useCase = new GroupUpdate(new ProgressContext(Fixture.ContextOptions));
  
-             var result = await useCase.HandleAsync(request);
+             var result = await useCase.Handle(request, CancellationToken.None);
  
              result.IsFailure.Should().BeTrue();
              result.Error.Should().Contain("exist");

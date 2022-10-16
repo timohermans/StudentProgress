@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.Entities;
@@ -35,14 +36,14 @@ namespace StudentProgress.Web.Pages.Milestones
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int id, int groupId)
+        public async Task<IActionResult> OnPostAsync(int id, int groupId, CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            var result = await _useCase.HandleAsync(Command);
+            var result = await _useCase.Handle(Command, token);
 
             if (result.IsFailure)
             {

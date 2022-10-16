@@ -2,6 +2,7 @@
 using StudentProgress.Core.UseCases;
 using StudentProgress.CoreTests.Extensions;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -22,12 +23,12 @@ namespace StudentProgress.CoreTests.UseCases
       await using var ucContext = Fixture.CreateDbContext();
       var uc = new MilestoneUpdate(ucContext);
 
-      var result = await uc.HandleAsync(new MilestoneUpdate.Command
+      var result = await uc.Handle(new MilestoneUpdate.Command
       {
         Id = milestone!.Id,
         LearningOutcome = "2. Specifications and design",
         Artefact = "Design document",
-      });
+      }, CancellationToken.None);
 
       result.IsSuccess.Should().BeTrue();
       var dbGroup = Fixture.DataMother.GroupWithMilestones();
@@ -50,12 +51,12 @@ namespace StudentProgress.CoreTests.UseCases
       await using var ucContext = Fixture.CreateDbContext();
       var uc = new MilestoneUpdate(ucContext);
 
-      var result = await uc.HandleAsync(new MilestoneUpdate.Command
+      var result = await uc.Handle(new MilestoneUpdate.Command
       {
         Id = milestone!.Id,
         LearningOutcome = milestone!.LearningOutcome,
         Artefact = "Analyse document",
-      });
+      }, CancellationToken.None);
 
       result.IsFailure.Should().BeTrue();
       result.Error.Should().Contain("exists");

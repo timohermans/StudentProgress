@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
@@ -25,7 +26,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new StudentAddToGroup(Fixture.CreateDbContext());
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             Fixture.DataMother.GroupWithStudents()
@@ -44,7 +45,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new StudentAddToGroup(Fixture.CreateDbContext());
 
-            var result = await useCase.HandleAsync(request);
+            var result = await useCase.Handle(request, CancellationToken.None);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("already");

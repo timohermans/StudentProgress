@@ -1,9 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using StudentProgress.Core.Entities;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestoneDelete
+    public class MilestoneDelete : IUseCaseBase<MilestoneDelete.Command, Result>
     {
         private readonly ProgressContext _db;
 
@@ -12,9 +13,14 @@ namespace StudentProgress.Core.UseCases
             _db = db;
         }
 
-        public async Task<Result> HandleAsync(Command command)
+        public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var milestone = await _db.Milestones.FindAsync(command.Id);
+            var milestone = await _db.Milestones.FindAsync(command.Id, token);
+
+            if (milestone == null)
+            {
+                return Result.Failure("Milestone doesn't exist");
+            }
 
             _db.Milestones.Remove(milestone);
 
@@ -22,7 +28,7 @@ namespace StudentProgress.Core.UseCases
             return Result.Success();
         }
 
-        public record Command
+        public record Command : IUseCaseRequest<Result>
         {
             public int Id { get; set; }
         }

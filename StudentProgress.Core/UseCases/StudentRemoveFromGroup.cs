@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
+using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class StudentRemoveFromGroup
+    public class StudentRemoveFromGroup : IUseCaseBase<StudentRemoveFromGroup.Command, Result>
     {
         private readonly ProgressContext _ucContext;
 
@@ -13,15 +14,15 @@ namespace StudentProgress.Core.UseCases
             _ucContext = ucContext;
         }
 
-        public async Task<Result> HandleAsync(Command command)
+        public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var studentResult = Maybe<Student>.From(await _ucContext.Students.FindAsync(command.StudentId))
+            var studentResult = Maybe<Student>.From(await _ucContext.Students.FindAsync(command.StudentId, token))
                 .ToResult("Student doesn't exist");
             var groupResult = Maybe<StudentGroup>.From(
                     await _ucContext
                         .Groups
                         .Include(g => g.Students)
-                        .FirstOrDefaultAsync(g => g.Id == command.GroupId))
+                        .FirstOrDefaultAsync(g => g.Id == command.GroupId, token))
                 .ToResult("Student doesn't exist");
             var validationResult = Result.Combine(studentResult, groupResult);
 
@@ -39,7 +40,7 @@ namespace StudentProgress.Core.UseCases
             return Result.Success();
         }
 
-        public record Command
+        public record Command : IUseCaseRequest<Result>
         {
             public int GroupId { get; set; }
             public int StudentId { get; set; }

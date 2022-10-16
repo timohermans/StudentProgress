@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
@@ -31,7 +32,7 @@ namespace StudentProgress.CoreTests.UseCases
         Name = "Student gesprek"
       };
 
-      var result = await Execute(async uc => await uc.HandleAsync(request));
+      var result = await Execute(async uc => await uc.Handle(request, CancellationToken.None));
 
       result.IsSuccess.Should().BeTrue();
       var actualTag = Fixture.DataMother.Query<ProgressTag>();
@@ -43,8 +44,8 @@ namespace StudentProgress.CoreTests.UseCases
     {
       var tag = Fixture.DataMother.CreateProgressTag("Studentgesprek");
 
-      var result = await Execute(async uc => await uc.HandleAsync(
-        new ProgressTagCreateEdit.Command { Id = tag.Id, Name = "Docentgesprek" })
+      var result = await Execute(async uc => await uc.Handle(
+        new ProgressTagCreateEdit.Command { Id = tag.Id, Name = "Docentgesprek" }, CancellationToken.None)
         );
 
       result.IsSuccess.Should().BeTrue();

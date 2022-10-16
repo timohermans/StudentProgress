@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -25,8 +26,8 @@ namespace StudentProgress.CoreTests.UseCases
             await using var db = Fixture.CreateDbContext();
             var useCase = new MilestonesCopyFromGroup(db);
 
-            var result = await useCase.HandleAsync(new MilestonesCopyFromGroup.Command
-                {FromGroupId = groupToCopyFrom.Id, ToGroupId = groupToCopyTo.Id});
+            var result = await useCase.Handle(new MilestonesCopyFromGroup.Command
+                {FromGroupId = groupToCopyFrom.Id, ToGroupId = groupToCopyTo.Id}, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             var group = Fixture.DataMother.GroupWithMilestones(groupToCopyTo.Id);

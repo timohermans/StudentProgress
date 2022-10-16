@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StudentProgress.Web.Pages.StudentGroups
@@ -47,14 +48,14 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            await _useCase.HandleAsync(StudentGroup);
+            await _useCase.Handle(StudentGroup, token);
 
             return RedirectToPage("./Index");
         }
