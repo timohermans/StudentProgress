@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -23,7 +24,7 @@ namespace StudentProgress.CoreTests.UseCases
             var useCase = new StudentUpdate(dbContext);
 
             var result = await useCase.Handle(new StudentUpdate.Command
-                {Id = student!.Id, Name = "Timo", Note = "Everything is going just fine"});
+                {Id = student!.Id, Name = "Timo", Note = "Everything is going just fine"}, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             var actualStudent = Fixture.DataMother.Query<Student>();
@@ -39,7 +40,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new StudentUpdate(dbContext);
 
-            var result = await useCase.Handle(new StudentUpdate.Command {Id = studentWrongName.Id, Name = "Timo"});
+            var result = await useCase.Handle(new StudentUpdate.Command {Id = studentWrongName.Id, Name = "Timo"}, CancellationToken.None);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("already exists");

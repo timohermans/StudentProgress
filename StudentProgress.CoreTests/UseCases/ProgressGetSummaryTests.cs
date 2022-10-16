@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net.Cache;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -60,7 +61,7 @@ namespace StudentProgress.CoreTests.UseCases
 
             // act
             var result = await useCase.Handle(new ProgressGetSummaryForStudentInGroup.Query
-                {GroupId = group.Id, StudentId = timo.Id});
+                {GroupId = group.Id, StudentId = timo.Id}, CancellationToken.None);
 
             // assert
             result.IsSuccess.Should().BeTrue();

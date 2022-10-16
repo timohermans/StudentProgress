@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
@@ -35,7 +36,7 @@ namespace StudentProgress.CoreTests.UseCases
                 StartPeriod = new DateTime(2020, 9, 1)
             };
 
-            var result = await ActUseCase(useCase => useCase.Handle(request));
+            var result = await ActUseCase(useCase => useCase.Handle(request, CancellationToken.None));
 
             Assert.True(result.IsSuccess);
             await using var assertDb = new ProgressContext(Fixture.ContextOptions);
@@ -57,7 +58,7 @@ namespace StudentProgress.CoreTests.UseCases
                 StartDate = new DateTime(2020, 9, 1)
             };
 
-            var result = await ActUseCase(useCase => useCase.Handle(request));
+            var result = await ActUseCase(useCase => useCase.Handle(request, CancellationToken.None));
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Contain("already exists");

@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading;
+using FluentAssertions;
 using FluentAssertions.Extensions;
 using StudentProgress.Core.UseCases.Canvas.Courses;
 
@@ -20,7 +21,7 @@ public class GetAllTests : CanvasTests
     {
         var uc = new GetAllUseCase(Fixture.Client);
 
-        var result = (await uc.HandleAsync()).ToList();
+        var result = (await uc.Handle(new GetAllUseCase.EmptyCommand(), CancellationToken.None)).Courses.ToList();
 
         result.Should().NotBeNull();
         var sem1 = result.First(s => s.Id == "12461");

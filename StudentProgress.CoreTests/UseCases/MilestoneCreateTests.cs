@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -30,7 +31,7 @@ namespace StudentProgress.CoreTests.UseCases
                 LearningOutcome = "2. Specifications and design",
                 Artefact = "Design document",
                 GroupId = group.Id
-            });
+            }, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             Fixture.DataMother.GroupWithMilestones()
@@ -55,7 +56,7 @@ namespace StudentProgress.CoreTests.UseCases
                 LearningOutcome = "2. Specifications and design",
                 Artefact = "Design document",
                 GroupId = group.Id
-            });
+            }, CancellationToken.None);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("exists");

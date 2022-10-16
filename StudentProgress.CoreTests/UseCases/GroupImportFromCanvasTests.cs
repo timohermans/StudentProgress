@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http;
+using System.Threading;
 using FluentAssertions;
 using StudentProgress.Core.UseCases;
 
@@ -47,7 +48,7 @@ public class GroupImportFromCanvasTests : DatabaseTests
         await using var ucContext = Fixture.CreateDbContext();
         var uc = new GroupImportFromCanvas(ucContext, config, client);
 
-        await uc.Handle(request);
+        await uc.Handle(request, CancellationToken.None);
 
         await using var assertDb = Fixture.CreateDbContext();
         var resultGroup = await assertDb.Groups.Include(g => g.Students).FirstAsync();

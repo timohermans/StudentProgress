@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using FluentAssertions;
 using StudentProgress.Core.UseCases;
-using Xunit;
 
 namespace StudentProgress.CoreTests.UseCases
 {
@@ -24,7 +21,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucContext = Fixture.CreateDbContext();
             var useCase = new SearchStudents(ucContext);
 
-            var response = await useCase.Handle(new SearchStudents.Query {SearchTerm = "timo"});
+            var response = await useCase.Handle(new SearchStudents.Query {SearchTerm = "timo"}, CancellationToken.None);
 
             response.Should().HaveCount(1);
             response.First().Name.Should().Be("Timo");

@@ -55,7 +55,7 @@ public class GroupImportFromCanvas : IUseCaseBase<GroupImportFromCanvas.Request,
             StartDate = request.TermStartsAt,
             StartPeriod = request.TermStartsAt
         }, token);
-        var groupResult = response.GroupIdResult;
+        var groupResult = response;
 
         if (groupResult.IsFailure && !groupResult.Error.Contains("already exists")) return groupResult;
         var group = await _db

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -23,7 +24,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var ucDbContext = Fixture.CreateDbContext();
             var useCase = new StudentGroupGetDetails(ucDbContext);
 
-            var result = await useCase.Handle(new StudentGroupGetDetails.Request(group.Id));
+            var result = await useCase.Handle(new StudentGroupGetDetails.Request(group.Id), CancellationToken.None);
 
             result.Should().NotBeNull();
             result!.Name.Should().Be(group.Name);
@@ -69,7 +70,7 @@ namespace StudentProgress.CoreTests.UseCases
             var useCase = new StudentGroupGetDetails(ucDbContext);
 
             // act
-            var response = await useCase.Handle(new StudentGroupGetDetails.Request(group.Id));
+            var response = await useCase.Handle(new StudentGroupGetDetails.Request(group.Id), CancellationToken.None);
 
             // assert
             response.Should().NotBeNull();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using StudentProgress.Core.Entities;
@@ -56,7 +57,7 @@ namespace StudentProgress.CoreTests.UseCases
             using var ucContext = Fixture.CreateDbContext();
             var useCase = new ProgressCreateOrUpdate(ucContext);
 
-            var result = await useCase.Handle(request);
+            var result = await useCase.Handle(request, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
             var progress = Fixture.DataMother.QueryProgressUpdateWithMilestonesProgress();
@@ -86,7 +87,7 @@ namespace StudentProgress.CoreTests.UseCases
             };
             var useCase = new ProgressCreateOrUpdate(Fixture.CreateDbContext());
 
-            var result = await useCase.Handle(request);
+            var result = await useCase.Handle(request, CancellationToken.None);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Contain("exist");
@@ -128,7 +129,7 @@ namespace StudentProgress.CoreTests.UseCases
             using var getContext = Fixture.CreateDbContext();
             var command = (await new ProgressGetForCreateOrUpdate(getContext).Handle(
                 new ProgressGetForCreateOrUpdate.Query
-                    { GroupId = group.Id, StudentId = student.Id, Id = progress.Id })).Value.Command;
+                    { GroupId = group.Id, StudentId = student.Id, Id = progress.Id }, CancellationToken.None)).Value.Command;
 
             command.Date = new DateTime(2021, 2, 11);
             command.Feedback = "back";
@@ -144,7 +145,7 @@ namespace StudentProgress.CoreTests.UseCases
             var useCase = new ProgressCreateOrUpdate(ucContext);
 
             // act
-            var result = await useCase.Handle(command);
+            var result = await useCase.Handle(command, CancellationToken.None);
 
             // assert
             result.IsSuccess.Should().BeTrue();
