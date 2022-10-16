@@ -21,10 +21,11 @@ namespace StudentProgress.Web.Pages.Progress
         public Student Student => GetResponse.Student;
         public StudentGroup Group => GetResponse.Group;
         public List<Milestone> Milestones => GetResponse.Milestones;
+
         public Dictionary<string, string> MilestoneNavIds => Milestones
-                .Select(m => m.LearningOutcome)
-                .Distinct()
-                .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
+            .Select(m => m.LearningOutcome)
+            .Distinct()
+            .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
 
         [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; } = null!;
 
@@ -50,7 +51,7 @@ namespace StudentProgress.Web.Pages.Progress
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string? origin)
         {
             if (!ModelState.IsValid)
             {
@@ -64,10 +65,16 @@ namespace StudentProgress.Web.Pages.Progress
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("UseCase", ex.Message);
-                return await OnGetAsync(new ProgressGetForCreateOrUpdate.Query { GroupId = Progress.GroupId, StudentId = Progress.StudentId, Id = Progress.Id });
+                return await OnGetAsync(new ProgressGetForCreateOrUpdate.Query
+                    { GroupId = Progress.GroupId, StudentId = Progress.StudentId, Id = Progress.Id });
             }
 
-            return RedirectToPage("./Summary", new { Progress.StudentId, Progress.GroupId });
+            if (string.IsNullOrEmpty(origin))
+            {
+                return RedirectToPage("./Summary", new { Progress.StudentId, Progress.GroupId });
+            }
+
+            return Redirect(origin);
         }
     }
 }

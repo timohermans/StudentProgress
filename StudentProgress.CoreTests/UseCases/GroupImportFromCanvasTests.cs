@@ -56,7 +56,7 @@ public class GroupImportFromCanvasTests : DatabaseTests
         var resultStudents = resultGroup.Students;
         resultStudents.Should().HaveCount(2);
         var timo = resultStudents.First(s => s.Name == "Hermans, Timo T.M.");
-        timo.AvatarPath.Should().Be($"images\\avatars\\1234-canvas.png");
+        timo.AvatarPath.Should().Be(Path.Combine("images", "avatars", "1234-canvas.png"));
         var luuk = resultStudents.First(s => s.Name == "Luuk");
         luuk.AvatarPath.Should().BeNull();
 

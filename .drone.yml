@@ -2,20 +2,12 @@ kind: pipeline
 type: docker
 name: build
 
-services:
-- name: postgres
-  image: postgres
-  environment:
-    POSTGRES_USER: timodb
-    POSTGRES_PASSWORD: secret
-    POSTGRES_DB: student-progress-test
-
 concurrency:
   limit: 1
 
 steps:
 - name: test and build
-  image: mcr.microsoft.com/dotnet/sdk:5.0-alpine
+  image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
   commands:
     - dotnet restore
     - dotnet build
@@ -23,6 +15,11 @@ steps:
   environment:
     ConnectionStrings__Test:
       from_secret: connectionstringtest
+    canvas__url:
+      from_secret: canvasurl
+    canvas__key:
+      from_secret: canvaskey
+  
       
 ---
 

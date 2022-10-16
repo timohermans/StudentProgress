@@ -16,11 +16,11 @@ namespace StudentProgress.Web.Pages.Milestones
 
         public Delete(ProgressContext context) => _context = context;
 
-        public async Task<IActionResult> OnGetAsync(int milestoneId)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             var milestone = await _context.Milestones
                 .Include(m => m.StudentGroup)
-                .FirstOrDefaultAsync(m => m.Id == milestoneId);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (milestone == null)
             {

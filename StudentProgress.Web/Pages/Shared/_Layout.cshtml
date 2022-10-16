@@ -31,7 +31,7 @@
         <div x-data="initSearchController()" class="d-flex flex-grow-1 search" autocomplete="off">
           <input
             id="search" type="text" class="form-control" placeholder="search student.."
-            x-on:keyup.debounce="search"
+            x-on:input.debounce="search"
             autocomplete="off">
           <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
             <template x-for="student in searchResults" :key="student">
@@ -43,7 +43,10 @@
                   <div class="ms-2">
                     <p x-text="student.name"></p>
                     <template x-for="group in student.groups" :key="group">
-                      <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                      <p class="d-flex align-items-center">
+                        <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                        <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`"><svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject></a>
+                      </p>
                     </template>
                   </div>
                 </div>

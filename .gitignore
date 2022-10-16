@@ -341,6 +341,7 @@ healthchecksdb
 
 .sonarqube
 
+**/appsettings.Production.json
 **/appsettings.Development.json
 **/appsettings.real.json
 

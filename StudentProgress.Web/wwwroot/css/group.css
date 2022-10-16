@@ -27,3 +27,7 @@
 .student-table tr {
     vertical-align: middle;
 }
+
+.action-links {
+    width: 10%;
+}
