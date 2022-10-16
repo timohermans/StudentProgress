@@ -1,3 +1,7 @@
 ﻿td:first-child {
     width: 20%;
 }
+
+ul {
+    list-style-type: none;
+}

@@ -5,7 +5,8 @@ using System.Threading;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class ProgressGetForCreateOrUpdate : IUseCaseBase<ProgressGetForCreateOrUpdate.Query, Result<ProgressGetForCreateOrUpdate.Response>>
+    public class ProgressGetForCreateOrUpdate : IUseCaseBase<ProgressGetForCreateOrUpdate.Query,
+        Result<ProgressGetForCreateOrUpdate.Response>>
     {
         public record Query : IUseCaseRequest<Result<Response>>
         {
@@ -14,22 +15,12 @@ namespace StudentProgress.Core.UseCases
             public int StudentId { get; set; }
         }
 
-        public record Response
-        {
-            public Student Student { get; set; }
-            public StudentGroup Group { get; set; }
-            public List<Milestone> Milestones { get; set; }
-            public ProgressCreateOrUpdate.Command Command { get; set; }
-
-            public Response(Student student, StudentGroup group, List<Milestone> milestones,
-                ProgressCreateOrUpdate.Command command)
-            {
-                Student = student;
-                Group = group;
-                Milestones = milestones;
-                Command = command;
-            }
-        }
+        public record Response(
+            Student Student,
+            StudentGroup Group,
+            List<Milestone> Milestones,
+            List<MilestoneProgress> MilestoneProgresses,
+            ProgressCreateOrUpdate.Command Command);
 
         private readonly ProgressContext _context;
 
@@ -47,10 +38,17 @@ namespace StudentProgress.Core.UseCases
                 .OrderBy(m => m.LearningOutcome)
                 .ThenBy(m => m.Artefact)
                 .ToList();
-            var progressUpdate = await _context.ProgressUpdates
+            var progressUpdates = await _context.ProgressUpdates
                 .Include(p => p.MilestonesProgress)
                 .ThenInclude(m => m.Milestone)
-                .FirstOrDefaultAsync(p => p.Id == (query.Id ?? 0), token);
+                .Where(pu => pu.StudentId == query.StudentId && pu.GroupId == query.GroupId)
+                .ToListAsync(token);
+            var progressUpdate = progressUpdates
+                .FirstOrDefault(p => p.Id == (query.Id ?? 0));
+            var milestoneProgresses =
+                progressUpdates
+                    .SelectMany(pu => pu.MilestonesProgress)
+                    .ToList();
 
             if (student == null || group == null || (query.Id != null && progressUpdate == null))
             {
@@ -82,7 +80,7 @@ namespace StudentProgress.Core.UseCases
                     .ToList()
             };
 
-            return Result.Success(new Response(student!, group!, milestones, command));
+            return Result.Success(new Response(student!, group!, milestones, milestoneProgresses, command));
         }
     }
 }

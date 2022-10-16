@@ -13,9 +13,9 @@ namespace StudentProgress.Core.Entities
     public DateTime Date { get; private set; }
     public bool IsReviewed { get; private set; }
     private readonly List<MilestoneProgress> _milestonesProgress = new();
-    public IReadOnlyList<MilestoneProgress> MilestonesProgress => _milestonesProgress;
+    public IReadOnlyList<MilestoneProgress> MilestonesProgress => _milestonesProgress.AsReadOnly();
     private readonly List<ProgressTag> _tags = new();
-    public IReadOnlyList<ProgressTag> Tags => _tags;
+    public IReadOnlyList<ProgressTag> Tags => _tags.AsReadOnly();
 
 #nullable disable
     private ProgressUpdate() { }

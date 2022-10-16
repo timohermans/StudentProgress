@@ -23,7 +23,15 @@ namespace StudentProgress.Web.Pages.Progress
         public ProgressGetSummaryForStudentInGroup.Response Summary { get; set; } = null!;
         public Student Student => GetResponse.Student;
         public StudentGroup Group => GetResponse.Group;
-        public List<Milestone> Milestones => GetResponse.Milestones;
+        private List<Milestone> Milestones => GetResponse.Milestones;
+
+        public Dictionary<int, List<MilestoneProgress>> MilestoneProgressesPerMilestone => GetResponse
+            .MilestoneProgresses
+            .GroupBy(mp => mp.Milestone.Id)
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
+        public Dictionary<string, List<Milestone>> MilestonesPerLearningOutcome => Milestones
+            .GroupBy(milestone => milestone.LearningOutcome.Value)
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
 
         public Dictionary<string, string> MilestoneNavIds => Milestones
             .Select(m => m.LearningOutcome)

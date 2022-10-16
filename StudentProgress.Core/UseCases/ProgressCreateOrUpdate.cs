@@ -23,6 +23,8 @@ namespace StudentProgress.Core.UseCases
       public int MilestoneId { get; set; }
       public Rating? Rating { get; set; }
       public string? Comment { get; set; }
+      public DateTime DateCreated { get; set; }
+      public DateTime DateUpdated { get; set; }
     }
 
     public record Command : IUseCaseRequest<Result>
