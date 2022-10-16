@@ -81,9 +81,9 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result<Response>> Handle(Query query, CancellationToken token)
         {
-            var group = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(query.GroupId, token))
+            var group = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(query.GroupId))
                 .ToResult("Group does not exist");
-            var student = Maybe<Student>.From(await _context.Students.FindAsync(query.StudentId, token))
+            var student = Maybe<Student>.From(await _context.Students.FindAsync(query.StudentId))
                 .ToResult("Student does not exist");
             var doGroupStudentExist = Result.Combine(group, student);
 

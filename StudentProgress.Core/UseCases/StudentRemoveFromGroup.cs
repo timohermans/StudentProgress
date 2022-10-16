@@ -16,7 +16,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var studentResult = Maybe<Student>.From(await _ucContext.Students.FindAsync(command.StudentId, token))
+            var studentResult = Maybe<Student>.From(await _ucContext.Students.FindAsync(command.StudentId))
                 .ToResult("Student doesn't exist");
             var groupResult = Maybe<StudentGroup>.From(
                     await _ucContext

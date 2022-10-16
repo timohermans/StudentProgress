@@ -16,7 +16,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var student = Maybe<Student>.From(await _context.Students.FindAsync(command.Id, token))
+            var student = Maybe<Student>.From(await _context.Students.FindAsync(command.Id))
                 .ToResult("Student does not exist");
             var existingStudent = await _context.Students.FirstOrDefaultAsync(s => s.Name == command.Name);
             var doesNewStudentExist = Result.SuccessIf(existingStudent == null, "Student already exists");

@@ -24,7 +24,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> Handle(Request request, CancellationToken token)
         {
-            var studentGroup = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(request.Id, token));
+            var studentGroup = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(request.Id));
             var nameResult = Name.Create(request.Name);
             var periodResult = Period.Create(request.StartDate);
             var validationResult = Result.Combine(nameResult, periodResult);

@@ -38,7 +38,7 @@ namespace StudentProgress.Core.UseCases
 
     private async Task UpdateTagWith(int id, Name name, CancellationToken token)
     {
-      var tag = await _context.ProgressTags.FindAsync(id, token);
+      var tag = await _context.ProgressTags.FindAsync(id);
       tag.Update(name);
     }
 

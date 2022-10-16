@@ -15,7 +15,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var milestone = await _db.Milestones.FindAsync(command.Id, token);
+            var milestone = await _db.Milestones.FindAsync(command.Id);
 
             if (milestone == null)
             {
@@ -24,7 +24,7 @@ namespace StudentProgress.Core.UseCases
 
             _db.Milestones.Remove(milestone);
 
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(token);
             return Result.Success();
         }
 

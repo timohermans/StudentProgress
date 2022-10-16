@@ -23,7 +23,7 @@ namespace StudentProgress.Core.UseCases
 
     public async Task<Result> Handle(Command command, CancellationToken token)
     {
-      var milestoneResult = Maybe<Milestone>.From(await _context.Milestones.FindAsync(command.Id, token)).ToResult("Milestone doesn't exist");
+      var milestoneResult = Maybe<Milestone>.From(await _context.Milestones.FindAsync(command.Id)).ToResult("Milestone doesn't exist");
       var learningOutcomeResult = Name.Create(command.LearningOutcome);
       var artefactResult = Name.Create(command.Artefact);
       var validationResult = Result.Combine(milestoneResult, artefactResult, learningOutcomeResult);
