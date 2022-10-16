@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.Entities;
@@ -20,9 +21,9 @@ public class Index : PageModel
     }
 
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(CancellationToken token)
     {
-        var response = await _getUseCase.HandleAsync();
+        var response = await _getUseCase.Handle(new SettingsGet.Request(), token);
 
         Settings = new SettingsSet.Request
         {
@@ -31,14 +32,14 @@ public class Index : PageModel
         };
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync(CancellationToken token)
     {
         if (!ModelState.IsValid)
         {
             return Page();
         }
 
-        await _setUseCase.Handle(Settings);
+        await _setUseCase.Handle(Settings, token);
 
         return RedirectToPage("/Settings/Index");
     }

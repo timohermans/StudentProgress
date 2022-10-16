@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.Entities;
@@ -27,14 +28,14 @@ namespace StudentProgress.Web.Pages.StudentGroups
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            await _useCase.Handle(StudentGroup);
+            await _useCase.Handle(StudentGroup, token);
 
             return RedirectToPage("./Index");
         }

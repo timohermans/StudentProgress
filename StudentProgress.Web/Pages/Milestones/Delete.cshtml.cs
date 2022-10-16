@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -32,9 +33,9 @@ namespace StudentProgress.Web.Pages.Milestones
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int groupId)
+        public async Task<IActionResult> OnPostAsync(int groupId, CancellationToken token)
         {
-            var result = await new MilestoneDelete(_context).Handle(Command);
+            var result = await new MilestoneDelete(_context).Handle(Command, token);
 
             if (result.IsFailure)
             {

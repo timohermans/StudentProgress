@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.UseCases;
@@ -23,14 +24,14 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
         public bool IsSortedOnLastFeedback { get; set; }
         public StudentGroupGetDetails.Response StudentGroup { get; set; } = null!;
 
-        public async Task<IActionResult> OnGetAsync(int? id, string? sort)
+        public async Task<IActionResult> OnGetAsync(int? id, string? sort, CancellationToken token)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var studentGroup = await _useCase.Handle(new StudentGroupGetDetails.Request((int)id));
+            var studentGroup = await _useCase.Handle(new StudentGroupGetDetails.Request((int)id), token);
 
             if (studentGroup == null)
             {
@@ -53,16 +54,16 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             return Page();
         }
 
-        public async Task<IActionResult> OnPostUpdateMultipleMilestonesAsync(MilestonesUpdateLearningOutcome.Command command)
+        public async Task<IActionResult> OnPostUpdateMultipleMilestonesAsync(MilestonesUpdateLearningOutcome.Command command, CancellationToken token)
         {
-            var result = await _milestonesUpdateUseCase.Handle(command);
+            var result = await _milestonesUpdateUseCase.Handle(command, token);
 
             if (result.IsFailure)
             {
                 ModelState.AddModelError("MilestoneSummary", result.Error);
             }
             
-            return await OnGetAsync(command.GroupId, null);
+            return await OnGetAsync(command.GroupId, null, token);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,9 +32,9 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(CancellationToken token)
         {
-            await new StudentRemoveFromGroup(_context).Handle(Command);
+            await new StudentRemoveFromGroup(_context).Handle(Command, token);
 
             return RedirectToPage("./Index", new {Id = Command.GroupId});
         }

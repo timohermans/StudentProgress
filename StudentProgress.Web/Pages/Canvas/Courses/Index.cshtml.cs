@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.CanvasApi;
@@ -15,8 +16,8 @@ public class Index : PageModel
 
     public Index(ICanvasClient client) => _useCase = new GetAllUseCase(client);
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(CancellationToken token)
     {
-        Courses = await _useCase.HandleAsync();
+        Courses = (await _useCase.Handle(new GetAllUseCase.EmptyCommand(), token)).Courses;
     }
 }

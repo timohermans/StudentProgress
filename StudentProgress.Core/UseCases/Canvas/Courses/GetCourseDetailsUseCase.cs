@@ -26,7 +26,7 @@ public class GetCourseDetailsStudent
 
 public class GetCourseDetailsUseCase : IUseCaseBase<GetCourseDetailsUseCase.Command, GetCourseDetailsUseCase.Response>
 {
-    public record Response(IEnumerable<GetCourseDetailsResponse> courses);
+    public record Response(IEnumerable<GetCourseDetailsResponse> Courses);
     public record Command(string Id) : IRequest<Response>;
     private readonly ICanvasClient _client;
 
