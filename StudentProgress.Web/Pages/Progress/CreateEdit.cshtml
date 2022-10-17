@@ -2,6 +2,7 @@
 @model StudentProgress.Web.Pages.Progress.CreateEditModel
 @using StudentProgress.Core.Entities
 @using StudentProgress.Core.Extensions
+@using System.Linq
 @{
   ViewData["Title"] = "Add Progress";
 }
@@ -89,8 +90,8 @@
               <div class="row @(index == 0 ? "mb-5" : "my-5")">
                 <div class="col-12 col-md-6 col-xl-12">
                   <h5>@milestone.Artefact</h5>
-                  <input type="hidden" name="Progress.Milestones[@index].MilestoneId" value="@milestone.Id"/>
-                  <input type="hidden" name="Progress.Milestones[@index].Id" value="@Model.Progress.Milestones[index].Id"/>
+                  <input type="hidden" name="Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.MilestoneId" value="@milestone.Id"/>
+                  <input type="hidden" name="Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Id" value="@Model.Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Id"/>
                 </div>
                 @if (Model.MilestoneProgressesPerMilestone.ContainsKey(milestone.Id))
                 {
@@ -110,7 +111,7 @@
                     @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
                     {
                       <input type="radio" class="btn-check"
-                             asp-for="Progress.Milestones[index].Rating"
+                             asp-for="Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Rating"
                              id="milestone-@milestone.Id-@i"
                              value="@((Rating)(i + 1))"
                              x-on:change="setFeeling"/>
@@ -122,7 +123,7 @@
                   </button>
                 </div>
                 <div class="col-12 col-xl-9">
-                  <textarea class="form-control" placeholder="Comments" rows="1" asp-for="Progress.Milestones[index].Comment"></textarea>
+                  <textarea class="form-control" placeholder="Comments" rows="1" asp-for="Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Comment"></textarea>
                 </div>
               </div>
             }
