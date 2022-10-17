@@ -4,11 +4,11 @@ namespace StudentProgress.Web.Pages.UIHelpers
 {
     public static class MilestoneUiHelper
     {
-        public static string RatingColor(Rating? rating, int? currentIndex = null)
+        public static string? RatingColor(Rating? rating, int? currentIndex = null)
         {
             if (!rating.HasValue || currentIndex.HasValue && currentIndex != (int) rating)
             {
-                return "light";
+                return null;
             }
 
             return rating switch
@@ -18,7 +18,7 @@ namespace StudentProgress.Web.Pages.UIHelpers
                 Rating.Beginning => "warning",
                 Rating.Proficient => "success",
                 Rating.Advanced => "primary",
-                _ => "light"
+                _ => null
             };
         }
     }

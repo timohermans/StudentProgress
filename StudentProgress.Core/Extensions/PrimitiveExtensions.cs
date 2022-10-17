@@ -1,4 +1,6 @@
-﻿namespace StudentProgress.Core.Extensions
+﻿using System.Text.RegularExpressions;
+
+namespace StudentProgress.Core.Extensions
 {
     public static class PrimitiveExtensions
     {
@@ -11,5 +13,7 @@
         {
             return date > min && date < max;
         }
+
+        public static string StripFromAllButLetters(this string value) => Regex.Replace(value, @"[^a-zA-Z]", string.Empty);
     }
 }

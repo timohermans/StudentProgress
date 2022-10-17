@@ -118,7 +118,7 @@
               <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
                 @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
                 {
-                  <button type="button" class="btn btn-@MilestoneUiHelper.RatingColor(milestone.Rating, i)" disabled>@i</button>
+                  <button type="button" class="btn btn-@(MilestoneUiHelper.RatingColor(milestone.Rating, i) ?? "light")" disabled>@i</button>
                 }
               </div>
             </td>
