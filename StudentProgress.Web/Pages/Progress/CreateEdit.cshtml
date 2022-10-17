@@ -43,26 +43,33 @@
 <form class="row" method="post" x-data="hotkeyController()" x-init="listenToKeys()" x-on:keyup.ctrl.enter="submit">
   <input type="hidden" asp-for="Progress.Id"/>
 
-  <aside id="form-nav" class="col-sm-12 col-md-2 order-md-1">
+  <aside id="form-nav" class="col-sm-12 col-md-4">
     <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
       <nav class="nav nav-pills flex-column">
-        <a class="nav-link" href="#date">Date</a>
+        <a class="nav-link text-dark" href="#date">Date</a>
+        <hr/>
         @if (Model.MilestonesPerLearningOutcome.Any())
         {
-          <a class="nav-link" href="#milestones">Milestones</a>
+          <a class="nav-link text-dark mb-2" href="#milestones">Milestones</a>
         }
-        @foreach (var navId in Model.MilestoneNavIds)
+        @foreach (var learningOutcomeGrouping in Model.MilestonesPerLearningOutcome)
         {
-          <a class="nav-link" href="#@navId.Value">@navId.Key</a>
+          <a class="nav-link text-dark" href="#@learningOutcomeGrouping.Key.StripFromAllButLetters()">@learningOutcomeGrouping.Key</a>
+
+          @foreach (var milestone in learningOutcomeGrouping.Value)
+          {
+            <a class="nav-link ps-5 text-@(MilestoneUiHelper.RatingColor(Model.MilestoneProgressesPerMilestone.GetValueOrDefault(@milestone.Id)?.MaxBy(mp => mp.Rating)?.Rating) ?? "dark")" href="#@milestone.Artefact.Value.StripFromAllButLetters()">@milestone.Artefact.Value</a>
+          }
         }
-        <a class="nav-link" href="#feedback">Feedback</a>
-        <a class="nav-link" href="#feeling">Feeling</a>
-        <a class="nav-link" href="#save">Done</a>
+        <hr/>
+        <a class="nav-link text-dark" href="#feedback">Feedback</a>
+        <a class="nav-link text-dark" href="#feeling">Feeling</a>
+        <a class="nav-link text-dark" href="#save">Done</a>
       </nav>
     </nav>
   </aside>
 
-  <div class="col-md-10">
+  <div class="col-md-8">
     <section id="date">
       <input type="hidden" asp-for="Progress.StudentId" value="@Model.Student.Id"/>
       <input type="hidden" asp-for="Progress.GroupId" value="@Model.Group.Id"/>
@@ -82,14 +89,14 @@
 
         foreach (var learningOutcomeGroup in Model.MilestonesPerLearningOutcome)
         {
-          <h4 id="@Model.MilestoneNavIds.GetValueOrDefault(learningOutcomeGroup.Key)" class="text-muted">@learningOutcomeGroup.Key</h4>
+          <h4 id="@learningOutcomeGroup.Key.StripFromAllButLetters()" class="text-muted">@learningOutcomeGroup.Key</h4>
 
           <div class="container">
             @foreach (var (milestone, index) in learningOutcomeGroup.Value.WithIndex())
             {
               <div class="row @(index == 0 ? "mb-5" : "my-5")">
                 <div class="col-12 col-md-6 col-xl-12">
-                  <h5>@milestone.Artefact</h5>
+                  <h5 id="@milestone.Artefact.Value.StripFromAllButLetters()">@milestone.Artefact</h5>
                   <input type="hidden" name="Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.MilestoneId" value="@milestone.Id"/>
                   <input type="hidden" name="Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Id" value="@Model.Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Id"/>
                 </div>
@@ -99,7 +106,7 @@
                     <ul class="my-1 px-2" style="list-style-type: none;">
                       @foreach (var milestoneProgress in Model.MilestoneProgressesPerMilestone[milestone.Id])
                       {
-                        <li class="p-1 border-start border-5 border-@MilestoneUiHelper.RatingColor(milestoneProgress.Rating)">
+                        <li class="p-1 border-start border-5 border-@(MilestoneUiHelper.RatingColor(milestoneProgress.Rating) ?? "light")">
                           [@milestoneProgress.CreatedDate.ToShortDateString()] <span class="feedback-text">@milestoneProgress.Comment</span>
                         </li>
                       }
@@ -115,7 +122,7 @@
                              id="milestone-@milestone.Id-@i"
                              value="@((Rating)(i + 1))"
                              x-on:change="setFeeling"/>
-                      <label class="btn btn-outline-@MilestoneUiHelper.RatingColor((Rating)(i + 1))" for="milestone-@milestone.Id-@i">@(i + 1)</label>
+                      <label class="btn btn-outline-@(MilestoneUiHelper.RatingColor((Rating)(i + 1)) ?? "light")" for="milestone-@milestone.Id-@i">@(i + 1)</label>
                     }
                   </div>
                   <button type="button" class="btn btn-link btn-xs text-dark" onclick="removeRatingFrom(this)">
@@ -160,3 +167,5 @@
     </p>
   </div>
 </form>
+
+<a class="d-md-none position-fixed bottom-0 end-0 me-3 mb-3" href="#page-nav">To top</a>

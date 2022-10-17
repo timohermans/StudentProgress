@@ -1,15 +1,13 @@
-using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using StudentProgress.Core.Extensions;
 
 namespace StudentProgress.Web.Pages.Progress
 {
@@ -31,10 +29,10 @@ namespace StudentProgress.Web.Pages.Progress
             .GroupBy(milestone => milestone.LearningOutcome.Value)
             .ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
 
-        public Dictionary<string, string> MilestoneNavIds => Milestones
+        public Dictionary<string, string> LearningOutcomeNavIds => Milestones
             .Select(m => m.LearningOutcome)
             .Distinct()
-            .ToDictionary(k => k.Value, l => Regex.Replace(l.Value, @"[^a-zA-Z]", string.Empty));
+            .ToDictionary(k => k.Value, l => l.Value.StripFromAllButLetters());
 
         [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; } = null!;
 
