@@ -62,7 +62,9 @@
 
           @foreach (var milestone in learningOutcomeGrouping.Value)
           {
-            <a class="nav-link ps-5 text-@(MilestoneUiHelper.RatingColor(Model.MilestoneProgressesPerMilestone.GetValueOrDefault(@milestone.Id)?.MaxBy(mp => mp.Rating)?.Rating) ?? "dark")" href="#@milestone.Artefact.Value.StripFromAllButLetters()">@milestone.Artefact.Value</a>
+            <a class="nav-link ps-5 @(Model.Progress.Milestones[GetMilestoneProgressIndexOf(milestone)].Id != null ? "fw-bold" : "") text-@(MilestoneUiHelper.RatingColor(Model.MilestoneProgressesPerMilestone.GetValueOrDefault(@milestone.Id)?.MaxBy(mp => mp.Rating)?.Rating) ?? "dark")" href="#@milestone.Artefact.Value.StripFromAllButLetters()">
+              @milestone.Artefact.Value
+            </a>
           }
         }
         <hr/>
