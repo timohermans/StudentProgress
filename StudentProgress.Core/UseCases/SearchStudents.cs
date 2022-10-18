@@ -43,7 +43,7 @@ namespace StudentProgress.Core.UseCases
         {
                 return await _context.Students
                     .Include(s => s.StudentGroups)
-                    .Where(s => s.Name.ToLower().Contains(query.SearchTerm))
+                    .Where(s => s.Name.ToLower().Contains(query.SearchTerm.ToLower()))
                     .OrderByDescending(s => s.ProgressUpdates.FirstOrDefault()!.Date)
                     .Take(10)
                     .Select(s => new Response
