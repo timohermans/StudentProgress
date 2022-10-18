@@ -15,47 +15,47 @@
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">
     <div class="container">
       <a class="navbar-brand home-link text-white" asp-area="" asp-page="/Index">Progress</a>
-      <div class=" d-sm-inline-flex justify-content-between">
-        <ul class="navbar-nav navbar-collapse collapse flex-grow-1">
-          <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-page="/Settings/Index">Settings</a>
-          </li>
-        </ul>
-        <div id="searchComponent" x-data="initSearchController()" class="d-flex flex-grow-1 search" autocomplete="off">
-          <input
-            id="search" type="text" class="form-control" placeholder="search student.."
-            x-on:input.debounce="search"
-            autocomplete="off">
-          <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
-            <template x-for="student in searchResults" :key="student">
-              <div class="list-group-item list-group-item-action">
-                <div class="d-flex">
-                  <div class="align-self-center" x-show="student.avatarPath">
-                    <img x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
-                  </div>
-                  <div class="ms-2">
-                    <p x-text="student.name"></p>
-                    <template x-for="group in student.groups" :key="group">
-                      <p class="d-flex align-items-center">
-                        <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
-                        <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`"><svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject></a>
-                      </p>
-                    </template>
-                  </div>
+      <div id="searchComponent" x-data="initSearchController()" class="d-flex order-sm-1 flex-grow-1 search" autocomplete="off">
+        <input
+          id="search" type="text" class="form-control" placeholder="search student.."
+          x-on:input.debounce="search"
+          autocomplete="off">
+        <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
+          <template x-for="student in searchResults" :key="student">
+            <div class="list-group-item list-group-item-action">
+              <div class="d-flex">
+                <div class="align-self-center" x-show="student.avatarPath">
+                  <img x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
+                </div>
+                <div class="ms-2">
+                  <p x-text="student.name"></p>
+                  <template x-for="group in student.groups" :key="group">
+                    <p class="d-flex align-items-center">
+                      <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                      <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
+                        <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
+                      </a>
+                    </p>
+                  </template>
                 </div>
               </div>
-            </template>
-          </div>
+            </div>
+          </template>
         </div>
-        @if (User.Identity?.IsAuthenticated ?? false)
-        {
-          <span class="navbar-text navbar-collapse collapse">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
-        }
       </div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+      <ul class="navbar-nav navbar-collapse collapse order-sm-0 flex-grow-1">
+        <li class="nav-item">
+          <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" asp-area="" asp-page="/Settings/Index">Settings</a>
+        </li>
+      </ul>
+      @if (User.Identity?.IsAuthenticated ?? false)
+      {
+        <span class="navbar-text navbar-collapse collapse flex-grow-0 order-sm-2">Welcome, @User.FindFirst("name")!.Value <a asp-page="/Logout">Log out</a></span>
+      }
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
