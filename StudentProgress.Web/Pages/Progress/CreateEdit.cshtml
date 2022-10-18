@@ -2,16 +2,21 @@
 @model StudentProgress.Web.Pages.Progress.CreateEditModel
 @using StudentProgress.Core.Entities
 @using StudentProgress.Core.Extensions
+@using System.Linq
 @{
   ViewData["Title"] = "Add Progress";
+
+  int GetMilestoneProgressIndexOf(Milestone milestone)
+  {
+    return Model.Progress.Milestones.FindIndex(m => m.MilestoneId == milestone.Id);
+  }
 }
 
 @section Styles {
   <link rel="stylesheet" href="~/css/progress-create-edit.css">
 }
 
-@section Scripts
-{
+@section Scripts {
   <script src="~/js/progressCreateEdit.js"></script>
   <script>
     function removeRatingFrom(event) {
@@ -57,7 +62,9 @@
 
           @foreach (var milestone in learningOutcomeGrouping.Value)
           {
-            <a class="nav-link ps-5 text-@(MilestoneUiHelper.RatingColor(Model.MilestoneProgressesPerMilestone.GetValueOrDefault(@milestone.Id)?.MaxBy(mp => mp.Rating)?.Rating) ?? "dark")" href="#@milestone.Artefact.Value.StripFromAllButLetters()">@milestone.Artefact.Value</a>
+            <a class="nav-link ps-5 @(Model.Progress.Milestones[GetMilestoneProgressIndexOf(milestone)].Id != null ? "fw-bold" : "") text-@(MilestoneUiHelper.RatingColor(Model.MilestoneProgressesPerMilestone.GetValueOrDefault(@milestone.Id)?.MaxBy(mp => mp.Rating)?.Rating) ?? "dark")" href="#@milestone.Artefact.Value.StripFromAllButLetters()">
+              @milestone.Artefact.Value
+            </a>
           }
         }
         <hr/>
@@ -86,7 +93,7 @@
       {
         <h3>Milestones</h3>
 
-        foreach (var learningOutcomeGroup in Model.MilestonesPerLearningOutcome)
+        @foreach (var learningOutcomeGroup in Model.MilestonesPerLearningOutcome)
         {
           <h4 id="@learningOutcomeGroup.Key.StripFromAllButLetters()" class="text-muted">@learningOutcomeGroup.Key</h4>
 
@@ -96,8 +103,8 @@
               <div class="row @(index == 0 ? "mb-5" : "my-5")">
                 <div class="col-12 col-md-6 col-xl-12">
                   <h5 id="@milestone.Artefact.Value.StripFromAllButLetters()">@milestone.Artefact</h5>
-                  <input type="hidden" name="Progress.Milestones[@index].MilestoneId" value="@milestone.Id"/>
-                  <input type="hidden" name="Progress.Milestones[@index].Id" value="@Model.Progress.Milestones[index].Id"/>
+                  <input type="hidden" name="Progress.Milestones[@GetMilestoneProgressIndexOf(milestone)].MilestoneId" value="@milestone.Id"/>
+                  <input type="hidden" name="Progress.Milestones[@GetMilestoneProgressIndexOf(milestone)].Id" value="@Model.Progress.Milestones.FirstOrDefault(m => m.MilestoneId == milestone.Id)!.Id"/>
                 </div>
                 @if (Model.MilestoneProgressesPerMilestone.ContainsKey(milestone.Id))
                 {
@@ -117,9 +124,10 @@
                     @for (int i = 0; i < Enum.GetValues<Rating>().Length; i++)
                     {
                       <input type="radio" class="btn-check"
-                             asp-for="Progress.Milestones[index].Rating"
+                             name="Progress.Milestones[@GetMilestoneProgressIndexOf(milestone)].Rating"
                              id="milestone-@milestone.Id-@i"
                              value="@((Rating)(i + 1))"
+                             checked="@(Model.Progress.Milestones[GetMilestoneProgressIndexOf(milestone)].Rating == (Rating)(i + 1))"
                              x-on:change="setFeeling"/>
                       <label class="btn btn-outline-@(MilestoneUiHelper.RatingColor((Rating)(i + 1)) ?? "light")" for="milestone-@milestone.Id-@i">@(i + 1)</label>
                     }
@@ -129,7 +137,9 @@
                   </button>
                 </div>
                 <div class="col-12 col-xl-9">
-                  <textarea class="form-control" placeholder="Comments" rows="1" asp-for="Progress.Milestones[index].Comment"></textarea>
+                  <textarea class="form-control" placeholder="Comments" rows="1" 
+                    name="Progress.Milestones[@GetMilestoneProgressIndexOf(milestone)].Comment"
+                    >@Model.Progress.Milestones[@GetMilestoneProgressIndexOf(milestone)].Comment</textarea>
                 </div>
               </div>
             }
