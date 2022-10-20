@@ -73,7 +73,26 @@ a, .btn-link {
 
 .search .form-control {
     width: unset;
-    border-radius: 1rem;
+    border-radius: 0.3rem;
+    background-color: var(--gray);
+    border-color: var(--gray);
+    color: white;
+}
+
+.search .form-control::placeholder {
+    color: white;
+}
+
+.search .form-control:focus
+{
+    outline: 1px solid var(--white-50);
+    box-shadow: none;
+    /*background-color: var(--white-50);*/
+    /*color: var(--green-90);*/
+}
+
+.search .form-control:focus::placeholder {
+    /*color: var(--green-90);*/
 }
 
 /* || STICKY FOOTER
