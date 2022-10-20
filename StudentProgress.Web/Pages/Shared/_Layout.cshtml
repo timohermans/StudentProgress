@@ -26,8 +26,9 @@
           <template x-for="student in searchResults" :key="student">
             <div class="list-group-item list-group-item-action">
               <div class="d-flex">
-                <div class="align-self-center" x-show="student.avatarPath">
-                  <img x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
+                <div class="align-self-center">
+                  <img x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
+                  <img x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
                 </div>
                 <div class="ms-2">
                   <p x-text="student.name"></p>

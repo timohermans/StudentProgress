@@ -105,10 +105,7 @@
           {
             <tr>
               <td>
-                @if (!string.IsNullOrEmpty(student.AvatarPath))
-                {
-                  <img width="50" height="50" src="/media/@(student.AvatarPath)" alt="@student.Name">
-                }
+                <img width="50" height="50" src="@(string.IsNullOrEmpty(student.AvatarPath) ? "/images/avatar-placeholder.png" : $"/media/{student.AvatarPath}")" alt="@student.Name">
               </td>
               <td x-data="initStudentNameController()" class="student-name" headers="student-name">
                 <input x-ref="nameOriginal" type="hidden" value="@student.Name"/>
