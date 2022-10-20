@@ -14,7 +14,9 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand home-link text-white" asp-area="" asp-page="/Index">Progress</a>
+      <div class="flex-grow-1 flex-md-grow-0">
+        <a class="navbar-brand navbar-collapse collapse home-link text-white" asp-area="" asp-page="/Index">Progress</a>
+      </div>
       <div id="searchComponent" x-data="initSearchController()" class="d-flex order-sm-1 flex-grow-1 search" autocomplete="off">
         <input
           id="search" type="text" class="form-control" placeholder="search student.."
