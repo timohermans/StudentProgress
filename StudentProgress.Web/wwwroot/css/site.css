@@ -87,12 +87,6 @@ a, .btn-link {
 {
     outline: 1px solid var(--white-50);
     box-shadow: none;
-    /*background-color: var(--white-50);*/
-    /*color: var(--green-90);*/
-}
-
-.search .form-control:focus::placeholder {
-    /*color: var(--green-90);*/
 }
 
 /* || STICKY FOOTER
