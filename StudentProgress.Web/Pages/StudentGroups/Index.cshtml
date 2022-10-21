@@ -17,8 +17,7 @@
       <caption>Updates that need to be reviewed (e.g. Feedpulse or colleague)</caption>
       <thead>
       <tr>
-        <th>Date</th>
-        <th>Days ago</th>
+        <th>Age</th>
         <th>Student</th>
         <th>Group</th>
         <th></th>
@@ -29,17 +28,16 @@
       {
         <tr>
           <td>
-            <a asp-page="/Progress/CreateEdit" asp-route-id="@update.Id" asp-route-studentId="@update.StudentId" asp-route-groupId="@update.GroupId">@update.Date.ToShortDateString()</a>
+            <a asp-page="/Progress/CreateEdit" asp-route-id="@update.Id" asp-route-studentId="@update.StudentId" asp-route-groupId="@update.GroupId">@update.DaysAgo</a>
           </td>
-          <td>@update.Date.TimePassed(Model.DateProvider) ago</td>
-          <td>@update.Student.Name</td>
+          <td>@update.Student</td>
           <td>
-            <a asp-page="/StudentGroups/Details/Index" asp-route-id="@update.GroupId">@update.Group.Name</a>
+            <a asp-page="/StudentGroups/Details/Index" asp-route-id="@update.GroupId">@update.Course</a>
           </td>
           <td>
             <form method="post" asp-page-handler="MarkReviewed">
               @Html.HiddenFor(m => update.Id)
-              <input type="submit" class="btn btn-link" value="Mark as reviewed">
+              <input type="submit" class="btn" value="✔">
             </form>
           </td>
         </tr>

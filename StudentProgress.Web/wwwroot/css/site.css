@@ -31,6 +31,10 @@ body {
     color: var(--gray-dark);
 }
 
+.table td {
+    vertical-align: middle;
+}
+
 a, .btn-link {
     color: var(--green-90);
 }

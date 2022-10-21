@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudentProgress.Core;
 using StudentProgress.Core.CanvasApi;
+using StudentProgress.Core.Extensions;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {
@@ -21,7 +22,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         public IDateProvider DateProvider;
         public List<StudentGroup> StudentGroups { get; set; } = new();
         public List<SelectListItem> Periods { get; set; } = new();
-        public List<ProgressUpdate> ProgressesToReview { get; set; } = new();
+        public List<ProgressToReview> ProgressesToReview { get; set; } = new();
         public Period CurrentPeriod { get; set; } = null!;
 
         public IndexModel(ProgressContext context, ICanvasApiConfig apiConfig, IDateProvider dateProvider)
@@ -53,6 +54,14 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 .Include(p => p.Group)
                 .Where(pu => !pu.IsReviewed)
                 .OrderBy(pu => pu.Date)
+                .Select(pu => new ProgressToReview(
+                    pu.Id,
+                    pu.StudentId,
+                    pu.GroupId,
+                    pu.Date.TimePassedShort(DateProvider),
+                    pu.Student.Name,
+                    pu.Group.Name.GetFirstPart(' ')
+                    ))
                 .ToListAsync();
             
             return Page();
@@ -69,6 +78,8 @@ namespace StudentProgress.Web.Pages.StudentGroups
             return RedirectToPage("/StudentGroups/Index");
         }
     }
+
+    public record ProgressToReview(int Id, int StudentId, int GroupId, string DaysAgo, string Student, string Course);
 
     public class Request
     {
