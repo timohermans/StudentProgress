@@ -1,0 +1,59 @@
+﻿@page
+@model StudentProgress.Web.Pages.Progress.QuickAdd
+
+@{
+  ViewData["Title"] = "Quick add";
+}
+
+@section Styles
+{
+  <link rel="stylesheet" href="~/css/quick-add.css">
+}
+
+<h1>Quick add</h1>
+
+<form id="groupForm" method="get">
+  <p>
+    <label for="groupId">Group</label>
+    <select class="form-control" id="groupId" name="groupId" asp-items="Model.Groups.Select(g => new SelectListItem(g.Name, g.Id.ToString(), g.Id == Model.Command?.GroupId))"></select>
+  </p>
+</form>
+
+@if (Model.Group != null)
+{
+  <form>
+    @Html.HiddenFor(m => m.Command.GroupId)
+    <p>
+      <label asp-for="Command.GroupId">Milestone</label>
+      <select class="form-control" asp-for="Command.MilestoneId" asp-items="Model.Group.Milestones.OrderBy(m => m.LearningOutcome).ThenBy(m => m.Artefact).Select(m => new SelectListItem(m.ToString(), m.Id.ToString()))"></select>
+    </p>
+
+    <section>
+      <h2>Students</h2>
+
+      <ul class="students grid">
+        @foreach (var student in Model.Group.Students)
+        {
+          <li class="student card g-col-12 g-col-md-6 g-col-lg-4 g-col-xl-3">
+            <div class="card-title">@student.Name</div>
+            <div class="card-subtitle text-muted">@student.ProgressUpdates.Count() notes</div>
+            <div class="card-body">
+              😵
+            </div>
+          </li>
+        }
+      </ul>
+    </section>
+
+  </form>
+}
+
+@section Scripts {
+  <script>
+    const groupSelect = document.querySelector("#groupForm select");
+    
+    groupSelect.addEventListener("change", (event) => {
+      event.target.form.submit();
+    });
+  </script>
+}

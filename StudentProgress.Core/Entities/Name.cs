@@ -35,5 +35,7 @@ namespace StudentProgress.Core.Entities
         }
 
         public string GetFirstPart(char separator) => Value.Split(separator, StringSplitOptions.RemoveEmptyEntries).First();
+
+        public override string ToString() => Value;
     }
 }

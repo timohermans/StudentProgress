@@ -28,5 +28,7 @@ namespace StudentProgress.Core.Entities
             Artefact = artefact;
             return Result.Success();
         }
+
+        public override string ToString() => $"{LearningOutcome} - {Artefact}";
     }
 }

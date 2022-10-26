@@ -1,0 +1,38 @@
+﻿.students {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.student {
+    display: block;
+}
+
+@media (min-width: 576px) { /* sm */
+    .students {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) { /* md */
+    .students {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) { /* lg */
+    .students {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px) { /* xl */
+    .students {
+        max-width: 1140px;
+    }
+}
+@media (min-width: 1400px) { /* xxl */
+    .students {
+        max-width: 1320px;
+    }
+}
