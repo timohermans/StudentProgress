@@ -1,11 +1,17 @@
-namespace StudentProgress.Core.Entities
+using System.ComponentModel;
+
+namespace StudentProgress.Core.Entities;
+
+public enum Rating
 {
-  public enum Rating
-  {
-    Undefined = 1,
-    Orienting = 2,
-    Beginning = 3,
-    Proficient = 4,
-    Advanced = 5
-  }
+  [Description("😴")]
+  Undefined = 1,
+  [Description("😵‍💫")]
+  Orienting = 2,
+  [Description("🥵")]
+  Beginning = 3,
+  [Description("🙂")]
+  Proficient = 4,
+  [Description("🤩")]
+  Advanced = 5
 }

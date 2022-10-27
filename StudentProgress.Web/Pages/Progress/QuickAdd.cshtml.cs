@@ -32,12 +32,12 @@ public class QuickAdd : PageModel
             .Groups
             .OrderByDescending(g => g.Period)
             .ToListAsync();
-        
+
         Groups = groups
             .Select(g => new SelectListItem(g.Name, g.Id.ToString(), g.Id == groupId))
             .ToList();
         Groups.Insert(0, new SelectListItem("", null, groupId == null));
-        
+
         if (groupId.HasValue)
         {
             Group = await _db
@@ -46,7 +46,11 @@ public class QuickAdd : PageModel
                 .Include(g => g.Students)
                 .ThenInclude(s => s.ProgressUpdates)
                 .FirstAsync(g => g.Id == groupId);
-            Command = new QuickAddCommand { GroupId = groupId.Value };
+            Command = new QuickAddCommand
+            {
+                GroupId = groupId.Value,
+                Students = Group.Students.Select(s => new QuickAddCommand.StudentCommand(s.Id, null)).ToList()
+            };
         }
     }
 
@@ -54,5 +58,8 @@ public class QuickAdd : PageModel
     {
         [Required] public int GroupId { get; init; }
         [Required] public int MilestoneId { get; init; }
+        public List<StudentCommand> Students { get; init; } = new();
+
+        public record StudentCommand(int StudentId, Rating? Feeling);
     }
 }

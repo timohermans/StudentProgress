@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using StudentProgress.Core.Entities
 @model StudentProgress.Web.Pages.Progress.QuickAdd
 
 @{
@@ -32,8 +34,9 @@
       <h2>Students</h2>
 
       <ul class="students grid">
-        @foreach (var student in Model.Group.Students)
+        @foreach (var (student, index) in Model.Group.Students.WithIndex())
         {
+          <input type="hidden" name="Command.Students[@index].StudentId" value="@student.Id"/>
           <li class="student card">
             <div class="student-head d-flex">
               <img class="rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
@@ -44,11 +47,14 @@
             </div>
             <div class="card-body">
               <ul class="feelings">
-                <li><button class="btn btn-outline-primary">😴</button></li>
-                <li><button class="btn btn-outline-primary">😵‍💫</button></li>
-                <li><button class="btn btn-outline-primary">🥵</button></li>
-                <li><button class="btn btn-outline-primary">🙂</button></li>
-                <li><button class="btn btn-outline-primary">🤩</button></li>
+                @foreach (Rating rating in Enum.GetValues<Rating>())
+                {
+                  <input type="radio" class="btn-check"
+                         name="Command.Students[@index].Rating"
+                         id="student-@student.Id-@rating"
+                         value="@rating"/>
+                  <label class="btn btn-outline-@(MilestoneUiHelper.RatingColor(rating) ?? "light")" for="student-@student.Id-@rating">@rating.ToFriendlyString()</label>
+                }
               </ul>
               <div>
                 <textarea class="form-control" placeholder="Comment"></textarea>
