@@ -23,11 +23,12 @@
 
 @if (Model.Group != null)
 {
-  <form>
+  <form method="POST">
+    <div asp-validation-summary="All"></div>
     @Html.HiddenFor(m => m.Command.GroupId)
     <p>
       <label asp-for="Command.GroupId">Milestone</label>
-      <select class="form-control" asp-for="Command.MilestoneId" asp-items="Model.Group.Milestones.OrderBy(m => m.LearningOutcome).ThenBy(m => m.Artefact).Select(m => new SelectListItem(m.ToString(), m.Id.ToString()))"></select>
+      <select class="form-control" asp-for="Command.MilestoneId" asp-items="Model.Milestones"></select>
     </p>
 
     <section>
@@ -50,13 +51,14 @@
                   <input type="radio" class="btn-check"
                          name="Command.Students[@index].Rating"
                          id="student-@student.Id-@rating"
-                         value="@rating"/>
+                         value="@rating"
+                         checked="@(Model.Command?.Students[index].Rating == rating)"/>
                   <label class="btn btn-outline-dark" for="student-@student.Id-@rating">@rating.ToFriendlyString()</label>
                 </li>
               }
             </ul>
             <div class="comment">
-              <textarea class="form-control" placeholder="Comment"></textarea>
+              <textarea class="form-control" placeholder="Comment" name="Command.Students[@index].Comment">@Model.Command?.Students[index].Comment</textarea>
             </div>
           </li>
         }
