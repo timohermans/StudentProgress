@@ -115,6 +115,7 @@ public class QuickAdd : PageModel
 
         return RedirectToPage("/StudentGroups/Details/Index", new { Id = Command.GroupId, Sort = "last-feedback" });
         // TODO: unit test this
+        // TODO: refactor to core
     }
 
     public class QuickAddCommand : IUseCaseRequest<Result>
