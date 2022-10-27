@@ -53,7 +53,7 @@
                          name="Command.Students[@index].Rating"
                          id="student-@student.Id-@rating"
                          value="@rating"/>
-                  <label class="btn btn-outline-@(MilestoneUiHelper.RatingColor(rating) ?? "light")" for="student-@student.Id-@rating">@rating.ToFriendlyString()</label>
+                  <label class="btn btn-outline-dark" for="student-@student.Id-@rating">@rating.ToFriendlyString()</label>
                 }
               </ul>
               <div>
