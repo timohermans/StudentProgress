@@ -93,6 +93,12 @@ a, .btn-link {
     box-shadow: none;
 }
 
+.quick-add svg {
+    color: white;
+    width: 25px;
+    height: 25px;
+}
+
 /* || STICKY FOOTER
 -------------------------------------------------- */
 body {
