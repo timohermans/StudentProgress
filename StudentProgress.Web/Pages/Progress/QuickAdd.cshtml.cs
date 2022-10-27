@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Entities;
 using StudentProgress.Core.UseCases;
@@ -16,7 +17,7 @@ public class QuickAdd : PageModel
     private readonly ProgressContext _db;
 
     [BindProperty] public QuickAddCommand Command { get; set; } = null!;
-    public IEnumerable<StudentGroup> Groups { get; set; } = null!;
+    public IList<SelectListItem> Groups { get; set; } = null!;
 
     public StudentGroup? Group { get; set; }
 
@@ -27,11 +28,16 @@ public class QuickAdd : PageModel
 
     public async Task OnGet(int? groupId)
     {
-        Groups = await _db
+        var groups = await _db
             .Groups
             .OrderByDescending(g => g.Period)
             .ToListAsync();
-
+        
+        Groups = groups
+            .Select(g => new SelectListItem(g.Name, g.Id.ToString(), g.Id == groupId))
+            .ToList();
+        Groups.Insert(0, new SelectListItem("", null, groupId == null));
+        
         if (groupId.HasValue)
         {
             Group = await _db

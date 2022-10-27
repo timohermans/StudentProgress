@@ -15,7 +15,7 @@
 <form id="groupForm" method="get">
   <p>
     <label for="groupId">Group</label>
-    <select class="form-control" id="groupId" name="groupId" asp-items="Model.Groups.Select(g => new SelectListItem(g.Name, g.Id.ToString(), g.Id == Model.Command?.GroupId))"></select>
+    <select class="form-control" id="groupId" name="groupId" asp-items="Model.Groups"></select>
   </p>
 </form>
 
