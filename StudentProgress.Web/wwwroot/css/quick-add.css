@@ -19,7 +19,34 @@
 }
 
 .student {
-    display: block;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 50px auto 1fr;
+    grid-template-areas: 
+        "avatar info"
+        "rating rating"
+        "comment comment";
+    padding: 1rem;
+    row-gap: 1rem;
+}
+
+.student .avatar {
+    align-self: center;
+    grid-area: avatar;
+    margin-right: 1rem;
+}
+
+.student .info {
+    align-self: center;
+    grid-area: info;
+}
+
+.student .rating {
+    grid-area: rating;
+}
+
+.student .comment {
+    grid-area: comment;
 }
 
 .student-head {
@@ -33,7 +60,6 @@
 .feelings {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
 }
 
 @media (min-width: 576px) {

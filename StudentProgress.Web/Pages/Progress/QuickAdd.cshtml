@@ -33,45 +33,42 @@
     <section>
       <h2>Students</h2>
 
-      <ul class="students grid">
-        @foreach (var (student, index) in Model.Group.Students.WithIndex())
+      <ul class="students">
+        @foreach (var (student, index) in Model.Group.Students.OrderBy(s => s.Name).WithIndex())
         {
-          <input type="hidden" name="Command.Students[@index].StudentId" value="@student.Id"/>
           <li class="student card">
-            <div class="student-head d-flex">
-              <img class="rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
-              <div>
-                <div class="">@student.Name</div>
-                <div class="text-muted">@student.ProgressUpdates.Count() notes</div>
-              </div>
+            <img class="avatar rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
+            <div class="info">
+              <input type="hidden" name="Command.Students[@index].StudentId" value="@student.Id"/>
+              <div>@student.Name</div>
+              <div class="text-muted">@student.ProgressUpdates.Count() notes</div>
             </div>
-            <div class="card-body">
-              <ul class="feelings">
-                @foreach (Rating rating in Enum.GetValues<Rating>())
-                {
+            <ul class="rating feelings">
+              @foreach (Rating rating in Enum.GetValues<Rating>())
+              {
+                <li>
                   <input type="radio" class="btn-check"
                          name="Command.Students[@index].Rating"
                          id="student-@student.Id-@rating"
                          value="@rating"/>
                   <label class="btn btn-outline-dark" for="student-@student.Id-@rating">@rating.ToFriendlyString()</label>
-                }
-              </ul>
-              <div>
-                <textarea class="form-control" placeholder="Comment"></textarea>
-              </div>
+                </li>
+              }
+            </ul>
+            <div class="comment">
+              <textarea class="form-control" placeholder="Comment"></textarea>
             </div>
           </li>
         }
       </ul>
     </section>
-
+    <input class="btn btn-primary position-fixed mb-3 bottom-0 end-0 me-3 d-block floating" type="submit" value="💾"/>
   </form>
 }
 
 @section Scripts {
   <script>
     const groupSelect = document.querySelector("#groupForm select");
-    
     groupSelect.addEventListener("change", (event) => {
       event.target.form.submit();
     });
