@@ -22,7 +22,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
 
         public AddMilestone(ProgressContext context) => _context = context;
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet(int id, string? returnUrl = null)
         {
             var group = Maybe<StudentGroup?>.From(await _context
                 .Groups
@@ -40,17 +40,25 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(CancellationToken token)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl, CancellationToken token)
         {
-            return await CreateMilestone(() => RedirectToPage("./Index", new {Id = Milestone.GroupId}), token);
+            return await CreateMilestone(milestoneId =>
+            {
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect($"{returnUrl}&milestoneId={milestoneId}");
+                }
+                
+                return RedirectToPage("./Index", new { Id = Milestone.GroupId });
+            }, token);
         }
 
         public async Task<IActionResult> OnPostAndAddAnother(CancellationToken token)
         {
-            return await CreateMilestone(() => RedirectToPage("./AddMilestone", new {Id = Milestone.GroupId}), token);
+            return await CreateMilestone(_ => RedirectToPage("./AddMilestone", new {Id = Milestone.GroupId}), token);
         }
 
-        private async Task<IActionResult> CreateMilestone(Func<IActionResult> onSuccessFunc, CancellationToken token)
+        private async Task<IActionResult> CreateMilestone(Func<int, IActionResult> onSuccessFunc, CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +72,7 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 return await HandleError(result);
             }
 
-            return onSuccessFunc.Invoke();
+            return onSuccessFunc.Invoke(result.Value);
         }
 
         private async Task<IActionResult> HandleError(Result result)

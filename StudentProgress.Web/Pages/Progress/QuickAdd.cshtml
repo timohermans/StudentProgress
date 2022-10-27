@@ -27,7 +27,10 @@
     <div asp-validation-summary="All"></div>
     @Html.HiddenFor(m => m.Command.GroupId)
     <p>
-      <label asp-for="Command.GroupId">Milestone</label>
+      <label asp-for="Command.GroupId">
+        Milestone
+        <sup>or <a asp-page="/StudentGroups/Details/AddMilestone" asp-route-id="@Model.Command?.GroupId" asp-route-returnUrl="/Progress/QuickAdd?groupId=@Model.Command?.GroupId">add a new one</a></sup>
+      </label>
       <select class="form-control" asp-for="Command.MilestoneId" asp-items="Model.Milestones"></select>
     </p>
 

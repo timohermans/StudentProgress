@@ -6,7 +6,7 @@ using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Core.UseCases
 {
-    public class MilestoneCreate : IUseCaseBase<MilestoneCreate.Command, Result>
+    public class MilestoneCreate : IUseCaseBase<MilestoneCreate.Command, Result<int>>
     {
         private readonly ProgressContext _context;
 
@@ -15,7 +15,7 @@ namespace StudentProgress.Core.UseCases
             _context = context;
         }
 
-        public record Command : IUseCaseRequest<Result>
+        public record Command : IUseCaseRequest<Result<int>>
         {
             public int? Id { get; init; }
             [Required] public int GroupId { get; init; }
@@ -23,7 +23,7 @@ namespace StudentProgress.Core.UseCases
             [Required] public string Artefact { get; init; } = null!;
         }
 
-        public async Task<Result> Handle(Command command, CancellationToken token)
+        public async Task<Result<int>> Handle(Command command, CancellationToken token)
         {
             var groupResult = Maybe<StudentGroup>.From(
                 await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId, token)
@@ -34,7 +34,7 @@ namespace StudentProgress.Core.UseCases
 
             if (validationResult.IsFailure)
             {
-                return validationResult;
+                return validationResult.ConvertFailure<int>();
             }
 
             var doesArtefactAlreadyExist = _context.Milestones.Any(m =>
@@ -43,13 +43,14 @@ namespace StudentProgress.Core.UseCases
 
             if (doesArtefactAlreadyExist)
             {
-                return Result.Failure("Artefact already exists for that learning outcome");
+                return Result.Failure<int>("Artefact already exists for that learning outcome");
             }
 
+            var milestone = new Milestone(learningOutcomeResult.Value, artefactResult.Value, groupResult.Value);
             return await groupResult
-                .Check(group =>
-                    group.AddMilestone(new Milestone(learningOutcomeResult.Value, artefactResult.Value, group)))
-                .Tap(async _ => await _context.SaveChangesAsync());
+                .Check(g => g.AddMilestone(milestone))
+                .Tap(async _ => await _context.SaveChangesAsync(token))
+                .Map(_ => milestone.Id);
         }
     }
 }

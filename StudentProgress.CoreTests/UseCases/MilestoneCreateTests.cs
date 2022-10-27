@@ -22,7 +22,7 @@ namespace StudentProgress.CoreTests.UseCases
             var group = Fixture.DataMother.CreateGroup();
             Fixture.DataMother.CreateGroup(
                 name: "Conflicting Group that should be no problem",
-                milestones: new[] {("2. Specifications and design", "Design document")});
+                milestones: new[] { ("2. Specifications and design", "Design document") });
             await using var ucContext = Fixture.CreateDbContext();
             var uc = new MilestoneCreate(ucContext);
 
@@ -34,9 +34,11 @@ namespace StudentProgress.CoreTests.UseCases
             }, CancellationToken.None);
 
             result.IsSuccess.Should().BeTrue();
-            Fixture.DataMother.GroupWithMilestones()
+            var milestoneResult = Fixture.DataMother.GroupWithMilestones()
                 .Milestones
-                .FirstOrDefault()
+                .First();
+            milestoneResult.Id.Should().Be(result.Value);
+            milestoneResult
                 .HasArtefact("Design document")
                 .HasLearningOutcome("2. Specifications and design");
         }
