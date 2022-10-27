@@ -34,11 +34,25 @@
       <ul class="students grid">
         @foreach (var student in Model.Group.Students)
         {
-          <li class="student card g-col-12 g-col-md-6 g-col-lg-4 g-col-xl-3">
-            <div class="card-title">@student.Name</div>
-            <div class="card-subtitle text-muted">@student.ProgressUpdates.Count() notes</div>
+          <li class="student card">
+            <div class="student-head d-flex">
+              <img class="rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
+              <div>
+                <div class="">@student.Name</div>
+                <div class="text-muted">@student.ProgressUpdates.Count() notes</div>
+              </div>
+            </div>
             <div class="card-body">
-              😵
+              <ul class="feelings">
+                <li><button class="btn btn-outline-primary">😴</button></li>
+                <li><button class="btn btn-outline-primary">😵‍💫</button></li>
+                <li><button class="btn btn-outline-primary">🥵</button></li>
+                <li><button class="btn btn-outline-primary">🙂</button></li>
+                <li><button class="btn btn-outline-primary">🤩</button></li>
+              </ul>
+              <div>
+                <textarea class="form-control" placeholder="Comment"></textarea>
+              </div>
             </div>
           </li>
         }

@@ -1,37 +1,71 @@
-﻿.students {
+﻿.students, .feelings {
+    list-style-type: none;
     margin: 0;
     padding: 0;
-    list-style-type: none;
+}
+
+.students {
+    margin: 0;
+    padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
+}
+
+.feelings {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
 }
 
 .student {
     display: block;
 }
 
-@media (min-width: 576px) { /* sm */
+.student-head {
+    padding: 1rem 1rem 0;
+}
+
+.student-head img {
+    margin-right: 1rem;
+}
+
+.feelings {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+    /* sm */
     .students {
         max-width: 540px;
     }
 }
-@media (min-width: 768px) { /* md */
+
+@media (min-width: 768px) {
+    /* md */
     .students {
         max-width: 720px;
     }
 }
-@media (min-width: 992px) { /* lg */
+
+@media (min-width: 992px) {
+    /* lg */
     .students {
         max-width: 960px;
     }
 }
-@media (min-width: 1200px) { /* xl */
+
+@media (min-width: 1200px) {
+    /* xl */
     .students {
         max-width: 1140px;
     }
 }
-@media (min-width: 1400px) { /* xxl */
+
+@media (min-width: 1400px) {
+    /* xxl */
     .students {
         max-width: 1320px;
     }
