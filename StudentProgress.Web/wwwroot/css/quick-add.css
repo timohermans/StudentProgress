@@ -61,38 +61,3 @@
     display: flex;
     gap: 0.5rem;
 }
-
-@media (min-width: 576px) {
-    /* sm */
-    .students {
-        max-width: 540px;
-    }
-}
-
-@media (min-width: 768px) {
-    /* md */
-    .students {
-        max-width: 720px;
-    }
-}
-
-@media (min-width: 992px) {
-    /* lg */
-    .students {
-        max-width: 960px;
-    }
-}
-
-@media (min-width: 1200px) {
-    /* xl */
-    .students {
-        max-width: 1140px;
-    }
-}
-
-@media (min-width: 1400px) {
-    /* xxl */
-    .students {
-        max-width: 1320px;
-    }
-}

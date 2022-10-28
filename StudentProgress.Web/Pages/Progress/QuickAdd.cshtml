@@ -19,6 +19,13 @@
     <label for="groupId">Group</label>
     <select class="form-control" id="groupId" name="groupId" asp-items="Model.Groups"></select>
   </p>
+  @if (Model.Group != null)
+  {
+    <p>
+      <label for="studentId">Students</label>
+      <select class="form-control" id="studentId" name="studentId" asp-items="Model.StudentsFilter"></select>
+    </p>
+  }
 </form>
 
 @if (Model.Group != null)
@@ -38,7 +45,7 @@
       <h2>Students</h2>
 
       <ul class="students">
-        @foreach (var (student, index) in Model.Group.Students.OrderBy(s => s.Name).WithIndex())
+        @foreach (var (student, index) in Model.Students.OrderBy(s => s.Name).WithIndex())
         {
           <li class="student card">
             <img class="avatar rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
@@ -73,9 +80,11 @@
 
 @section Scripts {
   <script>
-    const groupSelect = document.querySelector("#groupForm select");
-    groupSelect.addEventListener("change", (event) => {
-      event.target.form.submit();
+    const selects = document.querySelectorAll("#groupForm select");
+    selects.forEach(select => {
+      select.addEventListener("change", (event) => {
+        event.target.form.submit();
+      });
     });
   </script>
 }
