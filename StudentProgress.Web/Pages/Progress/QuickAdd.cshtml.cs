@@ -51,7 +51,10 @@ public class QuickAdd : PageModel
                 .Include(g => g.Students)
                 .ThenInclude(s => s.ProgressUpdates)
                 .FirstAsync(g => g.Id == groupId);
-            Students = Group.Students.Where(s => studentId == null || s.Id == studentId).ToList();
+            Students = Group.Students
+                .Where(s => studentId == null || s.Id == studentId)
+                .OrderBy(s => s.Name)
+                .ToList();
             Milestones = Group
                 .Milestones
                 .OrderBy(m => m.LearningOutcome)
@@ -59,7 +62,8 @@ public class QuickAdd : PageModel
                 .Select(m => new SelectListItem(m.ToString(), m.Id.ToString(), milestoneId == m.Id))
                 .ToList();
             Milestones.Insert(0, new SelectListItem("-- Select a milestone --", null));
-            StudentsFilter = Students
+            StudentsFilter = Group.Students
+                .OrderBy(s => s.Name)
                 .Select(s => new SelectListItem(s.Name, s.Id.ToString(), studentId == s.Id))
                 .ToList();
             StudentsFilter.Insert(0, new SelectListItem("-- All students --", ""));

@@ -45,7 +45,7 @@
       <h2>Students</h2>
 
       <ul class="students">
-        @foreach (var (student, index) in Model.Students.OrderBy(s => s.Name).WithIndex())
+        @foreach (var (student, index) in Model.Students.WithIndex())
         {
           <li class="student card">
             <img class="avatar rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
