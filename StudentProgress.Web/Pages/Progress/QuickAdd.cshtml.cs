@@ -31,7 +31,7 @@ public class QuickAdd : PageModel
         _db = db;
     }
 
-    public async Task<IActionResult> OnGet(int? groupId, int? milestoneId, int? studentId)
+    public async Task<IActionResult> OnGet(int? groupId, int? milestoneId)
     {
         var groups = await _db
             .Groups
@@ -52,7 +52,6 @@ public class QuickAdd : PageModel
                 .ThenInclude(s => s.ProgressUpdates)
                 .FirstAsync(g => g.Id == groupId);
             Students = Group.Students
-                .Where(s => studentId == null || s.Id == studentId)
                 .OrderBy(s => s.Name)
                 .ToList();
             Milestones = Group
@@ -64,7 +63,7 @@ public class QuickAdd : PageModel
             Milestones.Insert(0, new SelectListItem("-- Select a milestone --", null));
             StudentsFilter = Group.Students
                 .OrderBy(s => s.Name)
-                .Select(s => new SelectListItem(s.Name, s.Id.ToString(), studentId == s.Id))
+                .Select(s => new SelectListItem(s.Name, s.Id.ToString()))
                 .ToList();
             StudentsFilter.Insert(0, new SelectListItem("-- All students --", ""));
             var studentsCommand = Students
@@ -81,11 +80,11 @@ public class QuickAdd : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(int? groupId, int? milestoneId, int? studentId)
+    public async Task<IActionResult> OnPostAsync(int? groupId, int? milestoneId)
     {
         if (!ModelState.IsValid || !groupId.HasValue)
         {
-            return await OnGet(groupId, Command?.MilestoneId ?? milestoneId, studentId);
+            return await OnGet(groupId, Command?.MilestoneId ?? milestoneId);
         }
 
         var group = await _db

@@ -19,20 +19,20 @@
     <label for="groupId">Group</label>
     <select class="form-control" id="groupId" name="groupId" asp-items="Model.Groups"></select>
   </p>
-  @if (Model.Group != null)
-  {
-    <p>
-      <label for="studentId">Students</label>
-      <select class="form-control" id="studentId" name="studentId" asp-items="Model.StudentsFilter"></select>
-    </p>
-  }
 </form>
 
 @if (Model.Group != null)
 {
-  <form method="POST">
+  <form method="POST" x-data="{ studentId: null }">
     <div asp-validation-summary="All"></div>
     @Html.HiddenFor(m => m.Command.GroupId)
+    @if (Model.Group != null)
+    {
+      <p>
+        <label for="studentId">Students</label>
+        <select x-model="studentId" class="form-control" id="studentId" name="studentId" asp-items="Model.StudentsFilter"></select>
+      </p>
+    }
     <p>
       <label asp-for="Command.GroupId">
         Milestone
@@ -47,7 +47,7 @@
       <ul class="students">
         @foreach (var (student, index) in Model.Students.WithIndex())
         {
-          <li class="student card">
+          <li x-show="!studentId || studentId === '@student.Id'" class="student card">
             <img class="avatar rounded-circle" src="@(student.AvatarPath != null ? $"/media/{student.AvatarPath}" : "/images/avatar-placeholder.png")" width="50" height="50" alt="@student.Name"/>
             <div class="info">
               <input type="hidden" name="Command.Students[@index].StudentId" value="@student.Id"/>
@@ -80,7 +80,7 @@
 
 @section Scripts {
   <script>
-    const selects = document.querySelectorAll("#groupForm select");
+    const selects = document.querySelectorAll("#groupForm #groupId");
     selects.forEach(select => {
       select.addEventListener("change", (event) => {
         event.target.form.submit();
