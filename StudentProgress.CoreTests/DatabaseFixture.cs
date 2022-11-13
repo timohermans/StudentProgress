@@ -2,7 +2,6 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Npgsql;
 using StudentProgress.Core.Entities;
 using Xunit;
 
