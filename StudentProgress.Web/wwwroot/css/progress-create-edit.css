@@ -5,3 +5,17 @@
 ul {
     list-style-type: none;
 }
+
+@media (min-width: 576px) {
+    #group-nav {
+        height: 75vh;
+        overflow-y: auto;
+    }
+}
+
+.feelings {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0;
+}
