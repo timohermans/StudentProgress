@@ -90,7 +90,10 @@
         <section id="milestones" class="row">
             @if (Model.MilestonesPerLearningOutcome.Any())
             {
-                <h3>Milestones</h3>
+                <h3>
+                    Milestones
+                    <sup>or <a asp-page="/StudentGroups/Details/AddMilestone" asp-route-id="@Model.Group.Id" asp-route-returnUrl="/Progress/CreateEdit?studentId=@Model.Student.Id&groupId=@Model.Group.Id">add a new one</a></sup>
+                </h3>
 
                 @foreach (var learningOutcomeGroup in Model.MilestonesPerLearningOutcome)
                 {
