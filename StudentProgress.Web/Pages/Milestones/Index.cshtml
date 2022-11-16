@@ -1,0 +1,70 @@
+﻿@page
+@model StudentProgress.Web.Pages.Milestones.IndexModel
+@{
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/milestones.css" />
+}
+
+@section Scripts {
+    <script>
+        window.isConfirmationPopupDisabled = true;
+        document.querySelector('select#milestoneId').addEventListener('change', event => {
+            event.target.form.submit();
+        });
+
+        const header = document.querySelector('.header');
+        document.querySelector('.scrollable').addEventListener('scroll', evt => {
+            header.scrollLeft = evt.target.scrollLeft;
+        });
+    </script>
+}
+
+<section id="nav">
+    <a asp-page="/StudentGroups/Index">Groups</a> <span> > </span>
+    <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.ViewModel.GroupId">@Model.ViewModel.GroupName</a> <span> > </span>
+    Milestone overview
+</section>
+
+
+<h1>Milestones of @Model.ViewModel.GroupName</h1>
+
+<form>
+    <input type="hidden" name="groupId" value="@Model.ViewModel.GroupId" />
+    <p class="w-50">
+        <label for="milestoneId">Milestones</label>
+        <select asp-items="@Model.ViewModel.MilestonesToSelect" name="milestoneId" id="milestoneId" class="form-control"></select>
+    </p>
+</form>
+
+<div class="header-container">
+    <div></div>
+    <ul class="header d-flex">
+        @foreach (var milestone in Model.ViewModel.Milestones)
+        {
+            <li>@milestone.Name</li>
+        }
+    </ul>
+</div>
+
+<section class="content">
+    <ul class="names fixed">
+        @foreach (var student in Model.ViewModel.Students)
+        {
+            <li>@student.Name</li>
+        }
+    </ul>
+
+    <section class="scrollable">
+        @foreach (var milestone in Model.ViewModel.Milestones)
+        {
+            <ul>
+                @foreach (var student in Model.ViewModel.Students)
+                {
+                    <li>@(student.Milestones.FirstOrDefault(m => m.Id == milestone.Id)?.LatestRating?.ToFriendlyString() ?? "-")</li>
+                }
+            </ul>
+        }
+    </section>
+</section>

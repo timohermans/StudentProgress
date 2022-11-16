@@ -30,7 +30,7 @@ function preventUnsavedChanges() {
     });
 
     window.onbeforeunload = function() {
-        if (isFormChanged && !isSubmitting) {
+        if (isFormChanged && !isSubmitting && !window.isConfirmationPopupDisabled) {
             return "";
         }
     }
