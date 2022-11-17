@@ -24,19 +24,32 @@ main ul {
     background-color: white;
 }
 
-main ul li {
-    align-items: center;
-    display: flex;
-    height: 80px;
-    justify-content: center;
-    padding: 1rem;
-    border-top: 1px solid var(--white-50);
-    border-bottom: 1px solid var(--white-50);
-}
+    main ul li {
+        align-items: center;
+        display: flex;
+        height: 80px;
+        justify-content: center;
+        padding: 1rem;
+        border-top: 1px solid var(--white-50);
+        border-bottom: 1px solid var(--white-50);
+    }
 
 .names, .header-container > :first-child {
     min-width: 170px;
 }
+
+    .names li {
+        justify-content: flex-start;
+    }
+
+.student-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+    .student-name:hover {
+        overflow: visible;
+    }
 
 .header-container li, .scrollable li {
     min-width: 100px;
