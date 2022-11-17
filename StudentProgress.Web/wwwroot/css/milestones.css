@@ -28,6 +28,7 @@ main ul li {
     align-items: center;
     display: flex;
     height: 80px;
+    justify-content: center;
     padding: 1rem;
     border-top: 1px solid var(--white-50);
     border-bottom: 1px solid var(--white-50);
@@ -60,5 +61,4 @@ main .header-container ul li {
     overflow: hidden;
     padding: 1rem 0.5rem;
     font-size: 2vh;
-
 }
