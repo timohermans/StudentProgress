@@ -4,24 +4,24 @@
 @using StackExchange.Profiling.Internal
 
 @{
-  ViewData["Title"] = $"{Model.Summary.StudentName} - {Model.Summary.GroupName} - Summary";
+    ViewData["Title"] = $"{Model.Summary.StudentName} - {Model.Summary.GroupName} - Summary";
 }
 
 @section Styles
-{
-  <link rel="stylesheet" href="~/css/summary.css">
+    {
+    <link rel="stylesheet" href="~/css/summary.css">
 }
 
 @section Scripts
-{
-  <script src="~/js/summaryStudentInfo.js"></script>
+    {
+    <script src="~/js/summaryStudentInfo.js"></script>
 }
 
 <a asp-page="/StudentGroups/Index">Groups</a> >
 <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Summary.GroupId">@Model.Summary.GroupName</a> >
 <a asp-page="/Progress/Index" asp-route-groupId="@Model.Summary.GroupId"
    asp-route-studentId="@Model.Summary.StudentId">
-  @Model.Summary.StudentName
+    @Model.Summary.StudentName
 </a> >
 <span>Summary</span>
 
@@ -30,113 +30,124 @@
 <a class="me-3" asp-page="./Index" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">View conversations</a>
 
 <section class="mt-3">
-  <img width="100" height="100" src="@(string.IsNullOrEmpty(Model.Summary.StudentAvatarPath) ? "/images/avatar-placeholder.png" : $"/media/{Model.Summary.StudentAvatarPath}")" alt="@Model.Summary.StudentName">
+    <img width="100" height="100" src="@(string.IsNullOrEmpty(Model.Summary.StudentAvatarPath) ? "/images/avatar-placeholder.png" : $"/media/{Model.Summary.StudentAvatarPath}")" alt="@Model.Summary.StudentName">
 </section>
 
 <section class="row">
 
-  <section class="col-sm-12 col-md-10">
-    <section x-data="studentInfoController()" class="mt-4">
-      <h2>
-        Notes
-      </h2>
-      <p x-show="!isEditing" x-on:click="startEditing" class="student-note">
-        <input type="hidden" x-ref="originalNote" value="@Model.Summary.StudentNote"/>
-        <span class="feedback-text" x-ref="displayNote">@(Model.Summary.StudentNote ?? $"Add a note for {Model.Summary.StudentName} here")</span>
-      </p>
-      <form x-ref="form" x-show="isEditing" x-on:submit="save" autocomplete="off">
-        <input type="hidden" name="id" value="@Model.Summary.StudentId"/>
-        <div class="form-floating mb-3">
-          <textarea x-ref="noteInput" id="note" name="note" type="text" class="form-control" x-on:keydown.escape="cancelEditing">@Model.Summary.StudentNote</textarea>
-          <label for="note">Student Note</label>
-        </div>
-        <button type="submit" class="btn btn-outline-primary">Save</button>
-      </form>
-    </section>
+    <section class="col-sm-12 col-md-10">
+        <section x-data="studentInfoController()" class="mt-4">
+            <h2>
+                Notes
+            </h2>
+            <p x-show="!isEditing" x-on:click="startEditing" class="student-note">
+                <input type="hidden" x-ref="originalNote" value="@Model.Summary.StudentNote" />
+                <span class="feedback-text" x-ref="displayNote">@(Model.Summary.StudentNote ?? $"Add a note for {Model.Summary.StudentName} here")</span>
+            </p>
+            <form x-ref="form" x-show="isEditing" x-on:submit="save" autocomplete="off">
+                <input type="hidden" name="id" value="@Model.Summary.StudentId" />
+                <div class="form-floating mb-3">
+                    <textarea x-ref="noteInput" id="note" name="note" type="text" class="form-control" x-on:keydown.escape="cancelEditing">@Model.Summary.StudentNote</textarea>
+                    <label for="note">Student Note</label>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Save</button>
+            </form>
+        </section>
 
-    @if (Model.Summary.LastFeedback.HasValue())
-    {
-      <section>
-        <h2>Last feedback</h2>
-        <small class="text-muted">@Model.Summary.LastFeedbackDate</small>
-        <p class="feedback-text">@Model.Summary.LastFeedback</p>
-      </section>
-    }
-
-    <section class="my-4">
-      <h2>Progress update timeline</h2>
-      <div class="mt-4">
-        <partial name="Shared/_ProgressTimeline" model="new ProgressTimeline(Model.Summary.Period, Model.Summary.ProgressUpdates.Select(u => new ProgressUpdateUI(u.Id, u.Date, u.Feeling, u.StudentId, u.GroupId)))"/>
-      </div>
-    </section>
-
-    <h2>Current milestone progress</h2>
-    @if (!Model.Summary.Milestones.Any())
-    {
-      <p>No milestones in this group yet</p>
-    }
-
-    <table class="table">
-      <thead>
-      <tr>
-        <th>Artefact</th>
-        <th>Rating</th>
-        <th># Updated</th>
-        <th>Last comment</th>
-      </tr>
-      </thead>
-      <tbody>
-
-      @foreach (var learningOutcomeGrouping in Model.Summary.Milestones.ToLookup(m => m.LearningOutcome))
-      {
-        <tr>
-          <td>
-            <h3>@learningOutcomeGrouping.Key</h3>
-          </td>
-          <td class="align-middle">
-            <div class="progress">
-              @if (learningOutcomeGrouping.Any(l => l.Rating != null))
-              {
-                <div class="progress-bar bg-primary" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Advanced) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                <div class="progress-bar bg-success" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Proficient) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                <div class="progress-bar bg-warning" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Beginning) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                <div class="progress-bar bg-danger" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Orienting) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                <div class="progress-bar bg-dark" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Undefined) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-              }
-            </div>
-          </td>
-          <td colspan="2"></td>
-        </tr>
-        @foreach (var milestone in learningOutcomeGrouping.ToList())
+        @if (Model.Summary.LastFeedback.HasValue())
         {
-          <tr>
-            <td>@milestone.Artefact</td>
-            <td>
-              <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
-                @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
-                {
-                  <button type="button" class="btn btn-@(MilestoneUiHelper.RatingColor(milestone.Rating, i) ?? "light")" disabled>@i</button>
-                }
-              </div>
-            </td>
-            <td>@milestone.TimesWorkedOn</td>
-            <td class="feedback-text">@milestone.Comment</td>
-          </tr>
+            <section>
+                <h2>Last feedback</h2>
+                <small class="text-muted">@Model.Summary.LastFeedbackDate</small>
+                <p class="feedback-text">@Model.Summary.LastFeedback</p>
+            </section>
         }
-      }
-      </tbody>
-    </table>
-  </section>
 
-  <section class="col-sm-12 col-md-2">
-    <h2>@Model.Summary.GroupName students</h2>
-    <ol class="list-unstyled">
-      @foreach (var student in Model.Summary.OtherStudents)
-      {
-        <li>
-          <a class="btn btn-link @(student.Id == Model.Summary.StudentId ? "fw-bold" : "")" asp-page="./Summary" asp-route-groupId="@Model.Summary.GroupId" asp-route-studentId="@student.Id">@student.Name</a>
-        </li>
-      }
-    </ol>
-  </section>
+        <section class="my-4">
+            <h2>Progress update timeline</h2>
+            <div class="mt-4">
+                <partial name="Shared/_ProgressTimeline" model="new ProgressTimeline(Model.Summary.Period, Model.Summary.ProgressUpdates.Select(u => new ProgressUpdateUI(u.Id, u.Date, u.Feeling, u.StudentId, u.GroupId)))" />
+            </div>
+        </section>
+
+        <h2>Current milestone progress</h2>
+        @if (!Model.Summary.Milestones.Any())
+        {
+            <p>No milestones in this group yet</p>
+        }
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Artefact</th>
+                    <th>Rating</th>
+                    <th># Updated</th>
+                    <th>Last comment</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var learningOutcomeGrouping in Model.Summary.Milestones.ToLookup(m => m.LearningOutcome))
+                {
+                    <tr>
+                        <td>
+                            <h3>@learningOutcomeGrouping.Key</h3>
+                        </td>
+                        <td class="align-middle">
+                            <div class="progress">
+                                @if (learningOutcomeGrouping.Any(l => l.Rating != null))
+                                {
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Advanced) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Proficient) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Beginning) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Orienting) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Undefined) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                }
+                            </div>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    @foreach (var milestone in learningOutcomeGrouping.ToList())
+                    {
+                        <tr>
+                            <td>
+                                @if (milestone.IdLastProgressUpdate.HasValue)
+                                {
+                                    <a asp-page="./CreateEdit" asp-route-id="@milestone.IdLastProgressUpdate" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">
+                                        @milestone.Artefact
+                                    </a>
+                                }
+                                else
+                                {
+                                    @milestone.Artefact
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
+                                    @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
+                                    {
+                                        <button type="button" class="btn btn-@(MilestoneUiHelper.RatingColor(milestone.Rating, i) ?? "light")" disabled>@i</button>
+                                    }
+                                </div>
+                            </td>
+                            <td>@milestone.TimesWorkedOn</td>
+                            <td class="feedback-text">@milestone.Comment</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="col-sm-12 col-md-2">
+        <h2>@Model.Summary.GroupName students</h2>
+        <ol class="list-unstyled">
+            @foreach (var student in Model.Summary.OtherStudents)
+            {
+                <li>
+                    <a class="btn btn-link @(student.Id == Model.Summary.StudentId ? "fw-bold" : "")" asp-page="./Summary" asp-route-groupId="@Model.Summary.GroupId" asp-route-studentId="@student.Id">@student.Name</a>
+                </li>
+            }
+        </ol>
+    </section>
 </section>

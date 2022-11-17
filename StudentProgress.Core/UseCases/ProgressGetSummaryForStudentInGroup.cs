@@ -15,21 +15,12 @@ namespace StudentProgress.Core.UseCases
 
         public record MilestoneResponse
         {
-            public string Artefact { get; set; }
-            public string LearningOutcome { get; set; }
+            public required string Artefact { get; set; }
+            public required string LearningOutcome { get; set; }
+            public int? IdLastProgressUpdate { get; set; }
             public Rating? Rating { get; set; }
             public string? Comment { get; set; }
-            public int TimesWorkedOn { get; set; }
-
-            public MilestoneResponse(string artefact, string learningOutcome, Rating? rating, string? comment,
-                int timesWorkedOn)
-            {
-                Artefact = artefact;
-                LearningOutcome = learningOutcome;
-                Rating = rating;
-                Comment = comment;
-                TimesWorkedOn = timesWorkedOn;
-            }
+            public required int TimesWorkedOn { get; set; }
         }
 
         public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
@@ -81,9 +72,9 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result<Response>> Handle(Query query, CancellationToken token)
         {
-            var group = Maybe<StudentGroup>.From(await _context.Groups.FindAsync(query.GroupId))
+            var group = Maybe<StudentGroup?>.From(await _context.Groups.FindAsync(query.GroupId))
                 .ToResult("Group does not exist");
-            var student = Maybe<Student>.From(await _context.Students.FindAsync(query.StudentId))
+            var student = Maybe<Student?>.From(await _context.Students.FindAsync(query.StudentId))
                 .ToResult("Student does not exist");
             var doGroupStudentExist = Result.Combine(group, student);
 
@@ -114,13 +105,15 @@ namespace StudentProgress.Core.UseCases
                         studentMilestoneProgresses.Where(mp => mp.Milestone.Id == milestone.Id).ToList();
                     var latestProgress = milestoneProgresses.FirstOrDefault();
 
-                    return new MilestoneResponse(
-                        artefact: milestone.Artefact,
-                        learningOutcome: milestone.LearningOutcome,
-                        rating: latestProgress?.Rating,
-                        comment: latestProgress?.Comment,
-                        timesWorkedOn: milestoneProgresses.Count
-                    );
+                    return new MilestoneResponse
+                    {
+                        Artefact = milestone.Artefact,
+                        LearningOutcome = milestone.LearningOutcome,
+                        IdLastProgressUpdate = latestProgress?.ProgressUpdateId,
+                        Rating = latestProgress?.Rating,
+                        Comment = latestProgress?.Comment,
+                        TimesWorkedOn = milestoneProgresses.Count
+                    };
                 })
                 .OrderBy(m => m.LearningOutcome)
                 .ThenBy(m => m.Artefact)
@@ -133,9 +126,9 @@ namespace StudentProgress.Core.UseCases
                 .ToListAsync(token);
 
             return Result.Success(new Response(
-                groupId: group.Value.Id,
-                groupName: group.Value.Name,
-                studentId: student.Value.Id,
+                groupId: group.Value!.Id,
+                groupName: group.Value!.Name,
+                studentId: student.Value!.Id,
                 studentName: student.Value.Name,
                 studentAvatarPath: student.Value.AvatarPath,
                 studentNote: student.Value.Note,

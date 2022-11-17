@@ -6,6 +6,7 @@
         public Rating Rating { get; private set; }
         public string? Comment { get; private set; }
         public int MilestoneId { get; private set; }
+        public int ProgressUpdateId { get; private set; }
 
 #nullable disable
         public ProgressUpdate ProgressUpdate { get; private set; }
