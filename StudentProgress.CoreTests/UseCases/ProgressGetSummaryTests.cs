@@ -29,9 +29,9 @@ namespace StudentProgress.CoreTests.UseCases
                     ("first", "b. 2"),
                     ("first", "c. 3")
                 },
-                students: new[] {new TestStudent("Timo", null, "timo.png"), new TestStudent("Max"), new TestStudent("Jordy")}
+                students: new[] { new TestStudent("Timo", null, "timo.png"), new TestStudent("Max"), new TestStudent("Jordy") }
             );
-            var nonInterestingGroup = Fixture.DataMother.CreateGroup(name: "not interesting group", students: new[] {new TestStudent("Timothy")});
+            var nonInterestingGroup = Fixture.DataMother.CreateGroup(name: "not interesting group", students: new[] { new TestStudent("Timothy") });
             var timo = group.Students.FirstOrDefault();
             var max = group.Students.FirstOrDefault(s => s.Name == "Max");
             var jordy = group.Students.FirstOrDefault(s => s.Name == "Jordy");
@@ -61,7 +61,7 @@ namespace StudentProgress.CoreTests.UseCases
 
             // act
             var result = await useCase.Handle(new ProgressGetSummaryForStudentInGroup.Query
-                {GroupId = group.Id, StudentId = timo.Id}, CancellationToken.None);
+            { GroupId = group.Id, StudentId = timo.Id }, CancellationToken.None);
 
             // assert
             result.IsSuccess.Should().BeTrue();
@@ -73,18 +73,39 @@ namespace StudentProgress.CoreTests.UseCases
             summary.StudentAvatarPath.Should().Be(timo.AvatarPath);
             summary.Period.Should().Be(group.Period);
             summary.Milestones.Should().HaveCount(3);
-            summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse(
-                artefact: "a. 1", learningOutcome: "first", rating: Rating.Advanced, comment: null, timesWorkedOn: 2));
-            summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse(
-                artefact: "b. 2", learningOutcome: "first", rating: Rating.Undefined, comment: "undefined",
-                timesWorkedOn: 1));
+            summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse
+            {
+                IdLastProgressUpdate = updateB.Id,
+                Artefact = "a. 1",
+                LearningOutcome = "first",
+                Rating = Rating.Advanced,
+                Comment = null,
+                TimesWorkedOn = 2
+            });
+
+            summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse
+            {
+                IdLastProgressUpdate = updateA.Id,
+                Artefact = "b. 2",
+                LearningOutcome = "first",
+                Rating = Rating.Undefined,
+                Comment = "undefined",
+                TimesWorkedOn = 1
+            });
             summary.Milestones.Should()
-                .Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse(artefact: "c. 3",
-                    learningOutcome: "first", rating: null, comment: null, timesWorkedOn: 0));
+                .Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse
+                {
+                    IdLastProgressUpdate = null,
+                    Artefact = "c. 3",
+                    LearningOutcome = "first",
+                    Rating = null,
+                    Comment = null,
+                    TimesWorkedOn = 0
+                });
             summary.ProgressUpdates.Should().HaveCount(2);
             summary.ProgressUpdates.Should().Contain(new ProgressGetSummaryForStudentInGroup.ProgressUpdateResponse(
                 updateA.Id,
-                new DateTime(2021, 1, 11), updateA.ProgressFeeling, updateA.StudentId, updateA.GroupId));
+                    new DateTime(2021, 1, 11), updateA.ProgressFeeling, updateA.StudentId, updateA.GroupId));
             summary.ProgressUpdates.Should().Contain(new ProgressGetSummaryForStudentInGroup.ProgressUpdateResponse(
                 updateB.Id,
                 new DateTime(2021, 2, 22), updateB.ProgressFeeling, updateB.StudentId, updateB.GroupId));
