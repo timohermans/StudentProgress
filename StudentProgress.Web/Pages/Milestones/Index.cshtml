@@ -39,9 +39,9 @@
 </form>
 
 <div class="header-container">
-    <div></div>
-    <ul class="header d-flex">
-        @foreach (var milestone in Model.ViewModel.Milestones)
+    <div class="header-filler bg-white"></div>
+    <ul class="header header-columns d-flex bg-white">
+        @foreach (var milestone in Model.ViewModel.MilestonesToDisplay)
         {
             <li>@milestone.Name</li>
         }
@@ -57,7 +57,7 @@
     </ul>
 
     <section class="scrollable">
-        @foreach (var milestone in Model.ViewModel.Milestones)
+        @foreach (var milestone in Model.ViewModel.MilestonesToDisplay)
         {
             <ul>
                 @foreach (var student in Model.ViewModel.Students)

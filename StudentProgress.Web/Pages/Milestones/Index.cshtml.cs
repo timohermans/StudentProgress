@@ -17,6 +17,7 @@ public class IndexViewModel
     public required string GroupName { get; set; }
     public required IEnumerable<StudentViewModel> Students { get; set; }
     public required IEnumerable<MilestoneHeaderViewModel> Milestones { get; set; }
+    public IEnumerable<MilestoneHeaderViewModel> MilestonesToDisplay => Milestones.Where(m => MilestoneIdSelected == null || m.Id == MilestoneIdSelected).ToList();
     public required int? MilestoneIdSelected { get; set; }
     public IEnumerable<SelectListItem> MilestonesToSelect
     {
@@ -68,7 +69,7 @@ public class IndexModel : PageModel
     {
         var group = await _context
             .Groups
-            .Include(g => g.Milestones.Where(m => milestoneId == null || m.Id == milestoneId))
+            .Include(g => g.Milestones)
             .Include(g => g.Students)
                 .ThenInclude(s => s.ProgressUpdates.Where(pu => pu.GroupId == groupId))
                 .ThenInclude(p => p.MilestonesProgress)

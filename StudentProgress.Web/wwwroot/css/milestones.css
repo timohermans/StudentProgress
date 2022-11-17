@@ -2,18 +2,28 @@
     display: flex;
 }
 
+.bg-white {
+    background-color: white;
+}
+
 .fixed li {
     white-space: nowrap;
 }
 
+.header-filler {
+    border-top-left-radius: 0.5rem;
+}
+
+.header-columns {
+    border-top-right-radius: 0.5rem;
+}
+
 .scrollable {
     overflow-x: scroll;
-    border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
 
 .fixed {
-    border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
 }
 
@@ -36,6 +46,7 @@ main ul {
 
 .names, .header-container > :first-child {
     min-width: 170px;
+    width: 170px;
 }
 
     .names li {
@@ -53,11 +64,11 @@ main ul {
 
 .header-container li, .scrollable li {
     min-width: 100px;
+    width: 100px;
 }
 
 .header-container {
     display: flex;
-    background-color: white;
     position: sticky;
     top: 0;
 }
@@ -74,4 +85,5 @@ main .header-container ul li {
     overflow: hidden;
     padding: 1rem 0.5rem;
     font-size: 2vh;
+    word-wrap: break-word;
 }
