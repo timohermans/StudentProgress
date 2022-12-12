@@ -22,7 +22,7 @@ public class GetCourseDetailsTests : CanvasTests
         result.Should().HaveCount(6);
         var class2 = result.FirstOrDefault(c => c.SectionName == "S2-DB02");
         class2.Should().NotBeNull();
-        class2!.Students.Should().HaveCount(22);
+        class2!.Students.Should().HaveCount(23);
         var student1 = class2.Students.FirstOrDefault();
         student1.Should().NotBeNull();
         student1!.Name.Should().Contain("Mees M.");
