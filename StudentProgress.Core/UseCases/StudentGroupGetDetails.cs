@@ -75,7 +75,7 @@ namespace StudentProgress.Core.UseCases
 
         private async Task<Response> GetGroupWithStudentDataOfLatestFeedback(int groupId, CancellationToken token)
         {
-            var group = await _context.Groups.Include(g => g.Milestones).FirstOrDefaultAsync(g => g.Id == groupId, token);
+            var group = await _context.Groups.Include(g => g.Milestones).FirstAsync(g => g.Id == groupId, token);
             var students = await _context
                 .Students
                 .Where(s => s.StudentGroups.Any(g => g.Id == groupId))

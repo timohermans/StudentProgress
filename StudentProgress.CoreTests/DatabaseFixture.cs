@@ -17,7 +17,7 @@ namespace StudentProgress.CoreTests
 
         public DatabaseFixture()
         {
-            SetConnectionString();
+            ConnectionString = GetConnectionString();
 
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
                 .UseSqlite(ConnectionString)
@@ -30,7 +30,7 @@ namespace StudentProgress.CoreTests
             context.Database.Migrate();
         }
 
-        private void SetConnectionString()
+        private string GetConnectionString()
         {
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, false)
@@ -38,7 +38,7 @@ namespace StudentProgress.CoreTests
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
             var cString = configuration.GetConnectionString("Default");
 
-            ConnectionString = envCString ?? cString;
+            return ConnectionString = envCString ?? cString ?? throw new NullReferenceException("Connectionstring could not be found in either env var or appsettings");
         }
 
         public ProgressContext CreateDbContext()

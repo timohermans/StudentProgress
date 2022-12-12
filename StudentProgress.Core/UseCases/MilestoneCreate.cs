@@ -25,7 +25,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result<int>> Handle(Command command, CancellationToken token)
         {
-            var groupResult = Maybe<StudentGroup>.From(
+            var groupResult = Maybe<StudentGroup?>.From(
                 await _context.Groups.FirstOrDefaultAsync(g => g.Id == command.GroupId, token)
             ).ToResult($"Group with ID {command.GroupId} does not exist");
             var learningOutcomeResult = Name.Create(command.LearningOutcome);
@@ -46,9 +46,9 @@ namespace StudentProgress.Core.UseCases
                 return Result.Failure<int>("Artefact already exists for that learning outcome");
             }
 
-            var milestone = new Milestone(learningOutcomeResult.Value, artefactResult.Value, groupResult.Value);
+            var milestone = new Milestone(learningOutcomeResult.Value, artefactResult.Value, groupResult.Value!);
             return await groupResult
-                .Check(g => g.AddMilestone(milestone))
+                .Check(g => g!.AddMilestone(milestone))
                 .Tap(async _ => await _context.SaveChangesAsync(token))
                 .Map(_ => milestone.Id);
         }

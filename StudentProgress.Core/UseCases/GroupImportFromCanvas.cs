@@ -11,10 +11,10 @@ public class GroupImportFromCanvas : IUseCaseBase<GroupImportFromCanvas.Request,
 {
     public class Request : IUseCaseRequest<Result>
     {
-        public string Name { get; init; }
+        public required string Name { get; init; }
         public string? CanvasId { get; init; }
         public string? TermName { get; init; }
-        public DateTime TermStartsAt { get; init; }
+        public required DateTime TermStartsAt { get; init; }
         public DateTime? TermEndsAt { get; init; }
         public string? SectionCanvasId { get; init; }
         public string? SectionName { get; init; }
@@ -30,7 +30,7 @@ public class GroupImportFromCanvas : IUseCaseBase<GroupImportFromCanvas.Request,
 
     public class GetCourseDetailsStudent
     {
-        public string Name { get; init; }
+        public required string Name { get; init; }
         public string? AvatarUrl { get; init; }
         public string? CanvasId { get; init; }
     }

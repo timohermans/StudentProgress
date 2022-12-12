@@ -29,11 +29,11 @@ namespace StudentProgress.CoreTests.UseCases
                       ("3. Algorithms", "Circustrein")
              }
          );
-      var milestoneCompleteness = group.Milestones.FirstOrDefault(m => m.Artefact == "Compleetheid documentatie");
-      var milestoneArgumentation = group.Milestones.FirstOrDefault(m => m.Artefact == "Onderbouwing beslissingen");
-      var milestoneCooperation = group.Milestones.FirstOrDefault(m => m.Artefact == "Samenwerking/communicatie");
-      var milestoneAlgorithm = group.Milestones.FirstOrDefault(m => m.Artefact == "Circustrein");
-      var student = group.Students.FirstOrDefault();
+      var milestoneCompleteness = group.Milestones.First(m => m.Artefact == "Compleetheid documentatie");
+      var milestoneArgumentation = group.Milestones.First(m => m.Artefact == "Onderbouwing beslissingen");
+      var milestoneCooperation = group.Milestones.First(m => m.Artefact == "Samenwerking/communicatie");
+      var milestoneAlgorithm = group.Milestones.First(m => m.Artefact == "Circustrein");
+      var student = group.Students.First();
       var progress = Fixture.DataMother.CreateProgressUpdate(
           group, student, 
           feedback: "Or is it?", 
@@ -59,14 +59,14 @@ namespace StudentProgress.CoreTests.UseCases
       command.Id.Should().Be(progress.Id);
       command.StudentId.Should().Be(student.Id);
       command.Milestones.Should().HaveCount(4);
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneCompleteness.Id)!.Rating.Should().Be(Rating.Undefined);
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneCompleteness.Id)!.Comment.Should().Be("Hij begrijpt het echt nog helemaal niet");
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneArgumentation.Id)!.Rating.Should().Be(Rating.Orienting);
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneArgumentation.Id)!.Comment.Should().BeNull();
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneCooperation.Id)!.Rating.Should().Be(Rating.Beginning);
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneCooperation.Id)!.Comment.Should().Be("Communicatie is perfect");
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneAlgorithm.Id)!.Rating.Should().BeNull();
-      command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneAlgorithm.Id)!.Comment.Should().BeNull();
+      command.Milestones.First(m => m.MilestoneId == milestoneCompleteness.Id).Rating.Should().Be(Rating.Undefined);
+      command.Milestones.First(m => m.MilestoneId == milestoneCompleteness.Id).Comment.Should().Be("Hij begrijpt het echt nog helemaal niet");
+      command.Milestones.First(m => m.MilestoneId == milestoneArgumentation.Id).Rating.Should().Be(Rating.Orienting);
+      command.Milestones.First(m => m.MilestoneId == milestoneArgumentation.Id).Comment.Should().BeNull();
+      command.Milestones.First(m => m.MilestoneId == milestoneCooperation.Id).Rating.Should().Be(Rating.Beginning);
+      command.Milestones.First(m => m.MilestoneId == milestoneCooperation.Id).Comment.Should().Be("Communicatie is perfect");
+      command.Milestones.First(m => m.MilestoneId == milestoneAlgorithm.Id).Rating.Should().BeNull();
+      command.Milestones.First(m => m.MilestoneId == milestoneAlgorithm.Id).Comment.Should().BeNull();
     }
   }
 }

@@ -23,8 +23,8 @@ namespace StudentProgress.CoreTests.UseCases
                 name: "S2 DB04",
                 students: new[] {new TestStudent("Timo"), new TestStudent("Patrick")},
                 milestones: new []{ ("1. learning outcome 1", "first milestone")});
-            var milestone = group.Milestones.FirstOrDefault();
-            var patrick = group.Students.FirstOrDefault(s => s.Name == "Patrick");
+            var milestone = group.Milestones.First();
+            var patrick = group.Students.First(s => s.Name == "Patrick");
             Fixture.DataMother.CreateProgressUpdate(
                 group, 
                 patrick,
@@ -45,7 +45,7 @@ namespace StudentProgress.CoreTests.UseCases
             await using var assertContext = Fixture.CreateDbContext();
             (await assertContext.Students
                     .Include(s => s.StudentGroups)
-                    .FirstOrDefaultAsync(s => s.Name == patrick.Name))
+                    .FirstAsync(s => s.Name == patrick.Name))
                 .StudentGroups
                 .Should().HaveCount(0);
         }

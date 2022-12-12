@@ -16,9 +16,9 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var studentResult = Maybe<Student>.From(await _ucContext.Students.FindAsync(command.StudentId))
+            var studentResult = Maybe<Student?>.From(await _ucContext.Students.FindAsync(command.StudentId))
                 .ToResult("Student doesn't exist");
-            var groupResult = Maybe<StudentGroup>.From(
+            var groupResult = Maybe<StudentGroup?>.From(
                     await _ucContext
                         .Groups
                         .Include(g => g.Students)
@@ -33,7 +33,7 @@ namespace StudentProgress.Core.UseCases
                     p.StudentId == command.StudentId && p.GroupId == command.GroupId);
             _ucContext.RemoveRange(progressUpdatesToRemove);
 
-            groupResult.Value.RemoveStudent(studentResult.Value);
+            groupResult.Value!.RemoveStudent(studentResult.Value!);
 
             await _ucContext.SaveChangesAsync();
 

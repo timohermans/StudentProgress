@@ -64,7 +64,7 @@ namespace StudentProgress.CoreTests.Extensions
 
     public static ProgressCreateOrUpdate.MilestoneProgressCommand GetMilestoneProgress(this ProgressCreateOrUpdate.Command command, int milestoneId)
     {
-      return command.Milestones.FirstOrDefault(m => m.MilestoneId == milestoneId);
+      return command.Milestones.First(m => m.MilestoneId == milestoneId);
     }
   }
 }

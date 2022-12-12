@@ -18,6 +18,8 @@ namespace StudentProgress.Web.Pages.StudentGroups
         private readonly ProgressContext _context;
         private readonly ICanvasApiConfig _apiConfig;
 
+        [BindProperty] public required Request Update { get; set; }
+
         public bool CanImportGroups { get; private set; }
         public IDateProvider DateProvider;
         public List<StudentGroup> StudentGroups { get; set; } = new();
@@ -66,8 +68,6 @@ namespace StudentProgress.Web.Pages.StudentGroups
             
             return Page();
         }
-
-        [BindProperty] public Request Update { get; set; }
 
         public async Task<IActionResult> OnPostMarkReviewedAsync(DateTime? date)
         {

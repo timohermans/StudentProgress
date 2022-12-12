@@ -36,7 +36,7 @@ namespace StudentProgress.CoreTests.UseCases
         public async Task Cannot_update_a_user_to_a_user_that_already_exists()
         {
             var group = Fixture.DataMother.CreateGroup(students: new[] {new TestStudent("Tiimo"), new TestStudent("Timo")});
-            var studentWrongName = group.Students.FirstOrDefault(g => g.Name == "Tiimo");
+            var studentWrongName = group.Students.First(g => g.Name == "Tiimo");
             await using var dbContext = Fixture.CreateDbContext();
             var useCase = new StudentUpdate(dbContext);
 

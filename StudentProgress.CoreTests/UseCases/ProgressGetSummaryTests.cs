@@ -32,13 +32,13 @@ namespace StudentProgress.CoreTests.UseCases
                 students: new[] { new TestStudent("Timo", null, "timo.png"), new TestStudent("Max"), new TestStudent("Jordy") }
             );
             var nonInterestingGroup = Fixture.DataMother.CreateGroup(name: "not interesting group", students: new[] { new TestStudent("Timothy") });
-            var timo = group.Students.FirstOrDefault();
+            var timo = group.Students[0];
             var max = group.Students.FirstOrDefault(s => s.Name == "Max");
             var jordy = group.Students.FirstOrDefault(s => s.Name == "Jordy");
-            var timothy = nonInterestingGroup.Students.FirstOrDefault();
-            var milestoneA = group.Milestones.FirstOrDefault(m => m.Artefact == "a. 1");
-            var milestoneB = group.Milestones.FirstOrDefault(m => m.Artefact == "b. 2");
-            var milestoneC = group.Milestones.FirstOrDefault(m => m.Artefact == "c. 3");
+            var timothy = nonInterestingGroup.Students[0];
+            var milestoneA = group.Milestones.First(m => m.Artefact == "a. 1");
+            var milestoneB = group.Milestones.First(m => m.Artefact == "b. 2");
+            var milestoneC = group.Milestones.First(m => m.Artefact == "c. 3");
             var updateA = Fixture.DataMother.CreateProgressUpdate(group, timo,
                 date: new DateTime(2021, 1, 11),
                 feedback: "feedback from A",

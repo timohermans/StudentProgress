@@ -37,7 +37,7 @@ public class InfraConfigProvider : ICanvasApiConfig
         _config = config;
     }
 
-    public string CanvasApiKey => _config.GetValue<string>("canvas:key");
+    public string? CanvasApiKey => _config.GetValue<string>("canvas:key");
     public string? CanvasApiUrl => _config.GetValue<string>("canvas:url");
     public Task<bool> CanUseCanvasApiAsync() => Task.FromResult(true);
 }

@@ -16,7 +16,7 @@ namespace StudentProgress.Core.UseCases
 
         public async Task<Result> Handle(Command command, CancellationToken token)
         {
-            var group = Maybe<StudentGroup>.From(await _dbContext.Groups.FindAsync(command.GroupId))
+            var group = Maybe<StudentGroup?>.From(await _dbContext.Groups.FindAsync(command.GroupId))
                 .ToResult("Group doesn't exist");
             var learningOutcomeResult = Name.Create(command.LearningOutcome);
             var milestoneIdsResult =

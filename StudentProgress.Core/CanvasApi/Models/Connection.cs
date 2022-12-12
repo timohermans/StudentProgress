@@ -2,5 +2,5 @@
 
 public class Connection<T>
 {
-    public List<T> Nodes { get; set; }
+    public required List<T> Nodes { get; set; }
 }

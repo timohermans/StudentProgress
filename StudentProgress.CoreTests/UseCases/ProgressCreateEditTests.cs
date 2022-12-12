@@ -107,12 +107,12 @@ namespace StudentProgress.CoreTests.UseCases
                     ("3. Algorithms", "Circustrein")
                 }
             );
-            var milestoneCompleteness = group.Milestones.FirstOrDefault(m => m.Artefact == "Compleetheid documentatie");
+            var milestoneCompleteness = group.Milestones.First(m => m.Artefact == "Compleetheid documentatie");
             var milestoneArgumentation =
-                group.Milestones.FirstOrDefault(m => m.Artefact == "Onderbouwing beslissingen");
-            var milestoneCooperation = group.Milestones.FirstOrDefault(m => m.Artefact == "Samenwerking/communicatie");
-            var milestoneAlgorithm = group.Milestones.FirstOrDefault(m => m.Artefact == "Circustrein");
-            var student = group.Students.FirstOrDefault();
+                group.Milestones.First(m => m.Artefact == "Onderbouwing beslissingen");
+            var milestoneCooperation = group.Milestones.First(m => m.Artefact == "Samenwerking/communicatie");
+            var milestoneAlgorithm = group.Milestones.First(m => m.Artefact == "Circustrein");
+            var student = group.Students.First();
             var progress = Fixture.DataMother.CreateProgressUpdate(
                 group, student,
                 feedback: "Or is it?",

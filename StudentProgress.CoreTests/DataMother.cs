@@ -16,7 +16,7 @@ namespace StudentProgress.CoreTests
         public T Query<T>() where T : class
         {
             using var context = new ProgressContext(ContextOptions);
-            return context.Set<T>().FirstOrDefault();
+            return context.Set<T>().First();
         }
 
         public async Task<List<T>> QueryAllAsync<T>() where T : class
@@ -28,7 +28,7 @@ namespace StudentProgress.CoreTests
         public StudentGroup GroupWithStudents()
         {
             using var context = new ProgressContext(ContextOptions);
-            return context.Groups.Include(g => g.Students).FirstOrDefault();
+            return context.Groups.Include(g => g.Students).First();
         }
 
         public StudentGroup GroupWithMilestones(int? id = null)
@@ -36,8 +36,8 @@ namespace StudentProgress.CoreTests
             using var context = new ProgressContext(ContextOptions);
             var groupsWithMilestones = context.Groups.Include(g => g.Milestones);
             return id.HasValue
-                ? groupsWithMilestones.FirstOrDefault(g => g.Id == id)
-                : groupsWithMilestones.FirstOrDefault();
+                ? groupsWithMilestones.First(g => g.Id == id)
+                : groupsWithMilestones.First();
         }
 
         public ProgressTag CreateProgressTag(string name = "Tag 1")
@@ -50,8 +50,8 @@ namespace StudentProgress.CoreTests
         }
 
         public StudentGroup CreateGroup(string name = "Student Group 1", DateTime? period = null,
-            string mnemonic = null,
-            (string LearningOutcome, string Artefact)[] milestones = null,
+            string? mnemonic = null,
+            (string LearningOutcome, string Artefact)[]? milestones = null,
             params TestStudent[] students)
         {
             using var context = new ProgressContext(ContextOptions);
@@ -90,16 +90,16 @@ namespace StudentProgress.CoreTests
             return context.ProgressUpdates
                 .Include(p => p.MilestonesProgress)
                 .ThenInclude(p => p.Milestone)
-                .FirstOrDefault();
+                .First();
         }
 
         public ProgressUpdate CreateProgressUpdate(
-            StudentGroup group = null, Student student = null,
-            string feedback = "bad",
+            StudentGroup? group = null, Student? student = null,
+            string? feedback = "bad",
             Feeling feeling = Feeling.Neutral,
             DateTime? date = null,
             bool isReviewed = false,
-            IEnumerable<MilestoneProgress> milestoneProgresses = null
+            IEnumerable<MilestoneProgress>? milestoneProgresses = null
         )
         {
             using var context = new ProgressContext(ContextOptions);

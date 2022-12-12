@@ -24,8 +24,8 @@ builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
-    options.Domain = builder.Configuration["Auth0:Domain"];
-    options.ClientId = builder.Configuration["Auth0:ClientId"];
+    options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new ArgumentNullException("Auth0:Domain");
+    options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new ArgumentNullException("Auth0:ClientId");
 });
 
 builder.Services.AddMiniProfiler().AddEntityFramework();

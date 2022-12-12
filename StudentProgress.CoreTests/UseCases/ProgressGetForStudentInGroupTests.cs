@@ -24,9 +24,9 @@ namespace StudentProgress.CoreTests.UseCases
                 students: new TestStudent("Timo"),
                 milestones: new[] { ("1. Application", "SOLID patterns"), ("2. Professional", "Acting"), ("3. Algorithms", "Circustrain") });
             var student = group.Students.FirstOrDefault();
-            var solidMilestone = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID patterns");
-            var actingMilestone = group.Milestones.FirstOrDefault(m => m.Artefact == "Acting");
-            var algoMilestone = group.Milestones.FirstOrDefault(m => m.Artefact == "Circustrain");
+            var solidMilestone = group.Milestones.First(m => m.Artefact == "SOLID patterns");
+            var actingMilestone = group.Milestones.First(m => m.Artefact == "Acting");
+            var algoMilestone = group.Milestones.First(m => m.Artefact == "Circustrain");
 
             Fixture.DataMother.CreateProgressUpdate(
                 group, student,

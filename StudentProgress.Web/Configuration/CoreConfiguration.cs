@@ -23,6 +23,9 @@ public class CoreConfiguration : ICoreConfiguration
         get
         {
             var path = _config.GetValue<string>("Media:Path");
+
+            if (path == null) throw new ArgumentException(nameof(path));
+
             if (_environment.IsDevelopment())
             {
                 path = Path.Combine(AppContext.BaseDirectory, path);

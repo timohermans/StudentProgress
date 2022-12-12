@@ -23,7 +23,7 @@ namespace StudentProgress.CoreTests.UseCases
                 milestones: new[] {("1. a", "artefact 1")}
             );
             var student = group.Students.FirstOrDefault();
-            var milestone = group.Milestones.FirstOrDefault();
+            var milestone = group.Milestones.First();
             Fixture.DataMother.CreateProgressUpdate(group, student, milestoneProgresses: new[]
             {
                 new MilestoneProgress(Rating.Orienting, milestone, "goodbye")
@@ -35,7 +35,7 @@ namespace StudentProgress.CoreTests.UseCases
 
             var groupAfterDeletion = Fixture.DataMother.GroupWithMilestones();
             groupAfterDeletion.ShouldExist();
-            groupAfterDeletion.Milestones.Should().HaveCount(0);
+            groupAfterDeletion!.Milestones.Should().HaveCount(0);
         }
     }
 }
