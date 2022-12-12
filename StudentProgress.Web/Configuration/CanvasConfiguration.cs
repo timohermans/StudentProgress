@@ -12,7 +12,7 @@ public class CanvasConfiguration : ICanvasApiConfig
 
     public CanvasConfiguration(ProgressContext db) => _db = db;
 
-    // TODO: prevent EF from querying this all the time (talking about a hassle, as I can set this in settings :))
+    // TODO: (low) prevent EF from querying this all the time (talking about a hassle, as I can set this in settings :))
     public string? CanvasApiKey => _db.Settings.FirstOrDefault(s => s.Key == Setting.Keys.CanvasApiKey)?.Value;
     public string? CanvasApiUrl => _db.Settings.FirstOrDefault(s => s.Key == Setting.Keys.CanvasApiUrl)?.Value;
 

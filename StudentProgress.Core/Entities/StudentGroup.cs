@@ -2,6 +2,10 @@
 
 namespace StudentProgress.Core.Entities
 {
+    // TODO: (high) refactor to party
+    // TODO: (high) make it possible to create a group party
+    // TOOD: (high) create new style for party page
+
     public class StudentGroup : AuditableEntity<int>
     {
         public Name Name { get; private set; }

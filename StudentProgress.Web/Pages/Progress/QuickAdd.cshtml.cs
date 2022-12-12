@@ -128,8 +128,8 @@ public class QuickAdd : PageModel
         await _db.SaveChangesAsync();
 
         return RedirectToPage("/StudentGroups/Details/Index", new { Id = Command.GroupId, Sort = "last-feedback" });
-        // TODO: unit test this
-        // TODO: refactor to core
+        // TODO: (low) unit test this
+        // TODO: (low) refactor to core
     }
 
     public class QuickAddCommand : IUseCaseRequest<Result>
