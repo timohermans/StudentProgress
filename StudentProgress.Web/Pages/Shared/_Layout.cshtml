@@ -2,90 +2,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>@ViewData["Title"] - Student Progress</title>
-  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="~/css/site.css"/>
-  @await RenderSectionAsync("Styles", required: false)
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Student Progress</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>*@
+    @*<link rel="stylesheet" href="~/css/site.css"/>*@
+    <link href="~/lib/bulma/css/bulma.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-<mini-profiler/>
-<header>
-  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">
-    <div class="container">
-      <div class="flex-grow-1 flex-md-grow-0 d-flex align-items-center">
-        <a asp-page="/progress/quickadd" class="quick-add"><svg-inject src="lib/bootstrap-icons/clipboard2-plus.svg"></svg-inject></a>
-        <a class="navbar-brand navbar-collapse collapse home-link text-white" asp-area="" asp-page="/Index">Progress</a>
-      </div>
-      <div id="searchComponent" x-data="initSearchController()" class="d-flex order-sm-1 flex-grow-1 search" autocomplete="off">
-        <input
-          id="search" type="text" class="form-control" placeholder="search student.."
-          x-on:input.debounce="search"
-          autocomplete="off">
-        <div x-show="searchResults" id="search-results" class="list-group" style="z-index: 1">
-          <template x-for="student in searchResults" :key="student">
-            <div class="list-group-item list-group-item-action">
-              <div class="d-flex">
-                <div class="align-self-center">
-                  <img x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
-                  <img x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
+    <mini-profiler />
+    <header>
+        <nav nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a asp-page="/progress/quickadd" class="navbar-item quick-add"><svg-inject src="lib/bootstrap-icons/clipboard2-plus.svg"></svg-inject></a>
+                <a class="navbar-item" asp-area="" asp-page="/Index">Progress</a>
+
+                <div id="searchComponent" x-data="initSearchController()" class="navbar-item" autocomplete="off">
+                    <input id="search" type="text" class="input is-small" placeholder="search student.."
+                           x-on:input.debounce="search"
+                           autocomplete="off">
+                    <div x-show="!!searchResults.length" id="search-results" class="card" style="z-index: 1">
+                        <div class="card-content">
+                            <template x-for="student in searchResults" :key="student">
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="d-flex">
+                                        <div class="align-self-center">
+                                            <img x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
+                                            <img x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
+                                        </div>
+                                        <div class="ms-2">
+                                            <p x-text="student.name"></p>
+                                            <template x-for="group in student.groups" :key="group">
+                                                <p class="d-flex align-items-center">
+                                                    <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                                                    <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
+                                                        <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
+                                                    </a>
+                                                </p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
-                <div class="ms-2">
-                  <p x-text="student.name"></p>
-                  <template x-for="group in student.groups" :key="group">
-                    <p class="d-flex align-items-center">
-                      <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
-                      <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
-                        <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
-                      </a>
-                    </p>
-                  </template>
-                </div>
-              </div>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
-          </template>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
+                    <a class="navbar-item" asp-area="" asp-page="/Settings/Index">Settings</a>
+                </div>
+
+                <div class="navbar-end">
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <a class="navbar-item" asp-page="/Logout">Log out</a>
+                    }
+                </div>
+            </div>
+
+        </nav>
+    </header>
+    <main role="main" class="pb-3 container">
+        @RenderBody()
+    </main>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
-      </div>
-      <ul class="navbar-nav navbar-collapse collapse order-sm-0 flex-grow-1">
-        <li class="nav-item">
-          <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" asp-area="" asp-page="/Settings/Index">Settings</a>
-        </li>
-      </ul>
-      @if (User.Identity?.IsAuthenticated ?? false)
-      {
-        <span class="navbar-text navbar-collapse collapse flex-grow-0 order-sm-2"><a asp-page="/Logout">Log out</a></span>
-      }
-      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
-</header>
-<main role="main" class="pb-3 container">
-  @RenderBody()
-</main>
+    </footer>
 
-<footer class="border-top footer text-muted">
-  <div class="container">
-    &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
-  </div>
-</footer>
+    <script src="~/lib/alpinejs/alpine.min.js"></script>
+    <script src="~/lib/popper/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.isConfirmationPopupDisabled = false;
+        window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/search.js" asp-append-version="true"></script>
 
-<script src="~/lib/alpinejs/alpine.min.js"></script>
-<script src="~/lib/popper/popper.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    window.isConfirmationPopupDisabled = false;
-    window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
-</script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/search.js" asp-append-version="true"></script>
-
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
