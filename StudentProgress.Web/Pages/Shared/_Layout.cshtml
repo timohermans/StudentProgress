@@ -84,6 +84,9 @@
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <environment include="Development">
+        <script src="http://localhost:5173/@@vite/client" type="module"></script>
+    </environment>
     <script>
         window.isConfirmationPopupDisabled = false;
         window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));

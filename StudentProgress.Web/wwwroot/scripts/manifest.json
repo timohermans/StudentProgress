@@ -1,0 +1,12 @@
+{
+  "Client/scripts/site.ts": {
+    "file": "site.ea3b6649.js",
+    "src": "Client/scripts/site.ts",
+    "isEntry": true
+  },
+  "Client/styles/site.scss": {
+    "file": "site.ee89c456.css",
+    "src": "Client/styles/site.scss",
+    "isEntry": true
+  }
+}

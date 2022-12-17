@@ -1,0 +1,8 @@
+﻿@model string
+
+<environment include="Development">
+    <link rel="stylesheet" href="http://localhost:5173/Client/styles/@(Model).scss" />
+</environment>
+<environment include="Production">
+    <link rel="stylesheet" asp-fallback-href-include="~/scripts/@(Model).*.css" />
+</environment>
