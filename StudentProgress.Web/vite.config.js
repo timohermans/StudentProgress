@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 import glob from 'glob';
+import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
+    server: { https: true },
+    plugins: [mkcert()],
     build: {
         manifest: true,
         outDir: 'wwwroot/scripts',
