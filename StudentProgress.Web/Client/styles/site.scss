@@ -2,6 +2,10 @@
 
 @import "../../node_modules/bulma/bulma.sass";
 
-.test {
-  background-color: red;
+.is-no-wrap {
+    white-space: nowrap;
+}
+
+.student img {
+    max-height: unset;
 }

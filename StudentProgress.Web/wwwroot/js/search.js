@@ -1,7 +1,10 @@
-﻿function initSearchController() {
+﻿function initNavbarController() {
     return {
+        isOpen: false,
         searchResults: [],
+        isSearching: false,
         search(event) {
+            this.isSearching = true;
             determineWhetherToSearch(event.target.value)
                 .then(doASearch)
                 .then(data => {
@@ -10,6 +13,9 @@
                 })
                 .catch(() => {
                     this.searchResults = [];
+                })
+                .finally(() => {
+                    this.isSearching = false;
                 });
         }
     }
@@ -47,5 +53,5 @@ function showPopup() {
             ],
         });
     // because initial render doesn't position correctly, update again
-    setTimeout(() => tooltip.update(), 0); 
+    setTimeout(() => tooltip.update(), 10); 
 }
