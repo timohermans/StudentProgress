@@ -5,15 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Student Progress</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>*@
     @*<link rel="stylesheet" href="~/css/site.css"/>*@
-    <link href="~/lib/bulma/css/bulma.css" rel="stylesheet" />
+    <partial name="_StylePartial" model="@("site")" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <mini-profiler />
     <header>
-        <nav nav class="navbar" role="navigation" aria-label="main navigation">
+        <nav nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a asp-page="/progress/quickadd" class="navbar-item quick-add"><svg-inject src="lib/bootstrap-icons/clipboard2-plus.svg"></svg-inject></a>
                 <a class="navbar-item" asp-area="" asp-page="/Index">Progress</a>
@@ -83,10 +82,10 @@
 
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <environment include="Development">
         <script src="http://localhost:5173/@@vite/client" type="module"></script>
     </environment>
+    <partial name="_ScriptPartial" model="@("site")" />
     <script>
         window.isConfirmationPopupDisabled = false;
         window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
