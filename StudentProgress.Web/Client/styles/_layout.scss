@@ -1,7 +1,43 @@
-﻿.cluster {
+﻿@import "_variables.scss";
+
+@mixin cluster($justify: flex-start, $align: center, $space: $gap) {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space, 1rem);
-    justify-content: flex-start;
-    align-items: center;
+    gap: $space;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin stack($justify: flex-start, $space: $gap, $splitAfter: -1) {
+    display: flex;
+    flex-direction: column;
+    justify-content: $justify;
+
+    > * {
+        margin-block: 0;
+    }
+
+    > * + * {
+        margin-block-start: $space;
+    }
+
+    @if ($splitAfter >= 0) {
+        &:only-child {
+            block-size: 100%;
+        }
+
+        > :nth-child(3) {
+            margin-block-end: auto;
+        }
+    }
+}
+
+@mixin center($measure: 100%, $isTextCentered: false) {
+    box-sizing: content-box;
+    margin-inline: auto;
+    max-inline-size: $measure;
+
+    @if ($isTextCentered) {
+        text-align: center;
+    }
 }

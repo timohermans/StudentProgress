@@ -351,3 +351,5 @@ healthchecksdb
 *.db-*
 
 StudentProgress.Web/media/**
+
+**/wwwroot/scripts/*

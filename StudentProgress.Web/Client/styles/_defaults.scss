@@ -1,0 +1,26 @@
+﻿@import "_variables.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+        "top top" 
+        "nav main";
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: 80px 1fr;
+    gap: $gap;
+    margin-left: $gap;
+    margin-top: $gap;
+}
+
+svg {
+    width: 1em;
+    height: 1em;
+}
