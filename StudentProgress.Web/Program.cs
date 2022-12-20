@@ -19,12 +19,7 @@ using StudentProgress.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-if (builder.Environment.IsProduction())
-{
-    builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
-}
-
+builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
@@ -73,7 +68,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-    app.UseHttpsRedirection();
 }
 else
 {
@@ -81,6 +75,7 @@ else
     app.UseDeveloperExceptionPage();
 }
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 var mediaPath = app.Services.GetService<ICoreConfiguration>()!.MediaLocation;
 app.UseStaticFiles(new StaticFileOptions

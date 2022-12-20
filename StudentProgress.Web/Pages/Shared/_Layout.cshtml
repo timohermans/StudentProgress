@@ -11,50 +11,27 @@
 </head>
 <body>
     <mini-profiler />
-    <header>
+    <header x-data="initNavbarController()">
         <nav nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a asp-page="/progress/quickadd" class="navbar-item quick-add"><svg-inject src="lib/bootstrap-icons/clipboard2-plus.svg"></svg-inject></a>
                 <a class="navbar-item" asp-area="" asp-page="/Index">Progress</a>
 
-                <div id="searchComponent" x-data="initSearchController()" class="navbar-item" autocomplete="off">
-                    <input id="search" type="text" class="input is-small" placeholder="search student.."
-                           x-on:input.debounce="search"
-                           autocomplete="off">
-                    <div x-show="!!searchResults.length" id="search-results" class="card" style="z-index: 1">
-                        <div class="card-content">
-                            <template x-for="student in searchResults" :key="student">
-                                <div class="list-group-item list-group-item-action">
-                                    <div class="d-flex">
-                                        <div class="align-self-center">
-                                            <img x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
-                                            <img x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
-                                        </div>
-                                        <div class="ms-2">
-                                            <p x-text="student.name"></p>
-                                            <template x-for="group in student.groups" :key="group">
-                                                <p class="d-flex align-items-center">
-                                                    <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
-                                                    <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
-                                                        <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
-                                                    </a>
-                                                </p>
-                                            </template>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
+                <div id="searchComponent" class="navbar-item" autocomplete="off">
+                    <div class="control" x-bind:class="{ 'is-loading': isSearching }">
+                        <input id="search" type="text" class="input" placeholder="search student.."
+                               x-on:input.debounce="search"
+                               autocomplete="off">
                     </div>
                 </div>
 
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <a role="button" x-on:click="isOpen = !isOpen" x-bind:class="isOpen && 'is-active'" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </a>
             </div>
-            <div class="navbar-menu">
+            <div class="navbar-menu" x-bind:class="isOpen && 'is-active'">
                 <div class="navbar-start">
                     <a class="navbar-item" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
                     <a class="navbar-item" asp-area="" asp-page="/Settings/Index">Settings</a>
@@ -69,6 +46,36 @@
             </div>
 
         </nav>
+
+        <div id="search-results" x-show="!!searchResults.length" class="card" style="z-index: 1">
+            <div class="card-content">
+                <template x-for="student in searchResults" :key="student">
+                    <div class="student">
+                        <div class="columns">
+                            <div class="column">
+                                <figure class="image is-48x48">
+                                    <img class="is-rounded" x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
+                                    <img class="is-rounded" x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
+                                </figure>
+                            </div>
+                            <div class="column">
+                                <p class="is-no-wrap" x-text="student.name"></p>
+                                <ul class="d-flex align-items-center">
+                                    <template x-for="group in student.groups" :key="group">
+                                        <li class="is-flex">
+                                            <a class="is-no-wrap" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                                            <a class="ml-1 is-flex is-align-items-end" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
+                                                <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
+                                            </a>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
     </header>
     <main role="main" class="pb-3 container">
         @RenderBody()
@@ -83,7 +90,7 @@
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>
     <environment include="Development">
-        <script src="http://localhost:5173/@@vite/client" type="module"></script>
+        <script src="https://localhost:5173/@@vite/client" type="module"></script>
     </environment>
     <partial name="_ScriptPartial" model="@("site")" />
     <script>
