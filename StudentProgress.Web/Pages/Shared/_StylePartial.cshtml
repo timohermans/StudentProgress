@@ -1,7 +1,7 @@
 ﻿@model string
 
 <environment include="Development">
-    <link rel="stylesheet" href="http://localhost:5173/Client/styles/@(Model).scss" />
+    <link rel="stylesheet" href="http://localhost:5173/Client/public/@(Model).scss" />
 </environment>
 <environment include="Production">
     <link rel="stylesheet" asp-fallback-href-include="~/scripts/@(Model).*.css" />

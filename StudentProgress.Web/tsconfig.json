@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"types": ["vite/client"],
 		"noImplicitAny": false,
 		"noEmitOnError": true,
 		"removeComments": false,
@@ -9,7 +10,7 @@
 		"moduleResolution": "node"
 	},
 	"include": [
-		"scripts/**/*"
+		"Client/**/*"
 	],
 	"exclude": [
 		"node_modules",
