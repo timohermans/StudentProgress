@@ -1,85 +1,122 @@
 ﻿@using System.Web
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Student Progress</title>
-    <partial name="_StylePartial" model="@("site")" />
-    @await RenderSectionAsync("Styles", required: false)
-</head>
-<body>
-    <mini-profiler />
+    <partial name="_StylePartial" model="@("site")" /> @(await
+    RenderSectionAsync("Styles", required: false))
+  </head>
+  <body>
+    <mini-profiler></mini-profiler>
 
-    <header id="topMenu" x-data="initNavbarController()">
-        <section id="brand">
-            <div id="brandSvg"></div>
-            <div>w17</div>
-        </section>
-        <section id="searchComponent" x-data="initSearchController()">
-            <input id="search" type="text"
-                   class="component"
-                   autocomplete="off"
-                   placeholder="search student.."
-                   x-bind:class="{ 'is-loading': isSearching }"
-                   x-on:input.debounce="search">
-        </section>
+    <header
+      id="topMenu"
+      class="mt-4 flex items-center gap-4"
+      x-data="initNavbarController()"
+    >
+      <section id="brand" class="w-32">
+        <div
+          class="mx-auto flex h-20 w-20 flex-col items-center justify-between rounded-lg bg-purple-900 p-3 text-white shadow-md shadow-purple-900/50"
+        >
+          <div id="brandSvg" class="text-3xl"></div>
+          <div>w17</div>
+        </div>
+      </section>
+
+      <section
+        id="search"
+        class="relative after:absolute after:right-2 after:content-['🔎']"
+        x-data="initSearchController()"
+      >
+        <input
+          type="text"
+          class="rounded-3xl border px-2 focus:outline-none focus:ring focus:ring-purple-700"
+          autocomplete="off"
+          placeholder="search student.."
+          x-bind:class="{ 'is-loading': isSearching }"
+          x-on:input.debounce="search"
+        />
+      </section>
     </header>
 
-    <nav id="navMenu">
-        <a id="quickAddSvg" asp-page="/progress/quickadd">
-        </a>
+    <div class="flex">
+      <nav
+        id="navMenu"
+        class="flex w-32 flex-none flex-col items-center gap-8 p-4 text-3xl"
+      >
+        <a id="quickAddSvg" asp-page="/progress/quickadd"> </a>
         <a id="groupsSvg" asp-page="/Index"></a>
         <a id="settingsSvg" asp-page="/Settings/Index"></a>
-        @if (User.Identity?.IsAuthenticated ?? false)
-        {
-            <a id="logoutSvg" asp-page="/Logout"></a>
+        @if (User.Identity?.IsAuthenticated ?? false) {
+        <a id="logoutSvg" asp-page="/Logout"></a>
         }
-    </nav>
+      </nav>
 
-    <main role="main">
-        @RenderBody()
-    </main>
+      <main role="main">@RenderBody()</main>
+    </div>
 
     <section id="searchResults" x-show="!!searchResults.length">
-        <div>
-            <template x-for="student in searchResults" :key="student">
-                <div class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div class="align-self-center">
-                            <img x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
-                            <img x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
-                        </div>
-                        <div class="ms-2">
-                            <p x-text="student.name"></p>
-                            <template x-for="group in student.groups" :key="group">
-                                <p class="d-flex align-items-center">
-                                    <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
-                                    <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
-                                        <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
-                                    </a>
-                                </p>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </div>
+      <div>
+        <template x-for="student in searchResults" :key="student">
+          <div class="list-group-item list-group-item-action">
+            <div class="d-flex">
+              <div class="align-self-center">
+                <img
+                  x-show="student.avatarPath"
+                  x-bind:src="'/media/' + student.avatarPath"
+                  x-bind:alt="student.name"
+                  width="50"
+                  height="50"
+                />
+                <img
+                  x-show="!student.avatarPath"
+                  src="/images/avatar-placeholder.png"
+                  x-bind:alt="student.name"
+                  width="50"
+                  height="50"
+                />
+              </div>
+              <div class="ms-2">
+                <p x-text="student.name"></p>
+                <template x-for="group in student.groups" :key="group">
+                  <p class="d-flex align-items-center">
+                    <a
+                      class="btn btn-link ps-0"
+                      x-text="group.name"
+                      x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"
+                    ></a>
+                    <a
+                      class="btn btn-link d-flex justify-content-center"
+                      x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`"
+                    >
+                      <svg-inject
+                        src="lib/bootstrap-icons/chat-square-quote.svg"
+                      ></svg-inject>
+                    </a>
+                  </p>
+                </template>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
     </section>
 
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>
     <environment include="Development">
-        <script src="https://localhost:5173/@@vite/client" type="module"></script>
+      <script src="https://localhost:5173/@@vite/client" type="module"></script>
     </environment>
     <partial name="_ScriptPartial" model="@("site")" />
     <script>
-        window.isConfirmationPopupDisabled = false;
-        window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
+      window.isConfirmationPopupDisabled = false;
+      window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
-</body>
+  </body>
 </html>
