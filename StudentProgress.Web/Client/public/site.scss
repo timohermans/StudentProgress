@@ -1,6 +1,7 @@
 ﻿@import '../styles/_variables.scss';
 @import '../styles/_layout.scss';
 @import '../styles/_defaults.scss';
+@import '../styles/_spacing.scss';
 
 $sideWidth: 80px;
 
@@ -24,6 +25,12 @@ $sideWidth: 80px;
     #brandSvg svg {
         height: 40px;
         width: 40px;
+    }
+
+    #search {
+        border-radius: 20px;
+        height: 30px;
+        width: 250px;
     }
 }
 
