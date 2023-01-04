@@ -1,4 +1,10 @@
-﻿@import '../styles/_variables.scss';
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../styles/defaults.scss';
+
+/*@import '../styles/_variables.scss';
 @import '../styles/_layout.scss';
 @import '../styles/_defaults.scss';
 @import '../styles/_spacing.scss';
@@ -62,3 +68,4 @@ $sideWidth: 80px;
 main {
     grid-area: main;
 }
+*/
