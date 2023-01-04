@@ -16,13 +16,14 @@
             <div id="brandSvg"></div>
             <div>w17</div>
         </section>
-        <div id="searchComponent" x-data="initSearchController()">
+        <section id="searchComponent" x-data="initSearchController()">
             <input id="search" type="text"
+                   class="component"
                    autocomplete="off"
                    placeholder="search student.."
                    x-bind:class="{ 'is-loading': isSearching }"
                    x-on:input.debounce="search">
-        </div>
+        </section>
     </header>
 
     <nav id="navMenu">
@@ -69,7 +70,7 @@
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>
     <environment include="Development">
-        <script src="https://localhost:5174/@@vite/client" type="module"></script>
+        <script src="https://localhost:5173/@@vite/client" type="module"></script>
     </environment>
     <partial name="_ScriptPartial" model="@("site")" />
     <script>

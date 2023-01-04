@@ -1,7 +1,7 @@
 ﻿@model string
 
 <environment include="Development">
-    <script src="https://localhost:5174/Client/scripts/@(Model).ts" type="module"></script>
+    <script src="https://localhost:5173/Client/scripts/@(Model).ts" type="module"></script>
 </environment>
 <environment include="Production">
     <script asp-src-include="~/scripts/@(Model).*.js"></script>
