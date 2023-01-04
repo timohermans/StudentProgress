@@ -5,87 +5,66 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Student Progress</title>
-    @*<link rel="stylesheet" href="~/css/site.css"/>*@
     <partial name="_StylePartial" model="@("site")" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <mini-profiler />
-    <header x-data="initNavbarController()">
-        <nav nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <a asp-page="/progress/quickadd" class="navbar-item quick-add"><svg-inject src="lib/bootstrap-icons/clipboard2-plus.svg"></svg-inject></a>
-                <a class="navbar-item" asp-area="" asp-page="/Index">Progress</a>
 
-                <div id="searchComponent" class="navbar-item" autocomplete="off">
-                    <div class="control" x-bind:class="{ 'is-loading': isSearching }">
-                        <input id="search" type="text" class="input" placeholder="search student.."
-                               x-on:input.debounce="search"
-                               autocomplete="off">
-                    </div>
-                </div>
-
-                <a role="button" x-on:click="isOpen = !isOpen" x-bind:class="isOpen && 'is-active'" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-            <div class="navbar-menu" x-bind:class="isOpen && 'is-active'">
-                <div class="navbar-start">
-                    <a class="navbar-item" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
-                    <a class="navbar-item" asp-area="" asp-page="/Settings/Index">Settings</a>
-                </div>
-
-                <div class="navbar-end">
-                    @if (User.Identity?.IsAuthenticated ?? false)
-                    {
-                        <a class="navbar-item" asp-page="/Logout">Log out</a>
-                    }
-                </div>
-            </div>
-
-        </nav>
-
-        <div id="search-results" x-show="!!searchResults.length" class="card" style="z-index: 1">
-            <div class="card-content">
-                <template x-for="student in searchResults" :key="student">
-                    <div class="student">
-                        <div class="columns">
-                            <div class="column">
-                                <figure class="image is-48x48">
-                                    <img class="is-rounded" x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
-                                    <img class="is-rounded" x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
-                                </figure>
-                            </div>
-                            <div class="column">
-                                <p class="is-no-wrap" x-text="student.name"></p>
-                                <ul class="d-flex align-items-center">
-                                    <template x-for="group in student.groups" :key="group">
-                                        <li class="is-flex">
-                                            <a class="is-no-wrap" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
-                                            <a class="ml-1 is-flex is-align-items-end" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
-                                                <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
-                                            </a>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-            </div>
+    <header id="topMenu" x-data="initNavbarController()">
+        <section id="brand">
+            <div id="brandSvg"></div>
+            <div>w17</div>
+        </section>
+        <div id="searchComponent" x-data="initSearchController()">
+            <input id="search" type="text"
+                   autocomplete="off"
+                   placeholder="search student.."
+                   x-bind:class="{ 'is-loading': isSearching }"
+                   x-on:input.debounce="search">
         </div>
     </header>
-    <main role="main" class="pb-3 container">
+
+    <nav id="navMenu">
+        <a id="quickAddSvg" asp-page="/progress/quickadd">
+        </a>
+        <a id="groupsSvg" asp-page="/Index"></a>
+        <a id="settingsSvg" asp-page="/Settings/Index"></a>
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <a id="logout" asp-page="/Logout">Log out</a>
+        }
+    </nav>
+
+    <main role="main">
         @RenderBody()
     </main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <section id="searchResults" x-show="!!searchResults.length">
+        <div>
+            <template x-for="student in searchResults" :key="student">
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex">
+                        <div class="align-self-center">
+                            <img x-show="student.avatarPath" x-bind:src="'/media/' + student.avatarPath" x-bind:alt="student.name" width="50" height="50">
+                            <img x-show="!student.avatarPath" src="/images/avatar-placeholder.png" x-bind:alt="student.name" width="50" height="50">
+                        </div>
+                        <div class="ms-2">
+                            <p x-text="student.name"></p>
+                            <template x-for="group in student.groups" :key="group">
+                                <p class="d-flex align-items-center">
+                                    <a class="btn btn-link ps-0" x-text="group.name" x-bind:href="`${window.applicationBaseUrl}Progress/Summary?groupId=${group.id}&studentId=${student.id}`"></a>
+                                    <a class="btn btn-link d-flex justify-content-center" x-bind:href="`${window.applicationBaseUrl}Progress/CreateEdit?groupId=${group.id}&studentId=${student.id}`">
+                                        <svg-inject src="lib/bootstrap-icons/chat-square-quote.svg"></svg-inject>
+                                    </a>
+                                </p>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
-    </footer>
+    </section>
 
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>

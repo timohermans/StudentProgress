@@ -1,0 +1,44 @@
+﻿@import '../styles/_variables.scss';
+@import '../styles/_layout.scss';
+@import '../styles/_defaults.scss';
+
+$sideWidth: 80px;
+
+#topMenu {
+    @include cluster;
+
+    grid-area: top;
+
+    #brand {
+        @include stack(center, 5px);
+
+        align-items: center;
+        color: $primaryTextColor;
+        background-color: $primary;
+        border-radius: $roundness;
+        height: 80px;
+        width: $sideWidth;
+    }
+
+    #brandSvg svg {
+        height: 40px;
+        width: 40px;
+    }
+}
+
+#navMenu {
+    grid-area: nav;
+    width: $sideWidth;
+    @include stack(flex-start, 40px);
+    align-items: center;
+
+    > a svg {
+        color: $textColor;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+main {
+    grid-area: main;
+}

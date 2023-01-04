@@ -9,6 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.10.2",
     "bulma": "^0.9.4",
     "glob": "^8.0.3",
     "vite": "^3.2.4"
