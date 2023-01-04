@@ -39,5 +39,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles" />
+    <Folder Include="wwwroot\scripts\" />
   </ItemGroup>
 </Project>

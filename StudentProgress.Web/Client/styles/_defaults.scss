@@ -6,8 +6,8 @@
 }
 
 body {
-    margin: 0;
-    padding: 0;
+    background-color: $background;
+    box-sizing: border-box;
     height: 100vh;
     display: grid;
     grid-template-areas: 
@@ -16,8 +16,10 @@ body {
     grid-template-columns: 80px 1fr;
     grid-template-rows: 80px 1fr;
     gap: $gap;
-    margin-left: $gap;
-    margin-top: $gap;
+    margin: 0;
+    padding: 0;
+    padding-left: $gap;
+    padding-top: $gap;
 }
 
 svg {

@@ -32,7 +32,7 @@
         <a id="settingsSvg" asp-page="/Settings/Index"></a>
         @if (User.Identity?.IsAuthenticated ?? false)
         {
-            <a id="logout" asp-page="/Logout">Log out</a>
+            <a id="logoutSvg" asp-page="/Logout"></a>
         }
     </nav>
 
@@ -69,7 +69,7 @@
     <script src="~/lib/alpinejs/alpine.min.js"></script>
     <script src="~/lib/popper/popper.min.js"></script>
     <environment include="Development">
-        <script src="https://localhost:5173/@@vite/client" type="module"></script>
+        <script src="https://localhost:5174/@@vite/client" type="module"></script>
     </environment>
     <partial name="_ScriptPartial" model="@("site")" />
     <script>
