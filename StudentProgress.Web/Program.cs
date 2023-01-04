@@ -71,7 +71,7 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseMiniProfiler();
+    //app.UseMiniProfiler();
     app.UseDeveloperExceptionPage();
 }
 

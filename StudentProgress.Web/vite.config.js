@@ -3,7 +3,10 @@ import glob from 'glob';
 import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
-    server: { https: true },
+    server: {
+        https: true,
+        cors: true,
+    },
     plugins: [mkcert()],
     build: {
         manifest: true,
@@ -14,7 +17,7 @@ export default defineConfig({
             polyfill: false
         },
         rollupOptions: {
-            input: [...glob.sync('Client/**/*.ts'), ...glob.sync('Client/**/*.scss')]
+            input: [...glob.sync('Client/**/*.ts'), ...glob.sync('Client/**/!(_)*.scss')]
         }
     }
 })

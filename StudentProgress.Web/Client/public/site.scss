@@ -13,9 +13,10 @@ $sideWidth: 80px;
         @include stack(center, 5px);
 
         align-items: center;
-        color: $primaryTextColor;
+        box-shadow: $shadow;
         background-color: $primary;
         border-radius: $roundness;
+        color: $primaryTextColor;
         height: 80px;
         width: $sideWidth;
     }
@@ -27,15 +28,27 @@ $sideWidth: 80px;
 }
 
 #navMenu {
+    @include stack(flex-start, 40px);
     grid-area: nav;
     width: $sideWidth;
-    @include stack(flex-start, 40px);
     align-items: center;
+
+    > a {
+        @include cluster(center);
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+    }
 
     > a svg {
         color: $textColor;
         width: 40px;
         height: 40px;
+    }
+
+    > :hover {
+        background-color: $contentBackground;
+        box-shadow: $shadow;
     }
 }
 
