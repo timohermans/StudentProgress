@@ -26,7 +26,14 @@ DELETE FROM StudentStudentGroup;
 DELETE FROM ProgressUpdate;
 DELETE FROM Student;
 DELETE FROM StudentGroup;
-DELETE FROM Settings;");
+DELETE FROM Settings;
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'MilestoneProgress';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Milestone';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'StudentStudentGroup';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'ProgressUpdate';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Student';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'SudentGroup';
+");
         }
     }
 }

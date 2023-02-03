@@ -74,7 +74,6 @@ if (!app.Environment.IsDevelopment())
 else
 {
     app.UseMiniProfiler();
-    app.UseBrowserLink();
     app.UseDeveloperExceptionPage();
 }
 

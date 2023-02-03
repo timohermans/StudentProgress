@@ -73,35 +73,28 @@ namespace StudentProgress.CoreTests.UseCases
             summary.StudentAvatarPath.Should().Be(timo.AvatarPath);
             summary.Period.Should().Be(group.Period);
             summary.Milestones.Should().HaveCount(3);
-            summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse
-            {
-                IdLastProgressUpdate = updateB.Id,
-                Artefact = "a. 1",
-                LearningOutcome = "first",
-                Rating = Rating.Advanced,
-                Comment = null,
-                TimesWorkedOn = 2
-            });
+            var summaryMilestoneA = summary.Milestones.ElementAt(0);
+            summaryMilestoneA.Artefact.Should().Be("a. 1");
+            summaryMilestoneA.Learning_outcome.Should().Be("first");
+            summaryMilestoneA.Milestone_progresses.ElementAt(0).Id.Should().Be(3);
+            summaryMilestoneA.Milestone_progresses.ElementAt(0).Comment.Should().Be(null);
+            summaryMilestoneA.Milestone_progresses.ElementAt(0).Rating.Should().Be(Rating.Advanced);
+            summaryMilestoneA.Milestone_progresses.ElementAt(0).Progress_update_date.Should().Be(new DateTime(2021, 2, 22));
+            summaryMilestoneA.Milestone_progresses.ElementAt(1).Id.Should().Be(1);
+            summaryMilestoneA.Milestone_progresses.ElementAt(1).Comment.Should().Be("orienting");
+            summaryMilestoneA.Milestone_progresses.ElementAt(1).Rating.Should().Be(Rating.Orienting);
+            summaryMilestoneA.Milestone_progresses.ElementAt(1).Progress_update_date.Should().Be(new DateTime(2021, 1, 11));
 
-            summary.Milestones.Should().Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse
-            {
-                IdLastProgressUpdate = updateA.Id,
-                Artefact = "b. 2",
-                LearningOutcome = "first",
-                Rating = Rating.Undefined,
-                Comment = "undefined",
-                TimesWorkedOn = 1
-            });
-            summary.Milestones.Should()
-                .Contain(new ProgressGetSummaryForStudentInGroup.MilestoneResponse
-                {
-                    IdLastProgressUpdate = null,
-                    Artefact = "c. 3",
-                    LearningOutcome = "first",
-                    Rating = null,
-                    Comment = null,
-                    TimesWorkedOn = 0
-                });
+
+            var summaryMilestoneB = summary.Milestones.ElementAt(1);
+            summaryMilestoneB.Artefact.Should().Be("b. 2");
+            summaryMilestoneB.Learning_outcome.Should().Be("first");
+            summaryMilestoneB.Milestone_progresses.Should().HaveCount(1);
+            summaryMilestoneB.Milestone_progresses.ElementAt(0).Id.Should().Be(2);
+            summaryMilestoneB.Milestone_progresses.ElementAt(0).Comment.Should().Be("undefined");
+            summaryMilestoneB.Milestone_progresses.ElementAt(0).Rating.Should().Be(Rating.Undefined);
+            summaryMilestoneB.Milestone_progresses.ElementAt(0).Progress_update_date.Should().Be(new DateTime(2021, 1, 11));
+
             summary.ProgressUpdates.Should().HaveCount(2);
             summary.ProgressUpdates.Should().Contain(new ProgressGetSummaryForStudentInGroup.ProgressUpdateResponse(
                 updateA.Id,

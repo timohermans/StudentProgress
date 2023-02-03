@@ -29,11 +29,6 @@ namespace StudentProgress.Web.Pages.Progress
             .GroupBy(milestone => milestone.LearningOutcome.Value)
             .ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
 
-        public Dictionary<string, string> LearningOutcomeNavIds => Milestones
-            .Select(m => m.LearningOutcome)
-            .Distinct()
-            .ToDictionary(k => k.Value, l => l.Value.StripFromAllButLetters());
-
         [BindProperty] public ProgressCreateOrUpdate.Command Progress { get; set; } = null!;
 
         public CreateEditModel(ProgressContext context)

@@ -31,26 +31,7 @@ namespace StudentProgress.Web.Pages.UIHelpers
                 return $"{borderClass} bg-white";
             }
 
-            var colorClass = update.Feeling switch
-            {
-                Feeling.Bad => "bg-danger",
-                Feeling.Neutral => "bg-warning",
-                Feeling.Good => "bg-success",
-                _ => ""
-            };
-
-            return $"{colorClass} {borderClass} timeline-item-hoverable";
-        }
-
-        public static string ToFeelingBackgroundColor(Feeling feeling)
-        {
-            return feeling switch
-            {
-                Feeling.Bad => "bg-danger",
-                Feeling.Neutral => "bg-warning",
-                Feeling.Good => "bg-success",
-                _ => ""
-            };
+            return $"{borderClass} bg-dark timeline-item-hoverable";
         }
     }
 }

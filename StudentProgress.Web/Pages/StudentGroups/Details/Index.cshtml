@@ -196,7 +196,7 @@
                                     <td x-show="isSelecting">
                                         <input x-model="milestonesSelected" type="checkbox" value="@milestone.Id">
                                     </td>
-                                    <td headers="milestone-artefact" class="ps-4">@milestone.Artefact</td>
+                                    <td headers="milestone-artefact" class="ps-4 parse-newline">@milestone.Artefact</td>
                                     <td headers="milestone-actions">
                                         <a asp-page="/milestones/edit" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Edit</a> |
                                         <a asp-page="/milestones/delete" asp-route-id="@milestone.Id" asp-route-groupId="@Model.StudentGroup.Id">Delete</a>

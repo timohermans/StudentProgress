@@ -44,7 +44,7 @@ namespace StudentProgress.CoreTests.Extensions
       return update;
     }
 
-    public static ProgressUpdate HasMilestoneProgressCommentAt(this ProgressUpdate update, int index, string comment)
+    public static ProgressUpdate HasMilestoneProgressCommentAt(this ProgressUpdate update, int index, string? comment)
     {
       update.MilestonesProgress.ElementAt(index).Comment.Should().Be(comment);
       return update;

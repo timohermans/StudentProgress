@@ -32,10 +32,10 @@ namespace StudentProgress.Core.UseCases
             public int? Id { get; set; }
             [Required] public int StudentId { get; set; }
             [Required] public int GroupId { get; set; }
-            [Required] public Feeling Feeling { get; set; }
+            [Required] public Feeling Feeling { get; set; } = Feeling.Neutral;
             [Required]
             [DisplayName("Is reviewed")]
-            public bool IsReviewed { get; set; }
+            public bool IsReviewed { get; set; } = true;
             public DateTime Date { get; set; }
 
             [Required]
@@ -105,7 +105,7 @@ namespace StudentProgress.Core.UseCases
 
         private async Task<Result<List<MilestoneProgress>>> GetMilestonesFrom(List<MilestoneProgressCommand> milestonesProgress)
         {
-            var milestonesToAdd = milestonesProgress.Where(m => m.Rating != null).ToList();
+            var milestonesToAdd = milestonesProgress.ToList();
             var milestoneIds = milestonesToAdd.Select(m => m.MilestoneId);
             var milestones = await _context.Milestones.Where(m => milestoneIds.Contains(m.Id)).ToListAsync();
             var milestoneProgressWithRating = milestones

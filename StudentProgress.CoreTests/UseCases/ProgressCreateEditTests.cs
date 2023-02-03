@@ -50,7 +50,7 @@ namespace StudentProgress.CoreTests.UseCases
                     new ProgressCreateOrUpdate.MilestoneProgressCommand
                     {
                         MilestoneId = group.Milestones.FirstOrDefault(m => m.Artefact == "SOLID principles")!.Id,
-                        Rating = Rating.Orienting, Comment = "Still not what it should be"
+                        Rating = null, Comment = "Still not what it should be"
                     }
                 }
             };
@@ -67,9 +67,11 @@ namespace StudentProgress.CoreTests.UseCases
                 .HasFeedback("Come on!")
                 .HasFeeling(Feeling.Neutral)
                 .IsNotReviewed()
-                .HasMilestonesProgressCount(1)
-                .HasMilestoneProgressRatingAt(0, Rating.Orienting)
-                .HasMilestoneProgressCommentAt(0, "Still not what it should be");
+                .HasMilestonesProgressCount(2)
+                .HasMilestoneProgressRatingAt(0, Rating.Undefined)
+                .HasMilestoneProgressCommentAt(0, null)
+                .HasMilestoneProgressRatingAt(1, Rating.Undefined)
+                .HasMilestoneProgressCommentAt(1, "Still not what it should be");
         }
 
         [Fact]
@@ -156,7 +158,7 @@ namespace StudentProgress.CoreTests.UseCases
                 .HasFeedback("back")
                 .HasFeeling(Feeling.Good)
                 .IsReviewed()
-                .HasMilestonesProgressCount(2)
+                .HasMilestonesProgressCount(3)
                 .HasMilestoneProgressIdAt(0,
                     progress.MilestonesProgress.FirstOrDefault(mp => mp.Milestone == milestoneCompleteness)!.Id)
                 .HasMilestoneProgressRatingAt(0, Rating.Advanced)

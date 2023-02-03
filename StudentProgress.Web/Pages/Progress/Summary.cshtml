@@ -80,30 +80,17 @@
             <thead>
                 <tr>
                     <th>Artefact</th>
-                    <th>Rating</th>
-                    <th># Updated</th>
-                    <th>Last comment</th>
+                    <th>#</th>
+                    <th>Feedback</th>
                 </tr>
             </thead>
             <tbody>
 
-                @foreach (var learningOutcomeGrouping in Model.Summary.Milestones.ToLookup(m => m.LearningOutcome))
+                @foreach (var learningOutcomeGrouping in Model.Summary.Milestones.ToLookup(m => m.Learning_outcome))
                 {
                     <tr>
                         <td>
                             <h3>@learningOutcomeGrouping.Key</h3>
-                        </td>
-                        <td class="align-middle">
-                            <div class="progress">
-                                @if (learningOutcomeGrouping.Any(l => l.Rating != null))
-                                {
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Advanced) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Proficient) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Beginning) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Orienting) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <div class="progress-bar bg-dark" role="progressbar" style="width: @(learningOutcomeGrouping.Count(l => l.Rating == Rating.Undefined) * 100 / learningOutcomeGrouping.Count())%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                }
-                            </div>
                         </td>
                         <td colspan="2"></td>
                     </tr>
@@ -111,27 +98,18 @@
                     {
                         <tr>
                             <td>
-                                @if (milestone.IdLastProgressUpdate.HasValue)
-                                {
-                                    <a asp-page="./CreateEdit" asp-route-id="@milestone.IdLastProgressUpdate" asp-route-studentId="@Model.Summary.StudentId" asp-route-groupId="@Model.Summary.GroupId">
-                                        @milestone.Artefact
-                                    </a>
-                                }
-                                else
-                                {
-                                    @milestone.Artefact
-                                }
+                                <span class="parse-newline">@milestone.Artefact</span>
                             </td>
+                            <td>@milestone.Milestone_progresses.Count()</td>
                             <td>
-                                <div class="btn-group btn-group-sm" role="group" aria-label="@milestone.Artefact">
-                                    @for (int i = 1; i <= Enum.GetValues<Rating>().Length; i++)
-                                    {
-                                        <button type="button" class="btn btn-@(MilestoneUiHelper.RatingColor(milestone.Rating, i) ?? "light")" disabled>@i</button>
-                                    }
-                                </div>
+                                @foreach (var milestone_progress in milestone.Milestone_progresses)
+                                {
+                                    <div class="mb-2">
+                                        <span>[@milestone_progress.Progress_update_date]<br /></span>
+                                        <span class="parse-newline"> @milestone_progress.Comment</span>
+                                    </div>
+                                }
                             </td>
-                            <td>@milestone.TimesWorkedOn</td>
-                            <td class="feedback-text">@milestone.Comment</td>
                         </tr>
                     }
                 }

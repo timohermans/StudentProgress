@@ -12,7 +12,11 @@
         <div class="text-danger" asp-validation-summary="All"></div>
         @Html.HiddenFor(m => m.Command.Id)
         @Html.FormBlock(m => m.Command.LearningOutcome)
-        @Html.FormBlock(m => m.Command.Artefact)
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Comments" rows="1"
+                      asp-for="Command.Artefact">@Model.Command.Artefact</textarea>
+            <label asp-for="Command.Artefact"></label>
+        </div>
         @Html.SubmitBlock("Save")
     </form>
 </section>

@@ -15,7 +15,7 @@
       <input type="hidden" asp-for="Milestone.GroupId" value="@Model.Group.Id" />
       <div asp-validation-summary="All"></div>
       @Html.FormBlock(m => m.Milestone.LearningOutcome, inputModifier: _ => _.Attr("autofocus"))
-      @Html.FormBlock(m => m.Milestone.Artefact)
+      @Html.FormBlock(m => m.Milestone.Artefact, inputModifier: _ => _.TagName("textarea"))
       <div>
         <button type="submit" class="btn btn-outline-primary" asp-page-handler="AndAddAnother">Create and add another</button>
         <button type="submit" class="btn btn-primary">Create</button>

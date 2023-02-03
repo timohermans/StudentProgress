@@ -16,12 +16,11 @@ namespace StudentProgress.Core.UseCases
         public record MilestoneResponse
         {
             public required string Artefact { get; set; }
-            public required string LearningOutcome { get; set; }
-            public int? IdLastProgressUpdate { get; set; }
-            public Rating? Rating { get; set; }
-            public string? Comment { get; set; }
-            public required int TimesWorkedOn { get; set; }
+            public required string Learning_outcome { get; set; }
+            public required IEnumerable<Milestone_progress> Milestone_progresses { get; set; }
         }
+
+        public record Milestone_progress(int Id, string? Comment, Rating Rating, DateTime Progress_update_date);
 
         public record ProgressUpdateResponse(int Id, DateTime Date, Feeling Feeling, int StudentId, int GroupId);
 
@@ -84,8 +83,9 @@ namespace StudentProgress.Core.UseCases
             }
 
             var milestones = await _context.Milestones.Where(m => m.StudentGroup.Id == query.GroupId).ToListAsync(token);
-            var studentMilestoneProgresses = await _context.MilestoneProgresses
+            var student_milestone_progresses = await _context.MilestoneProgresses
                 .Include(mp => mp.Milestone)
+                .Include(mp => mp.ProgressUpdate)
                 .Where(mp =>
                     mp.ProgressUpdate.StudentId == query.StudentId && mp.Milestone.StudentGroup.Id == query.GroupId)
                 .OrderByDescending(mp => mp.ProgressUpdate.Date)
@@ -101,21 +101,17 @@ namespace StudentProgress.Core.UseCases
 
             var milestonesSummary = milestones.Select(milestone =>
                 {
-                    var milestoneProgresses =
-                        studentMilestoneProgresses.Where(mp => mp.Milestone.Id == milestone.Id).ToList();
-                    var latestProgress = milestoneProgresses.FirstOrDefault();
+                    var milestone_progresses =
+                        student_milestone_progresses.Where(mp => mp.Milestone.Id == milestone.Id).ToList();
 
                     return new MilestoneResponse
                     {
                         Artefact = milestone.Artefact,
-                        LearningOutcome = milestone.LearningOutcome,
-                        IdLastProgressUpdate = latestProgress?.ProgressUpdateId,
-                        Rating = latestProgress?.Rating,
-                        Comment = latestProgress?.Comment,
-                        TimesWorkedOn = milestoneProgresses.Count
+                        Learning_outcome = milestone.LearningOutcome,
+                        Milestone_progresses = milestone_progresses.Select(mp => new Milestone_progress(mp.Id, mp.Comment, mp.Rating, mp.ProgressUpdate.Date))
                     };
                 })
-                .OrderBy(m => m.LearningOutcome)
+                .OrderBy(m => m.Learning_outcome)
                 .ThenBy(m => m.Artefact)
                 .ToList();
 

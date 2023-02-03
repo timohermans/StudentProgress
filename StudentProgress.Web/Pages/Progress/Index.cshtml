@@ -23,7 +23,7 @@
 <div id="status-overview" class="progress-timeline">
     @foreach (var (progressUpdate, index) in Model.Student.ProgressUpdates.Reverse().WithIndex())
     {
-        <a href="#feedback-@progressUpdate.Id" class="timeline-item @ProgressUpdateUIHelper.ToFeelingBackgroundColor(progressUpdate.Feeling)"></a>
+        <a href="#feedback-@progressUpdate.Id" class="timeline-item bg-dark"></a>
         @if (index == 0 || index == Model.Student.ProgressUpdates.Count() - 1) { 
             <span class="timeline-date text-muted @(index != 0 ? "start-date" : "")">@progressUpdate.Date.ToShortDateString()</span>
         }
@@ -38,7 +38,7 @@
             <section id="feedback-@progressUpdate.Id" class="card mb-3">
                 <h4 class="card-header d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle @ProgressUpdateUIHelper.ToFeelingBackgroundColor(progressUpdate.Feeling) me-3"></div>
+                        <div style="display: inline-block; width:25px; height: 25px" class="rounded-circle bg-dark me-3"></div>
                         @progressUpdate.Date.ToString("yyyy-MM-dd HH:mm")
                     </div>
                     <a class="btn btn-link" asp-page="./CreateEdit" asp-route-groupId="@Model.Student.GroupId" asp-route-studentId="@Model.Student.StudentId" asp-route-id="@progressUpdate.Id">Edit</a>

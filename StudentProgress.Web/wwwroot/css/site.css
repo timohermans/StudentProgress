@@ -114,7 +114,7 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.feedback-text {
+.feedback-text, .parse-newline {
     white-space: pre-line;
 }
 
