@@ -16,6 +16,7 @@ public class GroupImportFromCanvasTests : DatabaseTests
     [Fact]
     public async Task Imports_the_selected_canvas_course_section_as_a_group()
     {
+        Fixture.DataMother.CreateGroup("Random other group", null, null, null, new TestStudent("Luuk"));
         var client = new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
         var config = new CoreTestConfiguration();
         var imageDir = Path.Combine(config.MediaLocation, "images", "avatars");
@@ -51,8 +52,8 @@ public class GroupImportFromCanvasTests : DatabaseTests
         await uc.Handle(request, CancellationToken.None);
 
         await using var assertDb = Fixture.CreateDbContext();
-        var resultGroup = await assertDb.Groups.Include(g => g.Students).FirstAsync();
-        resultGroup.Name.Should().Be((Name)"S-DB-S2-CMK - S2-DB02 - 2223nj");
+        var resultGroup = await assertDb.Groups.Include(g => g.Students).FirstOrDefaultAsync(g => g.Name == "S-DB-S2-CMK - S2-DB02 - 2223nj");
+        resultGroup.Should().NotBeNull();
         resultGroup.Period.StartDate.Should().Be(new DateTime(2022, 8, 29));
         var resultStudents = resultGroup.Students;
         resultStudents.Should().HaveCount(2);

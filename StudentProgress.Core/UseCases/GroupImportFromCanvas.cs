@@ -73,7 +73,7 @@ public class GroupImportFromCanvas : IUseCaseBase<GroupImportFromCanvas.Request,
         {
             Student student;
             var studentInGroup = group.Students.FirstOrDefault(s => s.ExternalId == studentRequest.CanvasId);
-            var studentInDb = studentsAlreadyInDb.FirstOrDefault(s => s.ExternalId == studentRequest.CanvasId);
+            var studentInDb = studentsAlreadyInDb.FirstOrDefault(s => s.Name == studentRequest.Name);
 
             if (studentInGroup is not null) student = studentInGroup;
             if (studentInDb is not null)
