@@ -29,6 +29,24 @@ Project to track people, whether that's students, team members or yourself.
 ![showcase](./docs/features.gif)
 
 ## Installation
+The project can be run with either dotnet itself or docker. 
+It is recommended to run dotnet for development usecases and docker when runnen in production.
+
+### Run migrations
+
+Before you're able to run the application, you have to apply migrations. See the [Development](#migrations) section for more instructions.
+
+### Dotnet
+
+To run the project, execute the following command in the `StudentProgress.Web` folder:
+
+```shell
+dotnet run
+```
+
+or open the solution in an IDE and start from there.
+
+### Docker
 To run the project, execute the following command in this folder:
 
 ```bash
@@ -44,26 +62,17 @@ docker-compose up -d --build
 
 ## Config
 
-Project works out of the box. You can, however, change a couple of variables
-
-> Change these values in the [docker-compose.yml](docker-compose.yml) file if necessary
-
-### Port
-
-By default the port is 80. See `ports` in the `student-progress` service
+To make the project run, you are required to initially put `Auth0` config values in the `appsettings.Development.json`.
+This appsettings file can be copied from `appsettings.Development.example.json`.
 
 ### Database
 
-By default the docker-compose spins up a PostgreSQL instance.
-You can use your own PostgreSQL instance by adding and/or changing the following environment variables on the `student-progress` service:
+There is no database configuration changes required, as the project uses Sqlite3 with EntityFramework.
+You can, however, change the path of the database file in the `appsettings`.json
 
-> Note that you cannot use a different database provider for now, because I've used Dapper for several queries
+### Production
 
-- DB_HOST
-- DB_PORT
-- DB_USERNAME
-- DB_PASSWORD
-- DB_DATABASE
+TODO
 
 ## Development
 
