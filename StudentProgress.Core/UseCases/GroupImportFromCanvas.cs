@@ -69,7 +69,7 @@ public class GroupImportFromCanvas : IUseCaseBase<GroupImportFromCanvas.Request,
         var imageLocation = Path.Combine(_config.MediaLocation, relativeAvatarLocation);
         if (!Directory.Exists(imageLocation)) Directory.CreateDirectory(imageLocation);
         
-        foreach (var studentRequest in request.Students)
+        foreach (var studentRequest in request.Students.DistinctBy(s => s.Name))
         {
             Student student;
             var studentInGroup = group.Students.FirstOrDefault(s => s.ExternalId == studentRequest.CanvasId);

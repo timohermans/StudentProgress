@@ -20,7 +20,33 @@
             </li>
         }
     </ul>
-
+    
+    @if(Model.Semesters?.Any() ?? false) {
+        <section>
+            <h3>All</h3>
+            <form method="post">
+                    <input type="hidden" name="Semester.CanvasId" value="@(Model.Semesters[0].CanvasId)">
+                    <input type="hidden" name="Semester.Name" value="@(Model.Semesters[0].Name)">
+                    <input type="hidden" name="Semester.TermName" value="@(Model.Semesters[0].TermName)">
+                    <input type="hidden" name="Semester.TermStartsAt" value="@(Model.Semesters[0].TermStartsAt)">
+                    <input type="hidden" name="Semester.TermEndsAt" value="@(Model.Semesters[0].TermEndsAt)">
+                    <input type="hidden" name="Semester.SectionCanvasId" value="0">
+                    <input type="hidden" name="Semester.SectionName" value="All">
+                    
+                    @foreach (var semester in Model.Semesters)
+                    {
+                        @foreach (var (student, index) in semester.Students.WithIndex())
+                        {
+                            <input type="hidden" name="Semester.Students[@(index)].Name" value="@student.Name">
+                            <input type="hidden" name="Semester.Students[@(index)].AvatarUrl" value="@student.AvatarUrl">
+                            <input type="hidden" name="Semester.Students[@(index)].CanvasId" value="@student.CanvasId">
+                        }
+                    }
+                    <input type="submit" value="Manage all" formaction="@(Request.Path)"/>
+            </form>
+        </section>
+    }
+    
     @foreach (var semester in Model.Semesters)
     {
         <section id="section-@(semester.SectionCanvasId)">

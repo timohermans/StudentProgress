@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ public class Details : PageModel
     private readonly GetCourseDetailsUseCase _getUseCase;
     private readonly GroupImportFromCanvas _importUseCase;
 
-    public IEnumerable<GetCourseDetailsResponse>? Semesters { get; set; } = null!;
+    public IList<GetCourseDetailsResponse>? Semesters { get; set; } = null!;
 
     [BindProperty] public GroupImportFromCanvas.Request Semester { get; set; } = null!;
     
@@ -29,7 +31,7 @@ public class Details : PageModel
 
     public async Task OnGetAsync(string id, CancellationToken token)
     {
-        Semesters = (await _getUseCase.Handle(new GetCourseDetailsUseCase.Command(id), token)).Courses;
+        Semesters = (await _getUseCase.Handle(new GetCourseDetailsUseCase.Command(id), token)).Courses.ToImmutableList();
     }
 
     public async Task<IActionResult> OnPostAsync(CancellationToken token)
