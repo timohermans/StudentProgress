@@ -1,89 +1,100 @@
-﻿section {
-    display: flex;
+﻿:root {
+    --table_color: white;
 }
 
-.bg-white {
-    background-color: white;
-}
-
-.fixed li {
-    white-space: nowrap;
-}
-
-.header-filler {
+.border--top-left {
     border-top-left-radius: 0.5rem;
 }
 
-.header-columns {
+.border--top-right {
     border-top-right-radius: 0.5rem;
 }
 
-.scrollable {
-    overflow-x: scroll;
-    border-bottom-right-radius: 0.5rem;
-}
-
-.fixed {
+.border--bottom-left, .border--bottom-left :last-child {
     border-bottom-left-radius: 0.5rem;
 }
 
-main ul {
+.border--bottom-right {
+    border-bottom-right-radius: 0.5rem;
+}
+
+.header {
+    display: flex;
+    position: sticky;
+    top: 0;
+}
+
+.column-collection, .column {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    background-color: white;
+    background-color: var(--table_color);
 }
 
-    main ul li {
-        align-items: center;
-        display: flex;
-        height: 80px;
-        justify-content: center;
-        padding: 1rem;
-        border-top: 1px solid var(--white-50);
-        border-bottom: 1px solid var(--white-50);
-    }
+.column-collection {
+    display: flex;
+}
 
-.names, .header-container > :first-child {
+.column-collection--auto-scroll {
+    overflow-x: hidden;
+}
+
+.column-collection--scrollable {
+    overflow-x: scroll;
+}
+
+.column-collection--no-background {
+    background-color: unset;
+}
+
+.cell {
+    background-color: var(--table_color);
+    min-width: 400px;
+    width: 400px;
+    height: 100px;
+    padding: 0 1rem;
+    overflow-y: auto;
+    border-top: 1px solid var(--white-50);
+    border-bottom: 1px solid var(--white-50);
+}
+
+.cell--narrow {
     min-width: 170px;
     width: 170px;
 }
 
-    .names li {
-        justify-content: flex-start;
-    }
+.cell--no-wrap {
+    white-space: nowrap;
+}
 
-.student-name {
+.cell--align-middle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.cell--flex {
+    display: flex;
+    gap: 4px;
+}
+
+.cell--short {
+    height: 50px;
+}
+
+.cell__prefix {
+    align-self: center;
+}
+
+.cell__content {
+    overflow-y: auto;
+}
+
+.text--add-dots {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-    .student-name:hover {
-        overflow: visible;
-    }
-
-.header-container li, .scrollable li {
-    min-width: 100px;
-    width: 100px;
-}
-
-.header-container {
-    display: flex;
-    position: sticky;
-    top: 0;
-}
-
-.header {
-    overflow-x: hidden;
-    position: sticky;
-    top: 0;
-}
-
-main .header-container ul li {
-    height: unset;
-    display: block;
-    overflow: hidden;
-    padding: 1rem 0.5rem;
-    font-size: 2vh;
-    word-wrap: break-word;
+.text--add-dots:hover {
+    overflow: visible;
 }

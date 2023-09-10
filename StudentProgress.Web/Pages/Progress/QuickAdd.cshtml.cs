@@ -109,7 +109,7 @@ public class QuickAdd : PageModel
                 var progressUpdate = new ProgressUpdate(
                     student,
                     group,
-                    null,
+                    "Dit is een quick add update",
                     (int)rating switch
                     {
                         < 3 => Feeling.Bad,

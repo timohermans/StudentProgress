@@ -4,67 +4,88 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/milestones.css" />
+  <link rel="stylesheet" href="~/css/milestones.css"/>
 }
 
 @section Scripts {
-    <script>
+  <script>
         window.isConfirmationPopupDisabled = true;
         document.querySelector('select#milestoneId').addEventListener('change', event => {
             event.target.form.submit();
         });
 
-        const header = document.querySelector('.header');
-        document.querySelector('.scrollable').addEventListener('scroll', evt => {
+        const header = document.querySelector('.column-collection--auto-scroll');
+        document.querySelector('.column-collection--scrollable').addEventListener('scroll', evt => {
             header.scrollLeft = evt.target.scrollLeft;
         });
     </script>
 }
 
 <section id="nav">
-    <a asp-page="/StudentGroups/Index">Groups</a> <span> > </span>
-    <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.ViewModel.GroupId">@Model.ViewModel.GroupName</a> <span> > </span>
-    Milestone overview
+  <a asp-page="/StudentGroups/Index">Groups</a> <span> > </span>
+  <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.ViewModel.GroupId">@Model.ViewModel.GroupName</a> <span> > </span>
+  Milestone overview
 </section>
 
 
 <h1>Milestones of @Model.ViewModel.GroupName</h1>
 
 <form>
-    <input type="hidden" name="groupId" value="@Model.ViewModel.GroupId" />
-    <p class="w-50">
-        <label for="milestoneId">Milestones</label>
-        <select asp-items="@Model.ViewModel.MilestonesToSelect" name="milestoneId" id="milestoneId" class="form-control"></select>
-    </p>
+  <input type="hidden" name="groupId" value="@Model.ViewModel.GroupId"/>
+  <p class="w-50">
+    <label for="milestoneId">Milestones</label>
+    <select asp-items="@Model.ViewModel.MilestonesToSelect" name="milestoneId" id="milestoneId" class="form-control"></select>
+  </p>
 </form>
 
-<div class="header-container">
-    <div class="header-filler bg-white"></div>
-    <ul class="header header-columns d-flex bg-white">
-        @foreach (var milestone in Model.ViewModel.MilestonesToDisplay)
-        {
-            <li>@milestone.Name</li>
-        }
-    </ul>
+<div class="header">
+  <div class="cell cell--narrow cell--short border--top-left"></div>
+  <ul class="column-collection column-collection--auto-scroll border--top-right">
+    @foreach (var milestone in Model.ViewModel.MilestonesToDisplay)
+    {
+      <li class="cell cell--short cell--align-middle cell-no-wrap">@milestone.Name</li>
+    }
+  </ul>
 </div>
 
-<section class="content">
-    <ul class="names fixed">
+<section class="column-collection column-collection--no-background">
+  <ul class="column border--bottom-left">
+    @foreach (var student in Model.ViewModel.Students)
+    {
+      <li class="cell cell--narrow cell--no-wrap cell--align-middle">
+        <div class="text--add-dots">@student.Name</div>
+      </li>
+    }
+  </ul>
+
+  <section class="column-collection column-collection--scrollable border--bottom-right">
+    @foreach (var milestone in Model.ViewModel.MilestonesToDisplay)
+    {
+      <ul class="column">
         @foreach (var student in Model.ViewModel.Students)
         {
-            <li><div class="student-name">@student.Name</div></li>
-        }
-    </ul>
+          MilestoneViewModel? milestoneVm = student.Milestones.FirstOrDefault(m => m.Id == milestone.Id);
 
-    <section class="scrollable">
-        @foreach (var milestone in Model.ViewModel.MilestonesToDisplay)
-        {
-            <ul>
-                @foreach (var student in Model.ViewModel.Students)
+          <li class="cell cell--flex">
+            <span class="cell__prefix">
+              @(milestoneVm?.LatestRating?.ToFriendlyString() ?? "-")
+            </span>
+
+            <div class="cell__content">
+              @if (milestoneVm?.AllRatings != null)
+              {
+                foreach (var progress in milestoneVm?.AllRatings)
                 {
-                    <li>@(student.Milestones.FirstOrDefault(m => m.Id == milestone.Id)?.LatestRating?.ToFriendlyString() ?? "-")</li>
+                  <p>
+                    [@progress.Date] <br/>
+                    @progress.Comment
+                  </p>
                 }
-            </ul>
+              }
+            </div>
+          </li>
         }
-    </section>
+      </ul>
+    }
+  </section>
 </section>

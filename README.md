@@ -5,23 +5,27 @@ Project to track people, whether that's students, team members or yourself.
 ## Table of contents
 
 - [Student Progress](#student-progress)
-  * [Feature showcase](#feature-showcase)
-  * [Installation](#installation)
-  * [Config](#config)
-    + [Port](#port)
-    + [Database](#database)
-  * [Development](#development)
-    + [Migrations](#migrations)
-    + [Integration tests](#integration-tests)
-    + [Unit Tests](#unit-tests)
-  * [Technical design](#technical-design)
-    + [Context Diagram](#context-diagram)
-    + [Container Diagram](#container-diagram)
-    + [Component Diagram](#component-diagram)
+  - [Table of contents](#table-of-contents)
+  - [Feature showcase](#feature-showcase)
+  - [Installation](#installation)
+    - [Run migrations](#run-migrations)
+    - [Dotnet](#dotnet)
+    - [Docker](#docker)
+  - [Config](#config)
+    - [Database](#database)
+    - [Production](#production)
+  - [Development](#development)
+    - [Migrations](#migrations)
+    - [Integration tests](#integration-tests)
+    - [Unit Tests](#unit-tests)
+  - [Technical design](#technical-design)
+    - [Context Diagram](#context-diagram)
+    - [Container Diagram](#container-diagram)
+    - [Component Diagram](#component-diagram)
       - [Progress CreateEdit PageModel](#progress-createedit-pagemodel)
-      - [ProgressCreateOrUpdateUseCase](#progresscreateorupdateusecase)
-      - [ProgressContext](#progresscontext)
-    + [Domain model](#domain-model)
+      - [ProgressCreateOrUpdateUseCase and ProgressUpdate](#progresscreateorupdateusecase-and-progressupdate)
+    - [Domain model](#domain-model)
+      - [Entity relationships](#entity-relationships)
 
 
 ## Feature showcase
@@ -196,16 +200,29 @@ There are, however, some notable differences:
 
 Finally, you might notice I've made a lot of use of the [CSharpFunctionalExtensions Nuget package](https://github.com/vkhorikov/CSharpFunctionalExtensions). This is also heavily inspired by Vladimir Khorikov, but also my love for functional programming.
 
-#### ProgressContext
-
-In almost every UseCase Entity Framework is used to query or mutate the database.
-There is, however, a notable exception when retrieving StudentGroup details.
-For this I've used [Dapper](https://dapperlib.github.io/Dapper/).
-The reason I used Dapper for this is that I wanted to test Dapper and because it's quite a hefty query to perform.
-
 ### Domain model
 
 See below the domain model of all the entities.
 Note that the ValueObjects and enums have been omitted to keep the model as simple as possible.
 
+
 ![domain model](./docs/c4-model-domain.png)
+
+#### Entity relationships
+
+Below contains a Mermaid ER diagram of the functional relationships. The reason I call it functional is, because I intentionally left out the relationsihops that might clutter the diagram. For example, `ProgressUpdate` also has a relationship with `Group`. Another example is that `MilestoneProgress` has relationships to `Milestone` and `Group`. Though again, this will only confuse the reader.
+
+A MilestoneProgress cannot live without a ProgressUpdate
+
+```mermaid
+---
+title: ER diagram
+---
+erDiagram
+    Group }o--o{ Student : has
+    Group ||--o{ Milestone : contains
+    Student ||--o{ ProgressUpdate : has
+    ProgressUpdate ||--o{ MilestoneProgress: has
+
+    
+```

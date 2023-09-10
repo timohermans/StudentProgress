@@ -42,7 +42,7 @@ public class MilestoneViewModel
     public required int Id { get; set; }
     public required string Name { get; set; }
     public int AmountOfUpdates => AllRatings.Count();
-    public required IEnumerable<(DateTime Date, Rating Rating)> AllRatings { get; set; }
+    public required IEnumerable<(DateTime Date, Rating Rating, string? Comment)> AllRatings { get; set; }
     public required Rating? LatestRating { get; set; }
 }
 
@@ -69,7 +69,7 @@ public class IndexModel : PageModel
     {
         var group = await _context
             .Groups
-            .Include(g => g.Milestones)
+            .Include(g => g.Milestones.Where(m => m.StudentGroupId == groupId))
             .Include(g => g.Students)
                 .ThenInclude(s => s.ProgressUpdates.Where(pu => pu.GroupId == groupId))
                 .ThenInclude(p => p.MilestonesProgress)
@@ -105,7 +105,7 @@ public class IndexModel : PageModel
                         {
                             Id = m.Id,
                             Name = m.ToString(),
-                            AllRatings = updates.Select(mp => (mp.CreatedDate, mp.Rating)).ToList(),
+                            AllRatings = updates.Select(mp => (mp.CreatedDate, mp.Rating, mp.Comment)).ToList(),
                             LatestRating = latestUpdate?.Rating
                         };
                     })
