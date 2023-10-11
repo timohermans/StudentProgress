@@ -15,6 +15,7 @@ using StudentProgress.Core.CanvasApi;
 using StudentProgress.Core.Entities;
 using StudentProgress.Web;
 using StudentProgress.Web.Configuration;
+using StudentProgress.Web.Data;
 using StudentProgress.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,8 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/StudentGroups");
 });
 builder.Services.AddHtmlTags(new TagConventions());
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContextV2")));
 builder.Services.AddDbContext<ProgressContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContext"),
         b => b.MigrationsAssembly("StudentProgress.Core")));
