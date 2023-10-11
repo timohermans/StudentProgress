@@ -1,5 +1,13 @@
 ﻿# Student Progress Core
 
+## Resources
+
+- [Result class usage](https://josef.codes/my-take-on-the-result-class-in-c-sharp/)
+
+## TODO
+
+- Change import tool to new state
+
 ## Migrations
 
 To apply migrations:
