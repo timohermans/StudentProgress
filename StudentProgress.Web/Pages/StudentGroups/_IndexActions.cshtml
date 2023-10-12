@@ -1,0 +1,15 @@
+@model IndexModel
+
+<p>
+  <a
+    asp-page="Create"
+    hx-get="/StudentGroups/Create"
+    hx-target="closest p"
+    hx-swap="innerHTML">
+    Create New
+  </a> or
+  @if (Model.CanImportGroups)
+  {
+    <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
+  }
+</p>

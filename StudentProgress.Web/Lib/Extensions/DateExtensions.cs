@@ -1,10 +1,22 @@
 ﻿using System;
 using StudentProgress.Web.Lib.Infrastructure;
+using StudentProgress.Web.Models.Values;
 
 namespace StudentProgress.Web.Lib.Extensions;
 
 public static class DateExtensions
 {
+    public static Period ToFontysPeriod(this DateTime date)
+    {
+        var period = Period.Create(date);
+        if (period.IsFailure)
+        {
+            throw new Exception("unable to convert date to period: " + period.Error);
+        }
+
+        return period.Value;
+    }
+
     public static string TimePassed(this DateTime date, IDateProvider dateProvider)
     {
         var timePassed = dateProvider.Now() - date;

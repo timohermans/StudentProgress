@@ -1,90 +1,40 @@
 ﻿@page
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using StudentProgress.Core.Extensions
+@using StudentProgress.Web.Lib.Extensions
 @model StudentProgress.Web.Pages.StudentGroups.IndexModel
 
 @{
   ViewData["Title"] = "Groups";
 }
 
-<h1>Home</h1>
-
 <section>
-  <h2>Updates to review</h2>
-  @if (Model.ProgressesToReview.Any())
-  {
-    <table class="table">
-      <caption>Updates that need to be reviewed (e.g. Feedpulse or colleague)</caption>
-      <thead>
-      <tr>
-        <th>Age</th>
-        <th>Student</th>
-        <th>Group</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      @foreach (var update in Model.ProgressesToReview)
-      {
-        <tr>
-          <td>
-            <a asp-page="/Progress/CreateEdit" asp-route-id="@update.Id" asp-route-studentId="@update.StudentId" asp-route-groupId="@update.GroupId">@update.DaysAgo</a>
-          </td>
-          <td>@update.Student</td>
-          <td>
-            <a asp-page="/StudentGroups/Details/Index" asp-route-id="@update.GroupId">@update.Course</a>
-          </td>
-          <td>
-            <form method="post" asp-page-handler="MarkReviewed">
-              @Html.HiddenFor(m => update.Id)
-              <input type="submit" class="btn" value="✔">
-            </form>
-          </td>
-        </tr>
-      }
-      </tbody>
-    </table>
-  }
-  else
-  {
-    <p>No updates to review 😊</p>
-  }
-</section>
+  <h2>Adventures</h2>
+  <partial name="_IndexActions" model="Model"/>
 
-<section>
-  <h2>Groups</h2>
-  <p>
-    <a asp-page="Create">Create New</a> or
-    @if (Model.CanImportGroups)
-    {
-      <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
-    }
-  </p>
 
   <table class="table">
-    <caption>Overview of groups available</caption>
+    <caption>Overview of adventures available</caption>
     <thead>
     <tr>
       <th id="name">
-        @Html.DisplayNameFor(model => model.StudentGroups[0].Name)
+        @Html.DisplayNameFor(model => model.Adventures[0].Name)
       </th>
       <th id="mnemonic">
-        @Html.DisplayNameFor(model => model.StudentGroups[0].Mnemonic)
+        @Html.DisplayNameFor(model => model.Adventures[0].Mnemonic)
       </th>
       <th></th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var groupGrouping in Model.StudentGroups.GroupBy(g => g.Period))
+    @foreach (var groupGrouping in Model.Adventures.GroupBy(g => g.DateStart))
     {
       <tr>
-        <td class="@(Model.CurrentPeriod == groupGrouping.Key ? "fw-bold" : "text-muted")" colspan="4">@groupGrouping.Key</td>
+        <td class="text-muted" colspan="4">@groupGrouping.Key.ToFontysPeriod().ToString()</td>
       </tr>
       @foreach (var item in groupGrouping.ToList())
       {
         <tr>
           <td headers="name">
-            <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name.Value)</a>
+            <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
           </td>
           <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
           <td>

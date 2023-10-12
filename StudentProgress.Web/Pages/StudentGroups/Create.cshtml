@@ -19,22 +19,7 @@
 
 <h4>Group / Semester / Class</h4>
 <hr/>
-<form method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <input-form-control asp-for="StudentGroup.Name"></input-form-control>
-    
-    @Html.FormBlock(m => m.StudentGroup.Name)
-    <div class="form-floating mb-3">
-        <input type="date" placeholder="placeholder" class="form-control" asp-for="StudentGroup.StartDate">
-        <label asp-for="StudentGroup.StartDate"></label>
-    </div>
-    @Html.FormBlock(m => m.StudentGroup.Mnemonic, inputModifier: _ => _.TagName("textarea"))
-    
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary"/>
-    </div>
-</form>
+<partial name="_CreateForm"/>
 
 
 @section Scripts {

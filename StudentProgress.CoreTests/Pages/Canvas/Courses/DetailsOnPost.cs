@@ -30,7 +30,7 @@ public class DetailsOnPost : CanvasTests
         var config = new CoreTestConfiguration();
         var imageDir = Path.Combine(config.MediaLocation, "images", "avatars");
         if (Directory.Exists(imageDir)) Directory.Delete(imageDir, true);
-        var request = new GroupImportFromCanvas.Request
+        var request = new Details.Request
         {
             Name = "S-DB-S2-CMK",
             SectionName = "S2-DB02",
@@ -39,7 +39,7 @@ public class DetailsOnPost : CanvasTests
             SectionCanvasId = "1234",
             TermStartsAt = new DateTime(2022, 8, 1),
             TermEndsAt = new DateTime(2023, 3, 27),
-            Students = new List<GroupImportFromCanvas.GetCourseDetailsStudent>
+            Students = new List<Details.GetCourseDetailsStudent>
             {
                 new()
                 {
@@ -61,6 +61,7 @@ public class DetailsOnPost : CanvasTests
             Semester = request
         };
 
+        // act
         await page.OnPostAsync(CancellationToken.None);
 
         await using var assertDb = _dbFixture.CreateWebContext();

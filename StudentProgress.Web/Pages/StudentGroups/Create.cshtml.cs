@@ -2,41 +2,45 @@
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Core.Entities;
-using StudentProgress.Core.UseCases;
 using System.Threading.Tasks;
-using StudentProgress.Core.Extensions;
+using StudentProgress.Web.Lib.Data;
+using StudentProgress.Web.Lib.Extensions;
+using StudentProgress.Web.Models;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {
     public class CreateModel : PageModel
     {
-        private readonly GroupCreate _useCase;
+        private readonly WebContext _db;
 
-        [BindProperty] public GroupCreate.Request StudentGroup { get; set; } = null!;
+        [BindProperty] public Adventure Adventure { get; set; } = default!;
 
-        public CreateModel(ProgressContext context) => _useCase = new GroupCreate(context);
+        public CreateModel(WebContext db)
+        {
+            _db = db;
+        }
 
         public IActionResult OnGet()
         {
-            StudentGroup = new()
+            Adventure = new()
             {
-                StartDate = Period
-                    .Create(DateTime.UtcNow).Value
-                    .StartDate
+                DateStart = DateTime.Today,
+                Name = ""
             };
-            return Page();
+
+            return this.PageOrPartial("_CreateForm");
         }
 
         public async Task<IActionResult> OnPostAsync(CancellationToken token)
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return this.PageOrPartial("_CreateForm");
             }
 
-            await _useCase.Handle(StudentGroup, token);
-
+            await _db.Adventures.AddAsync(Adventure, token);
+            await _db.SaveChangesAsync(token);
+            
             return RedirectToPage("./Index");
         }
     }
