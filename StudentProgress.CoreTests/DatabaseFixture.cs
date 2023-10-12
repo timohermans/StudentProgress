@@ -3,6 +3,7 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StudentProgress.Core.Entities;
+using StudentProgress.Web.Lib.Data;
 using Xunit;
 
 namespace StudentProgress.CoreTests
@@ -12,8 +13,10 @@ namespace StudentProgress.CoreTests
         public string ConnectionString { get; private set; }
 
         public DataMother DataMother { get; }
+        public WebDataMother WebDataMother { get; }
 
         public DbContextOptions<ProgressContext> ContextOptions { get; }
+        public DbContextOptions<WebContext> WebContextOptions { get; private set; }
 
         public DatabaseFixture()
         {
@@ -22,12 +25,18 @@ namespace StudentProgress.CoreTests
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
                 .UseSqlite(ConnectionString)
                 .Options;
+            WebContextOptions = CreateWebContextOptions();
 
             DataMother = new DataMother(ContextOptions);
+            WebDataMother = new WebDataMother(WebContextOptions);
 
             using var context = new ProgressContext(ContextOptions);
             context.Database.EnsureDeleted();
             context.Database.Migrate();
+
+            using var webContext = new WebContext(WebContextOptions);
+            webContext.Database.EnsureDeleted();
+            webContext.Database.Migrate();
         }
 
         private string GetConnectionString()
@@ -38,12 +47,36 @@ namespace StudentProgress.CoreTests
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
             var cString = configuration.GetConnectionString("Default");
 
-            return ConnectionString = envCString ?? cString ?? throw new NullReferenceException("Connectionstring could not be found in either env var or appsettings");
+            return ConnectionString = envCString ?? cString ??
+                throw new NullReferenceException(
+                    "Connectionstring could not be found in either env var or appsettings");
         }
 
         public ProgressContext CreateDbContext()
         {
             return new ProgressContext(ContextOptions);
+        }
+
+        private DbContextOptions<WebContext> CreateWebContextOptions()
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.Development.json", false, false)
+                .Build();
+            var envCString = Environment.GetEnvironmentVariable("ConnectionString__WebContext");
+            var cString = configuration.GetConnectionString("WebContext");
+
+            var connectionString = envCString ?? cString ??
+                throw new NullReferenceException(
+                    "connectionstring could not be found in either env var or appsettings");
+
+            return new DbContextOptionsBuilder<WebContext>()
+                .UseSqlite(connectionString)
+                .Options;
+        }
+
+        public WebContext CreateWebContext()
+        {
+            return new WebContext(WebContextOptions);
         }
     }
 

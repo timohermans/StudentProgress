@@ -1,4 +1,7 @@
-﻿namespace StudentProgress.Core.Extensions;
+﻿using System;
+using StudentProgress.Web.Lib.Infrastructure;
+
+namespace StudentProgress.Web.Lib.Extensions;
 
 public static class DateExtensions
 {
@@ -15,7 +18,7 @@ public static class DateExtensions
         if (timePassed.Seconds > 1) return $"{timePassed.Seconds} seconds";
         return "Just now";
     }
-    
+
     public static string TimePassedShort(this DateTime date, IDateProvider dateProvider)
     {
         var timePassed = dateProvider.Now() - date;

@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using StudentProgress.Web.Lib.Data;
+using StudentProgress.Web.Models;
 
 namespace StudentProgress.CoreTests
 {

@@ -41,8 +41,8 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/StudentGroups");
 });
 builder.Services.AddHtmlTags(new TagConventions());
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContextV2")));
+builder.Services.AddDbContext<WebContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("WebContext")));
 builder.Services.AddDbContext<ProgressContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContext"),
         b => b.MigrationsAssembly("StudentProgress.Core")));

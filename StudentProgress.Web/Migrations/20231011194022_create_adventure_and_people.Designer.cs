@@ -10,7 +10,7 @@ using StudentProgress.Web.Lib.Data;
 
 namespace StudentProgress.Web.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(WebContext))]
     [Migration("20231011194022_create_adventure_and_people")]
     partial class createadventureandpeople
     {

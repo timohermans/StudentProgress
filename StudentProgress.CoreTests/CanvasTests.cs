@@ -6,9 +6,9 @@ namespace StudentProgress.CoreTests;
 
 public class CanvasTests
 {
-    public CanvasFixture Fixture { get; set; }
+    public CanvasFixture CanvasFixture { get; set; }
 
-    public CanvasTests(CanvasFixture fixture) => Fixture = fixture;
+    public CanvasTests(CanvasFixture canvasFixture) => CanvasFixture = canvasFixture;
 }
 
 public class CanvasFixture
@@ -26,7 +26,9 @@ public class CanvasFixture
 }
 
 [CollectionDefinition("canvas")]
-public class CanvasCollectionDefinition : ICollectionFixture<CanvasFixture> {}
+public class CanvasCollectionDefinition : ICollectionFixture<CanvasFixture>, ICollectionFixture<DatabaseFixture>
+{
+}
 
 public class InfraConfigProvider : ICanvasApiConfig
 {

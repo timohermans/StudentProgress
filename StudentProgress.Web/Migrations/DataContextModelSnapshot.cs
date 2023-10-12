@@ -9,7 +9,7 @@ using StudentProgress.Web.Lib.Data;
 
 namespace StudentProgress.Web.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(WebContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

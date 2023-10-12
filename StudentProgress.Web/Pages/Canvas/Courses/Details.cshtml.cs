@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Core;
-using StudentProgress.Core.UseCases;
 using StudentProgress.Web.Lib.CanvasApi.Models;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Lib.Infrastructure;
@@ -20,6 +18,25 @@ namespace StudentProgress.Web.Pages.Canvas.Courses;
 
 public class Details : PageModel
 {
+    public class Request
+    {
+        public required string Name { get; init; }
+        public string? CanvasId { get; init; }
+        public string? TermName { get; init; }
+        public required DateTime TermStartsAt { get; init; }
+        public DateTime? TermEndsAt { get; init; }
+        public string? SectionCanvasId { get; init; }
+        public string? SectionName { get; init; }
+        public List<GetCourseDetailsStudent> Students { get; init; } = new();
+    }
+
+    public class ImportSemesterStudent
+    {
+        public string? Name { get; init; }
+        public string? AvatarUrl { get; init; }
+        public string? CanvasId { get; init; }
+    }
+
     public record ApiResponse(Course? Course);
 
     public class GetCourseDetailsResponse
@@ -75,16 +92,16 @@ course(id: ""{id}"") {
 }";
 
     private readonly ICanvasClient _canvasClient;
-    private readonly DataContext _db;
+    private readonly WebContext _db;
     private readonly ICoreConfiguration _config;
     private readonly HttpClient _httpClient;
 
-    public required List<GetCourseDetailsResponse> Semesters { get; set; }
+    public List<GetCourseDetailsResponse> Semesters { get; set; } = default!;
     public List<ErrorResult> Errors { get; set; } = new();
 
-    [BindProperty] public required GroupImportFromCanvas.Request Semester { get; set; }
+    [BindProperty] public Request Semester { get; set; } = default!;
 
-    public Details(ICanvasClient canvasClient, DataContext db, ICoreConfiguration config, HttpClient httpClient)
+    public Details(ICanvasClient canvasClient, WebContext db, ICoreConfiguration config, HttpClient httpClient)
     {
         _canvasClient = canvasClient;
         _config = config;
@@ -114,6 +131,7 @@ course(id: ""{id}"") {
                     {
                         Name = e.User?.Name, AvatarUrl = e.User?.AvatarUrl, CanvasId = e.User?.Id
                     })
+                    .OrderBy(p => p.Name)
                     .ToList() ?? new List<GetCourseDetailsStudent>()
             };
         }).ToList() ?? new List<GetCourseDetailsResponse>();

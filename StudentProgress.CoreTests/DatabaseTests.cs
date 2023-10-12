@@ -8,8 +8,8 @@ namespace StudentProgress.CoreTests
     public class DatabaseTests
     {
         protected readonly DatabaseFixture Fixture;
-        
-        
+
+
         protected DatabaseTests(DatabaseFixture fixture)
         {
             Fixture = fixture;
@@ -33,6 +33,14 @@ UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'StudentStudentGroup';
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'ProgressUpdate';
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Student';
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'SudentGroup';
+");
+
+            using var dataContext = Fixture.CreateWebContext();
+            dbContext.Database.ExecuteSqlRaw(@"
+DELETE FROM People;
+DELETE FROM Adventures;
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'People';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Adventures';
 ");
         }
     }

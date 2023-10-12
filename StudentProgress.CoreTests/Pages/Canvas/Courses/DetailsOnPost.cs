@@ -3,20 +3,29 @@ using System.Net.Http;
 using System.Threading;
 using FluentAssertions;
 using StudentProgress.Core.UseCases;
+using StudentProgress.Web.Models;
+using StudentProgress.Web.Pages.Canvas.Courses;
 
-namespace StudentProgress.CoreTests.UseCases;
+namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
-[Collection("db")]
-public class GroupImportFromCanvasTests : DatabaseTests
+[Collection("canvas")]
+public class DetailsOnPost : CanvasTests
 {
-    public GroupImportFromCanvasTests(DatabaseFixture fixture) : base(fixture)
+    private readonly DatabaseFixture _dbFixture;
+
+    public DetailsOnPost(CanvasFixture fixture, DatabaseFixture dbFixture) : base(fixture)
     {
+        _dbFixture = dbFixture;
     }
 
     [Fact]
     public async Task Imports_the_selected_canvas_course_section_as_a_group()
     {
-        Fixture.DataMother.CreateGroup("Random other group", null, null, null, new TestStudent("Luuk"));
+        await _dbFixture.WebDataMother.CreateAdventure(new Adventure
+        {
+            Name = "Random other adventure",
+            DateStart = new DateTime(2022, 8, 1),
+        });
         var client = new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
         var config = new CoreTestConfiguration();
         var imageDir = Path.Combine(config.MediaLocation, "images", "avatars");
@@ -46,20 +55,24 @@ public class GroupImportFromCanvasTests : DatabaseTests
                 }
             }
         };
-        await using var ucContext = Fixture.CreateDbContext();
-        var uc = new GroupImportFromCanvas(ucContext, config, client);
+        await using var ucContext = _dbFixture.CreateWebContext();
+        var page = new Details(CanvasFixture.Client, ucContext, new CoreTestConfiguration(), client)
+        {
+            Semester = request
+        };
 
-        await uc.Handle(request, CancellationToken.None);
+        await page.OnPostAsync(CancellationToken.None);
 
-        await using var assertDb = Fixture.CreateDbContext();
-        var resultGroup = await assertDb.Groups.Include(g => g.Students).FirstOrDefaultAsync(g => g.Name == "S-DB-S2-CMK - S2-DB02 - 2223nj");
+        await using var assertDb = _dbFixture.CreateWebContext();
+        var resultGroup = await assertDb.Adventures.Include(g => g.People)
+            .FirstAsync(g => g.Name == "S-DB-S2-CMK - S2-DB02 - 2223nj");
         resultGroup.Should().NotBeNull();
-        resultGroup.Period.StartDate.Should().Be(new DateTime(2022, 8, 29));
-        var resultStudents = resultGroup.Students;
-        resultStudents.Should().HaveCount(2);
-        var timo = resultStudents.First(s => s.Name == "Hermans, Timo T.M.");
+        resultGroup!.DateStart.Should().Be(new DateTime(2022, 8, 1));
+        var resultPeople = resultGroup.People;
+        resultPeople.Should().HaveCount(2);
+        var timo = resultPeople.First(s => s.Name == "Hermans, Timo T.M.");
         timo.AvatarPath.Should().Be(Path.Combine("images", "avatars", "1234-canvas.png"));
-        var luuk = resultStudents.First(s => s.Name == "Luuk");
+        var luuk = resultPeople.First(s => s.Name == "Luuk");
         luuk.AvatarPath.Should().BeNull();
 
         Directory.Exists(imageDir).Should().BeTrue();
