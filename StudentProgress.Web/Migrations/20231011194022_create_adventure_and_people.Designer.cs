@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StudentProgress.Web.Data;
+using StudentProgress.Web.Lib.Data;
 
 #nullable disable
 
 namespace StudentProgress.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231011151928_create_adventure_and_people")]
+    [Migration("20231011194022_create_adventure_and_people")]
     partial class createadventureandpeople
     {
         /// <inheritdoc />
@@ -37,6 +37,9 @@ namespace StudentProgress.Web.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "DateStart")
+                        .IsUnique();
 
                     b.ToTable("Adventures");
                 });

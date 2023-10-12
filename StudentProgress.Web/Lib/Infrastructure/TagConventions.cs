@@ -1,6 +1,6 @@
 ﻿using HtmlTags.Conventions;
 
-namespace StudentProgress.Web.Infrastructure
+namespace StudentProgress.Web.Lib.Infrastructure
 {
     public class TagConventions : HtmlConventionRegistry
     {

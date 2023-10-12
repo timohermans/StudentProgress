@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Core.CanvasApi;
 using StudentProgress.Core.Entities;
+using StudentProgress.Web.Lib.CanvasApi;
 
-namespace StudentProgress.Web.Configuration;
+namespace StudentProgress.Web.Lib.Configuration;
 
 public class CanvasConfiguration : ICanvasApiConfig
 {

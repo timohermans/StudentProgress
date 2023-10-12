@@ -49,6 +49,12 @@ namespace StudentProgress.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Adventures_Name_DateStart",
+                table: "Adventures",
+                columns: new[] { "Name", "DateStart" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_People_AdventureId",
                 table: "People",
                 column: "AdventureId");

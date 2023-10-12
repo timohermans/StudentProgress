@@ -31,6 +31,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\StudentProgress.Core\StudentProgress.Core.csproj" />
+      <ProjectReference Include="..\StudentProgress.Web\StudentProgress.Web.csproj" />
     </ItemGroup>
 
     <ItemGroup>

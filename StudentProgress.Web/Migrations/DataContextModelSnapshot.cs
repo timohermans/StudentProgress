@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StudentProgress.Web.Data;
+using StudentProgress.Web.Lib.Data;
 
 #nullable disable
 
@@ -34,6 +34,9 @@ namespace StudentProgress.Web.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "DateStart")
+                        .IsUnique();
 
                     b.ToTable("Adventures");
                 });

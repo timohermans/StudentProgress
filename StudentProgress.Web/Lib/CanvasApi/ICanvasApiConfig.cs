@@ -1,4 +1,6 @@
-﻿namespace StudentProgress.Core.CanvasApi;
+﻿using System.Threading.Tasks;
+
+namespace StudentProgress.Web.Lib.CanvasApi;
 
 public interface ICanvasApiConfig
 {

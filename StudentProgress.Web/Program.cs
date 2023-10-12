@@ -11,12 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using StudentProgress.Core;
-using StudentProgress.Core.CanvasApi;
 using StudentProgress.Core.Entities;
-using StudentProgress.Web;
-using StudentProgress.Web.Configuration;
-using StudentProgress.Web.Data;
-using StudentProgress.Web.Infrastructure;
+using StudentProgress.Web.Lib.Configuration;
+using StudentProgress.Web.Lib.Data;
+using StudentProgress.Web.Lib.Infrastructure;
+using CanvasClient = StudentProgress.Web.Lib.CanvasApi.CanvasClient;
+using ICanvasApiConfig = StudentProgress.Web.Lib.CanvasApi.ICanvasApiConfig;
+using ICanvasClient = StudentProgress.Web.Lib.CanvasApi.ICanvasClient;
 
 var builder = WebApplication.CreateBuilder(args);
 

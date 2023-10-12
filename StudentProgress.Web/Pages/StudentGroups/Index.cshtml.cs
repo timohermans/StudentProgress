@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudentProgress.Core;
-using StudentProgress.Core.CanvasApi;
 using StudentProgress.Core.Extensions;
+using ICanvasApiConfig = StudentProgress.Web.Lib.CanvasApi.ICanvasApiConfig;
 
 namespace StudentProgress.Web.Pages.StudentGroups
 {

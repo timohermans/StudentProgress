@@ -1,6 +1,6 @@
 using System;
 
-namespace StudentProgress.Web.Infrastructure;
+namespace StudentProgress.Web.Lib.Infrastructure;
 
 public abstract class Result
 {

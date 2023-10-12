@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using Microsoft.Extensions.Configuration;
-using StudentProgress.Core.CanvasApi;
+using StudentProgress.Web.Lib.CanvasApi;
 
 namespace StudentProgress.CoreTests;
 

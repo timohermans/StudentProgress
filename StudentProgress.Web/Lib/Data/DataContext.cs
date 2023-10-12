@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Web.Models;
 
-namespace StudentProgress.Web.Data;
+namespace StudentProgress.Web.Lib.Data;
 
 public class DataContext : DbContext
 {

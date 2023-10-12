@@ -1,6 +1,7 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 
-namespace StudentProgress.Core.CanvasApi;
+namespace StudentProgress.Web.Lib.CanvasApi;
 
 public interface ICanvasClient
 {

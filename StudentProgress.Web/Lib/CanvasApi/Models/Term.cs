@@ -1,6 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
-namespace StudentProgress.Core.CanvasApi.Models;
+namespace StudentProgress.Web.Lib.CanvasApi.Models;
 
 public class Term
 {

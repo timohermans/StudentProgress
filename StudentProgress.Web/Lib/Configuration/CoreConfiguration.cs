@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using StudentProgress.Core;
 
-namespace StudentProgress.Web.Configuration;
+namespace StudentProgress.Web.Lib.Configuration;
 
 public class CoreConfiguration : ICoreConfiguration
 {

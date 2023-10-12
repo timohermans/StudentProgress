@@ -5,7 +5,7 @@ using HtmlTags.Conventions;
 using HtmlTags.Conventions.Elements;
 using HtmlTags.Conventions.Elements.Builders;
 
-namespace StudentProgress.Web.Infrastructure
+namespace StudentProgress.Web.Lib.Infrastructure
 {
     public class DefaultDisplayLabelBuilder : IElementBuilder
     {

@@ -1,4 +1,4 @@
-﻿namespace StudentProgress.Core.CanvasApi;
+﻿namespace StudentProgress.Web.Lib.CanvasApi;
 
 public class CanvasResponse<T>
 {
