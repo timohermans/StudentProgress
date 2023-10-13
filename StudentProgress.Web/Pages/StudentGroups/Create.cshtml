@@ -2,46 +2,23 @@
 @model StudentProgress.Web.Pages.StudentGroups.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+  Layout = null;
 }
 
-@section Styles
-{
-    <link rel="stylesheet" href="~/css/group.css">
-}
+<form method="post">
+  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div>
-    <a asp-page="Index">Groups</a> >
-    <span>New</span>
-</div>
+  <input-form-control asp-for="StudentGroup.Name"></input-form-control>
 
-<h1>Create</h1>
+  @Html.FormBlock(m => m.Adventure.Name)
+  <div class="form-floating mb-3">
+    <input type="date" placeholder="placeholder" class="form-control" asp-for="Adventure.DateStart">
+    <label asp-for="Adventure.DateStart"></label>
+  </div>
+  @Html.FormBlock(m => m.Adventure.Mnemonic, inputModifier: _ => _.TagName("textarea"))
 
-<h4>Group / Semester / Class</h4>
-<hr/>
-<partial name="_CreateForm"/>
-
-
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-
-    <script>
-        function deleteMilestone(event) {
-            const milestoneItem = event.parentNode;
-            const milestoneList = milestoneItem.parentNode;
-            
-            if (milestoneList.children.length === 1) return;
-            
-            milestoneList.removeChild(milestoneItem);
-        }
-        
-        function addMilestone() {
-            const milestonesList = document.getElementById("milestones-list");
-            const milestoneElement = milestonesList.children[0];
-            const newMilestoneElement = milestoneElement.cloneNode(true);
-            milestonesList.appendChild(newMilestoneElement);
-            newMilestoneElement.focus(); 
-        }
-    </script>
-
-}
+  <div class="form-group">
+    <input id="newAdventure" type="submit" value="Create" class="btn btn-primary" hx-post="/StudentGroups/Create"/>
+    <a id="cancel" hx-target="#actions" asp-page="/StudentGroups/Index">Cancel</a>
+  </div>
+</form>

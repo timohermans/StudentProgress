@@ -42,7 +42,7 @@
             <td>
               <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
               <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
-              <a id="deleteInline@(item.Id)" href="#" hx-target="closest tr" hx-swap="outerHTML"
+              <a id="deleteInline@(item.Id)" href="#" hx-target="closest tr" hx-swap="outerHTML swap:0.5s"
                 hx-delete="/StudentGroups/Delete?id=@item.Id"
                 hx-confirm="Weet je zeker dat je @item.Name wil verwijderen? Dit kun je niet ongedaan maken!">
                 Delete

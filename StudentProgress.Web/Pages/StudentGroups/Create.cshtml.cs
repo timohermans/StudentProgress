@@ -28,20 +28,20 @@ public class CreateModel : PageModel
             Name = ""
         };
 
-        return this.PageOrPartial("_CreateForm", "newAdventure");
+        return Page();
     }
 
     public async Task<IActionResult> OnPostAsync(CancellationToken token)
     {
         if (!ModelState.IsValid)
         {
-            Response.Headers.Add("HX-Retarget", "#actions");
-            return Partial("_CreateForm", this);
+            this.HtmxRetargetTo("#actions");
+            return Page();
         }
 
         await _db.Adventures.AddAsync(Adventure, token);
         await _db.SaveChangesAsync(token);
-            
+
         return RedirectToPage("./Index");
     }
 }

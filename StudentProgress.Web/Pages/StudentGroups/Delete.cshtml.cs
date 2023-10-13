@@ -16,20 +16,9 @@ public class DeleteModel : PageModel
 
     public Adventure Adventure { get; set; } = null!;
 
-    public async Task<IActionResult> OnGetAsync(int? id)
+    public IActionResult OnGetAsync(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var adventure = await _context.Adventures.FirstOrDefaultAsync(m => m.Id == id);
-
-        if (adventure == null) return NotFound();
-
-        Adventure = adventure;
-
-        return Page();
+        return RedirectToPage("/StudentGroups/Index");
     }
 
     public async Task<IActionResult> OnDeleteAsync(int? id)
