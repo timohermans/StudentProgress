@@ -7,6 +7,8 @@
 ### Added
 
 - New WebContext database to start migrating to simpler architecture and principle
+- `.editorconfig` to **try** and get rider settings into vscode
+- Deleting adventures from the adventure index page (with nice transitions)
 
 ### Changed
 
@@ -14,6 +16,7 @@
 - Change StudentGroup to Adventure
 - Deleting an adventure can now be done in the overview page inline! (not really, but really!)
 - Adding a custom adventure can now be done on the overview page itself.
+- Made people search absolutely JavaScript free (0 lines!). Also no more dependency on popper.js
 
 ### Fixed
 
@@ -29,3 +32,13 @@ With just some simple code that doesn't take too much knowledge you can create S
 
 Also, there's a really nice nuget package that let's me use htmx easily on the backend.
 I would really like to try out the taghelpers too though...
+Update: Removed the nuget package after learning a bit more of htmx. 
+To be honest, the current implementation of adding the xsrf token and the way I check the hx-trigger to determine the partial return is way better (thank you htmx book).
+
+I changed the people (former student) search from alpinejs and popperjs to just simple htmx and css.
+Now there are 0 lines of javascript, instead of 52. Still impressed 🙌.
+Also, using purely razor syntax and c# to write the implementation is simply amazing.
+
+Architecture wise, especially when working alone, it's amazing to just work with plain simple anemic models and have the business logic inside the page models. Look at the [query I wrote for searching](./StudentProgress.Web/Pages/People/Parts/Search.cshtml.cs).
+I can simply select columns I want, put it in the same model and send it to the client without any hassle of converting.
+We'll see down the line how hard it's gonna bite me in the butt though.

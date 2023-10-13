@@ -12,4 +12,5 @@ public class Person
     // public IEnumerable<ProgressUpdate> ProgressUpdates { get; set; }
     // public IEnumerable<StudentGroup> StudentGroups { get; set; }
     public string? Note { get; set; }
+    public ICollection<Adventure> Adventures { get; set; } = new List<Adventure>();
 }

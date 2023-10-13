@@ -1,0 +1,31 @@
+﻿@page
+@model SearchModel
+@{
+    Layout = null;
+}
+
+<div class="list-group">
+    @foreach (var person in Model.People)
+    {
+        <div class="list-group-item list-group-item-action">
+            <div class="d-flex">
+                <div class="align-self-center">
+                    <img src="@(!string.IsNullOrWhiteSpace(person.AvatarPath) ? $"/media/{person.AvatarPath}" : $"/images/avatar-placeholder.png")"
+                         alt="@(person.Name)" width="50" height="50">
+                </div>
+                <div class="ms-2">
+                    <p>@person.Name</p>
+                    @foreach (var adventure in person.Adventures)
+                    {
+                        <p class="d-flex align-items-center">
+                            <a class="btn btn-link ps-0" asp-page="/Adventure/Person/Index" asp-route-personId="@person.Id"
+                               asp-route-adventureId="@adventure.Id">
+                                @adventure.Name
+                            </a>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

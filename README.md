@@ -6,6 +6,9 @@ Project to track people, whether that's students, team members or yourself.
 
 - [Student Progress](#student-progress)
   - [Table of contents](#table-of-contents)
+  - [Todo](#todo)
+  - [Resources](#resources)
+  - [Architecture migration notes](#architecture-migration-notes)
   - [Feature showcase](#feature-showcase)
   - [Installation](#installation)
     - [Run migrations](#run-migrations)
@@ -27,13 +30,44 @@ Project to track people, whether that's students, team members or yourself.
     - [Domain model](#domain-model)
       - [Entity relationships](#entity-relationships)
 
+## Todo
+
+- Change the search test to the page test. Remove leftover code from Core.
+- Use the Linkgenerator more (check index and everywhere where htmx is used)
+- Move the htmx partial pages to their `parts` folders
+- Write something about parts in the readme
+- Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
+- Start working on the details page
+- Prolly need to add progress and milestones to the mix as well when I start
+
+## Resources
+
+- [Result class usage](https://josef.codes/my-take-on-the-result-class-in-c-sharp/)
+- [Entity Framework docs](https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli)
+- [ASP.NET core documentation](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0)
+- [Learn RazorPages (straightforward 3rd party docs)](https://www.learnrazorpages.com)
+- [Htmx docs](https://htmx.org/docs)
+- [Htmx book for recipes](https://hypermedia.systems/more-htmx-patterns/)
+
+## Architecture migration notes
+
+Starting from now (2023-10-12), it should be encouraged to remove all traces of `Core` and `ProgressContext` from the
+system and their tests.
+This means that some boyscouting is to be done.
+When working on a page:
+
+- start actively working on removing `ProgressContext`,
+- add to `WebContext`
+- add `htmx` where possible to make it fancy
+- (optional) start including more Bootstrap 5.3 (especially with css variables)
 
 ## Feature showcase
 
 ![showcase](./docs/features.gif)
 
 ## Installation
-The project can be run with either dotnet itself or docker. 
+
+The project can be run with either dotnet itself or docker.
 It is recommended to run dotnet for development usecases and docker when runnen in production.
 
 ### Run migrations
@@ -51,15 +85,17 @@ dotnet run
 or open the solution in an IDE and start from there.
 
 ### Docker
+
 To run the project, execute the following command in this folder:
 
 ```bash
 docker-compose up -d
 ```
+
 The app will be available on `http://localhost:80`. The app and database will keep running **until you stop with `docker-compose down` or using the GUI**
 
-
 To build new changes into the running docker image, execute the following command:
+
 ```bash
 docker-compose up -d --build
 ```
@@ -106,8 +142,8 @@ Integration tests are done through a real database.
 Please be advised with using integration tests:
 
 - Only create 2 tests for a usecase:
-    - One for the longest happy path
-    - One failure test. Preferrably the longest, but any will do.
+  - One for the longest happy path
+  - One failure test. Preferrably the longest, but any will do.
 - One exception to this rule is when there are a lot of database specific constraints, like db uniqueness
 
 Creating a new integration test file is easy:
@@ -130,9 +166,9 @@ These combined, a test looks like this:
 [Fact]
 public void Name_cannot_be_empty() {
     var name = Name.Create("");
-    
+
     name.IsSuccess.Should().BeFalse();
-} 
+}
 ```
 
 ## Technical design
@@ -205,7 +241,6 @@ Finally, you might notice I've made a lot of use of the [CSharpFunctionalExtensi
 See below the domain model of all the entities.
 Note that the ValueObjects and enums have been omitted to keep the model as simple as possible.
 
-
 ![domain model](./docs/c4-model-domain.png)
 
 #### Entity relationships
@@ -224,5 +259,5 @@ erDiagram
     Student ||--o{ ProgressUpdate : has
     ProgressUpdate ||--o{ MilestoneProgress: has
 
-    
+
 ```

@@ -121,6 +121,12 @@ a, .btn-link {
     height: 25px;
 }
 
+#searchResults {
+    position: absolute;
+    top: 130%;
+    left: -25%;
+}
+
 /* || STICKY FOOTER
 -------------------------------------------------- */
 body {
