@@ -17,7 +17,7 @@ public class QuickAdd : PageModel
 {
     private readonly ProgressContext _db;
 
-    [BindProperty] public QuickAddCommand? Command { get; set; }
+    [BindProperty] public required QuickAddCommand Command { get; set; }
     public IList<SelectListItem> Groups { get; set; } = null!;
 
     public StudentGroup? Group { get; set; }

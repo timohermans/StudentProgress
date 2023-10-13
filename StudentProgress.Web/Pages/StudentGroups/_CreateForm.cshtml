@@ -13,12 +13,7 @@
   @Html.FormBlock(m => m.Adventure.Mnemonic, inputModifier: _ => _.TagName("textarea"))
 
   <div class="form-group">
-    <input type="submit"
-           value="Create"
-           class="btn btn-primary"
-           hx-post="/StudentGroups/Create"
-           hx-swap="outerHTML"
-           hx-target="closest form"/>
-    <a asp-page="/StudentGroups/Index">Cancel</a>
+    <input id="newAdventure" type="submit" value="Create" class="btn btn-primary" hx-target="body" hx-post="/StudentGroups/Create" />
+    <a id="cancel" hx-swap="outerHTML" hx-target="closest form" asp-page="/StudentGroups/Index">Cancel</a>
   </div>
 </form>

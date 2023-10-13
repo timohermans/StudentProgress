@@ -74,7 +74,7 @@
             <div class="cell__content">
               @if (milestoneVm?.AllRatings != null)
               {
-                foreach (var progress in milestoneVm?.AllRatings)
+                foreach (var progress in milestoneVm!.AllRatings)
                 {
                   <p>
                     [@progress.Date] <br/>

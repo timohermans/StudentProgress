@@ -34,7 +34,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 .OrderByDescending(a => a.DateStart)
                 .ToListAsync();
 
-            return this.PageOrPartial("_IndexActions");
+            return this.PageOrPartial("_IndexActions", "cancel");
         }
     }
 }

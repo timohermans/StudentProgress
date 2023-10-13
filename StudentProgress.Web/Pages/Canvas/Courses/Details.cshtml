@@ -1,6 +1,4 @@
 ﻿@page "{id}"
-@using StudentProgress.Core.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model StudentProgress.Web.Pages.Canvas.Courses.Details
 
 @{
@@ -47,7 +45,7 @@
         </section>
     }
     
-    @foreach (var semester in Model.Semesters)
+    @foreach (var semester in Model.Semesters ?? new List<Details.GetCourseDetailsResponse>())
     {
         <section id="section-@(semester.SectionCanvasId)">
             <h3>@(semester.SectionName)</h3>

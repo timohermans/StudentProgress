@@ -1,4 +1,6 @@
 ﻿@using System.Web
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +11,7 @@
   <link rel="stylesheet" href="~/css/site.css"/>
   @await RenderSectionAsync("Styles", required: false)
 </head>
-<body hx-boost="true">
+<body hx-boost="true" hx-headers='{"X-XSRF-TOKEN": "@Antiforgery.GetAndStoreTokens(Context).RequestToken"}'>
 <mini-profiler/>
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">

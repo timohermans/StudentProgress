@@ -22,7 +22,7 @@ public abstract class Result<T> : Result
 
     protected Result(T? data)
     {
-        Data = data;
+        Data = data ?? throw new NullReferenceException();
     }
 }
 

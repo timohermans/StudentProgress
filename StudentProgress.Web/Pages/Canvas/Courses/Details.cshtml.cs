@@ -18,7 +18,7 @@ namespace StudentProgress.Web.Pages.Canvas.Courses;
 
 public class Details : PageModel
 {
-    public class Request
+    public new class Request
     {
         public required string Name { get; init; }
         public string? CanvasId { get; init; }
@@ -96,7 +96,7 @@ course(id: ""{id}"") {
     private readonly ICoreConfiguration _config;
     private readonly HttpClient _httpClient;
 
-    public List<GetCourseDetailsResponse> Semesters { get; set; } = default!;
+    public List<GetCourseDetailsResponse> Semesters { get; set; } = new();
     public List<ErrorResult> Errors { get; set; } = new();
 
     [BindProperty] public Request Semester { get; set; } = default!;
@@ -188,7 +188,7 @@ course(id: ""{id}"") {
             {
                 person = new Person
                 {
-                    Name = studentRequest.Name, ExternalId = studentRequest.CanvasId
+                    Name = studentRequest.Name ?? "unknown name", ExternalId = studentRequest.CanvasId
                 };
                 _db.People.Add(person);
                 adventure.People.Add(person);

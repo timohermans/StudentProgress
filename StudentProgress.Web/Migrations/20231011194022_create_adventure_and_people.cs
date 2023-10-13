@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudentProgress.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class createadventureandpeople : Migration
+    public partial class CreateAdventureAndPeople : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

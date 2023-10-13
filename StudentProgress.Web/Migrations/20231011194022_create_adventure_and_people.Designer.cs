@@ -12,7 +12,7 @@ namespace StudentProgress.Web.Migrations
 {
     [DbContext(typeof(WebContext))]
     [Migration("20231011194022_create_adventure_and_people")]
-    partial class createadventureandpeople
+    partial class CreateAdventureAndPeople
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

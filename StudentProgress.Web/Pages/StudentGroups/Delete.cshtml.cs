@@ -1,51 +1,64 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Core.Entities;
 using System.Threading.Tasks;
+using StudentProgress.Web.Lib.Data;
+using StudentProgress.Web.Lib.Extensions;
+using StudentProgress.Web.Models;
 
-namespace StudentProgress.Web.Pages.StudentGroups
+namespace StudentProgress.Web.Pages.StudentGroups;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly WebContext _context;
+
+    public DeleteModel(WebContext context) => _context = context;
+
+    public Adventure Adventure { get; set; } = null!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
-        private readonly ProgressContext _context;
-
-        public DeleteModel(ProgressContext context) => _context = context;
-
-        public StudentGroup Group { get; set; } = null!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (id == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (group == null) return NotFound();
-
-            Group = group;
-            
-            return Page();
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        var adventure = await _context.Adventures.FirstOrDefaultAsync(m => m.Id == id);
+
+        if (adventure == null) return NotFound();
+
+        Adventure = adventure;
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnDeleteAsync(int? id)
+    {
+        await OnPostAsync(id);
+
+        if (Request.HasHtmxTrigger($"deleteInline{id}"))
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var group = await _context.Groups.FindAsync(id);
-
-            if (group != null)
-            {
-                _context.Groups.Remove(group);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
+            return Content("");
         }
+
+        return this.SeeOther("/StudentGroups/Index");
+    }
+
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var adventure = await _context.Adventures.FindAsync(id);
+
+        if (adventure != null)
+        {
+            _context.Adventures.Remove(adventure);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToPage("./Index");
     }
 }
