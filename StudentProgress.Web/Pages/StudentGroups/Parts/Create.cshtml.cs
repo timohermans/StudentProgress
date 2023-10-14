@@ -42,6 +42,6 @@ public class CreateModel : PageModel
         await _db.Adventures.AddAsync(Adventure, token);
         await _db.SaveChangesAsync(token);
 
-        return RedirectToPage("./Index");
+        return RedirectToPage("../Index");
     }
 }

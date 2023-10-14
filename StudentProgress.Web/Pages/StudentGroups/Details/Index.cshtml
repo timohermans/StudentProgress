@@ -1,10 +1,10 @@
-﻿@page
+﻿@page "/adventures/{id:int}"
 @using StudentProgress.Core.Entities
 @using StudentProgress.Core.UseCases
 @model StudentProgress.Web.Pages.StudentGroups.Details.IndexModel
 
 @{
-    ViewData["Title"] = $"{Model.StudentGroup.Name} - Details";
+    @* ViewData["Title"] = $"{Model.StudentGroup.Name} - Details"; *@
 }
 
 @section Styles
@@ -18,7 +18,9 @@
     <script src="~/js/milestoneTableActions.js"></script>
 }
 
-<div class="row">
+<h2>Hello details!</h2>
+
+@* <div class="row">
     <aside class="col-sm-12 col-md-2">
         <nav id="group-nav" class="navbar navbar-light position-sticky top-0">
             <nav class="nav nav-pills flex-column">
@@ -210,4 +212,4 @@
         </section>
 
     </section>
-</div>
+</div> *@

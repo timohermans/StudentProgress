@@ -1,11 +1,7 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.UseCases;
-using System.Threading.Tasks;
 using StudentProgress.Core.Entities;
 
 namespace StudentProgress.Web.Pages.StudentGroups.Details
@@ -31,25 +27,25 @@ namespace StudentProgress.Web.Pages.StudentGroups.Details
                 return NotFound();
             }
 
-            var studentGroup = await _useCase.Handle(new StudentGroupGetDetails.Request((int)id), token);
+            // var studentGroup = await _useCase.Handle(new StudentGroupGetDetails.Request((int)id), token);
 
-            if (studentGroup == null)
-            {
-                return NotFound();
-            }
+            // if (studentGroup == null)
+            // {
+            //     return NotFound();
+            // }
 
-            if (sort == "last-feedback")
-            {
-                IsSortedOnLastFeedback = true;
-                studentGroup.Students = studentGroup.Students
-                    .OrderByDescending(s => s.ProgressUpdates
-                        .Select(u => u.Date)
-                        .DefaultIfEmpty(DateTime.MinValue)
-                        .Max(p => p.Date))
-                    .ToList();
-            }
+            // if (sort == "last-feedback")
+            // {
+            //     IsSortedOnLastFeedback = true;
+            //     studentGroup.Students = studentGroup.Students
+            //         .OrderByDescending(s => s.ProgressUpdates
+            //             .Select(u => u.Date)
+            //             .DefaultIfEmpty(DateTime.MinValue)
+            //             .Max(p => p.Date))
+            //         .ToList();
+            // }
 
-            StudentGroup = studentGroup;
+            // StudentGroup = studentGroup;
             
             return Page();
         }

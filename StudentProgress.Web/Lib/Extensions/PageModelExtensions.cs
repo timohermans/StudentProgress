@@ -53,9 +53,9 @@ public static class PageModelExtensions
         return page.Partial(partialName, page);
     }
 
-    public static IActionResult SeeOther(this PageModel page, string location)
+    public static IActionResult SeeOther(this PageModel page, string pageName)
     {
-        page.Response.Headers.Add("Location", location);
+        page.Response.Headers.Add("Location", page.Url.Page(pageName));
         return new StatusCodeResult(303);
     }
 

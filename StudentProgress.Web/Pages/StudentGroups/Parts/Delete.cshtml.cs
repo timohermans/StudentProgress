@@ -14,40 +14,21 @@ public class DeleteModel : PageModel
 
     public DeleteModel(WebContext context) => _context = context;
 
-    public Adventure Adventure { get; set; } = null!;
-
-    public IActionResult OnGetAsync(int? id)
+    public async Task<IActionResult> OnDeleteAsync(int id)
     {
-        return RedirectToPage("/StudentGroups/Index");
-    }
-
-    public async Task<IActionResult> OnDeleteAsync(int? id)
-    {
-        await OnPostAsync(id);
-
-        if (Request.HasHtmxTrigger($"deleteInline{id}"))
-        {
-            return Content("");
-        }
-
-        return this.SeeOther("/StudentGroups/Index");
-    }
-
-    public async Task<IActionResult> OnPostAsync(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
         var adventure = await _context.Adventures.FindAsync(id);
-
+        
         if (adventure != null)
         {
             _context.Adventures.Remove(adventure);
             await _context.SaveChangesAsync();
         }
 
-        return RedirectToPage("./Index");
+        if (Request.HasHtmxTrigger($"deleteInline{id}"))
+        {
+            return Page();
+        }
+
+        return this.SeeOther("../Index");
     }
 }

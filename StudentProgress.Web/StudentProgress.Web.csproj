@@ -40,4 +40,8 @@
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles" />
   </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\StudentGroups\Progress\Index.cshtml" />
+  </ItemGroup>
 </Project>

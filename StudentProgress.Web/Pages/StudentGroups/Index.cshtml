@@ -3,59 +3,59 @@
 @model StudentProgress.Web.Pages.StudentGroups.IndexModel
 
 @{
-  ViewData["Title"] = "Groups";
+    ViewData["Title"] = "Groups";
 }
 
 <section>
-  <h2>Adventures</h2>
-  <p id="actions">
-    <partial name="_IndexActions" model="Model" />
-  </p>
+    <h2>Adventures</h2>
+    <p id="actions">
+        <partial name="Parts/_IndexActions" model="Model"/>
+    </p>
 
 
-  <table class="table">
-    <caption>Overview of adventures available</caption>
-    <thead>
-      <tr>
-        <th id="name">
-          @Html.DisplayNameFor(model => model.Adventures[0].Name)
-        </th>
-        <th id="mnemonic">
-          @Html.DisplayNameFor(model => model.Adventures[0].Mnemonic)
-        </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (var groupGrouping in Model.Adventures.GroupBy(g => g.DateStart))
-      {
+    <table class="table">
+        <caption>Overview of adventures available</caption>
+        <thead>
         <tr>
-          <td class="text-muted" colspan="4">@groupGrouping.Key.ToFontysPeriod().ToString()</td>
+            <th id="name">
+                @Html.DisplayNameFor(model => model.Adventures[0].Name)
+            </th>
+            <th id="mnemonic">
+                @Html.DisplayNameFor(model => model.Adventures[0].Mnemonic)
+            </th>
+            <th></th>
         </tr>
-        @foreach (var item in groupGrouping.ToList())
+        </thead>
+        <tbody>
+        @foreach (var groupGrouping in Model.Adventures.GroupBy(g => g.DateStart))
         {
-          <tr>
-            <td headers="name">
-              <a asp-page="./Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-            </td>
-            <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
-            <td>
-              <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-              <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
-              <a id="deleteInline@(item.Id)" href="#" hx-target="closest tr" hx-swap="outerHTML swap:0.5s"
-                hx-delete="/StudentGroups/Delete?id=@item.Id"
-                hx-confirm="Weet je zeker dat je @item.Name wil verwijderen? Dit kun je niet ongedaan maken!">
-                Delete
-                <span id="loading-@item.Id" class="htmx-indicator">
-                  <span class="spinner-grow spinner-grow-sm text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </span>
-                </span>
-              </a>
-            </td>
-          </tr>
+            <tr>
+                <td class="text-muted" colspan="4">@groupGrouping.Key.ToFontysPeriod().ToString()</td>
+            </tr>
+            @foreach (var item in groupGrouping.ToList())
+            {
+                <tr>
+                    <td headers="name">
+                        <a asp-page="Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                    </td>
+                    <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
+                        <a id="deleteInline@(item.Id)" href="#" hx-target="closest tr" hx-swap="outerHTML swap:0.5s"
+                           hx-delete="@Url.Page("Parts/Delete", new { id = item.Id })"
+                           hx-confirm="Weet je zeker dat je @item.Name wil verwijderen? Dit kun je niet ongedaan maken!">
+                            Delete
+                            <span id="loading-@item.Id" class="htmx-indicator">
+                                <span class="spinner-grow spinner-grow-sm text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </span>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            }
         }
-      }
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </section>
