@@ -30,7 +30,7 @@
             </div>
             <div class="form-group col" hx-target="closest tr" hx-swap="outerHTML">
                 <input type="submit" value="Save" class="btn btn-primary" hx-put="@Url.Page("Edit", new { id = Model.Adventure.Id })"/>
-                <a href="#" hx-get="@Url.Page("../Index", "Single", new { id = Model.Adventure.Id })">Cancel</a>
+                <a href="#" hx-get="@Url.Page("Index", "Single", new { id = Model.Adventure.Id })">Cancel</a>
             </div>
         </form>
     </td>

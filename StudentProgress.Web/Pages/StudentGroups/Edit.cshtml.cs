@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Core.Entities;
-using StudentProgress.Core.UseCases;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Models;
 
-namespace StudentProgress.Web.Pages.StudentGroups.Parts;
+namespace StudentProgress.Web.Pages.StudentGroups;
 
 public class EditModel : PageModel
 {

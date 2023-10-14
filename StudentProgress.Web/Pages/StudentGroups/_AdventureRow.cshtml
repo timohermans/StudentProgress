@@ -6,10 +6,10 @@
     </td>
     <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</td>
     <td hx-swap="outerHTML" hx-target="closest tr">
-        <a href="#" hx-get="@Url.Page("/StudentGroups/Parts/Edit", new { id = Model.Id })" hx-swap="outerHTML">Edit</a> |
+        <a href="#" hx-get="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML">Edit</a> |
         <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Id">Details</a> |
         <a id="deleteInline@(Model.Id)" href="#"
-           hx-delete="@Url.Page("/StudentGroups/Parts/Delete", new { id = Model.Id })"
+           hx-delete="@Url.Page("Delete", new { id = Model.Id })"
            hx-confirm="Weet je zeker dat je @Model.Name wil verwijderen? Dit kun je niet ongedaan maken!"
            hx-swap="outerHTML swap:500ms">
             Delete

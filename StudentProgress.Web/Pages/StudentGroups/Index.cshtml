@@ -9,7 +9,7 @@
 <section>
     <h2>Adventures</h2>
     <p id="actions">
-        <partial name="Parts/_IndexActions" model="Model"/>
+        <partial name="_IndexActions" model="Model"/>
     </p>
 
 
@@ -34,7 +34,7 @@
             </tr>
             @foreach (var adventure in groupGrouping.ToList())
             {
-                <partial name="Parts/_AdventureRow" model="adventure"/>
+                <partial name="_AdventureRow" model="adventure"/>
             }
         }
         </tbody>

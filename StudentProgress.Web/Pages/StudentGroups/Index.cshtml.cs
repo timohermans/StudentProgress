@@ -34,14 +34,14 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 .OrderByDescending(a => a.DateStart)
                 .ToListAsync();
 
-            return this.PageOrPartial("Parts/_IndexActions", "cancel");
+            return this.PageOrPartial("_IndexActions", "cancel");
         }
 
         public async Task<IActionResult> OnGetSingle(int id)
         {
 
             var adventure = await _context.Adventures.FindAsync(id);
-            return Partial("Parts/_AdventureRow", adventure);
+            return Partial("_AdventureRow", adventure);
         }
     }
 }

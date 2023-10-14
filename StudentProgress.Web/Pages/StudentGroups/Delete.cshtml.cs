@@ -29,6 +29,6 @@ public class DeleteModel : PageModel
             return Page();
         }
 
-        return this.SeeOther("../Index");
+        return this.SeeOther("Index");
     }
 }
