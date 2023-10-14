@@ -36,5 +36,12 @@ namespace StudentProgress.Web.Pages.StudentGroups
 
             return this.PageOrPartial("Parts/_IndexActions", "cancel");
         }
+
+        public async Task<IActionResult> OnGetSingle(int id)
+        {
+
+            var adventure = await _context.Adventures.FindAsync(id);
+            return Partial("Parts/_AdventureRow", adventure);
+        }
     }
 }

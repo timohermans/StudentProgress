@@ -16,12 +16,11 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 tr {
-    opacity: 1;
+    transition: opacity 0.5s ease-out;
 }
 
 tr.htmx-swapping {
     opacity: 0;
-    transition: opacity 0.5s ease-out;
 }
 
 /* || GENERAL STYLES */

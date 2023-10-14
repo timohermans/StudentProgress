@@ -32,28 +32,9 @@
             <tr>
                 <td class="text-muted" colspan="4">@groupGrouping.Key.ToFontysPeriod().ToString()</td>
             </tr>
-            @foreach (var item in groupGrouping.ToList())
+            @foreach (var adventure in groupGrouping.ToList())
             {
-                <tr>
-                    <td headers="name">
-                        <a asp-page="Details/Index" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-                    </td>
-                    <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(modelItem => item.Mnemonic)</td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Details/Index" asp-route-id="@item.Id">Details</a> |
-                        <a id="deleteInline@(item.Id)" href="#" hx-target="closest tr" hx-swap="outerHTML swap:0.5s"
-                           hx-delete="@Url.Page("Parts/Delete", new { id = item.Id })"
-                           hx-confirm="Weet je zeker dat je @item.Name wil verwijderen? Dit kun je niet ongedaan maken!">
-                            Delete
-                            <span id="loading-@item.Id" class="htmx-indicator">
-                                <span class="spinner-grow spinner-grow-sm text-secondary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </span>
-                            </span>
-                        </a>
-                    </td>
-                </tr>
+                <partial name="Parts/_AdventureRow" model="adventure"/>
             }
         }
         </tbody>

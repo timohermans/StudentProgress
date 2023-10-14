@@ -35,9 +35,10 @@ Project to track people, whether that's students, team members or yourself.
 - [x] Change the search test to the page test. Remove leftover code from Core.
 - [x] Use the ~~Linkgenerator~~ Url helper more (check index and everywhere where htmx is used)
 - [x] Move the htmx partial pages to their `parts` folders
-- Make an inline edit function for adventure
+- [x] Make an inline edit function for adventure
 - Write something about parts in the readme
 - Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
+- Update bootstrap to 5.3 and using css variables
 - Start working on the details page
 - Prolly need to add progress and milestones to the mix as well when I start
 
