@@ -19,6 +19,6 @@
 
     <div class="form-group">
         <input id="newAdventure" type="submit" value="Create" class="btn btn-primary" hx-target="body" hx-post='@Url.Page("Create")' />
-        <a id="cancel" hx-target="#actions" asp-page="Index">Cancel</a>
+        <a id="cancel" hx-target="#actions" asp-page="Index" hx-swap="innerHTML swap:200ms settle:200ms">Cancel</a>
     </div>
 </form>

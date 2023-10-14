@@ -1,6 +1,6 @@
 @model IndexModel
 
-<a id="newAdventure" href="#" hx-get="@Url.Page("Create")" hx-target="#actions">
+<a id="newAdventure" href="#" hx-get="@Url.Page("Create")" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
   Create New
 </a> or
 
