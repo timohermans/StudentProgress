@@ -44,6 +44,6 @@ public class EditModel : PageModel
         _context.Attach(Adventure).State = EntityState.Modified;
         await _context.SaveChangesAsync(token);
 
-        return Partial("_AdventureRow", Adventure);
+        return Partial("_Row", Adventure);
     }
 }
