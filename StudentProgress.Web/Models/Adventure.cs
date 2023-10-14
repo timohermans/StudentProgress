@@ -12,5 +12,5 @@ public class Adventure
     [MinLength(2)] [MaxLength(50)] public required string Name { get; set; }
     public string? Mnemonic { get; set; }
     [DataType(DataType.Date)] public required DateTime DateStart { get; set; }
-    public ICollection<Person> People { get; } = new List<Person>();
+    public ICollection<Person> People { get; set; } = new List<Person>();
 }

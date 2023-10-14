@@ -45,8 +45,4 @@
       <None Remove="appsettings.Development.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="UseCases\Canvas\Courses\" />
-    </ItemGroup>
-
 </Project>

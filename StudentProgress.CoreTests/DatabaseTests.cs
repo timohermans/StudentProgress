@@ -36,7 +36,7 @@ UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'SudentGroup';
 ");
 
             using var dataContext = Fixture.CreateWebContext();
-            dbContext.Database.ExecuteSqlRaw(@"
+            dataContext.Database.ExecuteSqlRaw(@"
 DELETE FROM People;
 DELETE FROM Adventures;
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'People';
