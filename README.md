@@ -36,7 +36,9 @@ Project to track people, whether that's students, team members or yourself.
 - [x] Use the ~~Linkgenerator~~ Url helper more (check index and everywhere where htmx is used)
 - [x] Move the htmx partial pages to their `parts` folders
 - [x] Make an inline edit function for adventure
-- Write something about parts in the readme
+- [ ] Add custom event (hx-trigger in response) to reload transactions after creating a new one and fix "create" button transition.
+- [ ] Add scale transition for search functionality
+- ~~[ ] Write something about parts in the readme~~ (note: not going to use parts anymore)
 - Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
 - Update bootstrap to 5.3 and using css variables
 - Start working on the details page

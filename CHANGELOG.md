@@ -8,14 +8,15 @@
 
 - New WebContext database to start migrating to simpler architecture and principle
 - `.editorconfig` to **try** and get rider settings into vscode
-- Deleting adventures from the adventure index page (with nice transitions)
+- Deleting adventures from the adventure index page (with nice transitions).
+- Transitions between actions on the Adventures overview page.
 
 ### Changed
 
 - Change Canvas related UseCase logic back to Web to reduce architecture layering
 - Change StudentGroup to Adventure
 - Deleting an adventure can now be done in the overview page inline! (not really, but really!)
-- Adding a custom adventure can now be done on the overview page itself.
+- Adding and editing a adventure can now be done on the overview page itself.
 - Made people search absolutely JavaScript free (0 lines!). Also no more dependency on popper.js
 
 ### Fixed
@@ -42,3 +43,11 @@ Also, using purely razor syntax and c# to write the implementation is simply ama
 Architecture wise, especially when working alone, it's amazing to just work with plain simple anemic models and have the business logic inside the page models. Look at the [query I wrote for searching](./StudentProgress.Web/Pages/People/Parts/Search.cshtml.cs).
 I can simply select columns I want, put it in the same model and send it to the client without any hassle of converting.
 We'll see down the line how hard it's gonna bite me in the butt though.
+
+So I'm now removing the `Parts` directory from the project already.
+The reason is that when main page uses a partial that another "partial" page also uses, you will get relative path issues.
+It makes sense though, you can still see when a page is a partial, because of the `Layout = null;` statement.
+In the meantime, actual partials have a nice _ prefix.
+
+I'm becoming more aware of the power of partials, muhaha.
+No really, it's really cool how much you can achieve without writing javascript and add some flair to a simple crud page.
