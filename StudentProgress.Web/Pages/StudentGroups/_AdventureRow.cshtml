@@ -1,17 +1,17 @@
 @model StudentProgress.Web.Models.Adventure
 
-<tr id="adventure-@Model.Id">
+<tr id="adventure-@Model.Id" class="fade-me-out fade-me-in">
     <td headers="name">
         <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Id">@Html.DisplayFor(a => a.Name)</a>
     </td>
     <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</td>
     <td hx-swap="outerHTML" hx-target="closest tr">
-        <a href="#" hx-get="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML">Edit</a> |
+        <a href="#" hx-get="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms">Edit</a> |
         <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Id">Details</a> |
         <a id="deleteInline@(Model.Id)" href="#"
            hx-delete="@Url.Page("Delete", new { id = Model.Id })"
            hx-confirm="Weet je zeker dat je @Model.Name wil verwijderen? Dit kun je niet ongedaan maken!"
-           hx-swap="outerHTML swap:500ms">
+           hx-swap="outerHTML swap:200ms">
             Delete
             <span id="loading-@Model.Id" class="htmx-indicator">
                 <span class="spinner-grow spinner-grow-sm text-secondary" role="status">

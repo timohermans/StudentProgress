@@ -15,12 +15,18 @@ for details on configuring this project to bundle and minify static web assets. 
     display: inline;
 }
 
-tr {
-    transition: opacity 0.5s ease-out;
+.fade-me-out.htmx-swapping {
+    transition: opacity 0.2s ease-out;
+    opacity: 0;
 }
 
-tr.htmx-swapping {
+.fade-me-in.htmx-added {
     opacity: 0;
+}
+
+.fade-me-in {
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
 }
 
 /* || GENERAL STYLES */
