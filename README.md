@@ -39,7 +39,7 @@ Project to track people, whether that's students, team members or yourself.
 - [x] Add custom event (hx-trigger in response) to reload transactions after creating a new one and fix "create" button transition.
 - [x] Add scale transition for search functionality
 - ~~[ ] Write something about parts in the readme~~ (note: not going to use parts anymore)
-- [ ] Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
+- [x] Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
 - [x] Update bootstrap to 5.3 and using css variables
 - [ ] Add simple authentication
 - [ ] Start working on the details page
@@ -52,6 +52,7 @@ Project to track people, whether that's students, team members or yourself.
 - [ASP.NET core documentation](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0)
 - [Learn RazorPages (straightforward 3rd party docs)](https://www.learnrazorpages.com)
 - [Htmx docs](https://htmx.org/docs)
+- [Hyperscript docs](https://hyperscript.org/docs)
 - [Htmx book for recipes](https://hypermedia.systems/more-htmx-patterns/)
 
 ## Resources to check out

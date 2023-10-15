@@ -5,6 +5,7 @@ using HtmlTags;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,11 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Progress");
     options.Conventions.AuthorizeFolder("/Settings");
     options.Conventions.AuthorizeFolder("/StudentGroups");
+});
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
 });
 builder.Services.AddHtmlTags(new TagConventions());
 builder.Services.AddDbContext<WebContext>(options =>
