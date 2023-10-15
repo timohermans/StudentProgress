@@ -29,6 +29,17 @@ for details on configuring this project to bundle and minify static web assets. 
     transition: opacity 0.2s ease-out;
 }
 
+.pop-out, .pop-out.htmx-swapping, .pop-in.htmx-added {
+    transition: transform 0.2s ease-out;   
+    transform: scale(0);
+    transform-origin: top;
+}
+
+.pop-in {
+    transform: scale(1);
+}
+
+
 /* || GENERAL STYLES */
 :root {
     --white-50: #F3F4F9;

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Models;
 
-namespace StudentProgress.Web.Pages.People.Parts;
+namespace StudentProgress.Web.Pages.People;
 
 public class SearchModel : PageModel
 {
