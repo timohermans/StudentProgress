@@ -9,11 +9,11 @@
 <section>
     <h2>Adventures</h2>
     <p id="actions" class="fade-me-out fade-me-in">
-        <partial name="_Actions" model="Model"/>
+        <partial name="_Actions" model="Model.CanImportGroups"/>
     </p>
 
 
-    <table class="table">
+    <table id="adventures" class="table" hx-get="@Url.Page("Index")" hx-trigger="adventure-created from:body delay:500ms" hx-target="tbody">
         <caption>Overview of adventures available</caption>
         <thead>
         <tr>
@@ -27,16 +27,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var groupGrouping in Model.Adventures.GroupBy(g => g.DateStart))
-        {
-            <tr>
-                <td class="text-muted" colspan="4">@groupGrouping.Key.ToFontysPeriod().ToString()</td>
-            </tr>
-            @foreach (var adventure in groupGrouping.ToList())
-            {
-                <partial name="_Row" model="adventure"/>
-            }
-        }
+        <partial name="_List" model="Model.Adventures"/>
         </tbody>
     </table>
 </section>

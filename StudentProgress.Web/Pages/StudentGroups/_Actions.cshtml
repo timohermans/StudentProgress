@@ -1,10 +1,10 @@
-@model IndexModel
+@model bool
 
 <a id="newAdventure" href="#" hx-get="@Url.Page("Create")" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
   Create New
 </a> or
 
-@if (Model.CanImportGroups)
+@if (Model)
 {
   <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
 }

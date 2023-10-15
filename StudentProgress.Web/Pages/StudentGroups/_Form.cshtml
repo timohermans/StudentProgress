@@ -22,18 +22,18 @@
             <label asp-for="Mnemonic"></label>
         </div>
     </div>
-    @if (Model.Id != 0)
+    @if (Model.Id == 0)
     {
-        <div class="form-group col" hx-target="closest tr" hx-swap="outerHTML swap:200ms settle:200ms">
-            <input type="submit" value="Save" class="btn btn-primary" hx-put="@Url.Page("Edit", new { id = Model.Id })"/>
-            <a href="#" hx-get="@Url.Page("Index", "Single", new { id = Model.Id })">Cancel</a>
+        <div class="form-group col" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
+            <input id="newAdventure" type="submit" value="Create" class="btn btn-primary" hx-post='@Url.Page("Create")'/>
+            <a id="cancel" asp-page="Index">Cancel</a>
         </div>
     }
     else
     {
-        <div class="form-group col">
-            <input id="newAdventure" type="submit" value="Create" class="btn btn-primary" hx-target="body" hx-post='@Url.Page("Create")'/>
-            <a id="cancel" asp-page="Index" hx-swap="innerHTML swap:200ms settle:200ms" hx-target="#actions">Cancel</a>
+        <div class="form-group col" hx-target="closest tr" hx-swap="outerHTML swap:200ms settle:200ms">
+            <input type="submit" value="Save" class="btn btn-primary" hx-put="@Url.Page("Edit", new { id = Model.Id })"/>
+            <a href="#" hx-get="@Url.Page("Index", "Single", new { id = Model.Id })">Cancel</a>
         </div>
     }
 </form>

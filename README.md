@@ -36,7 +36,7 @@ Project to track people, whether that's students, team members or yourself.
 - [x] Use the ~~Linkgenerator~~ Url helper more (check index and everywhere where htmx is used)
 - [x] Move the htmx partial pages to their `parts` folders
 - [x] Make an inline edit function for adventure
-- [ ] Add custom event (hx-trigger in response) to reload transactions after creating a new one and fix "create" button transition.
+- [x] Add custom event (hx-trigger in response) to reload transactions after creating a new one and fix "create" button transition.
 - [x] Add scale transition for search functionality
 - ~~[ ] Write something about parts in the readme~~ (note: not going to use parts anymore)
 - [ ] Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
@@ -53,6 +53,12 @@ Project to track people, whether that's students, team members or yourself.
 - [Learn RazorPages (straightforward 3rd party docs)](https://www.learnrazorpages.com)
 - [Htmx docs](https://htmx.org/docs)
 - [Htmx book for recipes](https://hypermedia.systems/more-htmx-patterns/)
+
+## Resources to check out
+
+- [Missing css](https://missing.style)
+- [RSJS, Reasonably Simple JavaScript](https://ricostacruz.com/rsjs/)
+- [RSCSS, Reasonably Simple CSS](https://ricostacruz.com/rscss/index.html)
 
 ## Architecture migration notes
 

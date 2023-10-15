@@ -34,12 +34,21 @@ namespace StudentProgress.Web.Pages.StudentGroups
                 .OrderByDescending(a => a.DateStart)
                 .ToListAsync();
 
-            return this.PageOrPartial("_Actions", "cancel");
+            if (Request.HasHtmxTrigger("adventures"))
+            {
+                return Partial("_List", Adventures);
+            }
+
+            if (Request.HasHtmxTrigger("cancel"))
+            {
+                return Partial("_Actions", CanImportGroups);
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnGetSingle(int id)
         {
-
             var adventure = await _context.Adventures.FindAsync(id);
             return Partial("_Row", adventure);
         }

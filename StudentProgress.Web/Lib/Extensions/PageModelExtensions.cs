@@ -17,6 +17,11 @@ public static class PageModelExtensions
         return request.Headers.ContainsPair("HX-Trigger", name);
     }
 
+    public static void DispatchHtmxEvent(this HttpResponse response, string name)
+    {
+        response.Headers.Add("HX-Trigger", name);
+    }
+
     /// <summary>
     /// Returns either a page or partial, based on the element ID in the HX-Trigger header.
     /// </summary>
