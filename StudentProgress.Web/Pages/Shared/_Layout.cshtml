@@ -19,8 +19,13 @@
 <mini-profiler/>
 <header>
     <nav
-        class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark-grey border-bottom box-shadow mb-3">
+        class="navbar navbar-expand-md bg-primary mb-3" data-bs-theme="dark">
         <div class="container">
+            <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="flex-grow-1 flex-md-grow-0 d-flex align-items-center">
                 <a asp-page="/progress/quickadd" class="quick-add">
                     <svg-inject
@@ -32,8 +37,8 @@
                     Progress
                 </a>
             </div>
-            <div id="searchComponent" class="d-flex order-sm-1 flex-grow-1 search position-relative" autocomplete="off">
-                <input id="search" name="q" type="text" class="form-control" placeholder="search student.."
+            <div id="searchComponent" class="d-flex gap-2 order-sm-1 flex-grow-1 search position-relative justify-content-center justify-content-md-start" autocomplete="off">
+                <input id="search" name="q" type="search" class="form-control" placeholder="search student.."
                        autocomplete="off" hx-get="@LinkGen.GetPathByPage("/People/Search")"
                        hx-target="#searchResults"
                        hx-trigger="search, keyup changed delay:400ms"
@@ -57,11 +62,6 @@
                     </a>
                 </span>
             }
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
         </div>
     </nav>
 </header>
@@ -76,6 +76,7 @@
 </footer>
 
 <script src="~/lib/htmx/htmx.min.js"></script>
+<script src="~/lib/hyperscript/_hyperscript.min.js"></script>
 <script src="~/lib/alpinejs/alpine.min.js"></script>
 <script src="~/lib/popper/popper.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -40,7 +40,7 @@ Project to track people, whether that's students, team members or yourself.
 - [x] Add scale transition for search functionality
 - ~~[ ] Write something about parts in the readme~~ (note: not going to use parts anymore)
 - [ ] Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
-- [ ] Update bootstrap to 5.3 and using css variables
+- [x] Update bootstrap to 5.3 and using css variables
 - [ ] Add simple authentication
 - [ ] Start working on the details page
 - [ ] Prolly need to add progress and milestones to the mix as well when I start
