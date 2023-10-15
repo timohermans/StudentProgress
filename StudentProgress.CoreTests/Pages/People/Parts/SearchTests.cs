@@ -1,5 +1,5 @@
 ﻿using StudentProgress.Web.Models;
-using StudentProgress.Web.Pages.People.Parts;
+using StudentProgress.Web.Pages.People;
 
 namespace StudentProgress.CoreTests.Pages.People.Parts
 {
