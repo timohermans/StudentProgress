@@ -1,6 +1,4 @@
-using System;
 using System.Net.Http;
-using Auth0.AspNetCore.Authentication;
 using HtmlTags;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using StudentProgress.Core;
 using StudentProgress.Core.Entities;
 using StudentProgress.Web.Lib.Configuration;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Lib.Infrastructure;
+using StudentProgress.Web.Models;
 using CanvasClient = StudentProgress.Web.Lib.CanvasApi.CanvasClient;
 using ICanvasApiConfig = StudentProgress.Web.Lib.CanvasApi.ICanvasApiConfig;
 using ICanvasClient = StudentProgress.Web.Lib.CanvasApi.ICanvasClient;
@@ -25,11 +23,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
 
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
-    options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new ArgumentNullException("Auth0:Domain");
-    options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new ArgumentNullException("Auth0:ClientId");
-});
+builder.Services.AddDefaultIdentity<User>(options => { options.SignIn.RequireConfirmedAccount = true; })
+    .AddEntityFrameworkStores<WebContext>();
+// builder.Services.AddAuth0WebAppAuthentication(options =>
+// {
+//     options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new ArgumentNullException("Auth0:Domain");
+//     options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new ArgumentNullException("Auth0:ClientId");
+// });
 
 builder.Services.AddMiniProfiler().AddEntityFramework();
 
@@ -40,7 +40,7 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Progress");
     options.Conventions.AuthorizeFolder("/Settings");
     options.Conventions.AuthorizeFolder("/StudentGroups");
-});
+}).AddRazorRuntimeCompilation(); // razoruntimecompilation allows for hot reload of razor pages
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
@@ -59,6 +59,7 @@ builder.Services.AddSingleton(_ =>
     new HttpClient(new SocketsHttpHandler { PooledConnectionIdleTimeout = TimeSpan.FromHours(1) }));
 builder.Services.AddScoped<ICanvasApiConfig, CanvasConfiguration>();
 builder.Services.AddScoped<ICanvasClient, CanvasClient>();
+
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =

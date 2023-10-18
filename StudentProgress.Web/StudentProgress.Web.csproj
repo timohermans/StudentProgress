@@ -18,19 +18,20 @@
     <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.0.4" />
     <PackageReference Include="HtmlTags" Version="8.1.1" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0" />
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
-    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.22" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.3.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,5 +44,45 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\StudentGroups\Progress\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\AccessDenied.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ConfirmEmail.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ConfirmEmailChange.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ExternalLogin.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ForgotPassword.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Lockout.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Login.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\LoginOld.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\LoginWith2fa.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\LoginWithRecoveryCode.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Logout.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\ChangePassword.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\DeletePersonalData.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\Disable2fa.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\DownloadPersonalData.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\Email.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\EnableAuthenticator.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\ExternalLogins.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\GenerateRecoveryCodes.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\Index.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\PersonalData.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\ResetAuthenticator.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\SetPassword.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\TwoFactorAuthentication.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\_Layout.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\_ManageNav.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Manage\_ViewImports.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\Register.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ResendEmailConfirmation.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ResetPassword.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\_StatusMessage.cshtml" />
+    <AdditionalFiles Include="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
   </ItemGroup>
 </Project>
