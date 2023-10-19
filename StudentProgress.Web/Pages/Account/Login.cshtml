@@ -1,9 +1,24 @@
 ﻿@page
 @model StudentProgress.Web.Pages.Account.Login
 
-{
-  Layout = null;
+@{
+    ViewData["Title"] = "Login";
 }
 
-
-<h1>Hallo login</h1>
+<section class="row justify-content-center mt-5" hx-boost="false">
+    <form method="post" class="col-4">
+        <h2>Progress</h2>
+        <div asp-validation-summary="All"></div>
+        <p class="form-floating mb-3">
+            <input asp-for="User.Email" class="form-control" placeholder="@Html.DisplayNameFor(m => m.User.Email)">
+            <label asp-for="User.Email"></label>
+        </p>
+        <p class="form-floating mb-3">
+            <input asp-for="User.Password" class="form-control" placeholder="@Html.DisplayNameFor(m => m.User.Password)">
+            <label asp-for="User.Password"></label>
+        </p>
+        <p>
+            <button class="btn btn-primary" type="submit">Log in</button>
+        </p>
+    </form>
+</section>

@@ -17,54 +17,55 @@
 
 <body hx-boost="true" hx-headers='{"X-XSRF-TOKEN": "@Antiforgery.GetAndStoreTokens(Context).RequestToken"}'>
 <mini-profiler/>
-<header>
-    <nav
-        class="navbar navbar-expand-md bg-primary mb-3" data-bs-theme="dark">
-        <div class="container">
-            <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="flex-grow-1 flex-md-grow-0 d-flex align-items-center">
-                <a asp-page="/progress/quickadd" class="quick-add">
-                    <svg-inject
-                        src="lib/bootstrap-icons/clipboard2-plus.svg">
-                    </svg-inject>
-                </a>
-                <a class="navbar-brand navbar-collapse collapse home-link text-white" asp-area=""
-                   asp-page="/Index">
-                    Progress
-                </a>
-            </div>
-            <div id="searchComponent" class="d-flex gap-2 order-sm-1 flex-grow-1 search position-relative justify-content-center justify-content-md-start" autocomplete="off">
-                <input id="search" name="q" type="search" class="form-control" placeholder="search student.."
-                       autocomplete="off" hx-get="@LinkGen.GetPathByPage("/People/Search")"
-                       hx-target="#searchResults"
-                       hx-trigger="search, keyup changed delay:400ms"
-                       hx-swap="swap:200ms settle:200ms">
-                <div id="searchResults" class="pop-in pop-out"></div>
-            </div>
-            <ul class="navbar-nav navbar-collapse collapse order-sm-0 flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-page="/Settings/Index">Settings</a>
-                </li>
-            </ul>
-            @if (User.Identity?.IsAuthenticated ?? false)
-            {
-                <span class="navbar-text navbar-collapse collapse flex-grow-0 order-sm-2">
-                    <a asp-page="/Logout">
-                        Log
-                        out
+@if (User.IsFullyAuthenticated())
+{
+    <header>
+        <nav
+            class="navbar navbar-expand-md bg-primary mb-3" data-bs-theme="dark">
+            <div class="container">
+                <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="flex-grow-1 flex-md-grow-0 d-flex align-items-center">
+                    <a asp-page="/progress/quickadd" class="quick-add">
+                        <svg-inject
+                            src="lib/bootstrap-icons/clipboard2-plus.svg">
+                        </svg-inject>
                     </a>
+                    <a class="navbar-brand navbar-collapse collapse home-link text-white" asp-area=""
+                       asp-page="/Index">
+                        Progress
+                    </a>
+                </div>
+                <div id="searchComponent" class="d-flex gap-2 order-sm-1 flex-grow-1 search position-relative justify-content-center justify-content-md-start" autocomplete="off">
+                    <input id="search" name="q" type="search" class="form-control" placeholder="search student.."
+                           autocomplete="off" hx-get="@LinkGen.GetPathByPage("/People/Search")"
+                           hx-target="#searchResults"
+                           hx-trigger="search, keyup changed delay:400ms"
+                           hx-swap="swap:200ms settle:200ms">
+                    <div id="searchResults" class="pop-in pop-out"></div>
+                </div>
+                <ul class="navbar-nav navbar-collapse collapse order-sm-0 flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/StudentGroups/Index">Groups</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Settings/Index">Settings</a>
+                    </li>
+                </ul>
+                <span class="navbar-text navbar-collapse collapse flex-grow-0 order-sm-2">
+                    <form method="post" hx-boost="false" asp-page="/Logout">
+                        <button class="btn btn-link" type="submit">
+                            Log out
+                        </button>
+                    </form>
                 </span>
-            }
-        </div>
-    </nav>
-</header>
+            </div>
+        </nav>
+    </header>
+}
 <main role="main" class="pb-3 container">
     @RenderBody()
 </main>

@@ -41,9 +41,11 @@ Project to track people, whether that's students, team members or yourself.
 - ~~[ ] Write something about parts in the readme~~ (note: not going to use parts anymore)
 - [x] Integrate [lowercase urls](https://www.learnrazorpages.com/razor-pages/routing#other-routing-options)
 - [x] Update bootstrap to 5.3 and using css variables
-- [ ] Add simple authentication
+- [x] Add simple authentication (just add username and password in environment vars and login with that)
+  - [ ] Test expiry of the authentication
 - [ ] Start working on the details page
 - [ ] Prolly need to add progress and milestones to the mix as well when I start
+- [ ] Add [Login throttling](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login-throttling)
 
 ## Resources
 
