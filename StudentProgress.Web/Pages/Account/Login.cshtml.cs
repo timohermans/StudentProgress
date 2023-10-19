@@ -1,17 +1,18 @@
 ﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using StudentProgress.Web.Lib.Infrastructure;
 using StudentProgress.Web.Models;
 
 namespace StudentProgress.Web.Pages.Account;
 
 public class Login : PageModel
 {
+    private static LoginThrottler _loginThrottler = new(new DateProvider());
+
     private readonly IConfiguration _config;
     private ILogger<Login> _logger;
 
@@ -35,12 +36,19 @@ public class Login : PageModel
             return Page();
         }
 
+        if (_loginThrottler.GetSecondsLeftToTryAgain() > 0)
+        {
+            ModelState.AddModelError("throttled", "Too many login attempts. Wait some time to try again");
+            return Page();
+        }
+
         var adminUsername = _config.GetValue<string>("Admin:Username");
         var adminPassword = _config.GetValue<string>("Admin:Password");
 
         if (adminUsername != User.Email || adminPassword != User.Password)
         {
-            _logger.LogWarning($"Someone failed login with username {User.Email} and a given password");
+            _loginThrottler.Throttle();
+            _logger.LogWarning($"Someone failed login with username {User.Email} and a given password. Throttler: {_loginThrottler.GetSecondsLeftToTryAgain()}s");
             ModelState.AddModelError("login", "Username or password is incorrect");
             return Page();
         }
@@ -51,18 +59,14 @@ public class Login : PageModel
             new Claim("user", adminUsername),
             new Claim("role", "Member")
         };
-
         await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
+        _loginThrottler.Reset();
 
         if (Url.IsLocalUrl(returnUrl))
         {
             return RedirectToPage("TwoFactorLogin", null, routeValues: new { returnUrl });
         }
-        else
-        {
-            return RedirectToPage("TwoFactorLogin");
-        }
 
-        return Page();
+        return RedirectToPage("TwoFactorLogin");
     }
 }
