@@ -49,7 +49,7 @@ public class DetailsOnPost : CanvasTests
                 },
                 new()
                 {
-                    Name = "Luuk",
+                    Name = "Hermans, Luuk",
                     AvatarUrl = null,
                     CanvasId = "1235"
                 }
@@ -66,14 +66,18 @@ public class DetailsOnPost : CanvasTests
 
         await using var assertDb = _dbFixture.CreateWebContext();
         var resultGroup = await assertDb.Adventures.Include(g => g.People)
-            .FirstAsync(g => g.Name == "S-DB-S2-CMK - S2-DB02 - 2223nj");
+            .FirstAsync(g => g.Name == "S-DB-S2-CMK - S2-DB02");
         resultGroup.Should().NotBeNull();
         resultGroup!.DateStart.Should().Be(new DateTime(2022, 8, 1));
         var resultPeople = resultGroup.People;
         resultPeople.Should().HaveCount(2);
-        var timo = resultPeople.First(s => s.Name == "Hermans, Timo T.M.");
+        var timo = resultPeople.First(s => s.FirstName == "Timo");
         timo.AvatarPath.Should().Be(Path.Combine("images", "avatars", "1234-canvas.png"));
-        var luuk = resultPeople.First(s => s.Name == "Luuk");
+        timo.LastName.Should().Be("Hermans");
+        timo.Initials.Should().Be("T.M.");
+        var luuk = resultPeople.First(s => s.FirstName == "Luuk");
+        luuk.LastName.Should().Be("Hermans");
+        luuk.Initials.Should().BeNull();
         luuk.AvatarPath.Should().BeNull();
 
         Directory.Exists(imageDir).Should().BeTrue();

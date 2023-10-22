@@ -11,7 +11,7 @@ public class EditModel : PageModel
 {
     private readonly WebContext _context;
 
-    [BindProperty] public Adventure Adventure { get; set; } = null!;
+    [BindProperty] public Models.Adventure Adventure { get; set; } = null!;
 
     public EditModel(WebContext context)
     {

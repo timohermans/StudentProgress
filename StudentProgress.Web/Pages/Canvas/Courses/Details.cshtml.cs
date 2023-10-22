@@ -12,6 +12,7 @@ using StudentProgress.Web.Lib.CanvasApi.Models;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Lib.Infrastructure;
 using StudentProgress.Web.Models;
+using StudentProgress.Web.Models.Values;
 using ICanvasClient = StudentProgress.Web.Lib.CanvasApi.ICanvasClient;
 
 namespace StudentProgress.Web.Pages.Canvas.Courses;
@@ -139,7 +140,12 @@ course(id: ""{id}"") {
 
     public async Task<IActionResult> OnPostAsync(CancellationToken token)
     {
-        var adventureName = $"{Semester.Name} - {Semester.SectionName} - {Semester.TermName}";
+        var adventureName = Semester.Name;
+
+        if (Semester.Name != Semester.SectionName)
+        {
+            adventureName = $"{Semester.Name} - {Semester.SectionName}";
+        }
 
         /*
          * select a.id, p.id, p.name, p.externalId
@@ -156,7 +162,7 @@ course(id: ""{id}"") {
 
         if (adventure == null)
         {
-            adventure = new Adventure
+            adventure = new Models.Adventure
             {
                 Name = adventureName,
                 DateStart = Semester.TermStartsAt
@@ -166,7 +172,8 @@ course(id: ""{id}"") {
 
         var peopleNamesToAdd = Semester.Students.Select(s => s.Name).ToList();
         var peopleInDb =
-            await _db.People.Where(s => peopleNamesToAdd.Contains(s.Name)).ToListAsync(token);
+            await _db.People.Where(p => peopleNamesToAdd.Contains(p.LastName + ", " + p.FirstName + " " + p.Initials))
+                .ToListAsync(token);
 
         var relativeAvatarLocation = Path.Combine("images", "avatars");
         var imageLocation = Path.Combine(_config.MediaLocation, relativeAvatarLocation);
@@ -186,9 +193,14 @@ course(id: ""{id}"") {
             }
             else
             {
+                var name = NameFromCanvas.Create(studentRequest.Name);
+                // TODO: error handling
                 person = new Person
                 {
-                    Name = studentRequest.Name ?? "unknown name", ExternalId = studentRequest.CanvasId
+                    FirstName = name.Data.FirstName,
+                    LastName = name.Data.LastName,
+                    Initials = name.Data.Initials,
+                    ExternalId = studentRequest.CanvasId
                 };
                 _db.People.Add(person);
                 adventure.People.Add(person);

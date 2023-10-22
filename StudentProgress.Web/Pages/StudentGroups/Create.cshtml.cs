@@ -14,7 +14,7 @@ public class CreateModel : PageModel
     private readonly WebContext _db;
     private readonly ICanvasApiConfig _canvasConfig;
 
-    [BindProperty] public Adventure Adventure { get; set; } = default!;
+    [BindProperty] public Models.Adventure Adventure { get; set; } = default!;
 
     public CreateModel(WebContext db, ICanvasApiConfig canvasConfig)
     {

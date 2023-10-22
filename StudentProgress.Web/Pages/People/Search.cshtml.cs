@@ -33,9 +33,11 @@ public class SearchModel : PageModel
             .Select(p => new Person
             {
                 Id = p.Id,
-                Name = p.Name,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                Initials = p.Initials,
                 AvatarPath = p.AvatarPath,
-                Adventures = p.Adventures.Select(a => new Adventure
+                Adventures = p.Adventures.Select(a => new Models.Adventure
                 {
                     Id = a.Id,
                     Name = a.Name,

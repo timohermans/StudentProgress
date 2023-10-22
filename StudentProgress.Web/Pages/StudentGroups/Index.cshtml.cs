@@ -16,7 +16,7 @@ namespace StudentProgress.Web.Pages.StudentGroups
         private readonly ICanvasApiConfig _apiConfig;
 
         public bool CanImportGroups { get; private set; }
-        public List<Adventure> Adventures { get; set; } = new();
+        public List<Models.Adventure> Adventures { get; set; } = new();
 
         public IndexModel(WebContext context, ICanvasApiConfig apiConfig)
         {

@@ -15,11 +15,11 @@ namespace StudentProgress.CoreTests.Pages.People.Parts
         {
             using (var db1 = Fixture.CreateWebContext())
             {
-                var timo = new Person { Name = "Timo", AvatarPath = "123.png" };
+                var timo = new Person { FirstName = "Timo", LastName = "", AvatarPath = "123.png" };
                 await db1.People.AddAsync(timo);
-                await db1.Adventures.AddAsync(new Adventure { Name = "semester 1", People = new List<Person> { timo, new Person { Name = "Leon" } }, DateStart = DateTime.Now });
+                await db1.Adventures.AddAsync(new Adventure { Name = "semester 1", People = new List<Person> { timo, new Person { FirstName = "Leon", LastName = ""} }, DateStart = DateTime.Now });
                 await db1.Adventures.AddAsync(new Adventure { Name = "semester 2", People = new List<Person> { timo }, DateStart = DateTime.Now });
-                await db1.Adventures.AddAsync(new Adventure { Name = "semester 3", People = new List<Person> { new Person { Name = "Simon" } }, DateStart = DateTime.Now });
+                await db1.Adventures.AddAsync(new Adventure { Name = "semester 3", People = new List<Person> { new Person { FirstName = "Simon", LastName = ""} }, DateStart = DateTime.Now });
                 await db1.SaveChangesAsync();
             }
 
