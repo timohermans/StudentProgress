@@ -3,10 +3,18 @@ for details on configuring this project to bundle and minify static web assets. 
 
 /* || Bootstrap */
 
+:root, [data-bs-theme=light] {
+    --bs-primary-rgb: 156, 54, 181;
+}
+
 [data-bs-theme=dark] {
     --bs-primary: #663366;
     --bs-primary-rgb: 102, 51, 102;
     --bs-body-bg: var(--bs-primary);
+}
+
+.card-img-top {
+    
 }
 
 /* || HTMX */
@@ -45,6 +53,34 @@ for details on configuring this project to bundle and minify static web assets. 
 
 .pop-in {
     transform: scale(1);
+}
+
+/* || (Every) Layout */
+
+.reel {
+    display: flex;
+    block-size: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-color: #fff #000;
+}
+
+.reel > * {
+    flex: 0 0 220px;
+}
+
+.reel > img {
+    block-size: 100%;
+    flex-basis: auto;
+    width: auto;
+}
+
+.reel > * + * {
+    margin-inline-start: 1rem;
+}
+
+.reel.overflowing {
+    padding-block-end: 1rem;
 }
 
 

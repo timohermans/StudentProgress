@@ -2,7 +2,7 @@
 
 <tr id="adventure-@Model.Id" class="fade-me-out fade-me-in">
     <td headers="name">
-        <a asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Id">@Html.DisplayFor(a => a.Name)</a>
+        <a asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-target="body">@Html.DisplayFor(a => a.Name)</a>
     </td>
     <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</td>
     <td hx-swap="outerHTML" hx-target="closest tr">

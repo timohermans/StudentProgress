@@ -18,6 +18,9 @@
 - Deleting an adventure can now be done in the overview page inline! (not really, but really!)
 - Adding and editing a adventure can now be done on the overview page itself.
 - Made people search absolutely JavaScript free (0 lines!). Also no more dependency on popper.js
+- People are now displayed by firstname first
+- When a Canvas section and course name are the same, disregard the section
+- Removed the term (e.g. 2223NJ) from the adventure name
 
 ### Fixed
 

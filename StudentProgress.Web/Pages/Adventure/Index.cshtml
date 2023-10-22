@@ -1,0 +1,20 @@
+@page "{id:int}"
+@model StudentProgress.Web.Pages.Adventure.Index
+
+<h2 class="text-center"><span class="text-primary">@(Model.Adventure.Name)</span>'s adventure</h2>
+
+<nav class="mb-3">
+    Jump to <a class="text-primary" href="#people">Adventurers</a> / <a class="text-primary" href="#">Quests</a> / <a class="text-primary" href="#">Logs</a>
+</nav>
+
+<section class="reel">
+    @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
+    {
+        <div class="card">
+            <img src="@person.ImageSource" class="card-img-top object-fit-cover" alt="@person.Name" height="150">
+            <div class="card-body">
+                @person.FirstName
+            </div>
+        </div>
+    }
+</section>
