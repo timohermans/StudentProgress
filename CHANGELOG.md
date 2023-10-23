@@ -54,3 +54,11 @@ In the meantime, actual partials have a nice _ prefix.
 
 I'm becoming more aware of the power of partials, muhaha.
 No really, it's really cool how much you can achieve without writing javascript and add some flair to a simple crud page.
+
+Some learning pains also start to emerge though. You want to grab to lazy loading to seperate stuff from the page,
+and that makes some stuff immediately a little bit more complex.
+Not React complex, mind you, but more complex then loading all the data.
+I wanted to load students seperately from (which I now can still do), but it still needs javascript to make the scrollbar work.
+Also, making a border around the student portrait is also a hassle then, as you need to delegate that to javascript as well.
+Alpine is really lovely here though. Everything you need to know is bundled in the html file.
+Better than Hyperscript in my opinion, because Alpine still resembles the javascript everybody knows and loves.

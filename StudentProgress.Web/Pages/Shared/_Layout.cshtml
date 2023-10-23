@@ -13,10 +13,22 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
     @await RenderSectionAsync("Styles", required: false)
+
+    <script defer src="~/lib/htmx/htmx.min.js"></script>
+    <script defer src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <environment names="Development">
+        <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
+    </environment>
+    <environment names="Production">
+        <script src="https://unpkg.com/@@popperjs/core@2"></script>
+    </environment>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.1/dist/cdn.min.js"></script>
+    <script defer src="~/js/site.js" asp-append-version="true"></script>
+    <mini-profiler/>
 </head>
 
 <body hx-boost="true" hx-headers='{"X-XSRF-TOKEN": "@Antiforgery.GetAndStoreTokens(Context).RequestToken"}'>
-<mini-profiler/>
 @if (User.IsFullyAuthenticated())
 {
     <header>
@@ -76,16 +88,10 @@
     </div>
 </footer>
 
-<script src="~/lib/htmx/htmx.min.js"></script>
-<script src="~/lib/hyperscript/_hyperscript.min.js"></script>
-<script src="~/lib/alpinejs/alpine.min.js"></script>
-<script src="~/lib/popper/popper.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-        window.isConfirmationPopupDisabled = false;
-        window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
-    </script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+    window.isConfirmationPopupDisabled = false;
+    window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/"), true));
+</script>
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>
