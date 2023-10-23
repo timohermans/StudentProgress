@@ -36,11 +36,8 @@ builder.Services.AddMiniProfiler().AddEntityFramework();
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeFolder("/Canvas", AuthConstants.TwoFactorLoginPolicy);
-    options.Conventions.AuthorizeFolder("/Milestones", AuthConstants.TwoFactorLoginPolicy);
-    options.Conventions.AuthorizeFolder("/Progress", AuthConstants.TwoFactorLoginPolicy);
-    options.Conventions.AuthorizeFolder("/Settings", AuthConstants.TwoFactorLoginPolicy);
-    options.Conventions.AuthorizeFolder("/StudentGroups", AuthConstants.TwoFactorLoginPolicy);
+    options.Conventions.AuthorizeFolder("/");
+    options.Conventions.AllowAnonymousToFolder("/Account");
 });
 builder.Services.Configure<RouteOptions>(options =>
 {

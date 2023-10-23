@@ -24,6 +24,8 @@
 
 ### Fixed
 
+- By default, all pages now require authorization, except for the account folder
+
 ### Log
 
 I already notice some of the benefits of being way more flexible when not using DDD principles.
