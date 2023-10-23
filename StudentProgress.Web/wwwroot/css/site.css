@@ -17,6 +17,23 @@ for details on configuring this project to bundle and minify static web assets. 
     
 }
 
+.dropdown.no-arrow button:after {
+    display: none;
+}
+
+.dropdown .menu-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.dropdown .menu-dots > div {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: rgb(var(--bs-primary-rgb));
+}
+
 /* || HTMX */
 
 .htmx-indicator {

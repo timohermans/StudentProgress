@@ -19,11 +19,16 @@ public class Index : PageModel
         _logger = logger;
     }
 
-    public async Task<IActionResult> OnGet(int id)
+    public int? PersonId { get; set; }
+
+    public async Task<IActionResult> OnGet(int id, int? personId)
     {
+        _logger.LogDebug($"person selected: {personId}");
         var adventure = await _db.Adventures
             .Include(a => a.People)
             .FirstOrDefaultAsync(a => a.Id == id);
+
+        PersonId = personId;
 
         if (adventure == null)
         {

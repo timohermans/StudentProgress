@@ -7,14 +7,46 @@
     Jump to <a class="text-primary" href="#people">Adventurers</a> / <a class="text-primary" href="#">Quests</a> / <a class="text-primary" href="#">Logs</a>
 </nav>
 
-<section class="reel">
+<section id="people" class="reel" x-ref="reel" x-data="{ selected: @Model.PersonId }">
     @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
     {
-        <div class="card">
+        <div class='card @(Model.PersonId == person.Id ? "border border-primary border-3" : "")'
+             x-data="{ show: false, id: @person.Id }"
+             @@mouseenter="show = true"
+             @@mouseleave="show = false"
+             x-init="if(id !== selected) return;
+                     const bounds = $el.getBoundingClientRect();
+                     $refs.reel.scrollLeft = bounds.left - (bounds.width / 2);
+             "
+             hx-trigger="click"
+             hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id })"
+             hx-target="body"
+             hx-push-url="true">
             <img src="@person.ImageSource" class="card-img-top object-fit-cover" alt="@person.Name" height="150">
-            <div class="card-body">
+            <div class="card-body position-relative">
                 @person.FirstName
+                <div x-show="show" x-transition.duration.200ms class="position-absolute top-50 end-0 translate-middle-y z-1">
+                    <div class="dropdown no-arrow dropend" x-data="{ dropdown: undefined }">
+                        <button
+                            x-init="dropdown = new bootstrap.Dropdown($el);"
+                            @@click.prevent.stop="dropdown.show()"
+                            class="btn dropdown-toggle menu-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </button>
+                        <ul class="dropdown-menu" @@mouseleave="dropdown.hide()">
+                            <li>
+                                <a class="dropdown-item" hx-delete="@Url.Page("People/Index", new { id = Model.Adventure.Id, personId = person.Id })">Delete</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     }
+</section>
+
+<section id="quests">
+    <h1>@(Model.PersonId)'s quests</h1>
 </section>
