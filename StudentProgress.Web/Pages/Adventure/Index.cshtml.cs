@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StudentProgress.Web.Lib.Data;
+using StudentProgress.Web.Models;
 
 namespace StudentProgress.Web.Pages.Adventure;
 
@@ -19,16 +20,21 @@ public class Index : PageModel
         _logger = logger;
     }
 
-    public int? PersonId { get; set; }
+    public Person? Person { get; set; }
 
     public async Task<IActionResult> OnGet(int id, int? personId)
     {
         _logger.LogDebug($"person selected: {personId}");
         var adventure = await _db.Adventures
             .Include(a => a.People)
+            .Include(a => a.QuestLines)
             .FirstOrDefaultAsync(a => a.Id == id);
 
-        PersonId = personId;
+        if (personId != null)
+        {
+            Person = await _db.People.FirstOrDefaultAsync(p => p.Id == personId);
+            if (Person == null) return NotFound();
+        }
 
         if (adventure == null)
         {
@@ -36,6 +42,17 @@ public class Index : PageModel
         }
 
         Adventure = adventure;
+        
+        adventure.QuestLines.Add(new QuestLine
+        {
+            Name = "Empire of the client server web dev",
+            Order = 1
+        });
+        adventure.QuestLines.Add(new QuestLine
+        {
+            Name = "Quality over quantity",
+            Order = 2
+        });
 
         return Page();
     }

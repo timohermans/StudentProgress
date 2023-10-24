@@ -13,4 +13,5 @@ public class Adventure
     public string? Mnemonic { get; set; }
     [DataType(DataType.Date)] public required DateTime DateStart { get; set; }
     public ICollection<Person> People { get; set; } = new List<Person>();
+    public ICollection<QuestLine> QuestLines { get; set; } = new List<QuestLine>();
 }

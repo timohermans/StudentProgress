@@ -1,4 +1,5 @@
 @page "{id:int}"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model StudentProgress.Web.Pages.Adventure.Index
 
 <h2 class="text-center"><span class="text-primary">@(Model.Adventure.Name)</span>'s adventure</h2>
@@ -7,7 +8,7 @@
     Jump to <a class="text-primary" href="#people">Adventurers</a> / <a class="text-primary" href="#">Quests</a> / <a class="text-primary" href="#">Logs</a>
 </nav>
 
-<section id="people" class="reel" x-ref="reel" x-data="{ selected: @Model.PersonId }">
+<section id="people" class="reel mb-5" x-ref="reel" x-data="{ selected: @Model.Person?.Id }">
     @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
     {
         <div class='card'
@@ -50,5 +51,18 @@
 </section>
 
 <section id="quests">
-    <h1>@(Model.PersonId)'s quests</h1>
+    <h2 class="text-center">
+        @if (Model.Person != null)
+        {
+            <span class="text-primary">@(Model.Person?.FirstName)'s</span>
+        }
+        @(" ")Quest log
+    </h2>
+
+    <ol>
+        @foreach (var questLine in Model.Adventure.QuestLines)
+        {
+            <li>@questLine.Name</li>
+        }
+    </ol>
 </section>
