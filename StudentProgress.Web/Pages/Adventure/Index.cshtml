@@ -10,7 +10,7 @@
 <section id="people" class="reel" x-ref="reel" x-data="{ selected: @Model.PersonId }">
     @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
     {
-        <div class='card @(Model.PersonId == person.Id ? "border border-primary border-3" : "")'
+        <div class='card'
              x-data="{ show: false, id: @person.Id }"
              @@mouseenter="show = true"
              @@mouseleave="show = false"
@@ -18,6 +18,8 @@
                      const bounds = $el.getBoundingClientRect();
                      $refs.reel.scrollLeft = bounds.left - (bounds.width / 2);
              "
+             :class="selected === id && 'border border-primary border-3'"
+             @@click="selected = id"
              hx-trigger="click"
              hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id })"
              hx-target="body"
