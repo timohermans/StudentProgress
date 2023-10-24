@@ -43,6 +43,5 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\StudentGroups\Progress\Index.cshtml" />
   </ItemGroup>
 </Project>

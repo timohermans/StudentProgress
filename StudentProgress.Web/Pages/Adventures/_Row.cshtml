@@ -14,7 +14,7 @@
                     <a class="dropdown-item" href="#" hx-get="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms">Edit</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-page="/StudentGroups/Details/Index" asp-route-id="@Model.Id">Details</a>
+                    <a class="dropdown-item" asp-page="/Adventure/Index" asp-route-id="@Model.Id">Details</a>
                 </li>
                 <li>
                     <a id="deleteInline@(Model.Id)" class="dropdown-item" href="#"

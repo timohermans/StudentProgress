@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using StudentProgress.Web.Lib.Data;
-using StudentProgress.Web.Models;
 
-namespace StudentProgress.Web.Pages.StudentGroups;
+namespace StudentProgress.Web.Pages.Adventures;
 
 public class EditModel : PageModel
 {

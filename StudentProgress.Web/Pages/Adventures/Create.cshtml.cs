@@ -1,13 +1,11 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Web.Lib.CanvasApi;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Lib.Extensions;
-using StudentProgress.Web.Models;
 
-namespace StudentProgress.Web.Pages.StudentGroups;
+namespace StudentProgress.Web.Pages.Adventures;
 
 public class CreateModel : PageModel
 {
