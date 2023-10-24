@@ -13,8 +13,8 @@
 
 ### Changed
 
-- Change Canvas related UseCase logic back to Web to reduce architecture layering
-- Change StudentGroup to Adventure
+- UseCase logic is moved to Web to reduce architecture layering
+- StudentGroup is now called Adventure
 - Deleting an adventure can now be done in the overview page inline! (not really, but really!)
 - Adding and editing a adventure can now be done on the overview page itself.
 - Made people search absolutely JavaScript free (0 lines!). Also no more dependency on popper.js
