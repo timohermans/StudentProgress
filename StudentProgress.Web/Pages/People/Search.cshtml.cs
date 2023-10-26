@@ -27,8 +27,8 @@ public class SearchModel : PageModel
 
         People = await _db.People
             .Include(p => p.Adventures)
-            .Where(p => p.Name.ToLower().Contains(q.ToLower()))
-            .OrderBy(p => p.Name)
+            .Where(p => p.FirstName.ToLower().Contains(q.ToLower()))
+            .OrderBy(p => p.FirstName)
             .Take(5)
             .Select(p => new Person
             {

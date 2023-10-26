@@ -1,7 +1,7 @@
 ﻿@using System.Web
 @using Microsoft.AspNetCore.Routing
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-@inject Microsoft.AspNetCore.Routing.LinkGenerator LinkGen
+@inject LinkGenerator LinkGen
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,21 +10,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Student Progress</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/base.css"/>
     @await RenderSectionAsync("Styles", required: false)
 
     <script defer src="~/lib/htmx/htmx.min.js"></script>
-    <script defer src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <environment names="Development">
-        <script src="https://unpkg.com/@@popperjs/core@2/dist/umd/popper.js"></script>
-    </environment>
-    <environment names="Production">
-        <script src="https://unpkg.com/@@popperjs/core@2"></script>
-    </environment>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.1/dist/cdn.min.js"></script>
-    <script defer src="~/js/site.js" asp-append-version="true"></script>
     <mini-profiler/>
 </head>
 
@@ -32,59 +22,50 @@
 @if (User.IsFullyAuthenticated())
 {
     <header>
-        <nav
-            class="navbar navbar-expand-md bg-primary mb-3" data-bs-theme="dark">
-            <div class="container">
-                <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="flex-grow-1 flex-md-grow-0 d-flex align-items-center">
-                    <a asp-page="/progress/quickadd" class="quick-add">
-                        <svg-inject
-                            src="lib/bootstrap-icons/clipboard2-plus.svg">
-                        </svg-inject>
+        @{
+            var currentPage = (string?)ViewContext.RouteData.Values["page"];
+            string TryHighlight(string page)
+            {
+                return currentPage == page ? "-highlight" : "";
+            }
+        }
+
+        <nav class="nav-main">
+            <ul class="menu">
+                <li>
+                    <a class="link" asp-page="/Adventures/Index">
+                        <div class="border @(TryHighlight("/Adventures/Index"))"></div>
+                        <img class="icon" src="images/adventures.png" alt="adventures">
                     </a>
-                    <a class="navbar-brand navbar-collapse collapse home-link text-white" asp-area=""
-                       asp-page="/Index">
-                        Progress
-                    </a>
-                </div>
-                <div id="searchComponent" class="d-flex gap-2 order-sm-1 flex-grow-1 search position-relative justify-content-center justify-content-md-start" autocomplete="off">
-                    <input id="search" name="q" type="search" class="form-control" placeholder="search student.."
-                           autocomplete="off" hx-get="@LinkGen.GetPathByPage("/People/Search")"
-                           hx-target="#searchResults"
-                           hx-trigger="search, keyup changed delay:400ms"
-                           hx-swap="swap:200ms settle:200ms">
-                    <div id="searchResults" class="pop-in pop-out"></div>
-                </div>
-                <ul class="navbar-nav navbar-collapse collapse order-sm-0 flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-page="/Adventures/Index">Adventures</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-page="/Settings/Index">Settings</a>
-                    </li>
-                </ul>
-                <span class="navbar-text navbar-collapse collapse flex-grow-0 order-sm-2">
-                    <form method="post" hx-boost="false" asp-page="/Logout">
-                        <button class="btn btn-link" type="submit">
-                            Log out
-                        </button>
-                    </form>
-                </span>
+                </li>
+            </ul>
+            <div class="search">
+                <input id="search" name="q" type="search" class="field" placeholder="search student.."
+                       autocomplete="off" hx-get="@LinkGen.GetPathByPage("/People/Search")"
+                       hx-target="#searchResults"
+                       hx-trigger="search, keyup changed delay:400ms"
+                       hx-swap="swap:200ms settle:200ms">
+                <div id="searchResults" class="results pop-in pop-out"></div>
             </div>
+
+            <ul class="menu">
+                <li>
+                    <a class="link" asp-page="/Settings/Index">
+                        <div class="border"></div>
+                        <img class="icon @(TryHighlight("/Settings/Index"))" src="images/settings.png" alt="settings">
+                    </a>
+                </li>
+            </ul>
         </nav>
     </header>
 }
-<main role="main" class="pb-3 container">
+<main role="main" class="center">
     @RenderBody()
 </main>
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2021 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        &copy; 2021 - 2023 - Student Progress - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </div>
 </footer>
 

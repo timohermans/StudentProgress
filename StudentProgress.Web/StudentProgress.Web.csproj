@@ -44,4 +44,19 @@
 
   <ItemGroup>
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Models.Adventure.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Models.Adventure.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Models.Adventure.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Models.Adventure.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

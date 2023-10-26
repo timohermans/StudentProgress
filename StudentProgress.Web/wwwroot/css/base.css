@@ -1,0 +1,236 @@
+/* || Properties */
+
+:root {
+    --ratio: 1.5;
+    --s-5: calc(var(--s-4) / var(--ratio));
+    --s-4: calc(var(--s-3) / var(--ratio));
+    --s-3: calc(var(--s-2) / var(--ratio));
+    --s-2: calc(var(--s-1) / var(--ratio));
+    --s-1: calc(var(--s0) / var(--ratio));
+    --s0: 1rem;
+    --s1: calc(var(--s0) * var(--ratio));
+    --s2: calc(var(--s1) * var(--ratio));
+    --s3: calc(var(--s2) * var(--ratio));
+    --s4: calc(var(--s3) * var(--ratio));
+    --s5: calc(var(--s4) * var(--ratio));
+
+    --color-purple: #643366;
+    --color-pink: #e6007e;
+    --color-white: #f2f2f2;
+    --color-red: #FF2D28;
+    --color-black: #660243; /* of #330F33; */
+    --color-gray: #ced4da;
+
+    /*colors*/
+    --f-color-primary: var(--color-purple);
+    --f-color-secondary: var(--color-pink);
+    --f-color-danger: var(--color-red);
+
+    --f-color-border: var(--color-pink);
+    --f-color-background: var(--color-white);
+
+    --f-color-text: var(--color-black);
+    --f-color-text-inverted: var(--color-white);
+
+    --f-color-input-background: white;
+    --f-color-popup-background: white;
+    --f-color-placeholder-text: #757575;
+
+    --f-border-thin: var(--s-5);
+    --f-border-radius: var(--s-1);
+    --f-border-radius-circle: 50%;
+
+    --f-box-padding: var(--s-1);
+
+    --measure: 80ch;
+}
+
+[data-theme="black"] {
+
+}
+
+/* || Reset (from https://www.joshwcomeau.com/css/custom-css-reset/#the-css-reset-1) */
+
+/* 1. Use a more-intuitive box-sizing model. */
+/* 2. Remove default margin (see * below) */
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* 6. Remove built-in form typography styles */
+input, button, textarea, select {
+    font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+/* || Common */
+* {
+    font-family: Helvetica, Verdana, serif;
+    max-inline-size: 60ch;
+    margin: 0;
+    padding: 0;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* || Every Layout */
+
+html,
+body,
+div,
+header,
+nav,
+main,
+footer {
+    max-inline-size: none;
+}
+
+/* Typographic tweaks! 3. Add accessible line-height 4. Improve text rendering */
+body {
+    background-color: var(--f-color-background);
+    height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* || Layout */
+
+.nav-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s0);
+    margin: var(--s-1);
+    padding: var(--s-1);
+    color: var(--f-color-text);
+
+    & * {
+        color: inherit;
+    }
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: var(--s0);
+    list-style-type: none;
+}
+
+.menu .link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: 50px;
+    width: 50px;
+
+    > .border {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border: var(--f-border-thin) dashed var(--f-color-border);
+        border-radius: var(--f-border-radius-circle);
+    }
+
+    > .border.-highlight, &:hover > .border {
+        border-style: solid;
+    }
+
+    > .icon {
+        width: 45px;
+        height: 45px;
+        margin: 0 auto;
+    }
+}
+
+.nav-main > .search {
+    position: relative;
+
+    > .field {
+        color: var(--f-color-text);
+        background-color: var(--f-color-input-background);
+        border: var(--f-border-thin) dashed var(--f-color-secondary);
+        border-radius: var(--s-1);
+        padding: var(--f-box-padding);
+        outline-color: var(--f-color-secondary);
+    }
+
+    > .field::placeholder {
+        color: var(--f-color-placeholder-text);
+    }
+
+    > .results {
+        background-color: var(--f-color-popup-background);
+        position: absolute;
+        top: 100%;
+        border: var(--f-border-thin) solid var(--f-color-secondary);
+        border-radius: var(--f-border-radius);
+        width: 100%;
+    }
+
+    > .results:empty {
+        width: 0;
+    }
+
+    > .pop-in.htmx-added, > .pop-out, > .pop-out.htmx-swapping {
+        transition: transform 0.2s ease-out;
+        transform: scale(0);
+        transform-origin: top left;
+    }
+
+    > .pop-in {
+        transform: scale(1);
+    }
+}
+
+.menu .people-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s0);
+    padding: var(--f-box-padding);
+    list-style-type: none;
+}
+
+.nav-main .people-list .person-info {
+    display: flex;
+    align-items: center;
+    gap: var(--s0);
+
+    > .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: var(--f-border-radius-circle);
+    }
+}
+
+.nav-main .people-list .adventure-list {
+    list-style-type: none;
+
+    & .link {
+        color: var(--f-color-secondary);
+    }
+}
+
+.center {
+    box-sizing: content-box;
+    margin-inline: auto;
+    max-inline-size: var(--measure);
+}

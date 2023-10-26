@@ -1,10 +1,9 @@
-
 namespace StudentProgress.Web.Models;
 
 public class Person
 {
     public int Id { get; set; }
-    public string Name => $"{FirstName}, {LastName} {Initials}";
+    public string Name => FirstName + ", " + LastName + " " + Initials;
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public string? Initials { get; set; }

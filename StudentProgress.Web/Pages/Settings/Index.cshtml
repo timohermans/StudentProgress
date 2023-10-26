@@ -2,15 +2,20 @@
 @model StudentProgress.Web.Pages.Settings.Index
 
 @{
-  ViewData["Title"] = "Settings";
+    ViewData["Title"] = "Settings";
 }
 
 <h1>Settings</h1>
 
 <form method="post">
-  @Html.ValidationSummary()
-  @Html.FormBlock(m => m.Settings.CanvasApiKey)
-  @Html.FormBlock(m => m.Settings.CanvasApiUrl)
-  @Html.SubmitBlock("Save")
+    @Html.ValidationSummary()
+    @Html.FormBlock(m => m.Settings.CanvasApiKey)
+    @Html.FormBlock(m => m.Settings.CanvasApiUrl)
+    @Html.SubmitBlock("Save")
 </form>
 
+<form method="post" hx-boost="false" asp-page="/Logout">
+    <button class="btn btn-link" type="submit">
+        Log out
+    </button>
+</form>

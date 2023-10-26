@@ -4,28 +4,26 @@
     Layout = null;
 }
 
-<div class="list-group">
+<ul class="people-list">
     @foreach (var person in Model.People)
     {
-        <div class="list-group-item">
-            <div class="d-flex">
-                <div class="align-self-center">
-                    <img src="@(!string.IsNullOrWhiteSpace(person.AvatarPath) ? $"/media/{person.AvatarPath}" : $"/images/avatar-placeholder.png")"
-                         alt="@(person.Name)" width="50" height="50">
-                </div>
-                <div class="ms-2">
-                    <p>@person.Name</p>
-                    @foreach (var adventure in person.Adventures)
-                    {
-                        <p class="d-flex align-items-center">
-                            <a class="btn btn-link ps-0" asp-page="/Adventure/Person/Index" asp-route-personId="@person.Id"
-                               asp-route-adventureId="@adventure.Id">
-                                @adventure.Name
-                            </a>
-                        </p>
-                    }
-                </div>
+        <li class="person">
+            <div class="person-info">
+                <img src="@(!string.IsNullOrWhiteSpace(person.AvatarPath) ? $"/media/{person.AvatarPath}" : $"/images/avatar-placeholder.png")"
+                     class="avatar" alt="@(person.FirstName)">
+                <span>@person.FirstName</span>
             </div>
-        </div>
+            <ol class="adventure-list">
+                @foreach (var adventure in person.Adventures)
+                {
+                    <li class="adventure">
+                        <a class="link" asp-page="/Adventure/Index" asp-route-personId="@person.Id"
+                           asp-route-id="@adventure.Id">
+                            @adventure.Name
+                        </a>
+                    </li>
+                }
+            </ol>
+        </li>
     }
-</div>
+</ul>

@@ -47,7 +47,7 @@ Project to track people, whether that's students, team members or yourself.
 - [ ] Prolly need to add progress and milestones to the mix as well when I start
 - [ ] Add [Login throttling](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login-throttling)
 
-## Resources
+## Docs
 
 - [Result class usage](https://josef.codes/my-take-on-the-result-class-in-c-sharp/)
 - [Entity Framework docs](https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli)
@@ -57,11 +57,18 @@ Project to track people, whether that's students, team members or yourself.
 - [Hyperscript docs](https://hyperscript.org/docs)
 - [Htmx book for recipes](https://hypermedia.systems/more-htmx-patterns/)
 
-## Resources to check out
+### Additional resources to check out
 
-- [Missing css](https://missing.style)
 - [RSJS, Reasonably Simple JavaScript](https://ricostacruz.com/rsjs/)
 - [RSCSS, Reasonably Simple CSS](https://ricostacruz.com/rscss/index.html)
+
+### Handy recources
+
+- [Missing css](https://missing.style)
+- [Selecting and organizing colors and stuff](https://www.smashingmagazine.com/2020/08/application-color-schemes-css-custom-properties/)
+- [Picking a color theme](https://paletton.com/#uid=14W0u0kg0jH8mtscFnZjUfNolb+)
+- [Another color picker (better)](https://color.adobe.com/create/color-wheel)
+
 
 ## Architecture migration notes
 
