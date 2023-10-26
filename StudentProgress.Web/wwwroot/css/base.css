@@ -41,6 +41,10 @@
     --f-border-radius-circle: 50%;
 
     --f-box-padding: var(--s-1);
+    
+    --z-index-hidden: -1;
+    --z-index-normal: 1;
+    --z-index-popup: 10;
 
     --measure: 80ch;
 }
@@ -81,6 +85,10 @@ p, h1, h2, h3, h4, h5, h6 {
     box-sizing: border-box;
 }
 
+ul {
+    list-style-type: none;
+}
+
 /* || Every Layout */
 
 html,
@@ -107,6 +115,22 @@ main {
     flex: 1;
 }
 
+/* || Utilities */
+
+.fade-me-out.htmx-swapping {
+    transition: opacity 0.2s ease-out;
+    opacity: 0;
+}
+
+.fade-me-in.htmx-added {
+    opacity: 0;
+}
+
+.fade-me-in {
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+}
+
 /* || Layout */
 
 .nav-main {
@@ -128,37 +152,75 @@ main {
     display: flex;
     align-items: center;
     gap: var(--s0);
-    list-style-type: none;
 }
 
-.menu .link {
+.image-link {
+    --width: 50px;
+    --height: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: 50px;
-    width: 50px;
+    height: var(--width);
+    width: var(--height);
+
+    &:hover {
+        cursor: pointer;
+    }
 
     > .border {
         position: absolute;
-        z-index: -1;
         top: 0;
         left: 0;
-        height: 100%;
-        width: 100%;
+        width: var(--width);
+        height: var(--height);
+        z-index: var(--z-index-hidden);
         border: var(--f-border-thin) dashed var(--f-color-border);
         border-radius: var(--f-border-radius-circle);
     }
 
     > .border.-highlight, &:hover > .border {
+        background-color: var(--f-color-popup-background);
         border-style: solid;
     }
 
     > .icon {
-        width: 45px;
-        height: 45px;
+        transition: opacity 200ms linear;
+        width: calc(var(--width) - 5px);
+        height: calc(var(--height) - 5px);
         margin: 0 auto;
+        opacity: 1;
     }
+
+    &.-with-content > .icon {
+        opacity: 0;
+    }
+
+    &.-small {
+        --width: 30px;
+        --height: 30px;
+    }
+    
+    & > .content {
+        transition: transform 200ms ease-in-out;
+        transition-property: transform, opacity;
+        transform: scale(0);
+        transform-origin: top left;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        white-space: nowrap;
+        border: var(--f-border-thin) solid var(--f-color-border);
+        border-radius: var(--f-border-radius);
+        background-color: var(--f-color-popup-background);
+        z-index: var(--z-index-normal);
+        padding: var(--f-box-padding);
+    }
+
+    & > .content.show {
+        transform: scale(1);
+    }
+
 }
 
 .nav-main > .search {
@@ -184,6 +246,7 @@ main {
         border: var(--f-border-thin) solid var(--f-color-secondary);
         border-radius: var(--f-border-radius);
         width: 100%;
+        z-index: var(--z-index-popup);
     }
 
     > .results:empty {
@@ -201,12 +264,11 @@ main {
     }
 }
 
-.menu .people-list {
+.nav-main .people-list {
     display: flex;
     flex-direction: column;
     gap: var(--s0);
     padding: var(--f-box-padding);
-    list-style-type: none;
 }
 
 .nav-main .people-list .person-info {
@@ -222,7 +284,6 @@ main {
 }
 
 .nav-main .people-list .adventure-list {
-    list-style-type: none;
 
     & .link {
         color: var(--f-color-secondary);
@@ -233,4 +294,18 @@ main {
     box-sizing: content-box;
     margin-inline: auto;
     max-inline-size: var(--measure);
+}
+
+.heading {
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+
+    &.-center {
+        justify-content: center;
+    }
 }

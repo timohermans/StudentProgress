@@ -6,11 +6,20 @@
 }
 
 <section>
-    <h2>Adventures</h2>
-    <p id="actions" class="fade-me-out fade-me-in">
-        <partial name="_Actions" model="Model.CanImportGroups"/>
-    </p>
-
+    <div class="row -center">
+        <h2 class="heading">Adventures</h2>
+        <div class="image-link -small"
+             x-data="{ show: false }"
+             @@click="show = true"
+             @@click.outside="show = false">
+            <div class="border">
+            </div>
+            <img src="~/images/sword.png" class="icon" alt="actions">
+            <div id="actions" class="content fade-me-out fade-me-in" :class="show && 'show'">
+                <partial name="_Actions" model="Model.CanImportGroups"/>
+            </div>
+        </div>
+    </div>
 
     <table id="adventures" class="table" hx-get="@Url.Page("Index")" hx-trigger="adventure-created from:body delay:500ms" hx-target="tbody">
         <caption>Overview of adventures available</caption>
