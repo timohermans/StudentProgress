@@ -12,7 +12,7 @@
              x-data="{ show: false }"
              @@click="show = true"
              @@click.outside="show = false">
-            <div class="border">
+            <div class="border" :class="show && '-highlight'">
             </div>
             <img src="~/images/sword.png" class="icon" alt="actions">
             <div id="actions" class="content fade-me-out fade-me-in" :class="show && 'show'">
