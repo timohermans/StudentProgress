@@ -10,6 +10,7 @@
 - `.editorconfig` to **try** and get rider settings into vscode
 - Deleting adventures from the adventure index page (with nice transitions).
 - Transitions between actions on the Adventures overview page.
+- Translations mechanics are now added for Dutch translations
 
 ### Changed
 

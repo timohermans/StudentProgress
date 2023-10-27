@@ -54,13 +54,10 @@ Project to track people, whether that's students, team members or yourself.
 - [ASP.NET core documentation](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0)
 - [Learn RazorPages (straightforward 3rd party docs)](https://www.learnrazorpages.com)
 - [Htmx docs](https://htmx.org/docs)
-- [Hyperscript docs](https://hyperscript.org/docs)
 - [Htmx book for recipes](https://hypermedia.systems/more-htmx-patterns/)
+- [AlpineJS docs](https://alpinejs.dev/)
+- [BEM css styling docs](https://getbem.com/naming/)
 
-### Additional resources to check out
-
-- [RSJS, Reasonably Simple JavaScript](https://ricostacruz.com/rsjs/)
-- [RSCSS, Reasonably Simple CSS](https://ricostacruz.com/rscss/index.html)
 
 ### Handy recources
 
@@ -80,7 +77,7 @@ When working on a page:
 - start actively working on removing `ProgressContext`,
 - add to `WebContext`
 - add `htmx` where possible to make it fancy
-- (optional) start including more Bootstrap 5.3 (especially with css variables)
+- start using your own (or existing) css with BEM style notation
 
 ## Feature showcase
 

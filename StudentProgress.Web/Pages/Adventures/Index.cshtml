@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
 @model IndexModel
+
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Groups";
@@ -7,22 +10,21 @@
 
 <section>
     <div class="row -center">
-        <h2 class="heading">Adventures</h2>
-        <div class="image-link -small"
+        <h2 class="heading">@Localizer["Adventures"]</h2>
+        <div class="image-link image-link--small"
              x-data="{ show: false }"
              @@click="show = true"
              @@click.outside="show = false">
-            <div class="border" :class="show && '-highlight'">
+            <div class="image-link__border" :class="show && 'image-link__border--highlight'">
             </div>
-            <img src="~/images/sword.png" class="icon" alt="actions">
-            <div id="actions" class="content fade-me-out fade-me-in" :class="show && 'show'">
+            <img src="~/images/sword.png" class="image-link__icon" alt="actions">
+            <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
                 <partial name="_Actions" model="Model.CanImportGroups"/>
             </div>
         </div>
     </div>
 
     <table id="adventures" class="table" hx-get="@Url.Page("Index")" hx-trigger="adventure-created from:body delay:500ms" hx-target="tbody">
-        <caption>Overview of adventures available</caption>
         <thead>
         <tr>
             <th id="name">

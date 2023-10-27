@@ -1,39 +1,35 @@
 @using StudentProgress.Web.Models
 @model StudentProgress.Web.Models.Adventure
 
-<form method="post" class="row align-items-center">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form class="form" method="post">
     <input type="hidden" asp-for="Id"/>
-    <div class="col">
-        <div class="form-floating">
-            <input type="text" class="form-control" asp-for="Name" placeholder="@Html.DisplayNameFor(a => a.Name)">
-            <label asp-for="Name"></label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-floating">
-            <input type="date" placeholder="@Html.DisplayNameFor(m => m.DateStart)" class="form-control" asp-for="DateStart">
-            <label asp-for="DateStart"></label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-floating">
-            <textarea class="form-control" placeholder="@Html.DisplayNameFor(m => m.Mnemonic)" asp-for="Mnemonic"></textarea>
-            <label asp-for="Mnemonic"></label>
-        </div>
-    </div>
+    <p>
+        <label class="form__label" asp-for="Name"></label>
+        <input class="form__control" asp-for="Name" placeholder="@Html.DisplayNameFor(a => a.Name)">
+        <span class="form__error" asp-validation-for="Name"></span>
+    </p>
+    <p>
+        <label class="form__label" asp-for="DateStart"></label>
+        <input class="form__control" type="date" placeholder="@Html.DisplayNameFor(m => m.DateStart)" asp-for="DateStart">
+        <span class="form__error" asp-validation-for="DateStart"></span>
+    </p>
+    <p>
+        <label class="form__label" asp-for="Mnemonic"></label>
+        <textarea class="form__control" placeholder="@Html.DisplayNameFor(m => m.Mnemonic)" asp-for="Mnemonic"></textarea>
+        <span class="form__error" asp-validation-for="Mnemonic"></span>
+    </p>
     @if (Model.Id == 0)
     {
-        <div class="form-group col" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
-            <input id="newAdventure" type="submit" value="Create" class="btn btn-primary" hx-post='@Url.Page("Create")'/>
-            <a id="cancel" asp-page="Index">Cancel</a>
-        </div>
+        <p class="form__actions" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
+            <input id="newAdventure" class="form__button" type="submit" value="Create" hx-post='@Url.Page("Create")'/>
+            <a id="cancel" class="form__link" asp-page="Index">Cancel</a>
+        </p>
     }
     else
     {
-        <div class="form-group col" hx-target="closest tr" hx-swap="outerHTML swap:200ms settle:200ms">
-            <input type="submit" value="Save" class="btn btn-primary" hx-put="@Url.Page("Edit", new { id = Model.Id })"/>
-            <a href="#" hx-get="@Url.Page("Index", "Single", new { id = Model.Id })">Cancel</a>
-        </div>
+        <p class="form__actions" hx-target="closest tr" hx-swap="outerHTML swap:200ms settle:200ms">
+            <input type="submit" class="form__button" value="Save" hx-put="@Url.Page("Edit", new { id = Model.Id })"/>
+            <a href="#" class="form__link" hx-get="@Url.Page("Index", "Single", new { id = Model.Id })">Cancel</a>
+        </p>
     }
 </form>

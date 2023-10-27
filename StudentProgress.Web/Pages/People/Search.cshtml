@@ -4,20 +4,20 @@
     Layout = null;
 }
 
-<ul class="people-list">
+<ul class="nav__people">
     @foreach (var person in Model.People)
     {
-        <li class="person">
-            <div class="person-info">
+        <li>
+            <div class="nav__person-info">
                 <img src="@(!string.IsNullOrWhiteSpace(person.AvatarPath) ? $"/media/{person.AvatarPath}" : $"/images/avatar-placeholder.png")"
-                     class="avatar" alt="@(person.FirstName)">
+                     class="nav__person-avatar" alt="@(person.FirstName)">
                 <span>@person.FirstName</span>
             </div>
-            <ol class="adventure-list">
+            <ol>
                 @foreach (var adventure in person.Adventures)
                 {
-                    <li class="adventure">
-                        <a class="link" asp-page="/Adventure/Index" asp-route-personId="@person.Id"
+                    <li>
+                        <a class="nav__adventure-link" asp-page="/Adventure/Index" asp-route-personId="@person.Id"
                            asp-route-id="@adventure.Id">
                             @adventure.Name
                         </a>
