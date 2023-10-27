@@ -1,0 +1,31 @@
+@model StudentProgress.Web.Models.Adventure
+
+<ul>
+    <li>
+        <a class="dropdown-item" href="#"
+           hx-get="@Url.Page("Edit", new { id = Model.Id })"
+           hx-target="#adventure-@(Model.Id)-options"
+           hx-swap="innerHTML swap:200ms settle:200ms">
+            Edit
+        </a>
+    </li>
+    <li>
+        <a class="dropdown-item" asp-page="/Adventure/Index" asp-route-id="@Model.Id">
+            Details
+        </a>
+    </li>
+    <li>
+        <a id="deleteInline@(Model.Id)" class="dropdown-item" href="#"
+           hx-delete="@Url.Page("Delete", new { id = Model.Id })"
+           hx-confirm="Weet je zeker dat je @Model.Name wil verwijderen? Dit kun je niet ongedaan maken!"
+           hx-swap="outerHTML swap:200ms"
+           hx-target="#adventure-@Model.Id">
+            Delete
+            <span id="loading-@Model.Id" class="htmx-indicator">
+                <span class="spinner-grow spinner-grow-sm text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+            </span>
+        </a>
+    </li>
+</ul>

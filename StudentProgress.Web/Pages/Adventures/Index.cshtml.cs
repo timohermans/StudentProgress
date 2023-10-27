@@ -48,5 +48,11 @@ namespace StudentProgress.Web.Pages.Adventures
             var adventure = await _context.Adventures.FindAsync(id);
             return Partial("_Row", adventure);
         }
+
+        public async Task<IActionResult> OnGetOptions(int id)
+        {
+             var adventure = await _context.Adventures.FindAsync(id);
+             return Partial("_Options", adventure);           
+        }
     }
 }

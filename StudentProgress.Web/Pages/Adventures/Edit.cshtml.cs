@@ -39,6 +39,8 @@ public class EditModel : PageModel
         {
             return Page();
         }
+        
+        // TODO: check if name is unique
 
         _context.Attach(Adventure).State = EntityState.Modified;
         await _context.SaveChangesAsync(token);

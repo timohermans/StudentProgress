@@ -1,35 +1,26 @@
 @model StudentProgress.Web.Models.Adventure
 
-<tr id="adventure-@Model.Id" class="fade-me-out fade-me-in">
-    <td headers="name">
-        <a asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-target="body">@Html.DisplayFor(a => a.Name)</a>
-    </td>
-    <td headers="mnemonic" class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</td>
-    <td hx-swap="outerHTML" hx-target="closest tr">
-        <div class="dropdown">
-            <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="dropdown-item" href="#" hx-get="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms">Edit</a>
-                </li>
-                <li>
-                    <a class="dropdown-item" asp-page="/Adventure/Index" asp-route-id="@Model.Id">Details</a>
-                </li>
-                <li>
-                    <a id="deleteInline@(Model.Id)" class="dropdown-item" href="#"
-                       hx-delete="@Url.Page("Delete", new { id = Model.Id })"
-                       hx-confirm="Weet je zeker dat je @Model.Name wil verwijderen? Dit kun je niet ongedaan maken!"
-                       hx-swap="outerHTML swap:200ms">
-                        Delete
-                        <span id="loading-@Model.Id" class="htmx-indicator">
-                            <span class="spinner-grow spinner-grow-sm text-secondary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </span>
-                        </span>
-                    </a>
-                </li>
-            </ul>
+<li id="adventure-@Model.Id" class="row fade-me-out fade-me-in"
+    x-data="{ hasFocus: false, showIcon: false, showOptions: false }"
+    @@mouseenter="hasFocus = showIcon = true"
+    @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false">
+    <p headers="name">
+        <a asp-page="/Adventure/Index" asp-route-id="@Model.Id"
+           hx-target="body">
+            @Html.DisplayFor(a => a.Name)
+        </a>
+    </p>
+    <p headers="mnemonic" class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</p>
+
+    <div class="image-link image-link--small"
+         x-show="showIcon"
+         x-transition
+         @@click="showOptions = true"
+         @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
+        <img class="image-link__icon" src="~/images/sword.png" alt="adventure options">
+        <div class="image-link__border" :class="showOptions && 'image-link__border--highlight'"></div>
+        <div id="adventure-@(Model.Id)-options" class="image-link__content fade-me-in fade-me-out" :class="showOptions && 'image-link__content--visible'">
+            <partial name="_Options" model="@Model"/>
         </div>
-    </td>
-</tr>
+    </div>
+</li>

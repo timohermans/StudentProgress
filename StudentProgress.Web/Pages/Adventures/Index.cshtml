@@ -8,13 +8,16 @@
     ViewData["Title"] = "Groups";
 }
 
+<h1>TODO: add cloaking for htmx AND alpinejs</h1>
+
 <section>
     <div class="row -center">
         <h2 class="heading">@Localizer["Adventures"]</h2>
         <div class="image-link image-link--small"
              x-data="{ show: false }"
              @@click="show = true"
-             @@click.outside="show = false">
+             @@click.outside="show = false"
+             @@adventure-created.document.debounce.500ms="show = false">
             <div class="image-link__border" :class="show && 'image-link__border--highlight'">
             </div>
             <img src="~/images/sword.png" class="image-link__icon" alt="actions">
@@ -24,20 +27,9 @@
         </div>
     </div>
 
-    <table id="adventures" class="table" hx-get="@Url.Page("Index")" hx-trigger="adventure-created from:body delay:500ms" hx-target="tbody">
-        <thead>
-        <tr>
-            <th id="name">
-                @Html.DisplayNameFor(model => model.Adventures[0].Name)
-            </th>
-            <th id="mnemonic">
-                @Html.DisplayNameFor(model => model.Adventures[0].Mnemonic)
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+    <ul id="adventures"
+        hx-get="@Url.Page("Index")"
+        hx-trigger="adventure-created from:body delay:500ms">
         <partial name="_List" model="Model.Adventures"/>
-        </tbody>
-    </table>
+    </ul>
 </section>

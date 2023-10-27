@@ -27,9 +27,9 @@
     }
     else
     {
-        <p class="form__actions" hx-target="closest tr" hx-swap="outerHTML swap:200ms settle:200ms">
-            <input type="submit" class="form__button" value="Save" hx-put="@Url.Page("Edit", new { id = Model.Id })"/>
-            <a href="#" class="form__link" hx-get="@Url.Page("Index", "Single", new { id = Model.Id })">Cancel</a>
+        <p class="form__actions" hx-target="#adventure-@Model.Id">
+            <input type="submit" class="form__button" value="Save" hx-put="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms"/>
+            <a href="#" class="form__link" hx-get="@Url.Page("Index", "Options", new { id = Model.Id })" hx-target="#adventure-@(Model.Id)-options" hx-swap="innerHTML swap:200ms settle:200ms">Cancel</a>
         </p>
     }
 </form>

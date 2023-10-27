@@ -1,13 +1,6 @@
-@using StudentProgress.Web.Lib.Extensions
 @model List<StudentProgress.Web.Models.Adventure>
 
-@foreach (var groupGrouping in Model.GroupBy(g => g.DateStart.ToFontysPeriod().StartDate))
+@foreach (var adventure in Model)
 {
-    <tr>
-        <td class="text-muted" colspan="4">@groupGrouping.Key.ToFontysPeriod().ToString()</td>
-    </tr>
-    @foreach (var adventure in groupGrouping.ToList())
-    {
-        <partial name="_Row" model="adventure"/>
-    }
+    <partial name="_Row" model="adventure"/>
 }
