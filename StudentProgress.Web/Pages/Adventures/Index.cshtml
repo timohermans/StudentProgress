@@ -8,19 +8,17 @@
     ViewData["Title"] = "Groups";
 }
 
-<h1>TODO: add cloaking for htmx AND alpinejs</h1>
-
-<section>
-    <div class="row -center">
+<section class="stack">
+    <div class="row row__center">
         <h2 class="heading">@Localizer["Adventures"]</h2>
-        <div class="image-link image-link--small"
+        <div class="image-link"
              x-data="{ show: false }"
              @@click="show = true"
              @@click.outside="show = false"
              @@adventure-created.document.debounce.500ms="show = false">
             <div class="image-link__border" :class="show && 'image-link__border--highlight'">
             </div>
-            <img src="~/images/sword.png" class="image-link__icon" alt="actions">
+            <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
             <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
                 <partial name="_Actions" model="Model.CanImportGroups"/>
             </div>
@@ -29,7 +27,8 @@
 
     <ul id="adventures"
         hx-get="@Url.Page("Index")"
-        hx-trigger="adventure-created from:body delay:500ms">
+        hx-trigger="adventure-created from:body delay:500ms"
+        class="stack">
         <partial name="_List" model="Model.Adventures"/>
     </ul>
 </section>

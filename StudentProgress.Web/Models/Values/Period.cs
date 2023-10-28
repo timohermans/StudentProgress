@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CSharpFunctionalExtensions;
 using StudentProgress.Core.Extensions;
+using StudentProgress.Web.Lib.Infrastructure;
+using Result = CSharpFunctionalExtensions.Result;
+
+// TODO: major refactor and cleanup required
 
 namespace StudentProgress.Web.Models.Values
 {
-    public class Period : ValueObject
+    public class Period
     {
         public DateTime StartDate { get; }
         public string StartDateFormattedValue => StartDate.ToString("yyyy-M-d");
@@ -17,26 +20,75 @@ namespace StudentProgress.Web.Models.Values
         private bool IsFirstSemester => StartDate.Month.IsInRange(8, 9);
         public bool IsVeryOldDate => StartDate.Year < 1994;
 
-        private Period(DateTime date) => StartDate = date;
-
-        private DateTime EndOfSemester => (StartDate.Month == 2
-                ? Period.Create(new DateTime(StartDate.Year, 9, 1)).Value
-                : Period.Create(new DateTime(StartDate.Year + 1, 2, 1)).Value)
-            .StartDate.AddDays(-1);
-
-        public static implicit operator DateTime(Period period) => period.StartDate;
-        public static explicit operator Period(DateTime date) => Create(date).Value;
-
-        public static Result<Period> Create(DateTime date)
+        public bool IsOver
         {
-            if (date.Month.IsInRange(3, 9)) {
-                return CreateFirstSemesterPeriod(date);
-            } else {
-                return CreateSecondSemesterPeriod(date);
+            get
+            {
+                var today = DateTime.Today;
+
+                if (IsFirstSemester &&
+                    today.Year == StartDate.Year && today.Month.IsInRange(2, 8))
+                {
+                    return true;
+                }
+
+                if (!IsFirstSemester &&
+                    (today.Year + 1 == StartDate.Year && today.Month < 2 ||
+                     today.Year == StartDate.Year && today.Month >= 9))
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
 
-        private static Result<Period> CreateFirstSemesterPeriod(DateTime date)
+        public bool IsUnderway => !IsOver && !HasNotStartedYet;
+
+        public bool HasNotStartedYet
+        {
+            get
+            {
+                var today = DateTime.Today;
+                if (IsFirstSemester && today.Year < StartDate.Year || today.Month < 2)
+                {
+                    return true;
+                }
+
+                if (!IsFirstSemester && today.Year < StartDate.Year || today.Month < 9)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        private Period(DateTime date) => StartDate = date;
+
+        private DateTime EndOfSemester => (StartDate.Month == 2
+                ? Period.Create(new DateTime(StartDate.Year, 9, 1)).Data
+                : Period.Create(new DateTime(StartDate.Year + 1, 2, 1)).Data)
+            .StartDate.AddDays(-1);
+
+        public static implicit operator DateTime(Period period) => period.StartDate;
+        public static explicit operator Period(DateTime date) => Create(date).Data;
+
+        public static Result<Period> Create(DateTime date)
+        {
+            if (date.Month.IsInRange(2, 8))
+            {
+                // return CreateFirstSemesterPeriod(date);
+                return new SuccessResult<Period>(new Period(new DateTime(date.Year, 2, 1)));
+            }
+            else
+            {
+                // return CreateSecondSemesterPeriod(date);
+                return new SuccessResult<Period>(new Period(new DateTime(date.Year, 9, 1)));
+            }
+        }
+
+        private static CSharpFunctionalExtensions.Result<Period> CreateSecondSemesterPeriod(DateTime date)
         {
             var startDate = new DateTime(date.Year, 9, 1);
 
@@ -50,7 +102,7 @@ namespace StudentProgress.Web.Models.Values
             return Result.Success(new Period(startDate));
         }
 
-        private static Result<Period> CreateSecondSemesterPeriod(DateTime date)
+        private static CSharpFunctionalExtensions.Result<Period> CreateFirstSemesterPeriod(DateTime date)
         {
             var startDate = new DateTime(date.Year, 2, 1);
 
@@ -67,7 +119,7 @@ namespace StudentProgress.Web.Models.Values
             return Result.Success(new Period(startDate));
         }
 
-        public static Result<Period> CreateCurrentlyActivePeriodBy(DateTime date)
+        public static CSharpFunctionalExtensions.Result<Period> CreateCurrentlyActivePeriodBy(DateTime date)
         {
             var possiblePeriods = GetPossibleActivePeriods(date);
             var activePeriod = DetermineActivePeriodOutOfPossiblePeriods(date, possiblePeriods);
@@ -85,8 +137,8 @@ namespace StudentProgress.Web.Models.Values
             var yearOfDate = date.Year == 1 ? 2 : date.Year;
             for (int year = yearOfDate - 1; year <= yearOfDate + 1; year++)
             {
-                possiblePeriods.Add((Period) new DateTime(year, 2, 1));
-                possiblePeriods.Add((Period) new DateTime(year, 9, 1));
+                possiblePeriods.Add((Period)new DateTime(year, 2, 1));
+                possiblePeriods.Add((Period)new DateTime(year, 9, 1));
             }
 
             return possiblePeriods;
@@ -113,11 +165,6 @@ namespace StudentProgress.Web.Models.Values
                 ? $"{StartDate.Year}/{StartDate.AddYears(1).Year} - S1"
                 : $"{StartDate.AddYears(-1).Year}/{StartDate.Year} - S2"
             : "No period";
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return StartDate;
-        }
 
         /// <summary>
         /// Gets the days that passed since the semester started.

@@ -14,7 +14,7 @@
     --s4: calc(var(--s3) * var(--ratio));
     --s5: calc(var(--s4) * var(--ratio));
 
-    --color-purple: #643366;
+    --color-purple: #663366;
     --color-pink: #e6007e;
     --color-white: #f2f2f2;
     --color-red: #FF2D28;
@@ -26,7 +26,8 @@
     --f-color-secondary: var(--color-pink);
     --f-color-danger: var(--color-red);
 
-    --f-color-border: var(--color-pink);
+    /*--f-color-border: var(--color-pink);*/
+    --f-color-border: var(--f-color-primary);
     --f-color-background: var(--color-white);
 
     --f-color-text: var(--color-black);
@@ -35,9 +36,12 @@
     --f-color-text-button: var(--f-color-text-inverted);
     --f-color-text-placeholder: #757575;
     
+    --f-color-outline: var(--f-color-secondary);
+    
     --f-color-background-input: white;
     --f-color-background-popup: white;
-    --f-color-background-button: var(--f-color-secondary);
+    --f-color-background-button: var(--f-color-primary);
+    --f-color-background-button-active: var(--f-color-secondary);
 
     --f-border-thin: var(--s-5);
     --f-border-radius: var(--s-1);
@@ -82,19 +86,10 @@ ul {
     list-style-type: none;
 }
 
-a {
-    transition: color var(--f-transition-duration) linear;
-    color: var(--f-color-text-link);
-    text-decoration-line: underline;
-    text-decoration-style: dashed;
-}
-
-a:hover {
-    color: var(--f-color-primary);
-    text-decoration-style: solid;
-}
-
 /* || Common */
+
+[x-cloak] { display: none !important; }
+
 * {
     font-family: Helvetica, Verdana, serif;
     max-inline-size: 60ch;
@@ -179,10 +174,10 @@ main {
 .nav__search-field {
     color: var(--f-color-text);
     background-color: var(--f-color-background-input);
-    border: var(--f-border-thin) dashed var(--f-color-secondary);
+    border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--s-1);
     padding: var(--f-box-padding);
-    outline-color: var(--f-color-secondary);
+    outline-color: var(--f-color-outline);
 }
 
 .nav__search-field::placeholder {
@@ -193,7 +188,7 @@ main {
     background-color: var(--f-color-background-popup);
     position: absolute;
     top: 100%;
-    border: var(--f-border-thin) solid var(--f-color-secondary);
+    border: var(--f-border-thin) solid var(--f-color-border);
     border-radius: var(--f-border-radius);
     width: 100%;
     z-index: var(--z-index-popup);
@@ -258,6 +253,14 @@ main {
     --height: 30px;
 }
 
+.image-link--hidden {
+    visibility: hidden;
+}
+
+.image-link--visible {
+    visibility: visible;
+}
+
 .image-link__border {
     position: absolute;
     top: 0;
@@ -280,7 +283,6 @@ main {
     width: calc(var(--width) - 5px);
     height: calc(var(--height) - 5px);
     margin: 0 auto;
-    opacity: 1;
 }
 
 .image-link__content {
@@ -317,11 +319,24 @@ main {
 .row {
     display: flex;
     align-items: center;
-    gap: var(--s-3);
+    gap: var(--s0);
+}
 
-    &.-center {
-        justify-content: center;
-    }
+.row--no-gap {
+    gap: var(--s-5);
+}
+
+.row--center {
+    justify-content: center;
+}
+
+.row__col--grow {
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.row__col-small-stats {
+    flex-basis: 50px;
 }
 
 .form {
@@ -344,7 +359,7 @@ main {
 
 .form__control:focus {
     border: var(--f-border-thin) solid var(--f-color-border);
-    outline-color: var(--f-color-secondary);
+    outline-color: var(--f-color-outline);
 }
 
 .form__button {
@@ -355,6 +370,10 @@ main {
     padding: var(--s-4) var(--s-2);
     border-color: var(--f-color-background-button);
     cursor: pointer;
+}
+
+.form__button:hover:active {
+    background-color: var(--f-color-background-button-active);
 }
 
 .form__actions {
@@ -378,4 +397,40 @@ main {
     color: var(--f-color-primary);
     text-decoration-style: solid;
 }
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s0);
+    width: 100%;
+}
+
+.stack__item {
+    padding: var(--f-box-padding);
+    border: var(--f-border-thin) dashed var(--f-color-border);
+    border-radius: var(--f-border-radius);
+}
+
+.stack__item:hover {
+    border-style: solid;
+}
+
+.stack__icon {
+    --width: 50px;
+    --height: 50px;
+    width: var(--width);
+    height: var(--height);
+}
+
+.stack__icon--small {
+    --width: 30px;
+    --height: 30px;
+}
+
+.stack__link {
+    color: var(--f-color-primary);
+    text-decoration: none;
+}
+
+
 

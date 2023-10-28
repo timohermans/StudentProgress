@@ -27,6 +27,7 @@ namespace StudentProgress.Web.Pages.Adventures
             CanImportGroups = await _apiConfig.CanUseCanvasApiAsync();
 
             Adventures = await _context.Adventures
+                .Include(a => a.People)
                 .OrderByDescending(a => a.DateStart)
                 .ToListAsync();
 
@@ -45,7 +46,9 @@ namespace StudentProgress.Web.Pages.Adventures
 
         public async Task<IActionResult> OnGetSingle(int id)
         {
-            var adventure = await _context.Adventures.FindAsync(id);
+            var adventure = await _context.Adventures
+                .Include(a => a.People)
+                .FirstOrDefaultAsync(a => a.Id == id);
             return Partial("_Row", adventure);
         }
 

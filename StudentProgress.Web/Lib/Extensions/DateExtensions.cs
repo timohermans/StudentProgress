@@ -11,10 +11,10 @@ public static class DateExtensions
         var period = Period.Create(date);
         if (period.IsFailure)
         {
-            throw new Exception("unable to convert date to period: " + period.Error);
+            throw new Exception("unable to convert date to period for date: " + date);
         }
 
-        return period.Value;
+        return period.Data;
     }
 
     public static string TimePassed(this DateTime date, IDateProvider dateProvider)

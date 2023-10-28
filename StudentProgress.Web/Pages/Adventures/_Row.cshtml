@@ -1,23 +1,53 @@
 @model StudentProgress.Web.Models.Adventure
 
-<li id="adventure-@Model.Id" class="row fade-me-out fade-me-in"
+<li id="adventure-@Model.Id" class="stack__item row fade-me-out fade-me-in"
     x-data="{ hasFocus: false, showIcon: false, showOptions: false }"
     @@mouseenter="hasFocus = showIcon = true"
     @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false">
-    <p headers="name">
-        <a asp-page="/Adventure/Index" asp-route-id="@Model.Id"
-           hx-target="body">
-            @Html.DisplayFor(a => a.Name)
-        </a>
-    </p>
-    <p headers="mnemonic" class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</p>
+    <a class="stack__link row row__col--grow" asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-target="body">
+        @{
+            var period = Model.DateStart.ToFontysPeriod();
+        }
+        @if (period.IsOver)
+        {
+            <img class="stack__icon" src="~/images/042-treasure-9.png" alt="Adventure done">
+        }
+        else if (period.IsUnderway)
+        {
+            <img class="stack__icon" src="~/images/040-treasure-7.png" alt="Adventure underway">
+        }
+        else
+        {
+            <img class="stack__icon" src="~/images/031-treasure-5.png" alt="Adventure not yet started">
+        }
 
-    <div class="image-link image-link--small"
-         x-show="showIcon"
+        <div class="row__col--grow">
+            <p>@Html.DisplayFor(a => a.Name)</p>
+            <p>
+                <small>
+                    <i>@period.ToString()</i>
+                </small>
+            </p>
+        </div>
+
+        <div class="row row--no-gap row__col-small-stats">
+            <img class="stack__icon stack__icon--small" src="~/images/011-terracotta-army.png" alt="people">
+            <p>
+                <i>@Model.People.Count</i>
+            </p>
+        </div>
+
+        <div class="feedback-text">@Html.DisplayFor(a => a.Mnemonic)</div>
+    </a>
+
+    <div class="image-link"
+         :class="showIcon ? 'image-link--visible' : 'image-link--hidden'"
+         x-cloak
+         @* x-show="showIcon" *@
          x-transition
          @@click="showOptions = true"
          @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
-        <img class="image-link__icon" src="~/images/sword.png" alt="adventure options">
+        <img class="image-link__icon" src="~/images/002-map-1.png" alt="adventure options">
         <div class="image-link__border" :class="showOptions && 'image-link__border--highlight'"></div>
         <div id="adventure-@(Model.Id)-options" class="image-link__content fade-me-in fade-me-out" :class="showOptions && 'image-link__content--visible'">
             <partial name="_Options" model="@Model"/>
