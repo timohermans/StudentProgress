@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using StudentProgress.Core.Entities;
 using StudentProgress.Web.Lib.Data;
 using StudentProgress.Web.Models;
 

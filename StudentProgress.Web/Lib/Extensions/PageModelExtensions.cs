@@ -64,8 +64,13 @@ public static class PageModelExtensions
         return new StatusCodeResult(303);
     }
 
-    public static void HtmxRetargetTo(this PageModel page, string targetElementId)
+    public static void HtmxRetargetTo(this PageModel page, string targetElementId, string? swap = null)
     {
         page.Response.Headers.Add("HX-Retarget", targetElementId);
+
+        if (swap != null)
+        {
+            page.Response.Headers.Add("HX-Reswap", swap);
+        }
     }
 }

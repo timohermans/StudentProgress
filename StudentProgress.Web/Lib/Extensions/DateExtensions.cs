@@ -6,17 +6,6 @@ namespace StudentProgress.Web.Lib.Extensions;
 
 public static class DateExtensions
 {
-    public static Period ToFontysPeriod(this DateTime date)
-    {
-        var period = Period.Create(date);
-        if (period.IsFailure)
-        {
-            throw new Exception("unable to convert date to period for date: " + date);
-        }
-
-        return period.Data;
-    }
-
     public static string TimePassed(this DateTime date, IDateProvider dateProvider)
     {
         var timePassed = dateProvider.Now() - date;

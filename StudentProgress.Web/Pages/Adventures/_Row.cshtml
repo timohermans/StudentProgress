@@ -1,4 +1,8 @@
+@using StudentProgress.Web.Models.Values
+@using StudentProgress.Web.Lib.Infrastructure
 @model StudentProgress.Web.Models.Adventure
+
+@inject IDateProvider Dp
 
 <li id="adventure-@Model.Id" class="stack__item row fade-me-out fade-me-in"
     x-data="{ hasFocus: false, showIcon: false, showOptions: false }"
@@ -6,13 +10,13 @@
     @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false">
     <a class="stack__link row row__col--grow" asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-target="body">
         @{
-            var period = Model.DateStart.ToFontysPeriod();
+            var period = (Period)Model.DateStart;
         }
-        @if (period.IsOver)
+        @if (period.IsOver(Dp))
         {
             <img class="stack__icon" src="~/images/042-treasure-9.png" alt="Adventure done">
         }
-        else if (period.IsUnderway)
+        else if (period.IsUnderway(Dp))
         {
             <img class="stack__icon" src="~/images/040-treasure-7.png" alt="Adventure underway">
         }
@@ -43,7 +47,6 @@
     <div class="image-link"
          :class="showIcon ? 'image-link--visible' : 'image-link--hidden'"
          x-cloak
-         @* x-show="showIcon" *@
          x-transition
          @@click="showOptions = true"
          @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
