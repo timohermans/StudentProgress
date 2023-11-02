@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using StudentProgress.Core.Entities;
 
 namespace StudentProgress.CoreTests.Models;
 
