@@ -1,6 +1,4 @@
-using System;
 using System.Net.Http;
-using HtmlTags;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -56,7 +54,6 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseUrls = true;
     options.LowercaseQueryStrings = true;
 });
-builder.Services.AddHtmlTags(new TagConventions());
 builder.Services.AddDbContext<WebContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WebContext")));
 builder.Services.AddDbContext<ProgressContext>(options =>

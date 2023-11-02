@@ -9,9 +9,17 @@
 
 <form method="post">
     @Html.ValidationSummary()
-    @Html.FormBlock(m => m.Settings.CanvasApiKey)
-    @Html.FormBlock(m => m.Settings.CanvasApiUrl)
-    @Html.SubmitBlock("Save")
+    <p>
+        <label asp-for="Settings.CanvasApiKey"></label>
+        <input asp-for="Settings.CanvasApiKey">
+    </p>
+    <p>
+        <label asp-for="Settings.CanvasApiUrl"></label>
+        <input asp-for="Settings.CanvasApiUrl">
+    </p>
+    <p>
+        <button type="submit">Save</button>
+    </p>
 </form>
 
 <form method="post" hx-boost="false" asp-page="/Logout">
