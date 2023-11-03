@@ -62,12 +62,12 @@ namespace StudentProgress.CoreTests
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, false)
                 .Build();
-            var envCString = Environment.GetEnvironmentVariable("ConnectionString__WebContext");
+            var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__WebContext");
             var cString = configuration.GetConnectionString("WebContext");
 
             var connectionString = envCString ?? cString ??
                 throw new NullReferenceException(
-                    "connectionstring could not be found in either env var or appsettings");
+                    "ConnectionString__WebContext could not be found in either env var or appsettings");
 
             return new DbContextOptionsBuilder<WebContext>()
                 .UseSqlite(connectionString)
