@@ -6,12 +6,29 @@ concurrency:
   limit: 1
 
 steps:
-- name: test and build
+- name: build
   image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
   commands:
     - dotnet restore
     - dotnet build
-    - dotnet test
+     
+- name: qa
+  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+  environment:
+    sonarqube_host:
+      from_secret: sonarqube_host
+    sonarqube_token:
+      from_secret: sonarqube_token
+    sonarqube_project:
+      from_secret: sonarqube_project
+  commands:
+    - dotnet tool install --global dotnet-sonarscanner
+    - dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host"  /d:sonar.token="$sonarqube_token"
+    - dotnet build
+    - dotnet sonarscanner end /d:sonar.token="$sonarqube_token"
+  
+- name: test 
+  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
   environment:
     ConnectionStrings__WebContext:
       from_secret: ConnectionStrings__WebContext
@@ -21,7 +38,8 @@ steps:
       from_secret: canvasurl
     canvas__key:
       from_secret: canvaskey
-  
+  commands:
+    - dotnet test
       
 ---
 
