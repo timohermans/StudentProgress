@@ -11,6 +11,7 @@
 - Deleting adventures from the adventure index page (with nice transitions).
 - Transitions between actions on the Adventures overview page.
 - Translations mechanics are now added for Dutch translations
+- Quality assurance via Sonarqube
 
 ### Changed
 
@@ -65,3 +66,13 @@ I wanted to load students seperately from (which I now can still do), but it sti
 Also, making a border around the student portrait is also a hassle then, as you need to delegate that to javascript as well.
 Alpine is really lovely here though. Everything you need to know is bundled in the html file.
 Better than Hyperscript in my opinion, because Alpine still resembles the javascript everybody knows and loves.
+
+[2023-11-03] Alrighty, so I'm now thinning the old code, even though I haven't replaced it yet.
+I'm dead certain I do not need old functionality, as the new logbook is going to be totally different from the old code.
+
+Two things are new: Sonarqube and LanguageExt.Core.
+Sonarqube speaks for itself. At work, students need to learn Sonarqube, so I want to learn Sonarqube.
+It has already given me some insights as to how useful it really is, so I went all the way to set it up for myself.
+
+LanguageExt is a personal test for me to see if I can learn some functional programming tricks in C#.
+I've now already applied Either<L, R>, which is nice!

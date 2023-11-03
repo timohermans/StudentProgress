@@ -222,7 +222,7 @@ However, you can apply the same principle to all entities (see Domain model for 
 
 For each component some additional explanation is warranted:
 
-#### Progress CreateEdit PageModel
+#### (out of date) Progress CreateEdit PageModel
 
 This component is nothing more than a PageModel that you're used to from Razor Pages. Each PageModel communicates with the business logic in either one of the following two ways:
 
@@ -234,7 +234,7 @@ The reason not all data retrieval has a seperate UseCase class is either I've be
 
 A PageModel shouldn't be doing anything else except input validation and passing info to the UseCase classes.
 
-#### ProgressCreateOrUpdateUseCase and ProgressUpdate
+#### (deprecated) ProgressCreateOrUpdateUseCase and ProgressUpdate
 
 UseCase classes are the meat of the system. They (should) speak to entities and persist data to the database.
 
@@ -254,14 +254,14 @@ There are, however, some notable differences:
 
 Finally, you might notice I've made a lot of use of the [CSharpFunctionalExtensions Nuget package](https://github.com/vkhorikov/CSharpFunctionalExtensions). This is also heavily inspired by Vladimir Khorikov, but also my love for functional programming.
 
-### Domain model
+### (out of date) Domain model
 
 See below the domain model of all the entities.
 Note that the ValueObjects and enums have been omitted to keep the model as simple as possible.
 
 ![domain model](./docs/c4-model-domain.png)
 
-#### Entity relationships
+#### (out of date) Entity relationships
 
 Below contains a Mermaid ER diagram of the functional relationships. The reason I call it functional is, because I intentionally left out the relationsihops that might clutter the diagram. For example, `ProgressUpdate` also has a relationship with `Group`. Another example is that `MilestoneProgress` has relationships to `Milestone` and `Group`. Though again, this will only confuse the reader.
 
@@ -279,3 +279,26 @@ erDiagram
 
 
 ```
+
+### CI/CD
+
+I've setup CI with [drone io](https://www.drone.io/).
+CI can be found [here](https://ci.timo-hermans.nl).
+Below I'll explain the most difficult one to understand, qa:
+
+- apk add nodejs
+  - _Used for JS/TS scanning of sonarqube_
+- export PATH=$PATH:/usr/bin/node
+- apk add openjdk17
+  - _Used for sonarqube to send the analysis to the server_
+- export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+- export PATH="$PATH:/root/.dotnet/tools"
+    - _Needed for dotnet tools to execute sonarscanner and dotnet-coverage_
+- dotnet tool install --global dotnet-sonarscanner
+- apk add libxml2
+  - _Needed for dotnet-coverage to generate the xml report_
+- dotnet tool install --global dotnet-coverage
+- dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host" /d:sonar.token="$sonarqube_token" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+- dotnet build
+- dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+- dotnet sonarscanner end /d:sonar.token="$sonarqube_token"
