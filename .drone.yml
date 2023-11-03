@@ -22,8 +22,10 @@ steps:
     sonarqube_project:
       from_secret: sonarqube_project
   commands:
-    - apk add openjdk11
-    - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+    - apk add nodejs20
+    - export PATH=$PATH:/usr/bin/node 
+    - apk add openjdk17
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
     - dotnet tool install --global dotnet-sonarscanner
     - export PATH="$PATH:/root/.dotnet/tools"
     - dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host"  /d:sonar.token="$sonarqube_token"
