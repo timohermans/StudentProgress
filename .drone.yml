@@ -11,26 +11,6 @@ steps:
   commands:
     - dotnet restore
     - dotnet build
-     
-- name: qa
-  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
-  environment:
-    sonarqube_host:
-      from_secret: sonarqube_host
-    sonarqube_token:
-      from_secret: sonarqube_token
-    sonarqube_project:
-      from_secret: sonarqube_project
-  commands:
-    - apk add nodejs
-    - export PATH=$PATH:/usr/bin/node 
-    - apk add openjdk17
-    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
-    - dotnet tool install --global dotnet-sonarscanner
-    - export PATH="$PATH:/root/.dotnet/tools"
-    - dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host"  /d:sonar.token="$sonarqube_token"
-    - dotnet build
-    - dotnet sonarscanner end /d:sonar.token="$sonarqube_token"
   
 - name: test 
   image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
@@ -46,6 +26,27 @@ steps:
   commands:
     - dotnet test
       
+- name: qa
+  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+  environment:
+    sonarqube_host:
+      from_secret: sonarqube_host
+    sonarqube_token:
+      from_secret: sonarqube_token
+    sonarqube_project:
+      from_secret: sonarqube_project
+  commands:
+    - apk add nodejs
+    - export PATH=$PATH:/usr/bin/node
+    - apk add openjdk17
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+    - export PATH="$PATH:/root/.dotnet/tools"
+    - dotnet tool install --global dotnet-sonarscanner
+    - dotnet tool install --global dotnet-coverage
+    - dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host" /d:sonar.token="$sonarqube_token" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+    - dotnet build
+    - dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+    - dotnet sonarscanner end /d:sonar.token="$sonarqube_token"
 ---
 
 kind: pipeline
