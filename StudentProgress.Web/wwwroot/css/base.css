@@ -32,12 +32,13 @@
 
     --f-color-text: var(--color-black);
     --f-color-text-inverted: var(--color-white);
-    --f-color-text-link: var(--f-color-secondary);
+    --f-color-text-link: var(--f-color-primary);
+    --f-color-text-form-link: var(--f-color-secondary);
     --f-color-text-button: var(--f-color-text-inverted);
     --f-color-text-placeholder: #757575;
-    
+
     --f-color-outline: var(--f-color-secondary);
-    
+
     --f-color-background-input: white;
     --f-color-background-popup: white;
     --f-color-background-button: var(--f-color-primary);
@@ -48,7 +49,7 @@
     --f-border-radius-circle: 50%;
 
     --f-box-padding: var(--s-1);
-    
+
     --f-transition-duration: 150ms;
 
     --z-index-hidden: -1;
@@ -94,7 +95,9 @@ ul, ol {
 
 /* || Common */
 
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
 
 * {
     font-family: Helvetica, Verdana, serif;
@@ -204,8 +207,8 @@ main {
     width: 0;
 }
 
-.nav__search-results--leaving.htmx-added, 
-.nav__search-results--leaving, 
+.nav__search-results--leaving.htmx-added,
+.nav__search-results--leaving,
 .nav__search-results--entering.htmx-swapping {
     transition: transform 0.2s ease-out;
     transform: scale(0);
@@ -389,19 +392,30 @@ main {
 }
 
 .form__button:hover {
-    background-color:  var(--f-color-primary);
+    background-color: var(--f-color-primary);
 }
 
-.form__link {
+.link, .form__link {
     transition: color var(--f-transition-duration) linear;
     color: var(--f-color-text-link);
     text-decoration-line: underline;
     text-decoration-style: dashed;
 }
 
+.form__link {
+    color: var(--f-color-text-form-link)
+}
+
+.link:hover, .form__link:hover {
+    text-decoration-style: solid;
+}
+
+.link:hover {
+    color: var(--f-color-secondary);
+}
+
 .form__link:hover {
     color: var(--f-color-primary);
-    text-decoration-style: solid;
 }
 
 .stack {

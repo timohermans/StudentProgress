@@ -2,7 +2,7 @@
 
 <ul>
     <li>
-        <a id="newAdventure" href="#"
+        <a id="newAdventure" href="#" class="link"
            hx-get="@Url.Page("Create")"
            hx-target="#actions"
            hx-swap="innerHTML swap:200ms settle:200ms">
@@ -12,7 +12,7 @@
     @if (Model)
     {
         <li>
-            <a asp-page="/Canvas/Courses/Index">Import from Canvas</a>
+            <a asp-page="/Canvas/Courses/Index" class="link">Import from Canvas</a>
         </li>
     }
 </ul>

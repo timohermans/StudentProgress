@@ -2,7 +2,7 @@
 
 <ul>
     <li>
-        <a class="dropdown-item" href="#"
+        <a class="link" href="#"
            hx-get="@Url.Page("Edit", new { id = Model.Id })"
            hx-target="#adventure-@(Model.Id)-options"
            hx-swap="innerHTML swap:200ms settle:200ms">
@@ -10,12 +10,12 @@
         </a>
     </li>
     <li>
-        <a class="dropdown-item" asp-page="/Adventure/Index" asp-route-id="@Model.Id">
+        <a class="link" asp-page="/Adventure/Index" asp-route-id="@Model.Id">
             Details
         </a>
     </li>
     <li>
-        <a id="deleteInline@(Model.Id)" class="dropdown-item" href="#"
+        <a id="deleteInline@(Model.Id)" class="link" href="#"
            hx-delete="@Url.Page("Delete", new { id = Model.Id })"
            hx-confirm="Weet je zeker dat je @Model.Name wil verwijderen? Dit kun je niet ongedaan maken!"
            hx-swap="outerHTML swap:200ms"
