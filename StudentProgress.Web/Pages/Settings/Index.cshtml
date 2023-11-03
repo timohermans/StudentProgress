@@ -5,25 +5,28 @@
     ViewData["Title"] = "Settings";
 }
 
-<h1>Settings</h1>
+<div class="stack">
 
-<form method="post">
-    @Html.ValidationSummary()
-    <p>
-        <label asp-for="Settings.CanvasApiKey"></label>
-        <input asp-for="Settings.CanvasApiKey">
-    </p>
-    <p>
-        <label asp-for="Settings.CanvasApiUrl"></label>
-        <input asp-for="Settings.CanvasApiUrl">
-    </p>
-    <p>
-        <button type="submit">Save</button>
-    </p>
-</form>
+    <form class="form" method="post">
+        <h2>Canvas settings</h2>
+        @Html.ValidationSummary()
+        <p>
+            <label class="form__label" asp-for="Settings.CanvasApiKey"></label>
+            <input class="form__control" asp-for="Settings.CanvasApiKey">
+        </p>
+        <p>
+            <label class="form__label" asp-for="Settings.CanvasApiUrl"></label>
+            <input class="form__control" asp-for="Settings.CanvasApiUrl">
+        </p>
+        <p>
+            <button class="form__button" type="submit">Save</button>
+        </p>
+    </form>
 
-<form method="post" hx-boost="false" asp-page="/Logout">
-    <button class="btn btn-link" type="submit">
-        Log out
-    </button>
-</form>
+    <form class="form" method="post" hx-boost="false" asp-page="/Logout">
+        <h2>Account</h2>
+        <button class="form__button" type="submit">
+            Log out
+        </button>
+    </form>
+</div>
