@@ -4,14 +4,14 @@
 <div class="row justify-content-center mt-5" hx-boost="false">
     <section class="col-md-4">
         <h2>Enter the one time code</h2>
-        <form method="post">
+        <form class="form" method="post">
             <div asp-validation-summary="All"></div>
-            <p class="form-floating">
-                <input asp-for="Code" type="text" class="form-control" placeholder="@Html.DisplayNameFor(m => m.Code)" autofocus>
-                <label asp-for="Code"></label>
-            </p>
             <p>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <label asp-for="Code" class="form__label"></label>
+                <input asp-for="Code" type="text" class="form__control" placeholder="@Html.DisplayNameFor(m => m.Code)" autofocus>
+            </p>
+            <p class="form__actions">
+                <button type="submit" class="form__button">Send</button>
             </p>
         </form>
     </section>
