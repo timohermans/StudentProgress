@@ -13,6 +13,8 @@ steps:
     - dotnet build
     - dotnet test
   environment:
+    ConnectionStrings__WebContext:
+      from_secret: ConnectionStrings__WebContext
     ConnectionStrings__Test:
       from_secret: connectionstringtest
     canvas__url:
