@@ -60,7 +60,7 @@ namespace StudentProgress.CoreTests
         private DbContextOptions<WebContext> CreateWebContextOptions()
         {
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Development.json", false, false)
+                .AddJsonFile("appsettings.json", false, false)
                 .Build();
             var envCString = Environment.GetEnvironmentVariable("ConnectionString__WebContext");
             var cString = configuration.GetConnectionString("WebContext");
