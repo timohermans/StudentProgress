@@ -36,13 +36,13 @@ steps:
     sonarqube_project:
       from_secret: sonarqube_project
   commands:
-    - apk add libxml2
     - apk add nodejs
     - export PATH=$PATH:/usr/bin/node
     - apk add openjdk17
     - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
     - export PATH="$PATH:/root/.dotnet/tools"
     - dotnet tool install --global dotnet-sonarscanner
+    - apk add libxml2
     - dotnet tool install --global dotnet-coverage
     - dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host" /d:sonar.token="$sonarqube_token" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
     - dotnet build
