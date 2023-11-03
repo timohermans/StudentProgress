@@ -36,6 +36,7 @@ steps:
     sonarqube_project:
       from_secret: sonarqube_project
   commands:
+    - apk add libxml2
     - apk add nodejs
     - export PATH=$PATH:/usr/bin/node
     - apk add openjdk17
