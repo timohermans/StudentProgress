@@ -3,7 +3,7 @@ using StudentProgress.Web.Pages.People;
 
 namespace StudentProgress.CoreTests.Pages.People.Parts
 {
-    [Collection("db")]
+    [Collection("canvas")]
     public class SearchTests : DatabaseTests
     {
         public SearchTests(DatabaseFixture fixture) : base(fixture)
@@ -29,7 +29,7 @@ namespace StudentProgress.CoreTests.Pages.People.Parts
             await page.OnGet("timo");
 
             page.People.Should().HaveCount(1);
-            page.People.First().Name.Should().Be("Timo");
+            page.People.First().FirstName.Should().Be("Timo");
             page.People.First().AvatarPath.Should().Be("123.png");
             page.People.First().Adventures.Should().HaveCount(2);
             page.People.First().Adventures.Select(g => g.Name).Should().Contain("semester 1");

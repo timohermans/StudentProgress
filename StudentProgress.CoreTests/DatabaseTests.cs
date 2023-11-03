@@ -27,6 +27,7 @@ DELETE FROM ProgressUpdate;
 DELETE FROM Student;
 DELETE FROM StudentGroup;
 DELETE FROM Settings;
+DELETE FROM __EFMigrationsHistory;
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'MilestoneProgress';
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Milestone';
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'StudentStudentGroup';
@@ -39,6 +40,7 @@ UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'SudentGroup';
             dataContext.Database.ExecuteSqlRaw(@"
 DELETE FROM People;
 DELETE FROM Adventures;
+DELETE FROM __EFMigrationsHistory;
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'People';
 UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Adventures';
 ");

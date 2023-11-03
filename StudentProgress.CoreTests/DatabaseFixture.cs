@@ -21,19 +21,17 @@ namespace StudentProgress.CoreTests
         public DatabaseFixture()
         {
             ConnectionString = GetConnectionString();
-
             ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
                 .UseSqlite(ConnectionString)
                 .Options;
-            WebContextOptions = CreateWebContextOptions();
-
             DataMother = new DataMother(ContextOptions);
-            WebDataMother = new WebDataMother(WebContextOptions);
 
             using var context = new ProgressContext(ContextOptions);
             context.Database.EnsureDeleted();
             context.Database.Migrate();
 
+            WebContextOptions = CreateWebContextOptions();
+            WebDataMother = new WebDataMother(WebContextOptions);
             using var webContext = new WebContext(WebContextOptions);
             webContext.Database.EnsureDeleted();
             webContext.Database.Migrate();
@@ -78,10 +76,5 @@ namespace StudentProgress.CoreTests
         {
             return new WebContext(WebContextOptions);
         }
-    }
-
-    [CollectionDefinition("db")]
-    public class DatabaseCollection : ICollectionFixture<DatabaseFixture>
-    {
     }
 }
