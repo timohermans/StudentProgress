@@ -23,6 +23,7 @@ steps:
       from_secret: sonarqube_project
   commands:
     - dotnet tool install --global dotnet-sonarscanner
+    - export PATH="$PATH:/root/.dotnet/tools"
     - dotnet sonarscanner begin /k:"$sonarqube_project" /d:sonar.host.url="$sonarqube_host"  /d:sonar.token="$sonarqube_token"
     - dotnet build
     - dotnet sonarscanner end /d:sonar.token="$sonarqube_token"
