@@ -4,12 +4,13 @@ using Index = StudentProgress.Web.Pages.Canvas.Courses.Index;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
-[Collection("canvas")]
-public class IndexOnGet : CanvasTests
+[Collection("integration")]
+public class IndexOnGet : IntegrationTests
 {
-    public IndexOnGet(CanvasFixture fixture) : base(fixture)
+    public IndexOnGet(CanvasFixture fixture, DatabaseFixture dbFixture) : base(fixture, dbFixture)
     {
     }
+
     // so it could be this test fails eventually, with three possibilities:
     // 1) the api token has expired -> get a new one from canvas and put it in appsettings.real.json
     // 2) the url to the canvas api has changed -> get the new and put it in appsettings.real.json

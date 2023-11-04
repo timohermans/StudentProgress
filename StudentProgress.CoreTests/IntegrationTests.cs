@@ -4,11 +4,20 @@ using StudentProgress.Web.Lib.CanvasApi;
 
 namespace StudentProgress.CoreTests;
 
-public class CanvasTests
+public class IntegrationTests
 {
-    public CanvasFixture CanvasFixture { get; set; }
+    public CanvasFixture? CanvasFixture { get; set; }
+    public DatabaseFixture DatabaseFixture { get; set; }
 
-    public CanvasTests(CanvasFixture canvasFixture) => CanvasFixture = canvasFixture;
+    public IntegrationTests(DatabaseFixture dbFixture)
+    {
+        DatabaseFixture = dbFixture;
+    }
+
+    public IntegrationTests(CanvasFixture canvasFixture, DatabaseFixture dbFixture) : this(dbFixture)
+    {
+        CanvasFixture = canvasFixture;
+    }
 }
 
 public class CanvasFixture
@@ -25,8 +34,8 @@ public class CanvasFixture
     }
 }
 
-[CollectionDefinition("canvas")]
-public class CanvasCollectionDefinition : ICollectionFixture<CanvasFixture>, ICollectionFixture<DatabaseFixture>
+[CollectionDefinition("integration")]
+public class IntegrationCollectionDefinition : ICollectionFixture<CanvasFixture>, ICollectionFixture<DatabaseFixture>
 {
 }
 

@@ -5,14 +5,12 @@ using StudentProgress.Web.Pages.Canvas.Courses;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
-[Collection("canvas")]
-public class DetailsOnGet : CanvasTests
+[Collection("integration")]
+public class DetailsOnGet : IntegrationTests
 {
-    private readonly DatabaseFixture _databaseFixture;
-
-    public DetailsOnGet(CanvasFixture canvasFixture, DatabaseFixture databaseFixture) : base(canvasFixture)
+    public DetailsOnGet(CanvasFixture canvasFixture, DatabaseFixture databaseFixture) : base(canvasFixture,
+        databaseFixture)
     {
-        _databaseFixture = databaseFixture;
     }
 
     [Fact]
@@ -20,7 +18,7 @@ public class DetailsOnGet : CanvasTests
     {
         var client = new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
         var config = new CoreTestConfiguration();
-        await using var context = _databaseFixture.CreateWebContext();
+        await using var context = DatabaseFixture.CreateWebContext();
         var page = new Details(CanvasFixture.Client, context, config, client);
 
         await page.OnGetAsync("12685", CancellationToken.None);

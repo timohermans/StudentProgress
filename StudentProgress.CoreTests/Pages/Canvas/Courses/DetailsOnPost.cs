@@ -8,20 +8,17 @@ using StudentProgress.Web.Pages.Canvas.Courses;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
-[Collection("canvas")]
-public class DetailsOnPost : CanvasTests
+[Collection("integration")]
+public class DetailsOnPost : IntegrationTests
 {
-    private readonly DatabaseFixture _dbFixture;
-
-    public DetailsOnPost(CanvasFixture fixture, DatabaseFixture dbFixture) : base(fixture)
+    public DetailsOnPost(CanvasFixture fixture, DatabaseFixture dbFixture) : base(fixture, dbFixture)
     {
-        _dbFixture = dbFixture;
     }
 
     [Fact]
     public async Task Imports_the_selected_canvas_course_section_as_a_group()
     {
-        await _dbFixture.WebDataMother.CreateAdventure(new Adventure
+        await DatabaseFixture.WebDataMother.CreateAdventure(new Adventure
         {
             Name = "Random other adventure",
             DateStart = new DateTime(2022, 8, 1),
@@ -55,7 +52,7 @@ public class DetailsOnPost : CanvasTests
                 }
             }
         };
-        await using var ucContext = _dbFixture.CreateWebContext();
+        await using var ucContext = DatabaseFixture.CreateWebContext();
         var page = new Details(CanvasFixture.Client, ucContext, new CoreTestConfiguration(), client)
         {
             Semester = request
@@ -64,7 +61,7 @@ public class DetailsOnPost : CanvasTests
         // act
         await page.OnPostAsync(CancellationToken.None);
 
-        await using var assertDb = _dbFixture.CreateWebContext();
+        await using var assertDb = DatabaseFixture.CreateWebContext();
         var resultGroup = await assertDb.Adventures.Include(g => g.People)
             .FirstAsync(g => g.Name == "S-DB-S2-CMK - S2-DB02");
         resultGroup.Should().NotBeNull();
