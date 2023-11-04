@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StudentProgress.Web.Lib.Data;
+using StudentProgress.Web.Lib.Extensions;
 using StudentProgress.Web.Models;
 
 namespace StudentProgress.Web.Pages.Adventure;
@@ -42,7 +43,7 @@ public class Index : PageModel
         }
 
         Adventure = adventure;
-        
+
         adventure.QuestLines.Add(new QuestLine
         {
             Name = "Empire of the client server web dev",
@@ -55,5 +56,12 @@ public class Index : PageModel
         });
 
         return Page();
+    }
+
+    public IActionResult OnDeleteRemovePerson(int id, int personId)
+    {
+        _logger.LogDebug($"Hi mom! {id} and person {personId}");
+
+        return this.SeeOther("Index", new { id });
     }
 }

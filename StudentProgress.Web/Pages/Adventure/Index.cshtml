@@ -7,47 +7,57 @@
     Jump to <a class="text-primary" href="#people">Adventurers</a> / <a class="text-primary" href="#">Quests</a> / <a class="text-primary" href="#">Logs</a>
 </nav>
 
-<section id="people" class="reel mb-5" x-ref="reel" x-data="{ selected: @Model.Person?.Id }">
+<ul id="people" class="reel" x-ref="reel" x-data="{ selected: @(Model.Person?.Id.ToString() ?? "null") }">
     @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
     {
-        <div class='card'
-             x-data="{ show: false, id: @person.Id }"
-             @@mouseenter="show = true"
-             @@mouseleave="show = false"
-             x-init="if(id !== selected) return;
+        <li class='reel__item'
+            x-data="{ 
+                id: @person.Id,
+                hasFocus: false,
+                showOptions: false,
+                showIcon: false 
+            }"
+            x-init="if(id !== selected) return;
                      const bounds = $el.getBoundingClientRect();
                      $refs.reel.scrollLeft = bounds.left - (bounds.width / 2);
              "
-             :class="selected === id && 'border border-primary border-3'"
-             @@click="selected = id"
-             hx-trigger="click"
-             hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id })"
-             hx-target="body"
-             hx-push-url="true">
-            <img src="@person.ImageSource" class="card-img-top object-fit-cover" alt="@person.Name" height="150">
-            <div class="card-body position-relative">
-                @person.FirstName
-                <div x-show="show" x-transition.duration.200ms class="position-absolute top-50 end-0 translate-middle-y z-1">
-                    <div class="dropdown no-arrow dropend" x-data="{ dropdown: undefined }">
-                        <button
-                            x-init="dropdown = new bootstrap.Dropdown($el);"
-                            @@click.prevent.stop="dropdown.show()"
-                            class="btn dropdown-toggle menu-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </button>
-                        <ul class="dropdown-menu" @@mouseleave="dropdown.hide()">
+            :class="selected === id && 'border border-primary border-3'"
+            @@click="selected = id"
+            @@mouseenter="hasFocus = showIcon = true"
+            @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false"
+            hx-trigger="click"
+            hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id })"
+            hx-target="body"
+            hx-push-url="true">
+            <img src="@person.ImageSource" class="reel__cover" alt="@person.Name" height="150">
+            <div class="row row--justify-between reel__content">
+                <div>@person.FirstName</div>
+
+                <div class="image-link"
+                     :class="showIcon ? 'image-link--visible' : 'image-link--hidden'"
+                     x-cloak
+                     x-transition
+                     @@click.stop="showOptions = !showOptions"
+                     @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
+                    <img class="image-link__icon" src="~/images/002-map-1.png" alt="adventure options">
+                    <div class="image-link__border" :class="showOptions && 'image-link__border--highlight'"></div>
+                    <div id="adventure-@(person.Id)-options" class="image-link__content image-link__content--go-up fade-me-in fade-me-out" :class="showOptions && 'image-link__content--visible'">
+                        <ul>
                             <li>
-                                <a class="dropdown-item" hx-delete="@Url.Page("People/Index", new { id = Model.Adventure.Id, personId = person.Id })">Delete</a>
+                                <a class="link" href="#"
+                                   hx-confirm="You sure you want to remove this person from the adventure?"
+                                   hx-delete="@Url.Page("Index", "RemovePerson", new { id = Model.Adventure.Id, personId = person.Id })">
+                                    Delete
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </div>
+
             </div>
-        </div>
+        </li>
     }
-</section>
+</ul>
 
 <section id="quests">
     <h2 class="text-center">
