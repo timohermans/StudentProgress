@@ -38,16 +38,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy(AuthConstants.TwoFactorLoginPolicy, policy => policy.RequireClaim(AuthConstants.TwoFactorLoginPolicy, "2fa"));
+    options.AddPolicy(AuthConstants.TwoFactorLoginPolicy,
+        policy => policy.RequireClaim(AuthConstants.TwoFactorLoginPolicy, "2fa"));
 });
 
 builder.Services.AddMiniProfiler().AddEntityFramework();
 
 builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AuthorizeFolder("/");
-    options.Conventions.AllowAnonymousToFolder("/Account");
-}).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    {
+        options.Conventions.AuthorizeFolder("/");
+        options.Conventions.AllowAnonymousToFolder("/Account");
+    }).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization();
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -79,7 +80,12 @@ app.UseForwardedHeaders();
 app.UseRequestLocalization();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseMiniProfiler();
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.Use((context, next) =>
     {
@@ -89,11 +95,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}
-else
-{
-    app.UseMiniProfiler();
-    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
