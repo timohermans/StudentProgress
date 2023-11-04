@@ -5,6 +5,11 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+
+RUN apk update
+RUN apk add icu-libs
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["StudentProgress.Web/StudentProgress.Web.csproj", "StudentProgress.Web/"]
