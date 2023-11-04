@@ -82,7 +82,7 @@ app.UseRequestLocalization();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseMiniProfiler();
+    // app.UseMiniProfiler();
     app.UseDeveloperExceptionPage();
 }
 else
