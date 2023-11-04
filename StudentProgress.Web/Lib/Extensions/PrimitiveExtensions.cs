@@ -15,6 +15,6 @@ namespace StudentProgress.Web.Lib.Extensions
             return date > min && date < max;
         }
 
-        public static string StripFromAllButLetters(this string value) => Regex.Replace(value, @"[^a-zA-Z1-9]", string.Empty);
+        public static string StripFromAllButLetters(this string value) => Regex.Replace(value, @"[^a-zA-Z1-9]", string.Empty, RegexOptions.NonBacktracking);
     }
 }

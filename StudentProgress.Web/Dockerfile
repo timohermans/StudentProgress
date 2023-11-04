@@ -22,6 +22,13 @@ FROM build AS publish
 RUN dotnet publish "StudentProgress.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
+
+
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot
+RUN chown -R nonroot /app
+USER nonroot
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "StudentProgress.Web.dll"]
