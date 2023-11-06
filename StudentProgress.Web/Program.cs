@@ -115,3 +115,4 @@ app.MapControllers();
 app.MapRazorPages();
 
 app.Run();
+public partial class Program { } // used for integration testing

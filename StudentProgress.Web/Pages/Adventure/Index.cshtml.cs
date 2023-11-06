@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ public class Index : PageModel
     private readonly WebContext _db;
     private readonly ILogger<Index> _logger;
 
-    public required Models.Adventure Adventure { get; set; }
+    public Models.Adventure Adventure { get; set; }
 
     public Index(WebContext db, ILogger<Index> logger)
     {
@@ -58,10 +59,20 @@ public class Index : PageModel
         return Page();
     }
 
-    public IActionResult OnDeleteRemovePerson(int id, int personId)
+    public async Task<IActionResult> OnDeleteRemovePerson(int id, int personId)
     {
-        _logger.LogDebug($"Hi mom! {id} and person {personId}");
+        var adventure = await _db.Adventures
+            .Include(a => a.People)
+            .FirstOrDefaultAsync(a => a.Id == id);
 
+        if (adventure == null)
+        {
+            return NotFound();
+        }
+
+        adventure.People = adventure.People.Where(p => p.Id != personId).ToList();
+        await _db.SaveChangesAsync();
+        
         return this.SeeOther("Index", new { id });
     }
 }

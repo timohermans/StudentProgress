@@ -49,6 +49,7 @@
                                 <ul>
                                     <li>
                                         <a class="link" href="#"
+                                           hx-target="body"
                                            hx-confirm="You sure you want to remove this person from the adventure?"
                                            hx-delete="@Url.Page("Index", "RemovePerson", new { id = Model.Adventure.Id, personId = person.Id })">
                                             Delete

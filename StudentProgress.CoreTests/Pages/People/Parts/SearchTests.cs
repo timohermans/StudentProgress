@@ -17,15 +17,15 @@ namespace StudentProgress.CoreTests.Pages.People.Parts
             {
                 var timo = new Person { FirstName = "Timo", LastName = "", AvatarPath = "123.png" };
                 await db1.People.AddAsync(timo);
-                await db1.Adventures.AddAsync(new Adventure
+                await db1.Adventures.AddAsync(new Web.Models.Adventure
                 {
                     Name = "semester 1",
                     People = new List<Person> { timo, new Person { FirstName = "Leon", LastName = "" } },
                     DateStart = DateTime.Now
                 });
-                await db1.Adventures.AddAsync(new Adventure
+                await db1.Adventures.AddAsync(new Web.Models.Adventure
                     { Name = "semester 2", People = new List<Person> { timo }, DateStart = DateTime.Now });
-                await db1.Adventures.AddAsync(new Adventure
+                await db1.Adventures.AddAsync(new Web.Models.Adventure
                 {
                     Name = "semester 3",
                     People = new List<Person> { new Person { FirstName = "Simon", LastName = "" } },

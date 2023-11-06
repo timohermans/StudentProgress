@@ -39,11 +39,16 @@ namespace StudentProgress.CoreTests
 
         private string GetConnectionString()
         {
+            // so I'm too tired to figure this out,
+            // but the integration tests look at the appsettings.Development.json
+            // of the web project, but because (I think) the executing assembly is test
+            // it tries to locate the web names in this project.
+            // it's ugly, I should overwrite it in the integration setup...but I wont :')
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, false)
+                .AddJsonFile("appsettings.Development.json", false, false)
                 .Build();
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
-            var cString = configuration.GetConnectionString("Default");
+            var cString = configuration.GetConnectionString("ProgressContext"); 
 
             return ConnectionString = envCString ?? cString ??
                 throw new NullReferenceException(
@@ -58,7 +63,7 @@ namespace StudentProgress.CoreTests
         private DbContextOptions<WebContext> CreateWebContextOptions()
         {
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, false)
+                .AddJsonFile("appsettings.Development.json", false, false)
                 .Build();
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__WebContext");
             var cString = configuration.GetConnectionString("WebContext");
