@@ -101,7 +101,7 @@ ul, ol {
 
 * {
     font-family: Helvetica, Verdana, serif;
-    max-inline-size: 60ch;
+    max-inline-size: var(--measure);
     margin: 0;
     padding: 0;
 }
@@ -375,7 +375,6 @@ main {
 .center {
     box-sizing: content-box;
     margin-inline: auto;
-    max-inline-size: var(--measure);
 }
 
 .heading {
