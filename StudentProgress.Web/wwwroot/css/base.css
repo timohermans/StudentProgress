@@ -144,6 +144,7 @@ main {
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-color: #fff #000;
+    position: relative; /* needed for scrollLeft behavior */
 }
 
 .reel > * {
@@ -177,7 +178,8 @@ main {
     border-top-right-radius: var(--f-border-radius);
 }
 
-.reel__item:hover {
+.reel__item:hover,
+.reel__item--selected {
     border-style: solid;
 }
 

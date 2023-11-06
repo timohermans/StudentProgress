@@ -18,10 +18,9 @@
                 showIcon: false 
             }"
             x-init="if(id !== selected) return;
-                     const bounds = $el.getBoundingClientRect();
-                     $refs.reel.scrollLeft = bounds.left - (bounds.width / 2);
+                    $refs.reel.scrollLeft = $el.offsetLeft - ($el.offsetWidth / 2);
              "
-            :class="selected === id && 'border border-primary border-3'"
+            :class="selected === id && 'reel__item--selected'"
             @@click="selected = id"
             @@mouseenter="hasFocus = showIcon = true"
             @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false"
