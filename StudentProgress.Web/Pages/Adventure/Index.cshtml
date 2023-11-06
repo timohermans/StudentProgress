@@ -1,78 +1,83 @@
 @page "{id:int}"
 @model StudentProgress.Web.Pages.Adventure.Index
 
-<h2 class="text-center"><span class="text-primary">@(Model.Adventure.Name)</span>'s adventure</h2>
+<div class="stack">
+    <h2 class="text-center"><span class="text-primary">@(Model.Adventure.Name)</span>'s adventure</h2>
 
-<nav class="mb-3">
-    Jump to <a class="text-primary" href="#people">Adventurers</a> / <a class="text-primary" href="#">Quests</a> / <a class="text-primary" href="#">Logs</a>
-</nav>
+    <nav class="mb-3">
+        Jump to <a class="text-primary" href="#people">Adventurers</a> / <a class="text-primary" href="#">Quests</a> / <a class="text-primary" href="#">Logs</a>
+    </nav>
 
-<ul id="people" class="reel" x-ref="reel" x-data="{ selected: @(Model.Person?.Id.ToString() ?? "null") }">
-    @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
-    {
-        <li class='reel__item'
-            x-data="{ 
+    <section>
+        <h3>People</h3>
+        <ul id="people" class="reel" x-ref="reel" x-data="{ selected: @(Model.Person?.Id.ToString() ?? "null") }">
+            @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
+            {
+                <li class='reel__item'
+                    x-data="{ 
                 id: @person.Id,
                 hasFocus: false,
                 showOptions: false,
                 showIcon: false 
             }"
-            x-init="if(id !== selected) return;
+                    x-init="if(id !== selected) return;
                     $refs.reel.scrollLeft = $el.offsetLeft - ($el.offsetWidth / 2);
              "
-            :class="selected === id && 'reel__item--selected'"
-            @@click="selected = id"
-            @@mouseenter="hasFocus = showIcon = true"
-            @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false"
-            hx-trigger="click"
-            hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id })"
-            hx-target="body"
-            hx-push-url="true">
-            <img src="@person.ImageSource" class="reel__cover" alt="@person.Name" height="150">
-            <div class="row row--justify-between reel__content">
-                <div>@person.FirstName</div>
+                    :class="selected === id && 'reel__item--selected'"
+                    @@click="selected = id"
+                    @@mouseenter="hasFocus = showIcon = true"
+                    @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false"
+                    hx-trigger="click"
+                    hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id })"
+                    hx-target="body"
+                    hx-push-url="true">
+                    <img src="@person.ImageSource" class="reel__cover" alt="@person.Name" height="150">
+                    <div class="row row--justify-between reel__content">
+                        <div>@person.FirstName</div>
 
-                <div class="image-link"
-                     :class="showIcon ? 'image-link--visible' : 'image-link--hidden'"
-                     x-cloak
-                     x-transition
-                     @@click.stop="showOptions = !showOptions"
-                     @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
-                    <img class="image-link__icon" src="~/images/002-map-1.png" alt="adventure options">
-                    <div class="image-link__border" :class="showOptions && 'image-link__border--highlight'"></div>
-                    <div id="adventure-@(person.Id)-options" class="image-link__content image-link__content--go-up fade-me-in fade-me-out" :class="showOptions && 'image-link__content--visible'">
-                        <ul>
-                            <li>
-                                <a class="link" href="#"
-                                   hx-confirm="You sure you want to remove this person from the adventure?"
-                                   hx-delete="@Url.Page("Index", "RemovePerson", new { id = Model.Adventure.Id, personId = person.Id })">
-                                    Delete
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="image-link image-link--small"
+                             :class="showIcon ? 'image-link--visible' : 'image-link--hidden'"
+                             x-cloak
+                             x-transition
+                             @@click.stop="showOptions = !showOptions"
+                             @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
+                            <img class="image-link__icon" src="~/images/037-binoculars-1.png" alt="adventure options">
+                            <div class="image-link__border" :class="showOptions && 'image-link__border--highlight'"></div>
+                            <div id="adventure-@(person.Id)-options" class="image-link__content image-link__content--go-up fade-me-in fade-me-out" :class="showOptions && 'image-link__content--visible'">
+                                <ul>
+                                    <li>
+                                        <a class="link" href="#"
+                                           hx-confirm="You sure you want to remove this person from the adventure?"
+                                           hx-delete="@Url.Page("Index", "RemovePerson", new { id = Model.Adventure.Id, personId = person.Id })">
+                                            Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                </li>
+            }
+        </ul>
+    </section>
 
-            </div>
-        </li>
-    }
-</ul>
+    <section id="quests">
+        <h3 class="text-center">
+            @if (Model.Person != null)
+            {
+                <span class="text-primary">@(Model.Person?.FirstName)'s</span>
+            }
+            @(" ")Quest log
+        </h3>
 
-<section id="quests">
-    <h2 class="text-center">
-        @if (Model.Person != null)
-        {
-            <span class="text-primary">@(Model.Person?.FirstName)'s</span>
-        }
-        @(" ")Quest log
-    </h2>
-
-    <ol>
-        @foreach (var questLine in Model.Adventure.QuestLines)
-        {
-            <li>
-                @questLine.Name
-            </li>
-        }
-    </ol>
-</section>
+        <ol>
+            @foreach (var questLine in Model.Adventure.QuestLines)
+            {
+                <li>
+                    @questLine.Name
+                </li>
+            }
+        </ol>
+    </section>
+</div>
