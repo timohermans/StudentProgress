@@ -45,9 +45,9 @@ namespace StudentProgress.CoreTests
             // it tries to locate the web names in this project.
             // it's ugly, I should overwrite it in the integration setup...but I wont :')
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Development.json", false, false)
+                .AddJsonFile("appsettings.json", false, false)
                 .Build();
-            var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__Test");
+            var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__ProgressContext");
             var cString = configuration.GetConnectionString("ProgressContext"); 
 
             return ConnectionString = envCString ?? cString ??
@@ -63,7 +63,7 @@ namespace StudentProgress.CoreTests
         private DbContextOptions<WebContext> CreateWebContextOptions()
         {
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Development.json", false, false)
+                .AddJsonFile("appsettings.json", false, false)
                 .Build();
             var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__WebContext");
             var cString = configuration.GetConnectionString("WebContext");

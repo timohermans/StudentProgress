@@ -17,7 +17,7 @@ steps:
   environment:
     ConnectionStrings__WebContext:
       from_secret: ConnectionStrings__WebContext
-    ConnectionStrings__Test:
+    ConnectionStrings__ProgressContext:
       from_secret: connectionstringtest
     canvas__url:
       from_secret: canvasurl
