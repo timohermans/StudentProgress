@@ -26,6 +26,9 @@
     --f-color-secondary: var(--color-pink);
     --f-color-danger: var(--color-red);
 
+    --f-color-faded-primary: rgba(102,51,102, 0.75);
+    --f-color-faded-secondary: rgba(230,0,126, 0.75);
+
     --f-color-border: var(--f-color-primary);
     --f-color-border-selected: var(--f-color-secondary);
     --f-color-background: var(--color-white);
@@ -50,11 +53,13 @@
     --f-border-radius-circle: 50%;
 
     --f-box-padding: var(--s-1);
+    --f-box-padding-name: var(--s-3);
 
     --f-transition-duration: 150ms;
 
     --z-index-hidden: -1;
-    --z-index-normal: 1;
+    --z-index-base: 1;
+    --z-index-overlay: 2;
     --z-index-popup: 10;
 
     --measure: 80ch;
@@ -149,7 +154,8 @@ main {
 }
 
 .reel > * {
-    flex: 0 0 180px;
+    flex: 0 0 120px;
+    height: 120px;
 }
 
 .reel > img {
@@ -167,16 +173,16 @@ main {
 }
 
 .reel__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius);
     cursor: pointer;
-}
-
-.reel__cover {
-    width: 100%;
     object-fit: cover;
-    border-top-left-radius: calc(var(--f-border-radius) - 2px);
-    border-top-right-radius: calc(var(--f-border-radius) - 2px);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .reel__item:hover,
@@ -188,8 +194,42 @@ main {
     border-color: var(--f-color-border-selected);
 }
 
+.reel__cover {
+    max-height: 100px;
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: calc(var(--f-border-radius) - 2px);
+    border-top-right-radius: calc(var(--f-border-radius) - 2px);
+}
+
+
 .reel__content {
     padding: var(--f-box-padding);
+}
+
+.reel__person-name {
+    color: var(--f-color-text-inverted);
+    padding: var(--f-box-padding-name);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background-color: var(--f-color-faded-primary);
+    border-radius: var(--f-border-radius);
+}
+
+.reel__item:hover:not(.reel__item--selected) .reel__person-name {
+    background-color: var(--f-color-primary);
+}
+
+.reel__item--selected .reel__person-name {
+    background-color: var(--f-color-secondary); 
+}
+
+
+.reel__options { /* had to create seperate options class, because the image-link has
+    position: relative */
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 /* || Utilities */
@@ -332,7 +372,7 @@ main {
     left: 0;
     width: var(--width);
     height: var(--height);
-    z-index: var(--z-index-hidden);
+    z-index: var(--z-index-base);
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius-circle);
 }
@@ -348,6 +388,7 @@ main {
     width: calc(var(--width) - 5px);
     height: calc(var(--height) - 5px);
     margin: 0 auto;
+    z-index: var(--z-index-overlay);
 }
 
 .image-link__content {
@@ -362,15 +403,9 @@ main {
     border: var(--f-border-thin) solid var(--f-color-border);
     border-radius: var(--f-border-radius);
     background-color: var(--f-color-background-popup);
-    z-index: var(--z-index-normal);
+    z-index: var(--z-index-base);
     padding: var(--f-box-padding);
     cursor: default;
-}
-
-.image-link__content--go-up {
-    top: unset;
-    bottom: 100%;
-    transform-origin: bottom left;
 }
 
 .image-link__content--visible {
