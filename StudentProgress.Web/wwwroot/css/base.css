@@ -154,8 +154,9 @@ main {
 }
 
 .reel > * {
-    flex: 0 0 120px;
-    height: 120px;
+    --dimensions: 140px;
+    flex: 0 0 var(--dimensions);
+    height: var(--dimensions);
 }
 
 .reel > img {
@@ -214,6 +215,7 @@ main {
     overflow: hidden;
     background-color: var(--f-color-faded-primary);
     border-radius: var(--f-border-radius);
+    word-break: break-all;
 }
 
 .reel__item:hover:not(.reel__item--selected) .reel__person-name {
