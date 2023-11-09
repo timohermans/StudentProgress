@@ -227,11 +227,10 @@ main {
 }
 
 
-.reel__options { /* had to create seperate options class, because the image-link has
-    position: relative */
+.reel__options { /* had to create separate options class, because the image-link has position: relative */
     position: absolute;
-    top: 0;
-    right: 0;
+    top: var(--s-3);
+    right: var(--s-3);
 }
 
 /* || Utilities */
@@ -377,6 +376,10 @@ main {
     z-index: var(--z-index-base);
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius-circle);
+}
+
+.image-link__border--with-background {
+    background-color: var(--f-color-background-popup);
 }
 
 .image-link:hover > .image-link__border,

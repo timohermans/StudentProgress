@@ -40,7 +40,7 @@
                             @@click.stop="showOptions = !showOptions"
                             @@click.outside="showOptions = false; if(!hasFocus) showIcon = false;">
                             <img class="image-link__icon" src="~/images/037-binoculars-1.png" alt="adventure options">
-                            <div class="image-link__border" :class="showOptions && 'image-link__border--highlight'"></div>
+                            <div class="image-link__border image-link__border--with-background" :class="showOptions && 'image-link__border--highlight'"></div>
                             <div id="adventure-@(person.Id)-options"
                                 class="image-link__content fade-me-in fade-me-out"
                                 :class="showOptions && 'image-link__content--visible'">
@@ -77,6 +77,9 @@
                     @questLine.Name
                 </li>
             }
+            <li>
+                Add new questline
+            </li>
         </ol>
     </section>
 </div>
