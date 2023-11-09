@@ -45,12 +45,12 @@ public class Index : PageModel
 
         Adventure = adventure;
 
-        adventure.QuestLines.Add(new QuestLine
+        adventure.QuestLines.Add(new Models.QuestLine
         {
             Name = "Empire of the client server web dev",
             Order = 1
         });
-        adventure.QuestLines.Add(new QuestLine
+        adventure.QuestLines.Add(new Models.QuestLine
         {
             Name = "Quality over quantity",
             Order = 2

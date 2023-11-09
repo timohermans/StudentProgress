@@ -26,8 +26,8 @@
     --f-color-secondary: var(--color-pink);
     --f-color-danger: var(--color-red);
 
-    --f-color-faded-primary: rgba(102,51,102, 0.75);
-    --f-color-faded-secondary: rgba(230,0,126, 0.75);
+    --f-color-faded-primary: rgba(102, 51, 102, 0.75);
+    --f-color-faded-secondary: rgba(230, 0, 126, 0.75);
 
     --f-color-border: var(--f-color-primary);
     --f-color-border-selected: var(--f-color-secondary);
@@ -223,7 +223,7 @@ main {
 }
 
 .reel__item--selected .reel__person-name {
-    background-color: var(--f-color-secondary); 
+    background-color: var(--f-color-secondary);
 }
 
 
@@ -457,6 +457,13 @@ main {
     display: flex;
     flex-direction: column;
     gap: var(--s0);
+}
+
+.form__inline {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    gap: var(--s-1);
 }
 
 .form__label {
