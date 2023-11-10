@@ -9,5 +9,5 @@ public class QuestLine
     public int Id { get; set; }
     public required string Name { get; set; }
     public int Order { get; set; }
-    public ICollection<Quest> Quests { get; set; }
+    public ICollection<Quest> Quests { get; set; } = new List<Quest>();
 }

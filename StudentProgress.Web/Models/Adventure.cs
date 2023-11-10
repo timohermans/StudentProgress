@@ -13,7 +13,7 @@ public class Adventure
     [MaxLength(50)]
     [Required(ErrorMessage = "Jens")]
     [DisplayName(nameof(Name))]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [DisplayName(nameof(Mnemonic))]
     public string? Mnemonic { get; set; }

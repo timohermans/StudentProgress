@@ -1,13 +1,13 @@
-﻿using System.Linq;
+using System.Linq;
 using StudentProgress.Web.Lib.Infrastructure;
 
 namespace StudentProgress.Web.Models.Values
 {
     public class NameFromCanvas
     {
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string? Initials { get; private set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        public string? Initials { get; set; }
 
         public static Result<NameFromCanvas> Create(string? value)
         {

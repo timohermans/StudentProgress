@@ -14,7 +14,7 @@ public class Index : PageModel
     private readonly WebContext _db;
     private readonly ILogger<Index> _logger;
 
-    public Models.Adventure Adventure { get; set; }
+    public required Models.Adventure Adventure { get; set; }
 
     public Index(WebContext db, ILogger<Index> logger)
     {
