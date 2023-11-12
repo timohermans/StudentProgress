@@ -1,0 +1,20 @@
+.quest-log {
+    display: flex;
+    gap: var(--s0);
+   
+    > * {
+        flex: 0 0 50%;
+    }
+}
+
+.quest-line {
+    display: block;
+    padding: var(--f-box-padding);
+    text-decoration: none;
+    color: var(--f-color-text);
+}
+
+.quest-line--active, .quest-line:hover {
+    border: var(--f-border-thin) dashed var(--f-color-border);
+    border-radius: var(--f-border-radius);
+}

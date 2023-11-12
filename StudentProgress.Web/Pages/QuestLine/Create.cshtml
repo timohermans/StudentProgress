@@ -5,14 +5,14 @@
     Layout = null;
 }
 
-<form class="form" method="post">
+<form id="questLineForm" class="form form--no-gap" method="post">
     <p class="form__inline">
-        <label asp-for="QuestLine.Name" class="form__label"></label>
-        <input asp-for="QuestLine.Name" class="form__control"/>
-        <button class="form__button" type="submit" hx-target="closest form" hx-post="@Url.Page("/QuestLine/Create", new { adventureId = Model.AdventureId, personId = Model.PersonId })" hx-swap="outerHTML">Add</button>
+        <label asp-for="Name" class="form__label"></label>
+        <input asp-for="Name" class="form__control"/>
+        <button class="form__button" type="submit" hx-target="body" hx-post="@Url.Page("/QuestLine/Create", new { adventureId = Model.AdventureId, personId = Model.PersonId })" hx-swap="innerHTML">Add</button>
         <a class="form__link" hx-get="@Url.Page("/Adventure/Index", new { id = Model.AdventureId, personId = Model.PersonId })" hx-target="body">Cancel</a>
     </p>
     <p>
-        <span asp-validation-for="QuestLine.Name"></span>
+        <span asp-validation-for="Name"></span>
     </p>
 </form>

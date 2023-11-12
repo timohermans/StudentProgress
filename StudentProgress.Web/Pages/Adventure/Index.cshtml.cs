@@ -15,6 +15,7 @@ public class Index : PageModel
     private readonly ILogger<Index> _logger;
 
     public required Models.Adventure Adventure { get; set; }
+    public Person? Person { get; set; }
 
     public Index(WebContext db, ILogger<Index> logger)
     {
@@ -22,9 +23,8 @@ public class Index : PageModel
         _logger = logger;
     }
 
-    public Person? Person { get; set; }
 
-    public async Task<IActionResult> OnGet(int id, int? personId)
+    public async Task<IActionResult> OnGet(int id, int? personId, int? questLineId)
     {
         _logger.LogDebug($"person selected: {personId}");
         var adventure = await _db.Adventures
@@ -45,17 +45,6 @@ public class Index : PageModel
 
         Adventure = adventure;
 
-        adventure.QuestLines.Add(new Models.QuestLine
-        {
-            Name = "Empire of the client server web dev",
-            Order = 1
-        });
-        adventure.QuestLines.Add(new Models.QuestLine
-        {
-            Name = "Quality over quantity",
-            Order = 2
-        });
-
         return Page();
     }
 
@@ -72,7 +61,7 @@ public class Index : PageModel
 
         adventure.People = adventure.People.Where(p => p.Id != personId).ToList();
         await _db.SaveChangesAsync();
-        
+
         return this.SeeOther("Index", new { id });
     }
 }

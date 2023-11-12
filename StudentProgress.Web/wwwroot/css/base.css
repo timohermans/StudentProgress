@@ -459,6 +459,10 @@ main {
     gap: var(--s0);
 }
 
+.form--no-gap {
+    gap: 0;
+}
+
 .form__inline {
     flex-direction: row;
     display: flex;
