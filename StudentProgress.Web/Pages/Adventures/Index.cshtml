@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using Microsoft.AspNetCore.Mvc.Localization
 @model IndexModel
 
@@ -18,7 +18,7 @@
              @@adventure-created.document.debounce.500ms="show = false">
             <div class="image-link__border" :class="show && 'image-link__border--highlight'">
             </div>
-            <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
+            <img x-on:click.stop="show = !show" src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
             <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
                 <partial name="_Actions" model="Model.CanImportGroups"/>
             </div>
