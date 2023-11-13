@@ -8,7 +8,7 @@
     x-data="{ hasFocus: false, showIcon: false, showOptions: false }"
     @@mouseenter="hasFocus = showIcon = true"
     @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false">
-    <a class="stack__link row row__col--grow" asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-target="body">
+    <a class="stack__link row row__col--grow" asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-boost="false">
         @{
             var period = (Period)Model.DateStart;
         }

@@ -16,6 +16,7 @@ public class Index : PageModel
 
     public required Models.Adventure Adventure { get; set; }
     public Person? Person { get; set; }
+    public int? QuestLineId { get; set; }
 
     public Index(WebContext db, ILogger<Index> logger)
     {
@@ -26,7 +27,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnGet(int id, int? personId, int? questLineId)
     {
-        _logger.LogDebug($"person selected: {personId}");
+        QuestLineId = questLineId;
         var adventure = await _db.Adventures
             .Include(a => a.People)
             .Include(a => a.QuestLines)
@@ -34,6 +35,7 @@ public class Index : PageModel
 
         if (personId != null)
         {
+            _logger.LogDebug($"person selected: {personId}");
             Person = await _db.People.FirstOrDefaultAsync(p => p.Id == personId);
             if (Person == null) return NotFound();
         }
