@@ -111,7 +111,7 @@ namespace StudentProgress.Core.Entities
                 : $"{StartDate.AddYears(-1).Year}/{StartDate.Year} - S2"
             : "No period";
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<IComparable> GetEqualityComponents()
         {
             yield return StartDate;
         }

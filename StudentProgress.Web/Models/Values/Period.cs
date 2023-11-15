@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using StudentProgress.Core.Extensions;
+﻿using StudentProgress.Core.Extensions;
 using StudentProgress.Web.Lib.Infrastructure;
-using Result = CSharpFunctionalExtensions.Result;
 
 // TODO: major refactor and cleanup required
 

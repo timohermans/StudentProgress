@@ -11,10 +11,6 @@ namespace StudentProgress.Core.Entities
             Value = value;
         }
 
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Value;
-        }
 
         public static implicit operator string(Name name) => name.Value;
         public static explicit operator Name(string name) => Name.Create(name).Value;
@@ -37,5 +33,9 @@ namespace StudentProgress.Core.Entities
         public string GetFirstPart(char separator) => Value.Split(separator, StringSplitOptions.RemoveEmptyEntries).First();
 
         public override string ToString() => Value;
+        protected override IEnumerable<IComparable> GetEqualityComponents()
+        {
+            yield return Value;
+        }
     }
 }
