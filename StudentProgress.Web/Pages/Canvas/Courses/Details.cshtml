@@ -1,4 +1,4 @@
-﻿@page "{id}"
+@page "{id}"
 @using StudentProgress.Core.Extensions
 @model StudentProgress.Web.Pages.Canvas.Courses.Details
 
@@ -21,7 +21,7 @@
     </ul>
     
     @if(Model.Semesters?.Any() ?? false) {
-        <section>
+        <section hx-boost="false">
             <h3>All</h3>
             <form method="post">
                     <input type="hidden" name="Semester.CanvasId" value="@(Model.Semesters[0].CanvasId)">
@@ -48,7 +48,7 @@
     
     @foreach (var semester in Model.Semesters ?? new List<Details.GetCourseDetailsResponse>())
     {
-        <section id="section-@(semester.SectionCanvasId)">
+        <section id="section-@(semester.SectionCanvasId)" hx-boost="false">
             <h3>@(semester.SectionName)</h3>
 
             <form method="post">

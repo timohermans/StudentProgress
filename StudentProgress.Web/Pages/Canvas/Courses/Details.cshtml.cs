@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -155,9 +155,9 @@ course(id: ""{id}"") {
          *
          * insert into adventure (name, dateStart) values ("{name}", "{date}") returning id;
          */
-        var adventure = await _db.Adventures
+        Models.Adventure? adventure = await _db.Adventures
             .Include(a => a.People)
-            .FirstOrDefaultAsync(a => a.Name == adventureName && a.DateStart == Semester.TermEndsAt,
+            .FirstOrDefaultAsync(a => a.Name == adventureName && a.DateStart == Semester.TermStartsAt,
                 cancellationToken: token);
 
         if (adventure == null)
@@ -185,8 +185,11 @@ course(id: ""{id}"") {
             var personInAdventure = adventure.People.FirstOrDefault(s => s.ExternalId == studentRequest.CanvasId);
             var personInDb = peopleInDb.FirstOrDefault(s => s.Name == studentRequest.Name);
 
-            if (personInAdventure is not null) person = personInAdventure;
-            if (personInDb is not null)
+            if (personInAdventure is not null)
+            {
+                person = personInAdventure;
+            }
+            else if (personInDb is not null)
             {
                 adventure.People.Add(personInDb);
                 person = personInDb;
