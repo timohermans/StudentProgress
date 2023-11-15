@@ -7,14 +7,26 @@
     }
 }
 
-.quest-line {
+.quest-log__quest-line {
+    border: var(--f-border-thin) dashed var(--f-color-border);
+    border-radius: var(--f-border-radius);
+    padding: var(--f-box-padding);
+}
+
+.quest-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s0);
+}
+
+.quest-lines__quest-line {
     display: block;
     padding: var(--f-box-padding);
     text-decoration: none;
     color: var(--f-color-text);
 }
 
-.quest-line--active, .quest-line:hover {
+.quest-lines__quest-line--active, .quest-lines__quest-line:hover {
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius);
 }

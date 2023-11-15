@@ -29,7 +29,10 @@
     {
         <p class="form__actions" hx-target="#adventure-@Model.Id">
             <input type="submit" class="form__button" value="Save" hx-put="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms"/>
-            <a href="#" class="form__link" hx-get="@Url.Page("Index", "Options", new { id = Model.Id })" hx-target="#adventure-@(Model.Id)-options" hx-swap="innerHTML swap:200ms settle:200ms">Cancel</a>
+            <a href="#" class="form__link" hx-get="@Url.Page("Index", "Options", new { id = Model.Id })" hx-target="#adventure-@(Model.Id)-options" hx-swap="innerHTML swap:200ms settle:200ms">
+                Cancel
+                <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+            </a>
         </p>
     }
 </form>

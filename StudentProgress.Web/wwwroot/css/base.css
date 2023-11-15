@@ -514,12 +514,13 @@ main {
 .link, .form__link {
     transition: color var(--f-transition-duration) linear;
     color: var(--f-color-text-link);
+    cursor: pointer;
     text-decoration-line: underline;
     text-decoration-style: dashed;
 }
 
 .form__link {
-    color: var(--f-color-text-form-link)
+    color: var(--f-color-text-form-link);
 }
 
 .link:hover, .form__link:hover {
@@ -574,6 +575,13 @@ main {
 
 .heading__highlight {
     color: var(--f-color-text-heading-highlight);
+}
+
+.loading {
+    stroke: var(--f-color-text);
+    height: 1rem;
+    max-width: 30px;
+    display: inline;
 }
 
 

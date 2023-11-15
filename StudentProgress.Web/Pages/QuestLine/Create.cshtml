@@ -10,7 +10,10 @@
         <label asp-for="Name" class="form__label"></label>
         <input asp-for="Name" class="form__control"/>
         <button class="form__button" type="submit" hx-target="body" hx-post="@Url.Page("/QuestLine/Create", new { adventureId = Model.AdventureId, personId = Model.PersonId })" hx-swap="innerHTML">Add</button>
-        <a class="form__link" hx-get="@Url.Page("/Adventure/Index", new { id = Model.AdventureId, personId = Model.PersonId })" hx-target="body">Cancel</a>
+        <a class="form__link" hx-get="@Url.Page("/Adventure/Index", new { id = Model.AdventureId, personId = Model.PersonId })" hx-target="body">
+            Cancel
+            <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+        </a>
     </p>
     <p>
         <span asp-validation-for="Name"></span>

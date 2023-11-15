@@ -18,6 +18,8 @@
                 @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false" hx-trigger="click"
                 hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id, questLineId = Model.QuestLineId })" hx-target="body"
                 hx-push-url="true">
+                <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+
                 <div class="row row--justify-between reel__content">
                     <div class="reel__person-name">@person.FirstName</div>
                 </div>

@@ -9,6 +9,7 @@ namespace StudentProgress.Web.Pages.TagHelpers
         private readonly IWebHostEnvironment _env;
 
         public string Src { get; set; } = null!;
+        public string? Class { get; set; }
 
         public SvgInjectTagHelper(IWebHostEnvironment env) => _env = env;
 
@@ -23,8 +24,18 @@ namespace StudentProgress.Web.Pages.TagHelpers
                 output.Content.SetHtmlContent("<b>svg-not-found</b>");
                 return;
             }
+
+            var svgString = File.ReadAllText(filePath) ?? throw new ArgumentNullException("svg still empty?");
+
+            string svgPrefix = "<svg";
+            int tagIndex = svgString.IndexOf("<svg", StringComparison.Ordinal);
+            if (svgString.Contains("<svg") && Class != null)
+            {
+               svgString = svgString.Insert(tagIndex + svgPrefix.Length, $" class=\"{Class}\"");
+            }
             
-            output.Content.SetHtmlContent(File.ReadAllText(filePath));
+            
+            output.Content.SetHtmlContent(svgString);
         }
     }
 }

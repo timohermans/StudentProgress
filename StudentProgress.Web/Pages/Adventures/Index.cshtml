@@ -18,7 +18,7 @@
              @@adventure-created.document.debounce.500ms="show = false">
             <div class="image-link__border" :class="show && 'image-link__border--highlight'">
             </div>
-            <img x-on:click.stop="show = !show" src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
+            <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
             <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
                 <partial name="_Actions" model="Model.CanImportGroups"/>
             </div>
@@ -29,6 +29,8 @@
         hx-get="@Url.Page("Index")"
         hx-trigger="adventure-created from:body delay:500ms"
         class="stack">
+        <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+
         <partial name="_List" model="Model.Adventures"/>
     </ul>
 </section>

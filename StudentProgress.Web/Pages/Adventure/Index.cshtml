@@ -31,22 +31,23 @@
         </h3>
 
         <section id="questLog" class="quest-log">
-            <ol id="quest-lines">
+            <ol id="quest-lines" class="quest-lines">
                 @foreach (var questLine in Model.Adventure.QuestLines)
                 {
                     <li>
-                        <a class="quest-line @(questLine.Id.ToString() == Model.QuestLineId?.ToString() ? "quest-line--active" : "")"
+                        <a class="quest-lines__quest-line @(questLine.Id.ToString() == Model.QuestLineId?.ToString() ? "quest-lines__quest-line--active" : "")"
                            asp-page="/Adventure/Index" asp-route-id="@Model.Adventure.Id" asp-route-personId="@Model.Person?.Id" asp-route-questLineId="@questLine.Id">
                             @questLine.Name
                         </a>
                     </li>
                 }
-                <li class="quest-line">
+                <li class="quest-lines__quest-line">
                     <a class="link"
                        hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, personId = Model.Person?.Id })"
                        hx-target="this"
                        hx-swap="outerHTML">
                         Add new questline
+                        <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
                     </a>
                 </li>
             </ol>
@@ -55,6 +56,8 @@
                  hx-get="@Url.Page("/QuestLine/Index", new { Id = Model.QuestLineId, PersonId = Model.Person?.Id })"
                  hx-trigger="load"
                  hx-swap="innerHTML">
+                <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+
                 @* See /QuestLine/Index.cshtml  *@
             </div>
         </section>
