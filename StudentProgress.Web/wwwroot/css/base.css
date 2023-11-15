@@ -497,6 +497,20 @@ main {
     cursor: pointer;
 }
 
+.form__button:not(.htmx-request) > .htmx-indicator {
+    display: none;
+}
+
+.form__button.htmx-request > .htmx-indicator {
+    stroke: var(--f-color-text-inverted);
+    fill: var(--f-color-text-inverted);
+    display: unset;
+}
+
+.form__button.htmx-request > :not(.htmx-indicator) {
+    display: none;
+}
+
 .form__button:hover:active {
     background-color: var(--f-color-background-button-active);
 }
@@ -520,6 +534,8 @@ main {
 }
 
 .form__link {
+    display: flex;
+    align-items: center;
     color: var(--f-color-text-form-link);
 }
 
