@@ -26,7 +26,9 @@
     color: var(--f-color-text);
 }
 
-.quest-lines__quest-line--active, .quest-lines__quest-line:hover {
+.quest-lines__quest-line--active, 
+.quest-lines__quest-line:hover,
+.quest-lines__quest-line:has(form) {
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius);
 }

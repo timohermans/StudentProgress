@@ -8,7 +8,7 @@
 <form id="questLineForm" class="form form--no-gap" method="post">
     <p class="form__inline">
         <label asp-for="Name" class="form__label"></label>
-        <input asp-for="Name" class="form__control"/>
+        <input asp-for="Name" class="form__control" autofocus/>
         <button class="form__button" type="submit" hx-target="body" hx-post="@Url.Page("/QuestLine/Create", new { adventureId = Model.AdventureId, personId = Model.PersonId })" hx-swap="innerHTML">
             <span>Add</span>
             <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
