@@ -7,60 +7,59 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StudentProgress.Web.Resources {
-    using System;
+namespace StudentProgress.Web.Resources; 
+using System;
+
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+[System.Diagnostics.DebuggerNonUserCodeAttribute()]
+[System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+internal class Models_Adventure {
     
+    private static System.Resources.ResourceManager resourceMan;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Models_Adventure {
-        
-        private static System.Resources.ResourceManager resourceMan;
-        
-        private static System.Globalization.CultureInfo resourceCulture;
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Models_Adventure() {
+    private static System.Globalization.CultureInfo resourceCulture;
+    
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+    internal Models_Adventure() {
+    }
+    
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    internal static System.Resources.ResourceManager ResourceManager {
+        get {
+            if (object.Equals(null, resourceMan)) {
+                System.Resources.ResourceManager temp = new System.Resources.ResourceManager("StudentProgress.Web.Resources.Models_Adventure", typeof(Models_Adventure).Assembly);
+                resourceMan = temp;
+            }
+            return resourceMan;
         }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("StudentProgress.Web.Resources.Models_Adventure", typeof(Models_Adventure).Assembly);
-                    resourceMan = temp;
-                }
-                return resourceMan;
-            }
+    }
+    
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    internal static System.Globalization.CultureInfo Culture {
+        get {
+            return resourceCulture;
         }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
-            get {
-                return resourceCulture;
-            }
-            set {
-                resourceCulture = value;
-            }
+        set {
+            resourceCulture = value;
         }
-        
-        internal static string DateStart {
-            get {
-                return ResourceManager.GetString("DateStart", resourceCulture);
-            }
+    }
+    
+    internal static string DateStart {
+        get {
+            return ResourceManager.GetString("DateStart", resourceCulture);
         }
-        
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
+    }
+    
+    internal static string Name {
+        get {
+            return ResourceManager.GetString("Name", resourceCulture);
         }
-        
-        internal static string Mnemonic {
-            get {
-                return ResourceManager.GetString("Mnemonic", resourceCulture);
-            }
+    }
+    
+    internal static string Mnemonic {
+        get {
+            return ResourceManager.GetString("Mnemonic", resourceCulture);
         }
     }
 }

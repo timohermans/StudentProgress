@@ -5,16 +5,17 @@ using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Lib.CanvasApi.Models;
-using StudentProgress.Web.Lib.Data;
-using StudentProgress.Web.Lib.Infrastructure;
-using StudentProgress.Web.Models;
-using StudentProgress.Web.Models.Values;
-using ICanvasClient = StudentProgress.Web.Lib.CanvasApi.ICanvasClient;
+using StudentProgress.Core.CanvasApi.Models;
+using StudentProgress.Core.Data;
+using StudentProgress.Core.Infrastructure;
+using StudentProgress.Core.Models;
+using StudentProgress.Core.Models.Values;
+using StudentProgress.Web.Lib.Configuration;
+using ICanvasClient = StudentProgress.Core.CanvasApi.ICanvasClient;
 
 namespace StudentProgress.Web.Pages.Canvas.Courses;
 
-public class Details : PageModel
+public class Details(ICanvasClient canvasClient, WebContext db, ICoreConfiguration config, HttpClient httpClient) : PageModel
 {
     public new class Request
     {
@@ -25,7 +26,7 @@ public class Details : PageModel
         public DateTime? TermEndsAt { get; init; }
         public string? SectionCanvasId { get; init; }
         public string? SectionName { get; init; }
-        public List<GetCourseDetailsStudent> Students { get; init; } = new();
+        public List<GetCourseDetailsStudent> Students { get; init; } = [];
     }
 
     public class ImportSemesterStudent
@@ -46,7 +47,7 @@ public class Details : PageModel
         public DateTime? TermEndsAt { get; init; }
         public string? SectionCanvasId { get; init; }
         public string? SectionName { get; init; }
-        public List<GetCourseDetailsStudent> Students { get; init; } = new();
+        public List<GetCourseDetailsStudent> Students { get; init; } = [];
     }
 
     public class GetCourseDetailsStudent
@@ -89,28 +90,15 @@ course(id: ""{id}"") {
 }
 }";
 
-    private readonly ICanvasClient _canvasClient;
-    private readonly WebContext _db;
-    private readonly ICoreConfiguration _config;
-    private readonly HttpClient _httpClient;
-
-    public List<GetCourseDetailsResponse> Semesters { get; set; } = new();
-    public List<ErrorResult> Errors { get; set; } = new();
+    public List<GetCourseDetailsResponse> Semesters { get; set; } = [];
+    public List<ErrorResult> Errors { get; set; } = [];
 
     [BindProperty] public Request Semester { get; set; } = default!;
-
-    public Details(ICanvasClient canvasClient, WebContext db, ICoreConfiguration config, HttpClient httpClient)
-    {
-        _canvasClient = canvasClient;
-        _config = config;
-        _httpClient = httpClient;
-        _db = db;
-    }
 
     public async Task OnGetAsync(string id, CancellationToken token)
     {
         var query = _query.Replace("{id}", id);
-        var data = await _canvasClient.GetAsync<Details.ApiResponse>(query, token);
+        var data = await canvasClient.GetAsync<Details.ApiResponse>(query, token);
         var course = data?.Data?.Course;
 
         Semesters = course?.SectionsConnection?.Nodes.Select(section =>
@@ -130,9 +118,9 @@ course(id: ""{id}"") {
                         Name = e.User?.Name, AvatarUrl = e.User?.AvatarUrl, CanvasId = e.User?.Id
                     })
                     .OrderBy(p => p.Name)
-                    .ToList() ?? new List<GetCourseDetailsStudent>()
+                    .ToList() ?? []
             };
-        }).ToList() ?? new List<GetCourseDetailsResponse>();
+        }).ToList() ?? [];
     }
 
     public async Task<IActionResult> OnPostAsync(CancellationToken token)
@@ -152,28 +140,28 @@ course(id: ""{id}"") {
          *
          * insert into adventure (name, dateStart) values ("{name}", "{date}") returning id;
          */
-        Models.Adventure? adventure = await _db.Adventures
+        Core.Models.Adventure? adventure = await db.Adventures
             .Include(a => a.People)
             .FirstOrDefaultAsync(a => a.Name == adventureName && a.DateStart == Semester.TermStartsAt,
                 cancellationToken: token);
 
         if (adventure == null)
         {
-            adventure = new Models.Adventure
+            adventure = new Core.Models.Adventure
             {
                 Name = adventureName,
                 DateStart = Semester.TermStartsAt
             };
-            await _db.Adventures.AddAsync(adventure, token);
+            await db.Adventures.AddAsync(adventure, token);
         }
 
         var peopleNamesToAdd = Semester.Students.Select(s => s.Name).ToList();
         var peopleInDb =
-            await _db.People.Where(p => peopleNamesToAdd.Contains(p.LastName + ", " + p.FirstName + " " + p.Initials))
+            await db.People.Where(p => peopleNamesToAdd.Contains(p.LastName + ", " + p.FirstName + " " + p.Initials))
                 .ToListAsync(token);
 
         var relativeAvatarLocation = Path.Combine("images", "avatars");
-        var imageLocation = Path.Combine(_config.MediaLocation, relativeAvatarLocation);
+        var imageLocation = Path.Combine(config.MediaLocation, relativeAvatarLocation);
         if (!Directory.Exists(imageLocation)) Directory.CreateDirectory(imageLocation);
 
         foreach (var studentRequest in Semester.Students.DistinctBy(s => s.Name))
@@ -202,23 +190,23 @@ course(id: ""{id}"") {
                     Initials = name.Data.Initials,
                     ExternalId = studentRequest.CanvasId
                 };
-                _db.People.Add(person);
+                db.People.Add(person);
                 adventure.People.Add(person);
             }
 
             if (studentRequest.AvatarUrl is null) continue;
             var fileName = $"{person.ExternalId}-canvas.png";
-            var fileResponse = await _httpClient.GetAsync(studentRequest.AvatarUrl, token);
+            var fileResponse = await httpClient.GetAsync(studentRequest.AvatarUrl, token);
             if (fileResponse.IsSuccessStatusCode)
             {
-                var filePath = Path.Combine(_config.MediaLocation, relativeAvatarLocation, fileName);
+                var filePath = Path.Combine(config.MediaLocation, relativeAvatarLocation, fileName);
                 await using var fs = new FileStream(filePath, FileMode.Create);
                 await fileResponse.Content.CopyToAsync(fs, token);
                 person.AvatarPath = Path.Combine(relativeAvatarLocation, fileName);
             }
         }
 
-        await _db.SaveChangesAsync(token);
+        await db.SaveChangesAsync(token);
 
         return RedirectToPage("/Index");
     }

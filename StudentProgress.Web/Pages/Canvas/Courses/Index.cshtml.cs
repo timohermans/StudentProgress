@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Course = StudentProgress.Web.Lib.CanvasApi.Models.Course;
-using ICanvasClient = StudentProgress.Web.Lib.CanvasApi.ICanvasClient;
+using Course = StudentProgress.Core.CanvasApi.Models.Course;
+using ICanvasClient = StudentProgress.Core.CanvasApi.ICanvasClient;
 
 namespace StudentProgress.Web.Pages.Canvas.Courses;
 
@@ -36,6 +36,6 @@ public class Index : PageModel
 }
 ";
         var data = await _client.GetAsync<ApiResponse>(query, token);
-        Courses = data?.Data?.AllCourses?.OrderByDescending(c => c.Term?.StartAt).ToList() ?? new List<Course>();
+        Courses = data?.Data?.AllCourses?.OrderByDescending(c => c.Term?.StartAt).ToList() ?? [];
     }
 }

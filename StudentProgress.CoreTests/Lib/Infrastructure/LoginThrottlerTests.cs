@@ -1,4 +1,4 @@
-using StudentProgress.Web.Lib.Infrastructure;
+using StudentProgress.Core.Infrastructure;
 
 namespace StudentProgress.CoreTests.Lib.Infrastructure;
 

@@ -2,21 +2,14 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Web.Lib.Data;
-using StudentProgress.Web.Models;
+using StudentProgress.Core.Data;
+using StudentProgress.Core.Models;
 
 namespace StudentProgress.Web.Pages.People;
 
-public class SearchModel : PageModel
+public class SearchModel(WebContext db) : PageModel
 {
-    public List<Person> People { get; set; } = new();
-
-    private readonly WebContext _db;
-
-    public SearchModel(WebContext db)
-    {
-        _db = db;
-    }
+    public List<Person> People { get; set; } = [];
 
     public async Task<IActionResult> OnGet(string q)
     {
@@ -25,9 +18,9 @@ public class SearchModel : PageModel
             return Content("");
         }
 
-        People = await _db.People
+        People = await db.People
             .Include(p => p.Adventures)
-            .Where(p => p.FirstName.ToLower().Contains(q.ToLower()))
+            .Where(p => p.FirstName.Contains(q, StringComparison.CurrentCultureIgnoreCase))
             .OrderBy(p => p.FirstName)
             .Take(5)
             .Select(p => new Person
@@ -37,7 +30,7 @@ public class SearchModel : PageModel
                 LastName = p.LastName,
                 Initials = p.Initials,
                 AvatarPath = p.AvatarPath,
-                Adventures = p.Adventures.Select(a => new Models.Adventure
+                Adventures = p.Adventures.Select(a => new Core.Models.Adventure
                 {
                     Id = a.Id,
                     Name = a.Name,

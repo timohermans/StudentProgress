@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using StudentProgress.Core.Extensions;
 
 namespace StudentProgress.Web.Lib.Extensions;
 

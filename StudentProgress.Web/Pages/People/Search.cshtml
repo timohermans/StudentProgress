@@ -6,8 +6,8 @@
 
 <ul class="nav__people">
     @foreach (var person in Model.People)
-    {
-        <li>
+{
+    <li>
             <div class="nav__person-info">
                 <img src="@(!string.IsNullOrWhiteSpace(person.AvatarPath) ? $"/media/{person.AvatarPath}" : $"/images/avatar-placeholder.png")"
                      class="nav__person-avatar" alt="@(person.FirstName)">
@@ -15,15 +15,15 @@
             </div>
             <ol>
                 @foreach (var adventure in person.Adventures)
-                {
-                    <li>
+            {
+                <li>
                         <a class="nav__adventure-link" asp-page="/Adventure/Index" asp-route-personId="@person.Id"
                            asp-route-id="@adventure.Id">
                             @adventure.Name
                         </a>
                     </li>
-                }
+            }
             </ol>
         </li>
-    }
+}
 </ul>

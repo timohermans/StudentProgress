@@ -11,7 +11,7 @@ public class DetailsOnPost(CanvasFixture fixture, DatabaseFixture dbFixture) : I
     [Fact]
     public async Task Imports_the_selected_canvas_course_section_as_a_group()
     {
-        await DatabaseFixture.WebDataMother.CreateAdventure(new Web.Models.Adventure
+        await DatabaseFixture.WebDataMother.CreateAdventure(new Core.Models.Adventure
         {
             Name = "Random other adventure",
             DateStart = new DateTime(2022, 8, 1),

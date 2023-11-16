@@ -1,5 +1,5 @@
-using StudentProgress.Web.Lib.Data;
-using StudentProgress.Web.Models;
+using StudentProgress.Core.Data;
+using StudentProgress.Core.Models;
 
 namespace StudentProgress.CoreTests;
 

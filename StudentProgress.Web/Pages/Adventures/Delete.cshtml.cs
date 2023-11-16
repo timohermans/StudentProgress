@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Web.Lib.Data;
+using StudentProgress.Core.Data;
 using StudentProgress.Web.Lib.Extensions;
 
 namespace StudentProgress.Web.Pages.Adventures;

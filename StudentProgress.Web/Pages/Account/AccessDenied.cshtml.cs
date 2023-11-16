@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Web.Lib.Extensions;
+using StudentProgress.Core.Extensions;
 
 namespace StudentProgress.Web.Pages.Account;
 

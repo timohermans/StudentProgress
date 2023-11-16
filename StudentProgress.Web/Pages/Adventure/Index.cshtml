@@ -24,17 +24,17 @@
   <section id="adventure">
     <h3 class="heading">
       @if (Model.Person != null)
-      {
-        <span class="heading__highlight">@(Model.Person?.FirstName)'s</span>
-      }
+  {
+    <span class="heading__highlight">@(Model.Person?.FirstName)'s</span>
+  }
       @(" ")Quest log
     </h3>
 
     <section id="questLog" class="quest-log">
       <ol id="quest-lines" class="quest-lines">
         @foreach (var questLine in Model.Adventure.QuestLines)
-        {
-          <li>
+    {
+      <li>
             <a class="quest-lines__quest-line @(questLine.Id.ToString() == Model.QuestLineId?.ToString() ? "quest-lines__quest-line--active" : "")"
                asp-page="/Adventure/Index" 
                asp-route-id="@Model.Adventure.Id" 
@@ -43,7 +43,7 @@
               @questLine.Name
             </a>
           </li>
-        }
+    }
         <li class="quest-lines__quest-line">
           <a class="link"
              hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, personId = Model.Person?.Id })"

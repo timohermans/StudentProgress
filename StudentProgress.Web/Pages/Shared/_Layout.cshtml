@@ -1,5 +1,6 @@
-﻿@using System.Web
+@using System.Web
 @using Microsoft.AspNetCore.Routing
+@using Core.Extensions
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @inject LinkGenerator LinkGen
 
@@ -22,15 +23,15 @@
 <body hx-boost="true" hx-headers='{"X-XSRF-TOKEN": "@Antiforgery.GetAndStoreTokens(Context).RequestToken"}'>
 @if (User.IsFullyAuthenticated())
 {
-    <header>
+  <header>
         @{
-            var currentPage = (string?)ViewContext.RouteData.Values["page"];
+          var currentPage = (string?)ViewContext.RouteData.Values["page"];
 
-            string TryHighlight(string page, string @class)
-            {
-                return currentPage == page ? @class : "";
-            }
-        }
+          string TryHighlight(string page, string @class)
+          {
+              return currentPage == page ? @class : "";
+          }
+      }
 
         <nav class="nav">
             <ul class="nav__menu">

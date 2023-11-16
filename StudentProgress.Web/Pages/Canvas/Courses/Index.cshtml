@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model StudentProgress.Web.Pages.Canvas.Courses.Index
 
 @{
@@ -10,8 +10,8 @@
 <table>
   <tbody>
   @foreach (var course in Model.Courses)
-  {
-    <tr data-testid="@course.Id">
+{
+  <tr data-testid="@course.Id">
       <td>@course.Id</td>
       <td>
         <a asp-page="/Canvas/Courses/Details" asp-route-id="@course.Id">@course.Name</a>
@@ -20,6 +20,6 @@
       <td>@course.Term?.StartAt</td>
       <td>@course.Term?.EndAt</td>
     </tr>
-  }
+}
   </tbody>
 </table>

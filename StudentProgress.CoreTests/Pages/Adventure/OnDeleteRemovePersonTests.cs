@@ -1,17 +1,13 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
-using StudentProgress.Web.Models;
+using StudentProgress.Core.Models;
 
 namespace StudentProgress.CoreTests.Pages.Adventure;
 
 [Collection("integration")]
-public class OnDeleteRemovePersonTests : IntegrationTests, IClassFixture<WebApplicationFactory<Program>>
+public class OnDeleteRemovePersonTests(DatabaseFixture dbFixture, WebApplicationFactory<Program> factory) : IntegrationTests(
+    dbFixture, factory), IClassFixture<WebApplicationFactory<Program>>
 {
-    public OnDeleteRemovePersonTests(DatabaseFixture dbFixture, WebApplicationFactory<Program> factory) : base(
-        dbFixture, factory)
-    {
-    }
-    
     [Fact]
     public async Task Cannot_remove_person_on_nonexistent_adventure()
     {
@@ -35,7 +31,7 @@ public class OnDeleteRemovePersonTests : IntegrationTests, IClassFixture<WebAppl
     public async Task Removes_person_from_adventure()
     {
         using var client = await CreateAuthenticatedAppClientAsync();
-        var adventure = new Web.Models.Adventure
+        var adventure = new Core.Models.Adventure
         {
             Name = "S3CB",
             DateStart = DateTime.Today,

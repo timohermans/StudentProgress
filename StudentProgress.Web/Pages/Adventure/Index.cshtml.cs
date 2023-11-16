@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using StudentProgress.Web.Lib.Data;
+using StudentProgress.Core.Data;
+using StudentProgress.Core.Models;
 using StudentProgress.Web.Lib.Extensions;
-using StudentProgress.Web.Models;
 
 namespace StudentProgress.Web.Pages.Adventure;
 
@@ -14,7 +14,7 @@ public class Index : PageModel
     private readonly WebContext _db;
     private readonly ILogger<Index> _logger;
 
-    public required Models.Adventure Adventure { get; set; }
+    public required Core.Models.Adventure Adventure { get; set; }
     public Person? Person { get; set; }
     public int? QuestLineId { get; set; }
 

@@ -1,15 +1,15 @@
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using StudentProgress.Web.Lib.CanvasApi;
-using StudentProgress.Web.Lib.Data;
+using StudentProgress.Core.CanvasApi;
+using StudentProgress.Core.Data;
 using StudentProgress.Web.Lib.Extensions;
 
 namespace StudentProgress.Web.Pages.Adventures;
 
 public class CreateModel(WebContext db, ICanvasApiConfig canvasConfig) : PageModel
 {
-    [BindProperty] public Models.Adventure Adventure { get; set; } = default!;
+    [BindProperty] public Core.Models.Adventure Adventure { get; set; } = default!;
 
     public IActionResult OnGet()
     {

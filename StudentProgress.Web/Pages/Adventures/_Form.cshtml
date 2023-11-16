@@ -1,38 +1,38 @@
-@using StudentProgress.Web.Models
-@model StudentProgress.Web.Models.Adventure
+@using StudentProgress.Core.Models
+@model Adventure
 
 <form class="form" method="post">
-    <input type="hidden" asp-for="Id"/>
-    <p>
-        <label class="form__label" asp-for="Name"></label>
-        <input class="form__control" asp-for="Name" placeholder="@Html.DisplayNameFor(a => a.Name)">
-        <span class="form__error" asp-validation-for="Name"></span>
+  <input type="hidden" asp-for="Id" />
+  <p>
+    <label class="form__label" asp-for="Name"></label>
+    <input class="form__control" asp-for="Name" placeholder="@Html.DisplayNameFor(a => a.Name)">
+    <span class="form__error" asp-validation-for="Name"></span>
+  </p>
+  <p>
+    <label class="form__label" asp-for="DateStart"></label>
+    <input class="form__control" type="date" placeholder="@Html.DisplayNameFor(m => m.DateStart)" asp-for="DateStart">
+    <span class="form__error" asp-validation-for="DateStart"></span>
+  </p>
+  <p>
+    <label class="form__label" asp-for="Mnemonic"></label>
+    <textarea class="form__control" placeholder="@Html.DisplayNameFor(m => m.Mnemonic)" asp-for="Mnemonic"></textarea>
+    <span class="form__error" asp-validation-for="Mnemonic"></span>
+  </p>
+  @if (Model.Id == 0)
+{
+  <p class="form__actions" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
+      <input id="newAdventure" class="form__button" type="submit" value="Create" hx-post='@Url.Page("Create")' />
+      <a id="cancel" class="form__link" asp-page="Index">Cancel</a>
     </p>
-    <p>
-        <label class="form__label" asp-for="DateStart"></label>
-        <input class="form__control" type="date" placeholder="@Html.DisplayNameFor(m => m.DateStart)" asp-for="DateStart">
-        <span class="form__error" asp-validation-for="DateStart"></span>
+}
+else
+{
+  <p class="form__actions" hx-target="#adventure-@Model.Id">
+      <input type="submit" class="form__button" value="Save" hx-put="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms" />
+      <a href="#" class="form__link" hx-get="@Url.Page("Index", "Options", new { id = Model.Id })" hx-target="#adventure-@(Model.Id)-options" hx-swap="innerHTML swap:200ms settle:200ms">
+        Cancel
+        <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+      </a>
     </p>
-    <p>
-        <label class="form__label" asp-for="Mnemonic"></label>
-        <textarea class="form__control" placeholder="@Html.DisplayNameFor(m => m.Mnemonic)" asp-for="Mnemonic"></textarea>
-        <span class="form__error" asp-validation-for="Mnemonic"></span>
-    </p>
-    @if (Model.Id == 0)
-    {
-        <p class="form__actions" hx-target="#actions" hx-swap="innerHTML swap:200ms settle:200ms">
-            <input id="newAdventure" class="form__button" type="submit" value="Create" hx-post='@Url.Page("Create")'/>
-            <a id="cancel" class="form__link" asp-page="Index">Cancel</a>
-        </p>
-    }
-    else
-    {
-        <p class="form__actions" hx-target="#adventure-@Model.Id">
-            <input type="submit" class="form__button" value="Save" hx-put="@Url.Page("Edit", new { id = Model.Id })" hx-swap="outerHTML swap:200ms settle:200ms"/>
-            <a href="#" class="form__link" hx-get="@Url.Page("Index", "Options", new { id = Model.Id })" hx-target="#adventure-@(Model.Id)-options" hx-swap="innerHTML swap:200ms settle:200ms">
-                Cancel
-                <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
-            </a>
-        </p>
-    }
+}
 </form>

@@ -10,17 +10,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using StudentProgress.Core.CanvasApi;
+using StudentProgress.Core.Constants;
+using StudentProgress.Core.Data;
+using StudentProgress.Core.Infrastructure;
 using StudentProgress.Web.Lib.Configuration;
-using StudentProgress.Web.Lib.Constants;
-using StudentProgress.Web.Lib.Data;
-using StudentProgress.Web.Lib.Infrastructure;
-using CanvasClient = StudentProgress.Web.Lib.CanvasApi.CanvasClient;
-using ICanvasApiConfig = StudentProgress.Web.Lib.CanvasApi.ICanvasApiConfig;
-using ICanvasClient = StudentProgress.Web.Lib.CanvasApi.ICanvasClient;
+using CanvasClient = StudentProgress.Core.CanvasApi.CanvasClient;
+using ICanvasApiConfig = StudentProgress.Core.CanvasApi.ICanvasApiConfig;
+using ICanvasClient = StudentProgress.Core.CanvasApi.ICanvasClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Debugging
+builder.Services.AddMiniProfiler().AddEntityFramework();
 
+// Translations
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     string[] supportedCultures = ["en", "nl"];
@@ -28,18 +33,18 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         .AddSupportedCultures(supportedCultures)
         .AddSupportedUICultures(supportedCultures);
 });
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+// HTMX specific
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
+// Authentication settings
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(AuthConstants.TwoFactorLoginPolicy, policy => policy.RequireClaim(AuthConstants.TwoFactorLoginPolicy, "2fa"));
 
-builder.Services.AddMiniProfiler().AddEntityFramework();
-
+// Razor Pages settings
 builder.Services.AddRazorPages(options =>
     {
         options.Conventions.AuthorizeFolder("/");
@@ -51,15 +56,21 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseUrls = true;
     options.LowercaseQueryStrings = true;
 });
-builder.Services.AddDbContext<WebContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("WebContext")));
 
+// Database
+builder.Services.AddDbContext<WebContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("WebContext"),
+        b => b.MigrationsAssembly(typeof(Program).Assembly.FullName)));
+
+// Inversion of Control
 builder.Services.AddSingleton<IDateProvider, DateProvider>();
 builder.Services.AddSingleton<ICoreConfiguration, CoreConfiguration>();
 builder.Services.AddSingleton(_ =>
     new HttpClient(new SocketsHttpHandler { PooledConnectionIdleTimeout = TimeSpan.FromHours(1) }));
 builder.Services.AddScoped<ICanvasApiConfig, CanvasConfiguration>();
 builder.Services.AddScoped<ICanvasClient, CanvasClient>();
+
+// Proxy settings (Running behind Traefik)
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =

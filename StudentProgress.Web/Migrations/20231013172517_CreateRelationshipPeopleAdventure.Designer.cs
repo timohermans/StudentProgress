@@ -4,101 +4,101 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StudentProgress.Web.Lib.Data;
+using StudentProgress.Core.Data;
+
 
 #nullable disable
 
-namespace StudentProgress.Web.Migrations
+namespace StudentProgress.Web.Migrations;
+
+[DbContext(typeof(WebContext))]
+[Migration("20231013172517_CreateRelationshipPeopleAdventure")]
+partial class CreateRelationshipPeopleAdventure
 {
-    [DbContext(typeof(WebContext))]
-    [Migration("20231013172517_CreateRelationshipPeopleAdventure")]
-    partial class CreateRelationshipPeopleAdventure
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
+        modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
 
-            modelBuilder.Entity("AdventurePerson", b =>
-                {
-                    b.Property<int>("AdventuresId")
-                        .HasColumnType("INTEGER");
+        modelBuilder.Entity("AdventurePerson", b =>
+            {
+                b.Property<int>("AdventuresId")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<int>("PeopleId")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("PeopleId")
+                    .HasColumnType("INTEGER");
 
-                    b.HasKey("AdventuresId", "PeopleId");
+                b.HasKey("AdventuresId", "PeopleId");
 
-                    b.HasIndex("PeopleId");
+                b.HasIndex("PeopleId");
 
-                    b.ToTable("AdventurePerson");
-                });
+                b.ToTable("AdventurePerson");
+            });
 
-            modelBuilder.Entity("StudentProgress.Web.Models.Adventure", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+        modelBuilder.Entity("StudentProgress.Web.Models.Adventure", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateStart")
-                        .HasColumnType("TEXT");
+                b.Property<DateTime>("DateStart")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("Mnemonic")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Mnemonic")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("Name", "DateStart")
-                        .IsUnique();
+                b.HasIndex("Name", "DateStart")
+                    .IsUnique();
 
-                    b.ToTable("Adventures");
-                });
+                b.ToTable("Adventures");
+            });
 
-            modelBuilder.Entity("StudentProgress.Web.Models.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+        modelBuilder.Entity("StudentProgress.Web.Models.Person", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
 
-                    b.Property<string>("AvatarPath")
-                        .HasColumnType("TEXT");
+                b.Property<string>("AvatarPath")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("ExternalId")
-                        .HasColumnType("TEXT");
+                b.Property<string>("ExternalId")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Note")
+                    .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("People");
-                });
+                b.ToTable("People");
+            });
 
-            modelBuilder.Entity("AdventurePerson", b =>
-                {
-                    b.HasOne("StudentProgress.Web.Models.Adventure", null)
-                        .WithMany()
-                        .HasForeignKey("AdventuresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("AdventurePerson", b =>
+            {
+                b.HasOne("StudentProgress.Web.Models.Adventure", null)
+                    .WithMany()
+                    .HasForeignKey("AdventuresId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("StudentProgress.Web.Models.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PeopleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.HasOne("StudentProgress.Web.Models.Person", null)
+                    .WithMany()
+                    .HasForeignKey("PeopleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 #pragma warning restore 612, 618
-        }
     }
 }

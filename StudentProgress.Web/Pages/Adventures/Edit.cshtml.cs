@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using StudentProgress.Web.Lib.Data;
+using StudentProgress.Core.Data;
 using StudentProgress.Web.Lib.Extensions;
 using static LanguageExt.Prelude;
-using AdventureModel = StudentProgress.Web.Models.Adventure;
+using AdventureModel = StudentProgress.Core.Models.Adventure;
 
 namespace StudentProgress.Web.Pages.Adventures;
 

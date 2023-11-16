@@ -2,28 +2,27 @@
 
 #nullable disable
 
-namespace StudentProgress.Web.Migrations
+namespace StudentProgress.Web.Migrations;
+
+/// <inheritdoc />
+public partial class AddOrderToQuestLine : Migration
 {
     /// <inheritdoc />
-    public partial class AddOrderToQuestLine : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<int>(
-                name: "Order",
-                table: "QuestLine",
-                type: "INTEGER",
-                nullable: false,
-                defaultValue: 0);
-        }
+        migrationBuilder.AddColumn<int>(
+            name: "Order",
+            table: "QuestLine",
+            type: "INTEGER",
+            nullable: false,
+            defaultValue: 0);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Order",
-                table: "QuestLine");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "Order",
+            table: "QuestLine");
     }
 }

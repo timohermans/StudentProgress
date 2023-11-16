@@ -1,31 +1,21 @@
-﻿using System.IO;
+using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using StudentProgress.Web.Lib.Infrastructure;
 
 namespace StudentProgress.Web.Lib.Configuration;
 
-public class CoreConfiguration : ICoreConfiguration
+public class CoreConfiguration(IConfiguration config, IWebHostEnvironment environment) : ICoreConfiguration
 {
-    private readonly IConfiguration _config;
-    private readonly IWebHostEnvironment _environment;
-
-    public CoreConfiguration(IConfiguration config, IWebHostEnvironment environment)
-    {
-        _config = config;
-        _environment = environment;
-    }
-
     public string MediaLocation
     {
         get
         {
-            var path = _config.GetValue<string>("Media:Path");
+            var path = config.GetValue<string>("Media:Path");
 
             if (path == null) throw new ArgumentException(nameof(path));
 
-            if (_environment.IsDevelopment())
+            if (environment.IsDevelopment())
             {
                 path = Path.Combine(AppContext.BaseDirectory, path);
             }

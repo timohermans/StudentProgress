@@ -4,8 +4,8 @@
     <h3 class="heading">People</h3>
     <ul class="reel" x-ref="reel" x-data="{ selected: @(Model.Person?.Id.ToString() ?? "null") }">
         @foreach (var person in Model.Adventure.People.OrderBy(p => p.FirstName))
-        {
-            <li class='reel__item' 
+    {
+        <li class='reel__item' 
                 style="background-image: url('@person.ImageSource.Replace('\\', '/')"
                 x-data="{ 
                 id: @person.Id,
@@ -46,6 +46,6 @@
                     </div>
                 </div>
             </li>
-        }
+    }
     </ul>
 </section>

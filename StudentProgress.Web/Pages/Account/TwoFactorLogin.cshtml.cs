@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OtpNet;
-using StudentProgress.Web.Lib.Constants;
-using StudentProgress.Web.Lib.Extensions;
+using StudentProgress.Core.Constants;
+using StudentProgress.Core.Extensions;
 
 namespace StudentProgress.Web.Pages.Account;
 

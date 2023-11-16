@@ -11,8 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using StudentProgress.Web.Lib.CanvasApi;
-using StudentProgress.Web.Lib.Data;
+using StudentProgress.Core.CanvasApi;
+using StudentProgress.Core.Data;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace StudentProgress.CoreTests;

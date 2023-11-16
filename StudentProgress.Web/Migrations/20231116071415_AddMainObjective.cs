@@ -2,27 +2,26 @@
 
 #nullable disable
 
-namespace StudentProgress.Web.Migrations
+namespace StudentProgress.Web.Migrations;
+
+/// <inheritdoc />
+public partial class AddMainObjective : Migration
 {
     /// <inheritdoc />
-    public partial class AddMainObjective : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<string>(
-                name: "MainObjective",
-                table: "QuestLines",
-                type: "TEXT",
-                nullable: true);
-        }
+        migrationBuilder.AddColumn<string>(
+            name: "MainObjective",
+            table: "QuestLines",
+            type: "TEXT",
+            nullable: true);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "MainObjective",
-                table: "QuestLines");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "MainObjective",
+            table: "QuestLines");
     }
 }
