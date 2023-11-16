@@ -53,7 +53,7 @@ public class DatabaseFixture
                 "ConnectionString__WebContext could not be found in either env var or appsettings");
 
         return new DbContextOptionsBuilder<WebContext>()
-            .UseSqlite(connectionString)
+            .UseSqlite(connectionString, b => b.MigrationsAssembly(typeof(Web.Pages.IndexModel).Assembly.FullName))
             .Options;
     }
 
