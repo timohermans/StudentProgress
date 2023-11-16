@@ -2,10 +2,12 @@
 @model StudentProgress.Web.Pages.QuestLine.Index
 
 @{
-    Layout = null;
+  Layout = null;
 }
 
-<section class="quest-log__quest-line">
-    <h1>Hello @Model.QuestLine.Name</h1>
-    <p>What is the main objective?</p>
+<section class="quest-line">
+  <h1>Hello @Model.QuestLine.Name</h1>
+
+  <partial name="./MainObjective/_Display" model="Model.QuestLine" />
+
 </section>

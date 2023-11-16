@@ -1,0 +1,13 @@
+@model Core.Models.QuestLine?
+@{
+}
+
+<p class="quest-line__main-objective"
+   hx-get="@Url.Page("/QuestLine/MainObjective/Edit", new { Id = Model?.Id })"
+   hx-trigger="click"
+   hx-swap="outerHTML"
+   hx-target="this">
+  @(Model?.Name ?? "What is the main objective?")
+  <svg-inject class="loading htmx-indicator" src="images/puff.svg" />
+</p>
+

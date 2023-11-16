@@ -1,17 +1,31 @@
 .quest-log {
     display: flex;
     gap: var(--s0);
-   
-    > * {
-        flex: 0 0 50%;
-    }
 }
 
-.quest-log__quest-line {
+    .quest-log > * {
+        flex: 0 0 50%;
+    }
+
+.quest-line {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius);
     padding: var(--f-box-padding);
 }
+
+.quest-line__main-objective {
+    cursor: pointer;
+}
+
+    .quest-line__main-objective:hover,
+    .quest-line__main-objective--editing {
+        border: var(--f-border-thin) dashed var(--f-color-border);
+        border-radius: var(--f-border-radius);
+        padding: var(--f-box-padding);
+    }
 
 .quest-lines {
     display: flex;
@@ -26,9 +40,9 @@
     color: var(--f-color-text);
 }
 
-.quest-lines__quest-line--active, 
-.quest-lines__quest-line:hover,
-.quest-lines__quest-line:has(form) {
-    border: var(--f-border-thin) dashed var(--f-color-border);
-    border-radius: var(--f-border-radius);
-}
+    .quest-lines__quest-line--active,
+    .quest-lines__quest-line:hover,
+    .quest-lines__quest-line:has(form) {
+        border: var(--f-border-thin) dashed var(--f-color-border);
+        border-radius: var(--f-border-radius);
+    }

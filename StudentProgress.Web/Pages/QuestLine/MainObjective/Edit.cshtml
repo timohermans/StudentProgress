@@ -1,0 +1,18 @@
+@page "{id:int}"
+@model EditModel
+@{
+  Layout = null;
+}
+
+<form class="form quest-line__main-objective quest-line__main-objective--editing">
+  <p>
+    <label class="visually-hidden" asp-for="MainObjective"></label>
+    <textarea placeholder="What is the main objective?"
+              class="form__control"
+              asp-for="MainObjective">@Model.MainObjective</textarea>
+  </p>
+  <p class="form__actions">
+    <button type="submit" class="form__button">Change</button>
+    <a class="form__link" hx-get="@Url.Page("./Index", new { Id = Model.Id })" hx-target="closest form" hx-swap="outerHTML">Cancel</a>
+  </p>
+</form>
