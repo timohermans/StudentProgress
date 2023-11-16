@@ -8,6 +8,7 @@ public class QuestLine
 {
     public int Id { get; set; }
     public required string Name { get; set; }
+    public string? MainObjective { get; set; }
     public int Order { get; set; }
     public int AdventureId { get; set; }
     public required Adventure Adventure { get; set; }

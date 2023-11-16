@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StudentProgress.Web.Lib.Data;
+using System.Linq;
 
 namespace StudentProgress.Web.Pages.QuestLine;
 
@@ -29,6 +30,7 @@ public class Index : PageModel
 
         var questLine = await _db.QuestLines
             .Include(ql => ql.Quests)
+            .OrderBy(ql => ql.Order)
             .FirstOrDefaultAsync(q => q.Id == id);
 
         if (questLine == null) return NotFound();
