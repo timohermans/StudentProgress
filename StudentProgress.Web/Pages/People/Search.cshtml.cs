@@ -20,7 +20,7 @@ public class SearchModel(WebContext db) : PageModel
 
         People = await db.People
             .Include(p => p.Adventures)
-            .Where(p => p.FirstName.Contains(q, StringComparison.CurrentCultureIgnoreCase))
+            .Where(p => p.FirstName.ToLower().Contains(q.ToLower()))
             .OrderBy(p => p.FirstName)
             .Take(5)
             .Select(p => new Person

@@ -17,11 +17,17 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace StudentProgress.CoreTests;
 
-public class IntegrationTests(DatabaseFixture dbFixture)
+public class IntegrationTests : IDisposable
 {
     private readonly WebApplicationFactory<Program>? _factory;
+
     public CanvasFixture? CanvasFixture { get; set; }
-    public DatabaseFixture DatabaseFixture { get; set; } = dbFixture;
+    public DatabaseFixture DatabaseFixture { get; set; }
+
+    public IntegrationTests(DatabaseFixture dbFixture)
+    {
+        DatabaseFixture = dbFixture;
+    }
 
     public IntegrationTests(DatabaseFixture dbFixture, WebApplicationFactory<Program> factory) : this(dbFixture)
     {
@@ -83,6 +89,11 @@ public class IntegrationTests(DatabaseFixture dbFixture)
             throw new NullReferenceException("Unable to get token from body JSON");
         var xsrfToken = htmxHeaderConfig["X-XSRF-TOKEN"].ToString();
         return xsrfToken ?? throw new NullReferenceException("Unable to extract token from htmx headers config");
+    }
+
+    public void Dispose()
+    {
+        DatabaseTests.CleanupData(DatabaseFixture);
     }
 }
 

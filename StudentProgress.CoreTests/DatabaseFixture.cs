@@ -33,7 +33,7 @@ public class DatabaseFixture
             .AddJsonFile("appsettings.json", false, false)
             .Build();
         var envCString = Environment.GetEnvironmentVariable("ConnectionStrings__ProgressContext");
-        var cString = configuration.GetConnectionString("ProgressContext"); 
+        var cString = configuration.GetConnectionString("ProgressContext");
 
         return ConnectionString = envCString ?? cString ??
             throw new NullReferenceException(
