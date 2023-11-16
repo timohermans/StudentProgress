@@ -7,13 +7,13 @@ concurrency:
 
 steps:
 - name: build
-  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+  image: mcr.microsoft.com/dotnet/sdk:8.0-alpine
   commands:
     - dotnet restore
     - dotnet build
   
 - name: test 
-  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+  image: mcr.microsoft.com/dotnet/sdk:8.0-alpine
   environment:
     ConnectionStrings__WebContext:
       from_secret: ConnectionStrings__WebContext
@@ -27,7 +27,7 @@ steps:
     - dotnet test
       
 - name: qa
-  image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+  image: mcr.microsoft.com/dotnet/sdk:8.0-alpine
   environment:
     sonarqube_host:
       from_secret: sonarqube_host
