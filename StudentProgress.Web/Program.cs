@@ -23,7 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] { "en", "nl" };
+    string[] supportedCultures = ["en", "nl"];
     options.SetDefaultCulture(supportedCultures[0])
         .AddSupportedCultures(supportedCultures)
         .AddSupportedUICultures(supportedCultures);
@@ -35,11 +35,8 @@ builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy(AuthConstants.TwoFactorLoginPolicy,
-        policy => policy.RequireClaim(AuthConstants.TwoFactorLoginPolicy, "2fa"));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(AuthConstants.TwoFactorLoginPolicy, policy => policy.RequireClaim(AuthConstants.TwoFactorLoginPolicy, "2fa"));
 
 builder.Services.AddMiniProfiler().AddEntityFramework();
 

@@ -40,7 +40,7 @@ namespace StudentProgress.CoreTests
                     "Connectionstring could not be found in either env var or appsettings");
         }
 
-        private DbContextOptions<WebContext> CreateWebContextOptions()
+        private static DbContextOptions<WebContext> CreateWebContextOptions()
         {
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, false)

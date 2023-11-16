@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using StudentProgress.Web.Pages.Canvas.Courses;
@@ -6,12 +6,8 @@ using StudentProgress.Web.Pages.Canvas.Courses;
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
 [Collection("integration")]
-public class DetailsOnPost : IntegrationTests
+public class DetailsOnPost(CanvasFixture fixture, DatabaseFixture dbFixture) : IntegrationTests(fixture, dbFixture)
 {
-    public DetailsOnPost(CanvasFixture fixture, DatabaseFixture dbFixture) : base(fixture, dbFixture)
-    {
-    }
-
     [Fact]
     public async Task Imports_the_selected_canvas_course_section_as_a_group()
     {
@@ -33,8 +29,7 @@ public class DetailsOnPost : IntegrationTests
             SectionCanvasId = "1234",
             TermStartsAt = new DateTime(2022, 8, 1),
             TermEndsAt = new DateTime(2023, 3, 27),
-            Students = new List<Details.GetCourseDetailsStudent>
-            {
+            Students = [
                 new()
                 {
                     Name = "Hermans, Timo T.M.",
@@ -47,10 +42,10 @@ public class DetailsOnPost : IntegrationTests
                     AvatarUrl = null,
                     CanvasId = "1235"
                 }
-            }
+            ]
         };
         await using var ucContext = DatabaseFixture.CreateWebContext();
-        var page = new Details(CanvasFixture.Client, ucContext, new CoreTestConfiguration(), client)
+        var page = new Details(CanvasFixture!.Client, ucContext, new CoreTestConfiguration(), client)
         {
             Semester = request
         };

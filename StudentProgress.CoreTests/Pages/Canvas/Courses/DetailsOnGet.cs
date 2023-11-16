@@ -1,24 +1,20 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Threading;
 using StudentProgress.Web.Pages.Canvas.Courses;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
 [Collection("integration")]
-public class DetailsOnGet : IntegrationTests
+public class DetailsOnGet(CanvasFixture canvasFixture, DatabaseFixture databaseFixture) : IntegrationTests(canvasFixture,
+    databaseFixture)
 {
-    public DetailsOnGet(CanvasFixture canvasFixture, DatabaseFixture databaseFixture) : base(canvasFixture,
-        databaseFixture)
-    {
-    }
-
     [Fact]
     public async Task Gets_course_details_of_semester_2_2223nj()
     {
         var client = new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
         var config = new CoreTestConfiguration();
         await using var context = DatabaseFixture.CreateWebContext();
-        var page = new Details(CanvasFixture.Client, context, config, client);
+        var page = new Details(CanvasFixture!.Client, context, config, client);
 
         await page.OnGetAsync("12685", CancellationToken.None);
 

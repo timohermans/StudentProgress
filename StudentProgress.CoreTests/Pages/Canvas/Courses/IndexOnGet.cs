@@ -1,14 +1,11 @@
-﻿using System.Threading;
+using System.Threading;
 using Index = StudentProgress.Web.Pages.Canvas.Courses.Index;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
 
 [Collection("integration")]
-public class IndexOnGet : IntegrationTests
+public class IndexOnGet(CanvasFixture fixture, DatabaseFixture dbFixture) : IntegrationTests(fixture, dbFixture)
 {
-    public IndexOnGet(CanvasFixture fixture, DatabaseFixture dbFixture) : base(fixture, dbFixture)
-    {
-    }
 
     // so it could be this test fails eventually, with three possibilities:
     // 1) the api token has expired -> get a new one from canvas and put it in appsettings.real.json
@@ -18,7 +15,7 @@ public class IndexOnGet : IntegrationTests
     [Fact]
     public async Task Gets_all_courses()
     {
-        var page = new Index(CanvasFixture.Client);
+        var page = new Index(CanvasFixture!.Client);
 
         await page.OnGetAsync(new CancellationToken());
 

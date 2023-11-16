@@ -7,27 +7,18 @@ using System.Linq;
 
 namespace StudentProgress.Web.Pages.QuestLine;
 
-public class Index : PageModel
+public class Index(ILogger<Index> logger, WebContext db) : PageModel
 {
-    private readonly ILogger<Index> _logger;
-    private readonly WebContext _db;
-    
     public int Id { get; set; }
     public required Models.QuestLine QuestLine { get; set; }
 
-    public Index(ILogger<Index> logger, WebContext db)
-    {
-        _logger = logger;
-        _db = db;
-    }
-
     public async Task<IActionResult> OnGet(int id)
     {
-        _logger.LogDebug($"Questline fetch for {id}");
+        logger.LogDebug("Questline fetch for {id}", id);
         if (id == 0) return new EmptyResult();
         Id = id;
 
-        var questLine = await _db.QuestLines
+        var questLine = await db.QuestLines
             .Include(ql => ql.Quests)
             .OrderBy(ql => ql.Order)
             .FirstOrDefaultAsync(q => q.Id == id);

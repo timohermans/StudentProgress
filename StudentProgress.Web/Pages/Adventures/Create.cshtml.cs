@@ -7,18 +7,9 @@ using StudentProgress.Web.Lib.Extensions;
 
 namespace StudentProgress.Web.Pages.Adventures;
 
-public class CreateModel : PageModel
+public class CreateModel(WebContext db, ICanvasApiConfig canvasConfig) : PageModel
 {
-    private readonly WebContext _db;
-    private readonly ICanvasApiConfig _canvasConfig;
-
     [BindProperty] public Models.Adventure Adventure { get; set; } = default!;
-
-    public CreateModel(WebContext db, ICanvasApiConfig canvasConfig)
-    {
-        _db = db;
-        _canvasConfig = canvasConfig;
-    }
 
     public IActionResult OnGet()
     {
@@ -39,10 +30,10 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        await _db.Adventures.AddAsync(Adventure, token);
-        await _db.SaveChangesAsync(token);
+        await db.Adventures.AddAsync(Adventure, token);
+        await db.SaveChangesAsync(token);
 
         Response.DispatchHtmxEvent("adventure-created");
-        return Partial("_Actions", _canvasConfig.CanUseCanvasApiAsync());
+        return Partial("_Actions", canvasConfig.CanUseCanvasApiAsync());
     }
 }

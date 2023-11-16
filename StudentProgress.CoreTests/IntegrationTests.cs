@@ -17,16 +17,11 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace StudentProgress.CoreTests;
 
-public class IntegrationTests
+public class IntegrationTests(DatabaseFixture dbFixture)
 {
-    private WebApplicationFactory<Program>? _factory;
+    private readonly WebApplicationFactory<Program>? _factory;
     public CanvasFixture? CanvasFixture { get; set; }
-    public DatabaseFixture DatabaseFixture { get; set; }
-
-    public IntegrationTests(DatabaseFixture dbFixture)
-    {
-        DatabaseFixture = dbFixture;
-    }
+    public DatabaseFixture DatabaseFixture { get; set; } = dbFixture;
 
     public IntegrationTests(DatabaseFixture dbFixture, WebApplicationFactory<Program> factory) : this(dbFixture)
     {
@@ -75,7 +70,7 @@ public class IntegrationTests
         return client ?? throw new NullReferenceException("Something went wrong creating the client");
     }
 
-    public async Task<string> GetXsrfTokenForCud(string htmlContent)
+    public static async Task<string> GetXsrfTokenForCud(string htmlContent)
     {
         var browser = BrowsingContext.New(Configuration.Default);
         var document = await browser.OpenAsync(req => req.Content(htmlContent));
@@ -110,28 +105,16 @@ public class IntegrationCollectionDefinition : ICollectionFixture<CanvasFixture>
 {
 }
 
-public class InfraConfigProvider : ICanvasApiConfig
+public class InfraConfigProvider(IConfiguration config) : ICanvasApiConfig
 {
-    private readonly IConfiguration _config;
-
-    public InfraConfigProvider(IConfiguration config)
-    {
-        _config = config;
-    }
-
-    public string? CanvasApiKey => _config.GetValue<string>("canvas:key");
-    public string? CanvasApiUrl => _config.GetValue<string>("canvas:url");
+    public string? CanvasApiKey => config.GetValue<string>("canvas:key");
+    public string? CanvasApiUrl => config.GetValue<string>("canvas:url");
     public bool CanUseCanvasApiAsync() => true;
 }
 
-public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public class TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
+    ILoggerFactory logger, UrlEncoder encoder) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {
-    }
-
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var claims = new[] { new Claim(ClaimTypes.Name, "Timo") };
