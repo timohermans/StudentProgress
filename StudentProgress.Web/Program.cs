@@ -21,9 +21,6 @@ using ICanvasClient = StudentProgress.Core.CanvasApi.ICanvasClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Debugging
-builder.Services.AddMiniProfiler().AddEntityFramework();
-
 // Translations
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
