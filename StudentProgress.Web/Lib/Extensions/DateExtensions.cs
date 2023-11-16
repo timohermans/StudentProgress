@@ -1,6 +1,4 @@
-﻿using System;
-using StudentProgress.Web.Lib.Infrastructure;
-using StudentProgress.Web.Models.Values;
+﻿using StudentProgress.Web.Lib.Infrastructure;
 
 namespace StudentProgress.Web.Lib.Extensions;
 

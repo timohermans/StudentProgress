@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using StudentProgress.Core.Entities;
 using StudentProgress.Web.Lib.CanvasApi;
 using StudentProgress.Web.Lib.Data;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
@@ -56,12 +55,9 @@ public class IntegrationTests
 
                     using var provider = services.BuildServiceProvider();
                     using var db = provider.GetRequiredService<WebContext>();
-                    using var oldDb = provider.GetRequiredService<ProgressContext>();
 
                     db.Database.EnsureDeleted();
                     db.Database.Migrate();
-                    oldDb.Database.EnsureDeleted();
-                    oldDb.Database.Migrate();
                 });
             })
             .CreateClient(new WebApplicationFactoryClientOptions
@@ -125,7 +121,7 @@ public class InfraConfigProvider : ICanvasApiConfig
 
     public string? CanvasApiKey => _config.GetValue<string>("canvas:key");
     public string? CanvasApiUrl => _config.GetValue<string>("canvas:url");
-    public Task<bool> CanUseCanvasApiAsync() => Task.FromResult(true);
+    public bool CanUseCanvasApiAsync() => true;
 }
 
 public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>

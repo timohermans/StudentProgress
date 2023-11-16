@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using StudentProgress.Core.Entities;
 using StudentProgress.Web.Lib.Configuration;
 using StudentProgress.Web.Lib.Constants;
 using StudentProgress.Web.Lib.Data;
@@ -57,9 +56,6 @@ builder.Services.Configure<RouteOptions>(options =>
 });
 builder.Services.AddDbContext<WebContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WebContext")));
-builder.Services.AddDbContext<ProgressContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ProgressContext"),
-        b => b.MigrationsAssembly("StudentProgress.Core")));
 
 builder.Services.AddSingleton<IDateProvider, DateProvider>();
 builder.Services.AddSingleton<ICoreConfiguration, CoreConfiguration>();

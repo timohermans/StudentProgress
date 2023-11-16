@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace StudentProgress.Web.Lib.CanvasApi.Models;
+﻿namespace StudentProgress.Web.Lib.CanvasApi.Models;
 
 public class Connection<T>
 {

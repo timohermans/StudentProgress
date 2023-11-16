@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace StudentProgress.Web.Lib.Extensions;
 
 public static class DictionaryExtensions

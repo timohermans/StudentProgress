@@ -1,10 +1,5 @@
-﻿using System;
-using System.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using StudentProgress.Core.Entities;
 using StudentProgress.Web.Lib.Data;
-using Xunit;
 
 namespace StudentProgress.CoreTests
 {
@@ -12,23 +7,13 @@ namespace StudentProgress.CoreTests
     {
         public string ConnectionString { get; private set; }
 
-        public DataMother DataMother { get; }
         public WebDataMother WebDataMother { get; }
 
-        public DbContextOptions<ProgressContext> ContextOptions { get; }
         public DbContextOptions<WebContext> WebContextOptions { get; private set; }
 
         public DatabaseFixture()
         {
             ConnectionString = GetConnectionString();
-            ContextOptions = new DbContextOptionsBuilder<ProgressContext>()
-                .UseSqlite(ConnectionString)
-                .Options;
-            DataMother = new DataMother(ContextOptions);
-
-            using var context = new ProgressContext(ContextOptions);
-            context.Database.EnsureDeleted();
-            context.Database.Migrate();
 
             WebContextOptions = CreateWebContextOptions();
             WebDataMother = new WebDataMother(WebContextOptions);
@@ -53,11 +38,6 @@ namespace StudentProgress.CoreTests
             return ConnectionString = envCString ?? cString ??
                 throw new NullReferenceException(
                     "Connectionstring could not be found in either env var or appsettings");
-        }
-
-        public ProgressContext CreateDbContext()
-        {
-            return new ProgressContext(ContextOptions);
         }
 
         private DbContextOptions<WebContext> CreateWebContextOptions()

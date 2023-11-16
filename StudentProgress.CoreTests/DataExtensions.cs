@@ -1,8 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using FluentAssertions;
-using StudentProgress.Core.Entities;
-
-namespace StudentProgress.CoreTests
+﻿namespace StudentProgress.CoreTests
 {
     public static class DataExtensions
     {

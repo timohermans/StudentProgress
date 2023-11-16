@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ namespace StudentProgress.Web.Pages.Adventures
 
         public async Task<IActionResult> OnGetAsync()
         {
-            CanImportGroups = await _apiConfig.CanUseCanvasApiAsync();
+            CanImportGroups = _apiConfig.CanUseCanvasApiAsync();
 
             Adventures = await _context.Adventures
                 .Include(a => a.People)

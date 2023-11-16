@@ -1,29 +1,11 @@
-﻿@page
+@page
 @model StudentProgress.Web.Pages.Settings.Index
 
 @{
     ViewData["Title"] = "Settings";
-    // TODO: translations here
 }
 
 <div class="stack">
-
-    <form class="form" method="post">
-        <h2>Canvas settings</h2>
-        @Html.ValidationSummary()
-        <p>
-            <label class="form__label" asp-for="Settings.CanvasApiKey"></label>
-            <input class="form__control" asp-for="Settings.CanvasApiKey">
-        </p>
-        <p>
-            <label class="form__label" asp-for="Settings.CanvasApiUrl"></label>
-            <input class="form__control" asp-for="Settings.CanvasApiUrl">
-        </p>
-        <p>
-            <button class="form__button" type="submit">Save</button>
-        </p>
-    </form>
-
     <form class="form" method="post" hx-boost="false" asp-page="/Logout">
         <h2>Account</h2>
         <button class="form__button" type="submit">

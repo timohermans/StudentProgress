@@ -1,5 +1,4 @@
-﻿using StudentProgress.Core;
-using StudentProgress.Web.Lib.Infrastructure;
+﻿using StudentProgress.Web.Lib.Infrastructure;
 
 namespace StudentProgress.CoreTests;
 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using StudentProgress.Core;
 using StudentProgress.Web.Lib.Infrastructure;
 
 namespace StudentProgress.Web.Lib.Configuration;

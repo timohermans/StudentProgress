@@ -1,5 +1,3 @@
-using System;
-
 namespace StudentProgress.Web.Lib.Infrastructure;
 
 public abstract class Result

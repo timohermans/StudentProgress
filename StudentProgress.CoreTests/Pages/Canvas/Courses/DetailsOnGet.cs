@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading;
-using FluentAssertions;
 using StudentProgress.Web.Pages.Canvas.Courses;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;

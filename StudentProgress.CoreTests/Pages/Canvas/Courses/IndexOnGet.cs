@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using FluentAssertions;
 using Index = StudentProgress.Web.Pages.Canvas.Courses.Index;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;

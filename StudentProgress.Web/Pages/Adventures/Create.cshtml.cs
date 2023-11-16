@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Web.Lib.CanvasApi;
@@ -43,6 +43,6 @@ public class CreateModel : PageModel
         await _db.SaveChangesAsync(token);
 
         Response.DispatchHtmxEvent("adventure-created");
-        return Partial("_Actions", await _canvasConfig.CanUseCanvasApiAsync());
+        return Partial("_Actions", _canvasConfig.CanUseCanvasApiAsync());
     }
 }

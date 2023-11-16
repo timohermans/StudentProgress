@@ -1,7 +1,4 @@
-﻿using System;
-using StudentProgress.Core;
-
-namespace StudentProgress.Web.Lib.Infrastructure;
+﻿namespace StudentProgress.Web.Lib.Infrastructure;
 
 public class DateProvider : IDateProvider
 {

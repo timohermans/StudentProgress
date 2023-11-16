@@ -1,9 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http;
 using System.Threading;
-using FluentAssertions;
-using StudentProgress.Core.UseCases;
-using StudentProgress.Web.Models;
 using StudentProgress.Web.Pages.Canvas.Courses;
 
 namespace StudentProgress.CoreTests.Pages.Canvas.Courses;
