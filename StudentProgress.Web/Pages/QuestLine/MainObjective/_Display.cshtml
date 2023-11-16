@@ -7,7 +7,6 @@
    hx-trigger="click"
    hx-swap="outerHTML"
    hx-target="this">
-  @(Model?.Name ?? "What is the main objective?")
-  <svg-inject class="loading htmx-indicator" src="images/puff.svg" />
+    <span class="show-newlines">@(Model?.MainObjective ?? "What is the main objective?")</span>
+    <svg-inject class="loading htmx-indicator" src="images/puff.svg"/>
 </p>
-

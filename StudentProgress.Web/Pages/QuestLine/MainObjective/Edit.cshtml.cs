@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.Data;
 using System.Threading;
+using StudentProgress.Web.Lib.Extensions;
 
 namespace StudentProgress.Web.Pages.QuestLine.MainObjective
 {
@@ -25,6 +26,27 @@ namespace StudentProgress.Web.Pages.QuestLine.MainObjective
             MainObjective = questLine.MainObjective ?? "";
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPatch(int id)
+        {
+             Id = id;
+             var questLine = await db.QuestLines.FindAsync(id);
+ 
+             if (questLine == null)
+             {
+                 return NotFound();
+             }
+
+             if (!ModelState.IsValid)
+             {
+                 return Page();
+             }
+
+             questLine.MainObjective = MainObjective;
+             await db.SaveChangesAsync();
+ 
+             return this.SeeOther("./Index", new { Id = id });           
         }
     }
 }

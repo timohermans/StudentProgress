@@ -3,9 +3,9 @@
     gap: var(--s0);
 }
 
-    .quest-log > * {
-        flex: 0 0 50%;
-    }
+.quest-log > * {
+    flex: 0 0 50%;
+}
 
 .quest-line {
     display: flex;
@@ -20,12 +20,15 @@
     cursor: pointer;
 }
 
-    .quest-line__main-objective:hover,
-    .quest-line__main-objective--editing {
-        border: var(--f-border-thin) dashed var(--f-color-border);
-        border-radius: var(--f-border-radius);
-        padding: var(--f-box-padding);
-    }
+.quest-line__main-objective:hover {
+    border: var(--f-border-thin) dashed var(--f-color-border);
+    border-radius: var(--f-border-radius);
+    padding: var(--f-box-padding);
+}
+
+.quest-line__main-objective-form {
+    padding: var(--f-box-padding);
+}
 
 .quest-lines {
     display: flex;
@@ -40,9 +43,9 @@
     color: var(--f-color-text);
 }
 
-    .quest-lines__quest-line--active,
-    .quest-lines__quest-line:hover,
-    .quest-lines__quest-line:has(form) {
-        border: var(--f-border-thin) dashed var(--f-color-border);
-        border-radius: var(--f-border-radius);
-    }
+.quest-lines__quest-line--active,
+.quest-lines__quest-line:hover,
+.quest-lines__quest-line:has(form) {
+    border: var(--f-border-thin) dashed var(--f-color-border);
+    border-radius: var(--f-border-radius);
+}

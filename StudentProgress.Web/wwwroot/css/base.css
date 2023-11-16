@@ -259,6 +259,10 @@ main {
     transition: opacity 0.2s ease-out;
 }
 
+.show-newlines {
+    white-space: pre-line;
+}
+
 /* || Layout */
 
 .nav {

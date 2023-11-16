@@ -1,18 +1,22 @@
 @page "{id:int}"
 @model EditModel
 @{
-  Layout = null;
+    Layout = null;
 }
 
-<form class="form quest-line__main-objective quest-line__main-objective--editing">
-  <p>
-    <label class="visually-hidden" asp-for="MainObjective"></label>
-    <textarea placeholder="What is the main objective?"
-              class="form__control"
+<form class="form quest-line__main-objective-form">
+    <p>
+        <label class="visually-hidden" asp-for="MainObjective"></label>
+        <textarea placeholder="What is the main objective?"
+              class="form__control" rows="6"
               asp-for="MainObjective">@Model.MainObjective</textarea>
-  </p>
-  <p class="form__actions">
-    <button type="submit" class="form__button">Change</button>
-    <a class="form__link" hx-get="@Url.Page("./Index", new { Id = Model.Id })" hx-target="closest form" hx-swap="outerHTML">Cancel</a>
-  </p>
+        <span asp-validation-for="MainObjective"></span>
+    </p>
+    <p class="form__actions">
+        <button class="form__button" type="submit" hx-patch="@Url.Page("./Edit", new { Id = Model.Id })" hx-target="closest form" hx-swap="outerHTML">
+            Change
+            <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+        </button>
+        <a class="form__link" hx-get="@Url.Page("./Index", new { Id = Model.Id })" hx-target="closest form" hx-swap="outerHTML">Cancel</a>
+    </p>
 </form>
