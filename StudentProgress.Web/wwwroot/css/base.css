@@ -580,6 +580,27 @@ main {
 
 .stack__item:hover {
     border-style: solid;
+    border-color: var(--f-color-border);
+}
+
+.stack__item:hover > .image-link {
+    visibility: visible;
+}
+
+.stack__item--no-border {
+    border-color: transparent;
+}
+
+.stack__item--active {
+    border-color: var(--f-color-border);
+}
+
+.stack__item--indent {
+    margin-left: var(--s1);
+}
+
+.stack__title {
+    flex: 1;
 }
 
 .stack__icon {

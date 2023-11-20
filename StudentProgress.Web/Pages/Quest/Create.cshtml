@@ -1,0 +1,20 @@
+@page
+@model StudentProgress.Web.Pages.Quest.Create
+
+@{
+    Layout = null;
+}
+
+<li x-data="{}" x-ref="container" class="stack__item stack__item--indent">
+    <form class="form">
+        <p class="form__inline">
+            <label asp-for="Name" class="form__label visually-hidden"></label>
+            <input placeholder="Add new quest" asp-for="Name" class="form__control" 
+                   x-on:blur.stop="$el.value == '' && $refs.container.remove()"
+            />
+        </p>
+        <p class="visually-hidden">
+            <button type="submit">Add</button>
+        </p>
+    </form>
+</li>

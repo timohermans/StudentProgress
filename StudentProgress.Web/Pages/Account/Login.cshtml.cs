@@ -45,6 +45,7 @@ public class Login(IConfiguration config, ILogger<Login> logger) : PageModel
         }
 
         logger.LogInformation("Successful login!");
+        // Login gebeurt hier
         var claims = new List<Claim>
         {
             new("user", adminUsername),

@@ -5,9 +5,11 @@
   Layout = null;
 }
 
-<section class="quest-line">
+<section class="quest">
   <h1>Hello @Model.QuestLine.Name</h1>
 
-  <partial name="./MainObjective/_Display" model="Model.QuestLine" />
+    <partial name="./MainObjective/_Display" model="Model.QuestLine" />
+    
+    <a class="link">+ Add new objective</a>
 
 </section>

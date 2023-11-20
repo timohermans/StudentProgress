@@ -7,7 +7,7 @@
     flex: 0 0 50%;
 }
 
-.quest-line {
+.quest {
     display: flex;
     flex-direction: column;
     gap: var(--s-1);
@@ -16,17 +16,17 @@
     padding: var(--f-box-padding);
 }
 
-.quest-line__main-objective {
+.quest__main-objective {
     cursor: pointer;
 }
 
-.quest-line__main-objective:hover {
+.quest__main-objective:hover {
     border: var(--f-border-thin) dashed var(--f-color-border);
     border-radius: var(--f-border-radius);
     padding: var(--f-box-padding);
 }
 
-.quest-line__main-objective-form {
+.quest__main-objective-form {
     padding: var(--f-box-padding);
 }
 

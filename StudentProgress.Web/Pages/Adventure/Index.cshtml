@@ -3,66 +3,84 @@
 
 @section Styles
 {
-  <link rel="stylesheet" href="~/css/adventure.css">
+    <link rel="stylesheet" href="~/css/adventure.css">
 }
 
 <div class="stack">
-  <h2 class="heading">
-    <span class="heading__highlight">@(Model.Adventure.Name)</span>'s adventure
-  </h2>
+    <h2 class="heading">
+        <span class="heading__highlight">@(Model.Adventure.Name)</span>'s adventure
+    </h2>
 
-  <nav class="mb-3">
-    Jump to <a class="link" href="#people">Adventurers</a> / <a class="link" href="#">Quests</a> /
-    <a class="link"
-       href="#">
-      Logs
-    </a>
-  </nav>
+    <nav class="mb-3">
+        Jump to <a class="link" href="#people">Adventurers</a> / <a class="link" href="#">Quests</a> /
+        <a class="link"
+           href="#">
+            Logs
+        </a>
+    </nav>
 
-  <partial name="_People" model="Model" />
+    <partial name="_People" model="Model"/>
 
-  <section id="adventure" class="stack">
-    <h3 class="heading">
-      @if (Model.Person != null)
-  {
-    <span class="heading__highlight">@(Model.Person?.FirstName)'s</span>
-  }
-      @(" ")Quest log
-    </h3>
+    <section id="adventure" class="stack">
+        <h3 class="heading">
+            @if (Model.Person != null)
+            {
+                <span class="heading__highlight">@(Model.Person?.FirstName)'s</span>
+            }
+            @(" ")Quest log
+        </h3>
 
-    <section id="questLog" class="quest-log">
-      <ol id="quest-lines" class="quest-lines">
-        @foreach (var questLine in Model.Adventure.QuestLines)
-    {
-      <li>
-            <a class="quest-lines__quest-line @(questLine.Id.ToString() == Model.QuestLineId?.ToString() ? "quest-lines__quest-line--active" : "")"
-               asp-page="/Adventure/Index" 
-               asp-route-id="@Model.Adventure.Id" 
-               asp-route-personId="@Model.Person?.Id" 
-               asp-route-questLineId="@questLine.Id">
-              @questLine.Name
-            </a>
-          </li>
-    }
-        <li class="quest-lines__quest-line">
-          <a class="link"
-             hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, personId = Model.Person?.Id })"
-             hx-target="this"
-             hx-swap="outerHTML">
-            Add new questline
-            <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
-          </a>
-        </li>
-      </ol>
+        <section id="questLog" class="quest-log">
+            <ol id="quest-lines" class="stack">
+                @foreach (var questLine in Model.Adventure.QuestLines)
+                {
+                    <li id="questLine@(questLine.Id)">
+                        <div class="stack__item stack__item--no-border row">
+                            <span class="stack__title">@questLine.Name</span>
+                            
+                            <div class="image-link image-link--small image-link--hidden"
+                                 x-data="{ show: false }"
+                                 @@click="show = true"
+                                 @@click.outside="show = false"
+                                 @@adventure-created.document.debounce.500ms="show = false">
+                                <div class="image-link__border" :class="show && 'image-link__border--highlight'">
+                                </div>
+                                <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
+                                <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
+                                    <ul>
+                                        <li>
+                                            <a class="link" hx-get="@Url.Page("/Quest/Create", new { QuestLineId = questLine.Id })"
+                                               hx-target="closest #questLine@(questLine.Id)"
+                                               hx-swap="afterend"
+                                               @@click.debounce.200ms="show = false">
+                                                Add new quest
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+                <li class="quest-lines__quest-line">
+                    <a class="link"
+                       hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, personId = Model.Person?.Id })"
+                       hx-target="this"
+                       hx-swap="outerHTML">
+                        Add new questline
+                        <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+                    </a>
+                </li>
+            </ol>
 
-      <div id="questLineContainer"
-           hx-get="@Url.Page("/QuestLine/Index", new { Id = Model.QuestLineId, PersonId = Model.Person?.Id })"
-           hx-trigger="load"
-           hx-swap="innerHTML">
-        <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+            <div id="questLineContainer"
+                 hx-get="@Url.Page("/QuestLine/Index", new { Id = Model.QuestLineId, PersonId = Model.Person?.Id })"
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
+                <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
 
-        @* See /QuestLine/Index.cshtml  *@
-      </div>
+                @* See /QuestLine/Index.cshtml  *@
+            </div>
+        </section>
     </section>
-  </section>
 </div>
