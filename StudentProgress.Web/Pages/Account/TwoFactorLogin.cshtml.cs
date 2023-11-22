@@ -56,7 +56,7 @@ public class TwoFactorLogin : PageModel
         var secret = _config.GetValue<string>("Admin:TwoFactorSecret");
         if (secret == null)
         {
-            throw new NotImplementedException(
+            throw new NullReferenceException(
                 "Two factor secret missing. Generate one with KeyGenerator.GenerateRandomKey(20) and Base32Encoding.ToString and put it in config");
         }
 

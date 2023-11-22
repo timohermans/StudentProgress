@@ -8,7 +8,7 @@
     <p>
         <label class="visually-hidden" asp-for="MainObjective"></label>
         <textarea placeholder="What is the main objective?"
-              class="form__control" rows="6"
+              class="form__control" rows="6" autofocus
               asp-for="MainObjective">@Model.MainObjective</textarea>
         <span asp-validation-for="MainObjective"></span>
     </p>

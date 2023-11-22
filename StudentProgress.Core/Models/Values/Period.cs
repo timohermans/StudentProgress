@@ -2,8 +2,6 @@
 using StudentProgress.Core.Infrastructure;
 
 
-// TODO: major refactor and cleanup required
-
 namespace StudentProgress.Core.Models.Values;
 
 public record Period
