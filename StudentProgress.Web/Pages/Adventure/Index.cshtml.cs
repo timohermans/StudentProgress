@@ -9,34 +9,26 @@ using StudentProgress.Web.Lib.Extensions;
 
 namespace StudentProgress.Web.Pages.Adventure;
 
-public class Index : PageModel
+public class Index(WebContext db, ILogger<Index> logger) : PageModel
 {
-    private readonly WebContext _db;
-    private readonly ILogger<Index> _logger;
-
     public required Core.Models.Adventure Adventure { get; set; }
     public Person? Person { get; set; }
-    public int? QuestLineId { get; set; }
+    public int? QuestId { get; set; }
 
-    public Index(WebContext db, ILogger<Index> logger)
+    public async Task<IActionResult> OnGet(int id, int? personId, int? questId)
     {
-        _db = db;
-        _logger = logger;
-    }
-
-
-    public async Task<IActionResult> OnGet(int id, int? personId, int? questLineId)
-    {
-        QuestLineId = questLineId;
-        var adventure = await _db.Adventures
+        QuestId = questId;
+        var adventure = await db.Adventures
             .Include(a => a.People)
             .Include(a => a.QuestLines)
+            .ThenInclude(ql => ql.Quests)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(a => a.Id == id);
 
         if (personId != null)
         {
-            _logger.LogDebug($"person selected: {personId}");
-            Person = await _db.People.FirstOrDefaultAsync(p => p.Id == personId);
+            logger.LogDebug($"person selected: {personId}");
+            Person = await db.People.FirstOrDefaultAsync(p => p.Id == personId);
             if (Person == null) return NotFound();
         }
 
@@ -52,7 +44,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnDeleteRemovePerson(int id, int personId)
     {
-        var adventure = await _db.Adventures
+        var adventure = await db.Adventures
             .Include(a => a.People)
             .FirstOrDefaultAsync(a => a.Id == id);
 
@@ -62,7 +54,7 @@ public class Index : PageModel
         }
 
         adventure.People = adventure.People.Where(p => p.Id != personId).ToList();
-        await _db.SaveChangesAsync();
+        await db.SaveChangesAsync();
 
         return this.SeeOther("Index", new { id });
     }

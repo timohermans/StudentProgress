@@ -4,28 +4,28 @@
 
 @inject IDateProvider DateProvider
 
-<li id="adventure-@Model.Id" class="stack__item row fade-me-out fade-me-in"
+<li id="adventure-@Model.Id" class="cluster box fade-me-out fade-me-in"
     x-data="{ hasFocus: false, showIcon: false, showOptions: false }"
     @@mouseenter="hasFocus = showIcon = true"
     @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false">
-    <a class="stack__link row row__col--grow" asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-boost="false">
+    <a class="stack__link cluster cluster__col--grow" asp-page="/Adventure/Index" asp-route-id="@Model.Id" hx-boost="false">
         @{
-          var period = (Period)Model.DateStart;
-      }
+            var period = (Period)Model.DateStart;
+        }
         @if (period.IsOver(DateProvider))
-      {
-          <img class="stack__icon" src="~/images/042-treasure-9.png" alt="Adventure done">
-      }
-      else if (period.IsUnderway(DateProvider))
-      {
-          <img class="stack__icon" src="~/images/040-treasure-7.png" alt="Adventure underway">
-      }
-      else
-      {
-          <img class="stack__icon" src="~/images/031-treasure-5.png" alt="Adventure not yet started">
-      }
+        {
+            <img class="stack__icon" src="~/images/042-treasure-9.png" alt="Adventure done">
+        }
+        else if (period.IsUnderway(DateProvider))
+        {
+            <img class="stack__icon" src="~/images/040-treasure-7.png" alt="Adventure underway">
+        }
+        else
+        {
+            <img class="stack__icon" src="~/images/031-treasure-5.png" alt="Adventure not yet started">
+        }
 
-        <div class="row__col--grow">
+        <div class="cluster__col--grow">
             <p>@Html.DisplayFor(a => a.Name)</p>
             <p>
                 <small>
@@ -34,7 +34,7 @@
             </p>
         </div>
 
-        <div class="row row--no-gap row__col-small-stats">
+        <div class="cluster cluster--no-gap cluster__col-small-stats">
             <img class="stack__icon stack__icon--small" src="~/images/011-terracotta-army.png" alt="people">
             <p>
                 <i>@Model.People.Count</i>

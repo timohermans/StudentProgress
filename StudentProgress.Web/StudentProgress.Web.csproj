@@ -57,4 +57,16 @@
             <DependentUpon>Pages.Adventures.Index.resx</DependentUpon>
         </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\QuestLine\MainObjective\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\QuestLine\MainObjective\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\QuestLine\MainObjective\_Display.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Quest\MainObjective\Edit.cshtml" />
+      <AdditionalFiles Include="Pages\Quest\MainObjective\Index.cshtml" />
+      <AdditionalFiles Include="Pages\Quest\MainObjective\_Display.cshtml" />
+    </ItemGroup>
 </Project>

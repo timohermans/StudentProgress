@@ -1,0 +1,13 @@
+@model ListItemModel
+
+<li class="@(Model.IsSelected ? "stack__item--active" : "")">
+    <a class="stack__link box box--offset-left @(Model.IsSelected ? "" : "box--no-border")"
+       asp-page="/Adventure/Index"
+       asp-route-id="@Model.AdventureId"
+       asp-route-personId="@Model.PersonId"
+       asp-route-questId="@Model.Quest.Id">
+        <span class="stack__title">
+            @Model.Quest.Name
+        </span>
+    </a>
+</li>

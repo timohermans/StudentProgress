@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.Data;
-using System.Threading;
 using StudentProgress.Web.Lib.Extensions;
 
-namespace StudentProgress.Web.Pages.QuestLine.MainObjective
+namespace StudentProgress.Web.Pages.Quest.MainObjective
 {
     public class EditModel(WebContext db) : PageModel
     {
@@ -16,14 +15,14 @@ namespace StudentProgress.Web.Pages.QuestLine.MainObjective
         public async Task<IActionResult> OnGet(int id)
         {
             Id = id;
-            var questLine = await db.QuestLines.FindAsync(id);
+            var quest = await db.Quests.FindAsync(id);
 
-            if (questLine == null)
+            if (quest == null)
             {
                 return NotFound();
             }
 
-            MainObjective = questLine.MainObjective ?? "";
+            MainObjective = quest.MainObjective ?? "";
 
             return Page();
         }
@@ -31,7 +30,7 @@ namespace StudentProgress.Web.Pages.QuestLine.MainObjective
         public async Task<IActionResult> OnPatch(int id)
         {
              Id = id;
-             var questLine = await db.QuestLines.FindAsync(id);
+             var questLine = await db.Quests.FindAsync(id);
  
              if (questLine == null)
              {

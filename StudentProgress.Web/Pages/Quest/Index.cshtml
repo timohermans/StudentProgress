@@ -1,0 +1,15 @@
+@page "{id:int}"
+@model StudentProgress.Web.Pages.Quest.Index
+
+@{
+    Layout = null;
+}
+
+<section class="quest">
+    <h1>@Model.Quest.Name</h1>
+
+    <partial name="./MainObjective/_Display" model="Model.Quest" />
+    
+    <a class="link">+ Add new objective</a>
+
+</section>

@@ -6,15 +6,22 @@
 }
 
 <li x-data="{}" x-ref="container" class="stack__item stack__item--indent">
-    <form class="form">
+    <form method="post" class="form">
+        <input type="hidden" asp-for="QuestLineId"/>
+        <input type="hidden" asp-for="PersonId"/>
+        
         <p class="form__inline">
             <label asp-for="Name" class="form__label visually-hidden"></label>
-            <input placeholder="Add new quest" asp-for="Name" class="form__control" 
-                   x-on:blur.stop="$el.value == '' && $refs.container.remove()"
-            />
+            <input placeholder="Add new quest" asp-for="Name" class="form__control"
+                   x-on:blur.stop="$el.value == '' && $refs.container.remove()" autofocus/>
         </p>
         <p class="visually-hidden">
-            <button type="submit">Add</button>
+            <button type="submit"
+                    hx-post="@Url.Page("/Quest/Create")"
+                    hx-target="closest li"
+                    hx-swap="outerHTML">
+                Add
+            </button>
         </p>
     </form>
 </li>

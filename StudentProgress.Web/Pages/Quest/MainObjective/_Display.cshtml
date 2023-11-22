@@ -1,9 +1,9 @@
-@model Core.Models.QuestLine?
+@model Core.Models.Quest?
 @{
 }
 
 <p class="quest__main-objective"
-   hx-get="@Url.Page("/QuestLine/MainObjective/Edit", new { Id = Model?.Id })"
+   hx-get="@Url.Page("/Quest/MainObjective/Edit", new { Id = Model?.Id })"
    hx-trigger="click"
    hx-swap="outerHTML"
    hx-target="this">

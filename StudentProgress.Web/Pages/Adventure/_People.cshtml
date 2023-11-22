@@ -17,9 +17,9 @@
                      " :class="selected === id && 'reel__item--selected'" @@click="selected = id"
                 @@mouseenter="hasFocus = showIcon = true"
                 @@mouseleave="hasFocus = false; if(showOptions === false) showIcon = false" hx-trigger="click"
-                hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id, questLineId = Model.QuestLineId })" hx-target="body"
+                hx-get="@Url.Page("Index", new { id = Model.Adventure.Id, personId = person.Id, questId = Model.QuestId })" hx-target="body"
                 hx-push-url="true">
-                <div class="row row--justify-between reel__content">
+                <div class="cluster cluster--justify-between reel__content">
                     <div class="reel__person-name">@person.FirstName</div>
                 </div>
 

@@ -1,4 +1,5 @@
 @page "{id:int}"
+@using StudentProgress.Web.Pages.Quest
 @model StudentProgress.Web.Pages.Adventure.Index
 
 @section Styles
@@ -34,34 +35,38 @@
             <ol id="quest-lines" class="stack">
                 @foreach (var questLine in Model.Adventure.QuestLines)
                 {
-                    <li id="questLine@(questLine.Id)">
-                        <div class="stack__item stack__item--no-border row">
-                            <span class="stack__title">@questLine.Name</span>
-                            
-                            <div class="image-link image-link--small image-link--hidden"
-                                 x-data="{ show: false }"
-                                 @@click="show = true"
-                                 @@click.outside="show = false"
-                                 @@adventure-created.document.debounce.500ms="show = false">
-                                <div class="image-link__border" :class="show && 'image-link__border--highlight'">
-                                </div>
-                                <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
-                                <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
-                                    <ul>
-                                        <li>
-                                            <a class="link" hx-get="@Url.Page("/Quest/Create", new { QuestLineId = questLine.Id })"
-                                               hx-target="closest #questLine@(questLine.Id)"
-                                               hx-swap="afterend"
-                                               @@click.debounce.200ms="show = false">
-                                                Add new quest
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <li id="questLine@(questLine.Id)" class="box box--no-border cluster">
+                        <span class="stack__title">@questLine.Name</span>
+
+                        <div class="image-link image-link--small image-link--hidden"
+                             x-data="{ show: false }"
+                             @@click="show = true"
+                             @@click.outside="show = false"
+                             @@adventure-created.document.debounce.500ms="show = false">
+                            <div class="image-link__border" :class="show && 'image-link__border--highlight'">
+                            </div>
+                            <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
+                            <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
+                                <ul>
+                                    <li>
+                                        <a class="link" hx-get="@Url.Page("/Quest/Create", new { QuestLineId = questLine.Id, PersonId = Model.Person?.Id })"
+                                           hx-target="closest #questLine@(questLine.Id)"
+                                           hx-swap="afterend"
+                                           @@click.debounce.200ms="show = false">
+                                            Add new quest
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </li>
+
+                    @foreach (var quest in questLine.Quests)
+                    {
+                        <partial name="../Quest/_ListItem" model="new ListItemModel(Model.Adventure.Id, quest, Model.Person?.Id, Model.QuestId == quest.Id)"/>
+                    }
                 }
+                
                 <li class="quest-lines__quest-line">
                     <a class="link"
                        hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, personId = Model.Person?.Id })"
@@ -73,8 +78,8 @@
                 </li>
             </ol>
 
-            <div id="questLineContainer"
-                 hx-get="@Url.Page("/QuestLine/Index", new { Id = Model.QuestLineId, PersonId = Model.Person?.Id })"
+            <div id="questContainer"
+                 hx-get="@Url.Page("/Quest/Index", new { Id = Model.QuestId, PersonId = Model.Person?.Id })"
                  hx-trigger="load"
                  hx-swap="innerHTML">
                 <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>

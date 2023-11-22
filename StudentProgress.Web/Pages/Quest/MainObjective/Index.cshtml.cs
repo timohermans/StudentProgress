@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudentProgress.Core.Data;
 
-namespace StudentProgress.Web.Pages.QuestLine.MainObjective
+namespace StudentProgress.Web.Pages.Quest.MainObjective
 {
     public class IndexModel(WebContext db) : PageModel
     {
-        public Core.Models.QuestLine? QuestLine { get; set; }
+        public Core.Models.Quest? Quest { get; set; }
         
         public async Task OnGet(int id)
         {
-            QuestLine = await db.QuestLines
+            Quest = await db.Quests
                 .FindAsync(id);
         }
     }
