@@ -54,6 +54,14 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseQueryStrings = true;
 });
 
+// Session (For now, only use when passing around values too much (e.g. PersonId)
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.Name = "ProgressSession";
+    options.Cookie.HttpOnly = true;
+});
+
 // Database
 builder.Services.AddDbContext<WebContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WebContext"),
@@ -100,6 +108,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
+
 var mediaPath = app.Services.GetService<ICoreConfiguration>()!.MediaLocation;
 app.UseStaticFiles(new StaticFileOptions
 {

@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,8 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
         {
             logger.LogDebug($"person selected: {personId}");
             Person = await db.People.FirstOrDefaultAsync(p => p.Id == personId);
-            if (Person == null) return NotFound();
+            if (Person == null) return this.NotFoundToBody();
+            HttpContext.Session.SetInt32("PersonId", Person.Id);
         }
 
         if (adventure == null)
@@ -55,6 +57,8 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
         adventure.People = adventure.People.Where(p => p.Id != personId).ToList();
         await db.SaveChangesAsync();
+        
+        // TODO: Remove person from session
 
         return this.SeeOther("Index", new { id });
     }
