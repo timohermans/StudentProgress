@@ -38,4 +38,10 @@ public static class PageModelExtensions
             page.Response.Headers.Append("HX-Reswap", swap);
         }
     }
+
+    public static IActionResult NotFoundToBody(this PageModel page)
+    {
+        page.HtmxRetargetTo("body");
+        return page.NotFound();
+    }
 }
