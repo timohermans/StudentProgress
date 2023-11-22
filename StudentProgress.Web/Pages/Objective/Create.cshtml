@@ -1,0 +1,24 @@
+@page
+@model StudentProgress.Web.Pages.Objective.Create
+
+@{
+    Layout = null;
+}
+
+<form id="objectiveForm" class="form form--no-gap" method="post">
+    <p class="form__inline">
+        <label asp-for="Name" class="form__label"></label>
+        <input asp-for="Name" class="form__control" autofocus/>
+        <button class="form__button" type="submit" hx-target="body" hx-post="@Url.Page("/QuestLine/Create", new { adventureId = Model.AdventureId, personId = Model.PersonId })" hx-swap="innerHTML">
+            <span>Add</span>
+            <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+        </button>
+        <a class="form__link" hx-get="@Url.Page("/Adventure/Index", new { id = Model.AdventureId, personId = Model.PersonId })" hx-target="body">
+            Cancel
+            <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+        </a>
+    </p>
+    <p>
+        <span asp-validation-for="Name"></span>
+    </p>
+</form>
