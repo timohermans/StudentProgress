@@ -29,19 +29,25 @@ public static class PageModelExtensions
         return new StatusCodeResult(303);
     }
 
-    public static void HtmxRetargetTo(this PageModel page, string targetElementId, string? swap = null)
+    public static void HtmxRetargetTo(this PageModel page, string targetElementSelector, string? swap = null)
     {
-        page.Response.Headers.Append("HX-Retarget", targetElementId);
+        page.Response.Headers.Append("HX-Retarget", targetElementSelector);
 
         if (swap != null)
         {
             page.Response.Headers.Append("HX-Reswap", swap);
         }
     }
-
+    
     public static IActionResult NotFoundToBody(this PageModel page)
     {
         page.HtmxRetargetTo("body");
         return page.NotFound();
+    }
+
+    public static IActionResult PageTo(this PageModel page, string targetElementSelector, string? swap = null)
+    {
+        page.HtmxRetargetTo(targetElementSelector, swap);
+        return page.Page();
     }
 }

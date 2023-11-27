@@ -10,11 +10,10 @@
 
     <partial name="./MainObjective/_Display" model="Model.Quest"/>
 
-    <a class="link"
-       hx-get="@Url.Page("/Objective/Create", new { QuestId = Model.Quest.Id })"
-       hx-target="this"
-       hx-swap="outerHTML">
-        + Add new objective
-    </a>
+    @foreach (var objective in Model.Quest.Objectives)
+    {
+        <partial name="../Objective/_Item" model="objective"/>
+    }
 
+    <partial name="_CreateLink" model="Model.Quest.Id"/>
 </section>

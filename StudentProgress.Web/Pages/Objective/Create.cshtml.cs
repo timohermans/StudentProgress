@@ -35,4 +35,32 @@ public class Create(WebContext db) : PageModel
         return Page();
 
     }
+
+    public async Task<IActionResult> OnPost(int? personId)
+    {
+        var quest = await db.Quests
+            .Include(q => q.Objectives)
+            .FirstOrDefaultAsync(q => q.Id == QuestId);
+
+        if (quest == null)
+        {
+            return this.NotFoundToBody();
+        }
+        
+        if (!ModelState.IsValid)
+        {
+            return this.PageTo("#objectiveForm", "outerHTML");
+        }
+
+        Core.Models.Objective objective = new Core.Models.Objective
+        {
+            Name = Name,
+            Color = "#e6007e"
+        };
+
+        quest.Objectives.Add(objective);
+        await db.SaveChangesAsync();
+
+        return this.SeeOther("/Quest/Index", new { Id = QuestId, PersonId = personId});
+    }
 }

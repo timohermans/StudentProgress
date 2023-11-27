@@ -1,0 +1,8 @@
+@model int
+
+<a class="link"
+   hx-get="@Url.Page("/Objective/Create", new { QuestId = Model })"
+   hx-target="this"
+   hx-swap="outerHTML">
+    + Add new objective
+</a>

@@ -42,7 +42,8 @@
             </ul>
             <div class="nav__search">
                 <input id="search" name="q" type="search" class="nav__search-field" placeholder="search student.."
-                       autocomplete="off" hx-get="@LinkGen.GetPathByPage("/People/Search")"
+                       autocomplete="off" 
+                       hx-get="@LinkGen.GetPathByPage("/People/Search")"
                        hx-target="#searchResults"
                        hx-trigger="search, keyup changed delay:400ms"
                        hx-swap="swap:200ms settle:200ms">

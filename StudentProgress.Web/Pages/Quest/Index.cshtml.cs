@@ -26,4 +26,9 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
         return Page();
     }
+
+    public IActionResult OnGetCreateLink(int id)
+    {
+        return Partial("_CreateLink", id);
+    }
 }
