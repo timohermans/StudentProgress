@@ -6,14 +6,24 @@
 }
 
 <section class="quest">
-    <h1>@Model.Quest.Name</h1>
+    <h4>@Model.Quest.Name</h4>
 
     <partial name="./MainObjective/_Display" model="Model.Quest"/>
 
-    @foreach (var objective in Model.Quest.Objectives)
-    {
-        <partial name="../Objective/_Item" model="objective"/>
-    }
+    <h5>Objectives</h5>
+    <ul>
+        @foreach (var objective in Model.Quest.Objectives)
+        {
+            <li class="list-box">
+                <div class="list-box__prefix"><button class="progress-add">+</button></div>
+                <div class="list-box__line-1">@objective.Name</div>
+                <div class="list-box__line-2 list-box__line-2--flex-wrap">
+                    <div class="progress progress--empty" style="border-color: @objective.Color"></div>
+                </div>
+                <div class="list-box__postfix"></div>
+            </li>
+        }
+    </ul>
 
     <partial name="_CreateLink" model="Model.Quest.Id"/>
 </section>
