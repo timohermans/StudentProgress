@@ -35,7 +35,7 @@
             <ol id="quest-lines" class="stack">
                 @foreach (var questLine in Model.Adventure.QuestLines)
                 {
-                    <li id="questLine@(questLine.Id)" class="box box--no-border cluster">
+                    <li id="questLine@(questLine.Id)" class="box box--dashed-hover box--no-border cluster">
                         <span class="stack__title">@questLine.Name</span>
 
                         <div class="image-link image-link--small image-link--hidden"

@@ -450,6 +450,11 @@ main {
 
 .box:hover {
     border-style: solid;
+    border-color: var(--f-color-border);
+}
+
+.box--dashed-hover:hover {
+    border-style: dashed;
 }
 
 .box--no-border {
