@@ -69,7 +69,7 @@
                 
                 <li class="quest-lines__quest-line">
                     <a class="link"
-                       hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, personId = Model.Person?.Id })"
+                       hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, QuestId = Model.QuestId, PersonId = Model.Person?.Id })"
                        hx-target="this"
                        hx-swap="outerHTML">
                         Add new questline

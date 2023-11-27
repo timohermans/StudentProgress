@@ -16,20 +16,6 @@
     padding: var(--f-box-padding);
 }
 
-.quest__main-objective {
-    cursor: pointer;
-}
-
-.quest__main-objective:hover {
-    border: var(--f-border-thin) dashed var(--f-color-border);
-    border-radius: var(--f-border-radius);
-    padding: var(--f-box-padding);
-}
-
-.quest__main-objective-form {
-    padding: var(--f-box-padding);
-}
-
 .quest-lines {
     display: flex;
     flex-direction: column;

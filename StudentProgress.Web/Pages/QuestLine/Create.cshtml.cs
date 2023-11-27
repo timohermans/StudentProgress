@@ -12,20 +12,22 @@ namespace StudentProgress.Web.Pages.QuestLine;
 public class CreateModel(WebContext db, ILogger<CreateModel> logger) : PageModel
 {
     public int AdventureId { get; set; }
+    public int? QuestId { get; set; }
     public int? PersonId { get; set; }
     [BindProperty][Required] public string? Name { get; set; }
 
-    public void OnGet(int adventureId, int? personId)
+    public void OnGet(int adventureId, int? questId, int? personId)
     {
         logger.LogDebug("Quest line creation get");
+        QuestId = questId;
         AdventureId = adventureId;
         PersonId = personId;
     }
 
-    public async Task<IActionResult> OnPost(int adventureId, int? personId)
+    public async Task<IActionResult> OnPost(int adventureId, int? questId, int? personId)
     {
         logger.LogDebug("Quest line creation post");
-        OnGet(adventureId, personId);
+        OnGet(adventureId, questId, personId);
 
         var adventure = await db.Adventures.FirstOrDefaultAsync(a => a.Id == adventureId);
         if (adventure == null)

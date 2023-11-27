@@ -13,7 +13,7 @@
             <span>Add</span>
             <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
         </button>
-        <a class="form__link" hx-get="@Url.Page("/Adventure/Index", new { id = Model.AdventureId, personId = Model.PersonId })" hx-target="body">
+        <a class="form__link" hx-get="@Url.Page("/Adventure/Index", new { id = Model.AdventureId, QuestId = Model.QuestId, PersonId = Model.PersonId })" hx-target="body">
             Cancel
             <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
         </a>
