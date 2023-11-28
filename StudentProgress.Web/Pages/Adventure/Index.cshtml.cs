@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using StudentProgress.Core.Constants;
 using StudentProgress.Core.Data;
 using StudentProgress.Core.Models;
 using StudentProgress.Web.Lib.Extensions;
@@ -18,6 +19,8 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
     public async Task<IActionResult> OnGet(int id, int? personId, int? questId)
     {
+        HttpContext.Session.Remove(SessionKeys.PersonId);
+        
         QuestId = questId;
         var adventure = await db.Adventures
             .Include(a => a.People)
@@ -28,6 +31,7 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
         if (personId != null)
         {
+            HttpContext.Session.SetInt32(SessionKeys.PersonId, personId.Value);
             logger.LogDebug($"person selected: {personId}");
             Person = await db.People.FirstOrDefaultAsync(p => p.Id == personId);
             if (Person == null) return this.NotFoundToBody();
@@ -57,9 +61,8 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
         adventure.People = adventure.People.Where(p => p.Id != personId).ToList();
         await db.SaveChangesAsync();
-        
-        // TODO: Remove person from session
 
+        HttpContext.Session.Remove(SessionKeys.PersonId);
         return this.SeeOther("Index", new { id });
     }
 }

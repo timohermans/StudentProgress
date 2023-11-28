@@ -82,12 +82,12 @@
 .progress {
     width: 10px;
     height: 25px;
-    border: var(--f-border-thin) solid black;
     border-radius: var(--f-border-radius);
 }
 
 .progress--empty {
-    border-style: dashed;
+    border: var(--f-border-thin) dashed black;
+    background-color: unset;
 }
 
 .progress-add {

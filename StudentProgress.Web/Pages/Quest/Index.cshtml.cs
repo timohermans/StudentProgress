@@ -18,6 +18,7 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
         var quest = await db.Quests
             .Include(ql => ql.Objectives)
+            .ThenInclude(o => o.Progresses)
             .FirstOrDefaultAsync(q => q.Id == id);
 
         if (quest == null) return NotFound();

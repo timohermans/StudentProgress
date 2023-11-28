@@ -1,0 +1,49 @@
+@using StudentProgress.Core.Models
+@model StudentProgress.Core.Models.Objective
+
+<style>
+    #objective-@(Model.Id) {
+        &:hover,
+        & .progress-add:hover,
+        & .progress {
+            border-color: @(Model.Color)88;
+        }
+        
+        & .progress {
+            background-color: @(Model.Color)88;
+        }
+        
+        & .progress--empty {
+            background-color: unset;
+        }
+        
+        & .progress-add {
+          background-color: @(Model.Color)22;
+        }
+    }
+</style>
+
+<li id="objective-@(Model.Id)" class="list-box">
+    <div class="list-box__prefix">
+        <form>
+            <input type="hidden" name="id" value="@Model.Id"/>
+            <button class="progress-add"
+                    hx-post="@Url.Page("/Objective/Index", "Progress", new { Model.Id })"
+                    hx-target="closest li"
+                    hx-swap="outerHTML">
+                <span>+</span>
+                <svg-inject class="loading htmx-indicator" src="images/puff.svg"/>
+            </button>
+        </form>
+    </div>
+    <div class="list-box__line-1">@Model.Name</div>
+    <div class="list-box__line-2 list-box__line-2--flex-wrap">
+        @foreach (var progress in Model.Progresses)
+        {
+            <div class="progress"></div>
+        }
+        <div class="progress progress--empty"></div>
+        <span asp-validation-for="Id"></span>
+    </div>
+    <div class="list-box__postfix"></div>
+</li>

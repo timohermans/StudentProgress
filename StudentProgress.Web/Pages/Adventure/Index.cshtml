@@ -32,6 +32,7 @@
         </h3>
 
         <section id="questLog" class="quest-log">
+            @* TODO: refactor to it's own partial and reload on htmx event "progress-created" *@
             <ol id="quest-lines" class="stack">
                 @foreach (var questLine in Model.Adventure.QuestLines)
                 {
@@ -66,7 +67,7 @@
                         <partial name="../Quest/_ListItem" model="new ListItemModel(Model.Adventure.Id, quest, Model.Person?.Id, Model.QuestId == quest.Id)"/>
                     }
                 }
-                
+
                 <li class="quest-lines__quest-line">
                     <a class="link"
                        hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, QuestId = Model.QuestId, PersonId = Model.Person?.Id })"
