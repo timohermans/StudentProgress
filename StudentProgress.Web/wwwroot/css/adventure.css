@@ -37,12 +37,14 @@
 }
 
 .list-box {
+    background-color: white;
     padding: var(--f-box-padding);
     color: var(--f-color-text);
-    border: var(--f-border-thin) dashed transparent;
+    border: var(--f-border-thin) solid transparent;
     border-radius: var(--f-border-radius);
     display: grid;
     column-gap: var(--s0);
+    row-gap: var(--s-3);
     grid-template-columns: min-content auto min-content;
     grid-template-areas: 
         "prefix main postfix"
@@ -74,26 +76,31 @@
 }
 
 .list-box:hover {
-    border-color: var(--f-color-border);
+    border-color: var(--f-color-border-faded);
 }
 
 .progress {
     width: 10px;
     height: 25px;
-    border: var(--f-border-thin) dashed black;
+    border: var(--f-border-thin) solid black;
     border-radius: var(--f-border-radius);
+}
+
+.progress--empty {
+    border-style: dashed;
 }
 
 .progress-add {
     width: 28px;
     height: 28px;
-    border: var(--f-border-thin) dashed var(--f-color-border);
+    border: var(--f-border-thin) solid transparent;
+    border-radius: var(--f-border-radius);
     background-color: var(--f-color-background);
     cursor: pointer;
 }
 
 .progress-add:hover {
-    border-style: solid;
+    border-color: var(--f-color-border-faded);
     font-weight: bold;
 }
 

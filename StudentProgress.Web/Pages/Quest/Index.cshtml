@@ -5,20 +5,37 @@
     Layout = null;
 }
 
+
 <section class="quest">
     <h4>@Model.Quest.Name</h4>
 
     <partial name="./MainObjective/_Display" model="Model.Quest"/>
 
     <h5>Objectives</h5>
-    <ul>
+    <ul class="stack">
         @foreach (var objective in Model.Quest.Objectives)
         {
-            <li class="list-box">
-                <div class="list-box__prefix"><button class="progress-add">+</button></div>
+            <style>
+                #objective-@(objective.Id) {
+                    &:hover,
+                    & .progress-add:hover,
+                    & .progress {
+                        border-color: @(objective.Color)88;
+                    }
+                    
+                    & .progress-add {
+                      background-color: @(objective.Color)22;
+                    }
+                }
+            </style>
+
+            <li id="objective-@(objective.Id)" class="list-box">
+                <div class="list-box__prefix">
+                    <button class="progress-add">+</button>
+                </div>
                 <div class="list-box__line-1">@objective.Name</div>
                 <div class="list-box__line-2 list-box__line-2--flex-wrap">
-                    <div class="progress progress--empty" style="border-color: @objective.Color"></div>
+                    <div class="progress progress--empty"></div>
                 </div>
                 <div class="list-box__postfix"></div>
             </li>

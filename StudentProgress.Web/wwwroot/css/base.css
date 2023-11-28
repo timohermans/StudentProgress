@@ -20,16 +20,21 @@
     --color-red: #FF2D28;
     --color-black: #660243; /* of #330F33; */
     --color-gray: #ced4da;
+    
+    --color-purple-faded: #6633662b;
 
     /*colors*/
     --f-color-primary: var(--color-purple);
     --f-color-secondary: var(--color-pink);
     --f-color-danger: var(--color-red);
 
+    --f-color-primary-faded: var(--color-purple-faded);
+    
     --f-color-faded-primary: rgba(102, 51, 102, 0.75);
     --f-color-faded-secondary: rgba(230, 0, 126, 0.75);
 
     --f-color-border: var(--f-color-primary);
+    --f-color-border-faded: var(--f-color-primary-faded);
     --f-color-border-selected: var(--f-color-secondary);
     --f-color-background: var(--color-white);
 
