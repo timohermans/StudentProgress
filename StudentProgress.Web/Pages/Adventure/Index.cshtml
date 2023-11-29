@@ -1,5 +1,6 @@
 @page "{id:int}"
 @using StudentProgress.Web.Pages.Quest
+@using StudentProgress.Web.Pages.Shared
 @model StudentProgress.Web.Pages.Adventure.Index
 
 @section Styles
@@ -34,39 +35,7 @@
         <section id="questLog" class="quest-log">
             @* TODO: refactor to it's own partial and reload on htmx event "progress-created" *@
             <ol id="quest-lines" class="stack">
-                @foreach (var questLine in Model.Adventure.QuestLines)
-                {
-                    <li id="questLine@(questLine.Id)" class="box box--dashed-hover box--no-border cluster">
-                        <span class="stack__title">@questLine.Name</span>
-
-                        <div class="image-link image-link--small image-link--hidden"
-                             x-data="{ show: false }"
-                             @@click="show = true"
-                             @@click.outside="show = false"
-                             @@adventure-created.document.debounce.500ms="show = false">
-                            <div class="image-link__border" :class="show && 'image-link__border--highlight'">
-                            </div>
-                            <img src="~/images/014-maya-pyramid.png" class="image-link__icon" alt="actions">
-                            <div id="actions" class="image-link__content fade-me-out fade-me-in" :class="show && 'image-link__content--visible'">
-                                <ul>
-                                    <li>
-                                        <a class="link" hx-get="@Url.Page("/Quest/Create", new { QuestLineId = questLine.Id, PersonId = Model.Person?.Id })"
-                                           hx-target="closest #questLine@(questLine.Id)"
-                                           hx-swap="afterend"
-                                           @@click.debounce.200ms="show = false">
-                                            Add new quest
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-
-                    @foreach (var quest in questLine.Quests)
-                    {
-                        <partial name="../Quest/_ListItem" model="new ListItemModel(Model.Adventure.Id, quest, Model.Person?.Id, Model.QuestId == quest.Id)"/>
-                    }
-                }
+                <partial name="../QuestLines/_Items" model="new AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>(Model.Adventure.QuestLines, Model.Adventure.Id, Model.QuestId, Model.Person?.Id)" />
 
                 <li class="quest-lines__quest-line">
                     <a class="link"
