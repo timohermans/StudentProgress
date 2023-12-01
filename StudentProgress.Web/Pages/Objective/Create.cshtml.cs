@@ -55,7 +55,7 @@ public class Create(WebContext db) : PageModel
         Core.Models.Objective objective = new Core.Models.Objective
         {
             Name = Name,
-            Color = "#e6007e"
+            Color = "230, 0, 126"
         };
 
         quest.Objectives.Add(objective);

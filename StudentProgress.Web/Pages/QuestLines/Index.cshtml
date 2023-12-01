@@ -1,5 +1,8 @@
 @page
+@using StudentProgress.Web.Pages.Shared
 @model StudentProgress.Web.Pages.QuestLines.IndexModel
 @{
-  Layout = null;
+    Layout = null;
 }
+
+<partial name="_List" model="new AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>(Model.QuestLines, Model.AdventureId, Model.QuestId, Model.PersonId)"/>

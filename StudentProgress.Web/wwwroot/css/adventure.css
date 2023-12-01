@@ -37,6 +37,7 @@
 }
 
 .list-box {
+    --objective-color: 230, 0, 126;
     background-color: white;
     padding: var(--f-box-padding);
     color: var(--f-color-text);
@@ -49,6 +50,10 @@
     grid-template-areas: 
         "prefix main postfix"
         "prefix sub postfix";
+}
+
+.list-box:hover {
+    border-color: rgba(var(--objective-color), 0.4);
 }
 
 .list-box__prefix {
@@ -75,18 +80,15 @@
     align-self: center;
 }
 
-.list-box:hover {
-    border-color: var(--f-color-border-faded);
-}
-
 .progress {
     width: 10px;
     height: 25px;
     border-radius: var(--f-border-radius);
+    background-color: rgba(var(--objective-color), 0.4);
 }
 
 .progress--empty {
-    border: var(--f-border-thin) dashed black;
+    border: var(--f-border-thin) dashed rgba(var(--objective-color), 0.4);
     background-color: unset;
 }
 
@@ -95,12 +97,12 @@
     height: 28px;
     border: var(--f-border-thin) solid transparent;
     border-radius: var(--f-border-radius);
-    background-color: var(--f-color-background);
+    background-color: rgba(var(--objective-color), 0.2);
     cursor: pointer;
 }
 
 .progress-add:hover {
-    border-color: var(--f-color-border-faded);
+    border-color: rgba(var(--objective-color), 0.4);
     font-weight: bold;
 }
 

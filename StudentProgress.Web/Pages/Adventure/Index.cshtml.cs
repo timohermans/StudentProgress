@@ -26,6 +26,8 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
             .Include(a => a.People)
             .Include(a => a.QuestLines)
             .ThenInclude(ql => ql.Quests)
+            .ThenInclude(q => q.Objectives)
+            .ThenInclude(o => o.Progresses)
             .AsSplitQuery()
             .FirstOrDefaultAsync(a => a.Id == id);
 

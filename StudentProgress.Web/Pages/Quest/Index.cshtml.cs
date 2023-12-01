@@ -10,7 +10,7 @@ namespace StudentProgress.Web.Pages.Quest;
 public class Index(WebContext db, ILogger<Index> logger) : PageModel
 {
     public required Core.Models.Quest Quest { get; set; }
-    
+
     public async Task<IActionResult> OnGet(int id, int? personId)
     {
         logger.LogDebug("Loading quest with id {id} and person {personId}", id, personId);
@@ -18,7 +18,7 @@ public class Index(WebContext db, ILogger<Index> logger) : PageModel
 
         var quest = await db.Quests
             .Include(ql => ql.Objectives)
-            .ThenInclude(o => o.Progresses)
+            .ThenInclude(o => o.Progresses.Where(p => personId == null ? p.Person.Id == 0 : p.Person.Id == personId))
             .FirstOrDefaultAsync(q => q.Id == id);
 
         if (quest == null) return NotFound();

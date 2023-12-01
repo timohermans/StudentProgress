@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using StudentProgress.Core.Constants;
 using StudentProgress.Core.Data;
 using StudentProgress.Core.Models;
+using StudentProgress.Web.Lib.Constants;
 using StudentProgress.Web.Lib.Extensions;
 
 namespace StudentProgress.Web.Pages.Objective;
@@ -16,14 +17,17 @@ public class Index(WebContext db) : PageModel
 
     public async Task<IActionResult> OnPostProgress()
     {
-        var objective = await db.Objectives.Include(o => o.Progresses).FirstOrDefaultAsync(o => o.Id == Id);
+        var personId = HttpContext.Session.GetInt32(SessionKeys.PersonId);
+
+        var objective = await db.Objectives
+            .Include(o => o.Progresses.Where(p => p.Person.Id == personId))
+            .ThenInclude(p => p.Person)
+            .FirstOrDefaultAsync(o => o.Id == Id);
 
         if (objective == null)
         {
             return this.NotFoundToBody();
         }
-
-        var personId = HttpContext.Session.GetInt32(SessionKeys.PersonId);
 
         if (!personId.HasValue)
         {
@@ -43,7 +47,7 @@ public class Index(WebContext db) : PageModel
                 "Person is not part of the adventure!");
         }
 
-        if (objective.Progresses.Any(p => p.AchievedAt.Date == DateTime.Today))
+        if (objective.Progresses.Any(p => p.Person.Id == personId && p.AchievedAt.Date == DateTime.Today))
         {
             ModelState.AddModelError(nameof(Core.Models.Objective.Id),
                 "You cannot add more than one progress per objective per day!");
@@ -56,12 +60,12 @@ public class Index(WebContext db) : PageModel
 
         objective.Progresses.Add(new ObjectiveProgress
         {
-            Person = await db.People.FindAsync(personId.Value),
+            Person = await db.People.FirstAsync(p => p.Id == personId!.Value),
             AchievedAt = DateTime.Now
         });
         await db.SaveChangesAsync();
 
-        Response.DispatchHtmxEvent("progress-created");
+        Response.DispatchHtmxEvent(HtmxEvents.ProgressCreated);
         return Partial("_Item", objective);
     }
 }

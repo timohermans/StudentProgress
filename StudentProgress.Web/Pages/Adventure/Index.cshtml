@@ -33,11 +33,11 @@
         </h3>
 
         <section id="questLog" class="quest-log">
-            @* TODO: refactor to it's own partial and reload on htmx event "progress-created" *@
-            <ol id="quest-lines" class="stack">
-                <partial name="../QuestLines/_Items" model="new AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>(Model.Adventure.QuestLines, Model.Adventure.Id, Model.QuestId, Model.Person?.Id)" />
+            <div class="stack">
+                @* TODO: refactor to it's own partial and reload on htmx event "progress-created" *@
+                <partial name="../QuestLines/_List" model="new AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>(Model.Adventure.QuestLines, Model.Adventure.Id, Model.QuestId, Model.Person?.Id)"/>
 
-                <li class="quest-lines__quest-line">
+                <div class="box box--dashed-hover box--no-border cluster">
                     <a class="link"
                        hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, QuestId = Model.QuestId, PersonId = Model.Person?.Id })"
                        hx-target="this"
@@ -45,8 +45,8 @@
                         Add new questline
                         <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
                     </a>
-                </li>
-            </ol>
+                </div>
+            </div>
 
             <div id="questContainer"
                  hx-get="@Url.Page("/Quest/Index", new { Id = Model.QuestId, PersonId = Model.Person?.Id })"

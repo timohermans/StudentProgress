@@ -1,33 +1,14 @@
-@using StudentProgress.Core.Models
 @model StudentProgress.Core.Models.Objective
 
-<style>
-    #objective-@(Model.Id) {
-        &:hover,
-        & .progress-add:hover,
-        & .progress {
-            border-color: @(Model.Color)88;
-        }
-        
-        & .progress {
-            background-color: @(Model.Color)88;
-        }
-        
-        & .progress--empty {
-            background-color: unset;
-        }
-        
-        & .progress-add {
-          background-color: @(Model.Color)22;
-        }
-    }
-</style>
+@{
+    string objectiveClass = $"objective-{Model.Id}";
+}
 
-<li id="objective-@(Model.Id)" class="list-box">
+<li class="list-box objective-@(Model.Id)" style="--objective-color: @Model.Color">
     <div class="list-box__prefix">
         <form>
             <input type="hidden" name="id" value="@Model.Id"/>
-            <button class="progress-add"
+            <button class="progress-add @(objectiveClass)__add-progress"
                     hx-post="@Url.Page("/Objective/Index", "Progress", new { Model.Id })"
                     hx-target="closest li"
                     hx-swap="outerHTML">
