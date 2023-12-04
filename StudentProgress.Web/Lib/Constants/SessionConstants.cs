@@ -1,4 +1,4 @@
-namespace StudentProgress.Core.Constants;
+namespace StudentProgress.Web.Lib.Constants;
 
 public static class SessionKeys
 {
@@ -8,4 +8,9 @@ public static class SessionKeys
     /// passed around among the many small HTMX requests. To solve this, this personId is introduced.
     /// </summary>
     public const string PersonId = "PersonId";
+    /// <summary>
+    /// Key used for the quest ID in the Adventure/Index page and HTMX partials.
+    /// I want to try make the entire adventure details as interactive as possible
+    /// </summary>
+    public const string QuestId = "QuestId";
 }
