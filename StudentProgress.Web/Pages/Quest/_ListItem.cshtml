@@ -1,15 +1,30 @@
 @model ListItemModel
 
 <li class="@(Model.IsSelected ? "stack__item--active" : "")">
-    <a class="stack__link box box--dashed-hover box--offset-left @(Model.IsSelected ? "" : "box--no-border")"
+    <a class="stack__link list-box list-box--primary list-box--offset-left @(Model.IsSelected ? "list-box--selected" : "")"
        asp-page="/Adventure/Index"
        asp-route-id="@Model.AdventureId"
        asp-route-personId="@Model.PersonId"
        asp-route-questId="@Model.Quest.Id">
-        <span class="stack__title">
+
+        <span class="list-box__line-1">
             @Model.Quest.Name
         </span>
 
-        <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+        <div class="list-box__line-2 list-box__line-2--flex-wrap">
+            @{
+                var progressForAll = Model.Quest.Objectives.SelectMany(o => o.Progresses).OrderBy(p => p.AchievedAt).ToList();
+            }
+            <partial name="Progress/_List" model="progressForAll"/>
+            @if (progressForAll.Count == 0)
+            {
+                <div class="progress progress--empty"></div>
+            }
+
+        </div>
+
+        <div class="list-box__postfix">
+            <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
+        </div>
     </a>
 </li>

@@ -1,0 +1,6 @@
+@model IEnumerable<StudentProgress.Core.Models.ObjectiveProgress>
+
+@foreach (var progress in Model)
+{
+    <div class="progress" style="--objective-color: @progress.Objective.Color"></div>
+}

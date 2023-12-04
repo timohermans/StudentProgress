@@ -19,10 +19,7 @@
     </div>
     <div class="list-box__line-1">@Model.Name</div>
     <div class="list-box__line-2 list-box__line-2--flex-wrap">
-        @foreach (var progress in Model.Progresses)
-        {
-            <div class="progress"></div>
-        }
+        <partial name="Progress/_List" model="Model.Progresses" />
         <div class="progress progress--empty"></div>
         <span asp-validation-for="Id"></span>
     </div>

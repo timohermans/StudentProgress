@@ -470,11 +470,6 @@ main {
     border-color: var(--f-color-border);
 }
 
-.box--offset-left {
-    margin-left: var(--s1);
-    width: calc(100% - var(--s1));
-}
-
 .box:hover > .image-link {
     visibility: visible;
 }

@@ -13,7 +13,7 @@ public class IndexModel(WebContext db) : PageModel
     public int AdventureId { get; set; }
     public int? QuestId { get; set; }
     public int? PersonId { get; set; }
-    public List<Core.Models.QuestLine> QuestLines { get; set; }
+    public List<Core.Models.QuestLine> QuestLines { get; set; } = new();
 
     public async Task<IActionResult> OnGet(int adventureId, int? questId, int? personId)
     {

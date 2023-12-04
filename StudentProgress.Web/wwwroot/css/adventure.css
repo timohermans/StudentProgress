@@ -16,26 +16,6 @@
     padding: var(--f-box-padding);
 }
 
-.quest-lines {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s0);
-}
-
-.quest-lines__quest-line {
-    display: block;
-    padding: var(--f-box-padding);
-    text-decoration: none;
-    color: var(--f-color-text);
-}
-
-.quest-lines__quest-line--active,
-.quest-lines__quest-line:hover,
-.quest-lines__quest-line:has(form) {
-    border: var(--f-border-thin) dashed var(--f-color-border);
-    border-radius: var(--f-border-radius);
-}
-
 .list-box {
     --objective-color: 230, 0, 126;
     background-color: white;
@@ -54,6 +34,21 @@
 
 .list-box:hover {
     border-color: rgba(var(--objective-color), 0.4);
+}
+
+.list-box--selected {
+    font-weight: bold;
+}
+
+.list-box--primary:hover,
+.list-box--selected {
+    border-color: var(--f-color-border);
+    border-style: dashed;
+}
+
+.list-box--offset-left {
+    margin-left: var(--s1);
+    width: calc(100% - var(--s1));
 }
 
 .list-box__prefix {
