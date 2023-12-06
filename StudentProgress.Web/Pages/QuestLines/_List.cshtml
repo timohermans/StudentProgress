@@ -5,10 +5,10 @@
 @model AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>
 
 <ol id="quest-lines" class="stack"
-    hx-get="@Url.Page("/QuestLines/Index", new { Model.AdventureId, Model.QuestId, Model.PersonId })"
+    hx-get="@Url.Page("/QuestLines/Index", new { Model.AdventureId })"
     hx-swap="outerHTML"
     hx-trigger="@(HtmxEvents.ProgressCreated)"
-    >
+    x-data="{ selected: null }">
     @foreach (var questLine in Model.Data)
     {
         <li id="questLine@(questLine.Id)" class="box box--dashed-hover box--no-border cluster">

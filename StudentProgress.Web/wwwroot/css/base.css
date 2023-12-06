@@ -556,8 +556,7 @@ main {
     display: unset;
 }
 
-.form__button.htmx-request > :not(.htmx-indicator),
-.htmx-request > span:not(.htmx-indicator){
+.form__button.htmx-request > :not(.htmx-indicator) {
     display: none;
 }
 

@@ -1,11 +1,12 @@
 @model ListItemModel
 
-<li class="@(Model.IsSelected ? "stack__item--active" : "")">
-    <a class="stack__link list-box list-box--primary list-box--offset-left @(Model.IsSelected ? "list-box--selected" : "")"
-       asp-page="/Adventure/Index"
-       asp-route-id="@Model.AdventureId"
-       asp-route-personId="@Model.PersonId"
-       asp-route-questId="@Model.Quest.Id">
+<li>
+    <a class="stack__link list-box list-box--primary list-box--offset-left"
+       @@click="selected = @(Model.Quest.Id)" 
+       :class="selected === @(Model.Quest.Id) && 'list-box--selected'"
+       hx-get="@Url.Page("/Quest/Index", new { Model.Quest.Id })"
+       hx-target="#questContainer"
+       hx-swap="innerHTML">
 
         <span class="list-box__line-1">
             @Model.Quest.Name

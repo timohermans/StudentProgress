@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using StudentProgress.Core.Constants;
 using StudentProgress.Core.Data;
 using StudentProgress.Core.Models;
 using StudentProgress.Web.Lib.Constants;

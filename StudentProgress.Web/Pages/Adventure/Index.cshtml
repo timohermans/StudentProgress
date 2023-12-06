@@ -1,5 +1,4 @@
 @page "{id:int}"
-@using StudentProgress.Web.Pages.Quest
 @using StudentProgress.Web.Pages.Shared
 @model StudentProgress.Web.Pages.Adventure.Index
 
@@ -35,11 +34,11 @@
         <section id="questLog" class="quest-log">
             <div class="stack">
                 @* TODO: refactor to it's own partial and reload on htmx event "progress-created" *@
-                <partial name="../QuestLines/_List" model="new AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>(Model.Adventure.QuestLines, Model.Adventure.Id, Model.QuestId, Model.Person?.Id)"/>
+                <partial name="../QuestLines/_List" model="new AdventurePartialModel<IEnumerable<Core.Models.QuestLine>>(Model.Adventure.QuestLines, Model.Adventure.Id, null, null)"/>
 
                 <div class="box box--dashed-hover box--no-border cluster">
                     <a class="link"
-                       hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id, QuestId = Model.QuestId, PersonId = Model.Person?.Id })"
+                       hx-get="@Url.Page("/QuestLine/Create", new { AdventureId = Model.Adventure.Id })"
                        hx-target="this"
                        hx-swap="outerHTML">
                         Add new questline
@@ -48,10 +47,7 @@
                 </div>
             </div>
 
-            <div id="questContainer"
-                 hx-get="@Url.Page("/Quest/Index", new { Id = Model.QuestId, PersonId = Model.Person?.Id })"
-                 hx-trigger="load"
-                 hx-swap="innerHTML">
+            <div id="questContainer">
                 <svg-inject class="loading htmx-indicator" src="images/puff.svg"></svg-inject>
 
                 @* See /QuestLine/Index.cshtml  *@
