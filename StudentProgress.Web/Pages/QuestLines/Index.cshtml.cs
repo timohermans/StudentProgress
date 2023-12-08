@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentProgress.Web.Lib.Constants;
 using StudentProgress.Web.Lib.Extensions;
-using StudentProgress.Web.Pages.Shared;
 
 namespace StudentProgress.Web.Pages.QuestLines;
 

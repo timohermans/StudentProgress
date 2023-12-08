@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model SearchModel
 @{
     Layout = null;
@@ -17,7 +17,7 @@
                 @foreach (var adventure in person.Adventures)
             {
                 <li>
-                        <a class="nav__adventure-link" asp-page="/Adventure/Index" asp-route-personId="@person.Id"
+                        <a class="nav__adventure-link" asp-page="/AdventureDetails/Index" asp-route-personId="@person.Id"
                            asp-route-id="@adventure.Id">
                             @adventure.Name
                         </a>

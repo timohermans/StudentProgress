@@ -63,6 +63,6 @@ public class CreateModel(WebContext db, ILogger<CreateModel> logger) : PageModel
         await db.SaveChangesAsync();
         logger.LogInformation("Created quest line {questLine}", questLine);
 
-        return RedirectToPage("/Adventure/Index", new { id = AdventureId });
+        return RedirectToPage("/AdventureDetails/Index", new { id = AdventureId });
     }
 }

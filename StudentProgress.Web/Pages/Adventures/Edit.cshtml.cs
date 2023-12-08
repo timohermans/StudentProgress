@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using StudentProgress.Core.Data;
 using StudentProgress.Web.Lib.Extensions;
 using static LanguageExt.Prelude;
-using AdventureModel = StudentProgress.Core.Models.Adventure;
+using Adventure = StudentProgress.Core.Models.Adventure;
 
 namespace StudentProgress.Web.Pages.Adventures;
 
@@ -17,7 +17,7 @@ public class EditModel : PageModel
     private readonly WebContext _context;
     private readonly ILogger<EditModel> _logger;
 
-    [BindProperty] public AdventureModel Adventure { get; set; } = null!;
+    [BindProperty] public Adventure Adventure { get; set; } = null!;
 
     public EditModel(WebContext context, ILogger<EditModel> logger)
     {
@@ -48,7 +48,7 @@ public class EditModel : PageModel
             return Page();
         }
 
-        var adventure = Right<(string modelKey, string modelValue), AdventureModel>(Adventure);
+        var adventure = Right<(string modelKey, string modelValue), Adventure>(Adventure);
         var exists = adventure.Bind(MaybeExists);
         var duplicate = await exists.BindAsync(MaybeDuplicate);
         var update = await duplicate.BindAsync(Update);
@@ -58,23 +58,23 @@ public class EditModel : PageModel
             {
                 this.HtmxRetargetTo($"#adventure-{Adventure.Id}-options", "innerHTML");
                 ModelState.AddModelError(result.modelKey, result.modelValue);
-                return Partial("_Form", Adventure);
+                return base.Partial("_Form", (object)Adventure);
             },
             Right: a => Partial("_Row", a));
     }
 
-    private Either<(string modelKey, string modelValue), AdventureModel> MaybeExists(AdventureModel a)
+    private Either<(string modelKey, string modelValue), Adventure> MaybeExists(Adventure a)
         => _context.Adventures.Any(x => x.Id == a.Id)
             ? a
-            : (nameof(AdventureModel), "Something went wrong");
+            : (nameof(Adventure), "Something went wrong");
 
-    private async Task<Either<(string modelKey, string modelValue), AdventureModel>> MaybeDuplicate(
-        AdventureModel a)
+    private async Task<Either<(string modelKey, string modelValue), Adventure>> MaybeDuplicate(
+        Adventure a)
         => await _context.Adventures.AnyAsync(x => x.Name == a.Name)
             ? (nameof(Adventure.Name), "Already exists!")
             : a;
 
-    private async Task<Either<(string modelKey, string modelValue), AdventureModel>> Update(AdventureModel a)
+    private async Task<Either<(string modelKey, string modelValue), Adventure>> Update(Adventure a)
     {
         try
         {
@@ -85,7 +85,7 @@ public class EditModel : PageModel
         catch (Exception ex)
         {
             _logger.LogError(ex, "Something went wrong saving the adventure");
-            return (nameof(AdventureModel), "Something went wrong saving the adventure");
+            return (nameof(Adventure), "Something went wrong saving the adventure");
         }
     }
 }
